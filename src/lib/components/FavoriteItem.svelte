@@ -1,9 +1,8 @@
 <script lang="ts">
-import { Edit2, Trash2, Check, X, Calendar, MousePointer } from '@lucide/svelte';
+import { Trash2, X, Calendar, MousePointer } from '@lucide/svelte';
 import type { Favorite } from '$lib/types';
-import CombinationPreview from './CombinationPreview.svelte';
 import ShareButton from './ShareButton.svelte';
-import { deleteFavorite, renameFavorite } from '$lib/stores/favorites';
+import { deleteFavorite } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
 
 interface Props {
@@ -14,11 +13,8 @@ interface Props {
 
 const { favorite, onSelect, onShare }: Props = $props();
 
-// 編集状態
-let isEditing = $state(false);
-let editingName = $state('');
+// 削除確認状態
 let isDeleting = $state(false);
-let isRenaming = $state(false);
 let error = $state('');
 
 // 作成日時のフォーマット
@@ -32,41 +28,8 @@ function formatDate(dateStr: string): string {
       hour: '2-digit',
       minute: '2-digit',
     });
-  } catch (error) {
+  } catch {
     return '日時不明';
-  }
-}
-
-function startEditing() {
-  isEditing = true;
-  editingName = favorite.name;
-  error = '';
-}
-
-function cancelEditing() {
-  isEditing = false;
-  editingName = '';
-  error = '';
-}
-
-async function saveEdit() {
-  try {
-    if (!editingName.trim()) {
-      error = '名前は空にできません。';
-      return;
-    }
-
-    isRenaming = true;
-    error = '';
-
-    await renameFavorite(favorite.id, editingName.trim());
-
-    isEditing = false;
-    editingName = '';
-  } catch (err) {
-    error = err instanceof Error ? err.message : '名前の変更に失敗しました。';
-  } finally {
-    isRenaming = false;
   }
 }
 
@@ -95,119 +58,51 @@ function handleSelect() {
 function handleShare() {
   onShare(favorite);
 }
-
-function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Enter' && isEditing) {
-    saveEdit();
-  } else if (event.key === 'Escape' && isEditing) {
-    cancelEditing();
-  }
-}
-
-// フォーカス管理
-let nameInput = $state<HTMLInputElement>();
-$effect(() => {
-  if (isEditing && nameInput) {
-    nameInput.focus();
-    nameInput.select();
-  }
-});
 </script>
 
 <div class="card bg-base-100 shadow-md border border-base-300 transition-shadow hover:shadow-lg">
   <div class="card-body p-4">
-    <!-- ヘッダー部分：名前と操作ボタン -->
+    <!-- ヘッダー部分：日時と操作ボタン -->
     <div class="flex justify-between items-start mb-4">
       <div class="flex-1 min-w-0">
-        {#if isEditing}
-          <!-- 編集モード -->
-          <div class="flex gap-2 items-center">
-            <input
-              bind:this={nameInput}
-              bind:value={editingName}
-              type="text"
-              class="input input-sm input-bordered flex-1"
-              maxlength="100"
-              disabled={isRenaming}
-              onkeydown={handleKeydown}
-              placeholder="お気に入りの名前"
-            />
-            <button
-              class="btn btn-ghost btn-sm btn-circle"
-              onclick={saveEdit}
-              disabled={isRenaming}
-              class:loading={isRenaming}
-              aria-label="保存"
-            >
-              {#if !isRenaming}
-                <Check class="w-4 h-4 text-success" />
-              {/if}
-            </button>
-            <button
-              class="btn btn-ghost btn-sm btn-circle"
-              onclick={cancelEditing}
-              disabled={isRenaming}
-              aria-label="キャンセル"
-            >
-              <X class="w-4 h-4" />
-            </button>
-          </div>
-        {:else}
-          <!-- 表示モード -->
-          <div class="flex items-center gap-2">
-            <h3 class="font-semibold text-base truncate" title={favorite.name}>
-              {favorite.name}
-            </h3>
-            <button
-              class="btn btn-ghost btn-xs btn-circle opacity-0 group-hover:opacity-100 transition-opacity"
-              onclick={startEditing}
-              aria-label="名前を編集"
-            >
-              <Edit2 class="w-3 h-3" />
-            </button>
-          </div>
-        {/if}
-        
         <!-- 作成日時 -->
-        <div class="flex items-center gap-1 text-xs text-base-content/60 mt-1">
+        <div class="flex items-center gap-1 text-xs text-base-content/60">
           <Calendar class="w-3 h-3" />
           {formatDate(favorite.createdAt)}
         </div>
       </div>
 
       <!-- 操作ボタン -->
-      {#if !isEditing}
-        <div class="flex gap-1 ml-2">
-          {#if isDeleting}
-            <!-- 削除確認 -->
-            <div class="flex gap-1">
-              <button
-                class="btn btn-error btn-xs"
-                onclick={handleDelete}
-                aria-label="削除を確認"
-              >
-                削除
-              </button>
-              <button
-                class="btn btn-ghost btn-xs"
-                onclick={cancelDelete}
-                aria-label="削除をキャンセル"
-              >
-                <X class="w-3 h-3" />
-              </button>
-            </div>
-          {:else}
-            <!-- 通常の操作ボタン -->
+      <div class="flex gap-1 ml-2">
+        {#if isDeleting}
+          <!-- 削除確認 -->
+          <div class="flex gap-1">
             <button
-              class="btn btn-ghost btn-xs btn-circle"
+              class="btn btn-error btn-xs"
               onclick={handleDelete}
-              aria-label="削除"
+              aria-label="削除を確認"
             >
-              <Trash2 class="w-3 h-3 text-error" />
+              削除
             </button>
-          {/if}
-        </div>
-      {/if}
+            <button
+              class="btn btn-ghost btn-xs"
+              onclick={cancelDelete}
+              aria-label="削除をキャンセル"
+            >
+              <X class="w-3 h-3" />
+            </button>
+          </div>
+        {:else}
+          <!-- 通常の操作ボタン -->
+          <button
+            class="btn btn-ghost btn-xs btn-circle"
+            onclick={handleDelete}
+            aria-label="削除"
+          >
+            <Trash2 class="w-3 h-3 text-error" />
+          </button>
+        {/if}
+      </div>
     </div>
 
     <!-- エラーメッセージ -->
@@ -263,7 +158,7 @@ $effect(() => {
       <button
         class="btn btn-primary btn-sm flex-1"
         onclick={handleSelect}
-        disabled={isEditing || isDeleting}
+        disabled={isDeleting}
       >
         <MousePointer class="w-4 h-4" />
         この組み合わせを選択
@@ -277,9 +172,3 @@ $effect(() => {
     </div>
   </div>
 </div>
-
-<style>
-  .card:hover .group-hover\:opacity-100 {
-    opacity: 1;
-  }
-</style>

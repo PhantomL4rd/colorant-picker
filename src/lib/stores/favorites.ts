@@ -55,7 +55,6 @@ export function loadFavorites(): void {
       .filter((favorite) => {
         return (
           favorite.id &&
-          favorite.name &&
           favorite.primaryDye &&
           favorite.suggestedDyes &&
           favorite.pattern &&
@@ -108,7 +107,6 @@ function saveFavoritesToStorage(favorites: Favorite[]): void {
 
 // お気に入りを保存（カスタムカラー対応）
 export function saveFavorite(input: {
-  name?: string;
   primaryDye: Dye | ExtendedDye;
   suggestedDyes: [Dye, Dye];
   pattern: HarmonyPattern;
@@ -118,20 +116,6 @@ export function saveFavorite(input: {
       // 最大件数チェック
       if (favorites.length >= MAX_FAVORITES) {
         throw new Error(`お気に入りは最大${MAX_FAVORITES}件まで保存できます。`);
-      }
-
-      // 名前の生成（デフォルトまたは重複チェック）
-      let name = input.name?.trim() || '';
-      if (!name) {
-        name = `組み合わせ #${favorites.length + 1}`;
-      } else {
-        // 重複チェックと連番追加
-        let counter = 1;
-        const baseName = name;
-        while (favorites.some((f) => f.name === name)) {
-          name = `${baseName} (${counter})`;
-          counter++;
-        }
       }
 
       // カスタムカラーの場合は通常のDyeとして保存
@@ -154,7 +138,6 @@ export function saveFavorite(input: {
 
       const newFavorite: Favorite = {
         id: generateId(),
-        name,
         primaryDye: primaryDyeForStorage,
         suggestedDyes: input.suggestedDyes,
         pattern: input.pattern,
@@ -185,46 +168,22 @@ export function deleteFavorite(favoriteId: string): void {
   }
 }
 
-// お気に入りの名前を変更
-export function renameFavorite(favoriteId: string, newName: string): void {
-  try {
-    const trimmedName = newName.trim();
-    if (!trimmedName) {
-      throw new Error('お気に入りの名前は空にできません。');
-    }
+// 組み合わせが既にお気に入りに存在するかチェック
+export function isFavorited(
+  favorites: Favorite[],
+  primaryDye: Dye | ExtendedDye | null,
+  suggestedDyes: [Dye, Dye] | null,
+  pattern: HarmonyPattern
+): boolean {
+  if (!primaryDye || !suggestedDyes) return false;
 
-    if (trimmedName.length > 100) {
-      throw new Error('お気に入りの名前は100文字以内で入力してください。');
-    }
-
-    favoritesStore.update((favorites) => {
-      // 重複チェック（自分以外）
-      const existingNames = favorites.filter((f) => f.id !== favoriteId).map((f) => f.name);
-      let finalName = trimmedName;
-      let counter = 1;
-      while (existingNames.includes(finalName)) {
-        finalName = `${trimmedName} (${counter})`;
-        counter++;
-      }
-
-      const updated = favorites.map((f) => {
-        if (f.id === favoriteId) {
-          return {
-            ...f,
-            name: finalName,
-            updatedAt: new Date().toISOString(),
-          };
-        }
-        return f;
-      });
-
-      saveFavoritesToStorage(updated);
-      return updated;
-    });
-  } catch (error) {
-    console.error('お気に入りの名前変更に失敗しました:', error);
-    throw error;
-  }
+  return favorites.some(
+    (f) =>
+      f.primaryDye.id === primaryDye.id &&
+      f.suggestedDyes[0].id === suggestedDyes[0].id &&
+      f.suggestedDyes[1].id === suggestedDyes[1].id &&
+      f.pattern === pattern
+  );
 }
 
 // お気に入りを復元（選択状態に設定、カスタムカラー対応）

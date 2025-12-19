@@ -2,7 +2,7 @@
 import { Calendar, MousePointer, Heart, Check } from '@lucide/svelte';
 import type { HistoryEntry } from '$lib/types';
 import ShareButton from './ShareButton.svelte';
-import { saveFavorite } from '$lib/stores/favorites';
+import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
 
 interface Props {
@@ -12,6 +12,14 @@ interface Props {
 }
 
 const { entry, onSelect, onShare }: Props = $props();
+
+// お気に入り一覧
+const favorites = $derived($favoritesStore);
+
+// 既にお気に入りに登録済みかチェック
+const isAlreadyFavorited = $derived(
+  isFavorited(favorites, entry.primaryDye, entry.suggestedDyes, entry.pattern)
+);
 
 // お気に入り追加の状態
 let isAddingToFavorites = $state(false);
@@ -139,25 +147,35 @@ async function handleAddToFavorites() {
       </button>
 
       <!-- お気に入り追加ボタン -->
-      <button
-        class="btn btn-sm"
-        class:btn-success={showFeedback}
-        class:btn-outline={!showFeedback}
-        onclick={handleAddToFavorites}
-        disabled={isAddingToFavorites}
-        aria-label="お気に入りに追加"
-      >
-        {#if showFeedback}
-          <Check class="w-4 h-4" />
-        {:else if isAddingToFavorites}
-          <span class="loading loading-spinner loading-xs"></span>
-        {:else}
-          <Heart class="w-4 h-4" />
-        {/if}
-      </button>
+      {#if isAlreadyFavorited}
+        <button
+          class="btn btn-sm btn-ghost text-success cursor-default"
+          disabled
+          aria-label="お気に入り済み"
+        >
+          <Heart class="w-4 h-4 fill-current" />
+        </button>
+      {:else}
+        <button
+          class="btn btn-sm"
+          class:btn-success={showFeedback}
+          class:btn-outline={!showFeedback}
+          onclick={handleAddToFavorites}
+          disabled={isAddingToFavorites}
+          aria-label="お気に入りに追加"
+        >
+          {#if showFeedback}
+            <Check class="w-4 h-4" />
+          {:else if isAddingToFavorites}
+            <span class="loading loading-spinner loading-xs"></span>
+          {:else}
+            <Heart class="w-4 h-4" />
+          {/if}
+        </button>
+      {/if}
 
       <ShareButton
-        favorite={{ ...entry, name: formatDate(entry.createdAt) }}
+        favorite={entry}
         onShare={handleShare}
       />
     </div>

@@ -98,8 +98,7 @@ export interface HistoryEntry extends PaletteEntry {
 
 // お気に入り（基底型を継承）
 export interface Favorite extends PaletteEntry {
-  name: string;
-  updatedAt?: string;
+  // 追加プロパティなし
 }
 
 // 保存用の軽量型定義（hsv/hex除外）
@@ -135,8 +134,7 @@ export interface StoredHistoryEntry extends StoredPaletteEntry {
 
 // 保存用お気に入り
 export interface StoredFavorite extends StoredPaletteEntry {
-  name: string;
-  updatedAt?: string;
+  // 追加プロパティなし
 }
 
 // LocalStorage用のお気に入りデータ

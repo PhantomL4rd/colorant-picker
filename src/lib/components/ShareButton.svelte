@@ -44,7 +44,6 @@ function openShareModal() {
   // 一時的なFavoriteオブジェクトを作成（保存はしない）
   tempFavorite = {
     id: `temp-${Date.now()}`,
-    name: `${currentSelection.primaryDye.name}の組み合わせ`,
     primaryDye: currentSelection.primaryDye,
     suggestedDyes: currentSelection.suggestedDyes,
     pattern: currentSelection.pattern,

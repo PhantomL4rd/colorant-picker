@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Heart } from '@lucide/svelte';
 import { selectionStore } from '$lib/stores/selection';
-import { saveFavorite } from '$lib/stores/favorites';
+import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
 
 interface Props {
   disabled?: boolean;
@@ -16,9 +16,22 @@ let saveError = $state('');
 // 現在の選択状態
 const currentSelection = $derived($selectionStore);
 
-// プライマリ染料が選択されていない場合は無効
+// お気に入り一覧
+const favorites = $derived($favoritesStore);
+
+// 既にお気に入りに登録済みかチェック
+const isAlreadyFavorited = $derived(
+  isFavorited(
+    favorites,
+    currentSelection.primaryDye,
+    currentSelection.suggestedDyes,
+    currentSelection.pattern
+  )
+);
+
+// プライマリ染料が選択されていない場合、または既にお気に入り済みの場合は無効
 const isDisabled = $derived(
-  disabled || !currentSelection.primaryDye || !currentSelection.suggestedDyes
+  disabled || !currentSelection.primaryDye || !currentSelection.suggestedDyes || isAlreadyFavorited
 );
 
 async function openModal() {
@@ -39,7 +52,6 @@ async function handleSave() {
     saveError = '';
 
     await saveFavorite({
-      name: undefined, // 自動生成される名前を使用
       primaryDye: currentSelection.primaryDye,
       suggestedDyes: currentSelection.suggestedDyes,
       pattern: currentSelection.pattern,
@@ -78,18 +90,29 @@ function showToast() {
 </script>
 
 <!-- お気に入り追加ボタン -->
-<button
-  class="btn btn-primary btn-sm"
-  class:btn-disabled={isDisabled}
-  class:loading={isSaving}
-  onclick={openModal}
-  disabled={isDisabled || isSaving}
-  aria-label="お気に入りに追加"
->
-  {#if isSaving}
-    保存中...
-  {:else}
-    <Heart class="w-4 h-4" />
-    お気に入りに追加
-  {/if}
-</button>
+{#if isAlreadyFavorited}
+  <button
+    class="btn btn-ghost btn-sm text-success cursor-default"
+    disabled
+    aria-label="お気に入り済み"
+  >
+    <Heart class="w-4 h-4 fill-current" />
+    お気に入り済み
+  </button>
+{:else}
+  <button
+    class="btn btn-primary btn-sm"
+    class:btn-disabled={isDisabled}
+    class:loading={isSaving}
+    onclick={openModal}
+    disabled={isDisabled || isSaving}
+    aria-label="お気に入りに追加"
+  >
+    {#if isSaving}
+      保存中...
+    {:else}
+      <Heart class="w-4 h-4" />
+      お気に入りに追加
+    {/if}
+  </button>
+{/if}

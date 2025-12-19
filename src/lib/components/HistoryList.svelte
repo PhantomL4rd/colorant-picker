@@ -50,31 +50,8 @@ function closeShareModal() {
   selectedEntryForShare = null;
 }
 
-// 履歴エントリをお気に入り形式に変換（ShareModal用）
-function formatEntryDate(dateStr: string): string {
-  try {
-    const date = new Date(dateStr);
-    return date.toLocaleDateString('ja-JP', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    });
-  } catch {
-    return '日時不明';
-  }
-}
-
-// ShareModal用にFavorite形式に変換
-const favoriteForShare = $derived<Favorite | null>(
-  selectedEntryForShare
-    ? {
-        ...selectedEntryForShare,
-        name: formatEntryDate(selectedEntryForShare.createdAt),
-      }
-    : null
-);
+// ShareModal用にFavorite形式に変換（HistoryEntryとFavoriteは同じ構造）
+const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
 </script>
 
 <div class="container mx-auto px-4 pb-20 pt-4">
