@@ -237,8 +237,3 @@ function handleClearAll() {
     </div>
   </div>
 {/if}
-
-<!-- 著作権表示 -->
-<div class="text-xs text-gray-400 text-center py-4 mt-8">
-  FINAL FANTASYは、株式会社スクウェア・エニックス・ホールディングスの登録商標です。
-</div>

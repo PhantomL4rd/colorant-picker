@@ -5,7 +5,7 @@ import TabNavigation from '$lib/components/TabNavigation.svelte';
 
 const { children } = $props();
 
-const siteName = 'FF14 カララントピッカー';
+const siteName = 'カララントピッカー';
 const siteDescription = 'FF14のカララント（染料）から3色の組み合わせを提案するツールです。';
 </script>
 
