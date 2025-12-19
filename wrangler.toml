@@ -13,6 +13,5 @@ preview_database_id = "a3886729-0e7f-4cf3-9d6d-f349a34bc9f6"
 binding = "KV"
 id = "79716dd0f4714941924e98852a3975eb"
 
-# ローカル開発用（本番はCloudflare Dashboardで設定）
-[vars]
-ADMIN_TOKEN = "local-dev-token"
+# ADMIN_TOKEN はシークレットとして設定（wrangler pages secret put ADMIN_TOKEN）
+# ローカル開発時は .dev.vars ファイルを使用
