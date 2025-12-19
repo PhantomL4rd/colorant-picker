@@ -10,8 +10,8 @@ const config = {
   kit: {
     // adapter-static for Cloudflare Pages (static site)
     adapter: adapter({
-      pages: 'public',
-      assets: 'public',
+      pages: 'build',
+      assets: 'build',
       fallback: 'index.html',
       precompress: false,
       strict: false,
