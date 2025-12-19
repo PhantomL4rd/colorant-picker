@@ -1,7 +1,7 @@
 <script lang="ts">
 import { page } from '$app/stores';
 import { base } from '$app/paths';
-import { SwatchBook, Heart, ExternalLink } from 'lucide-svelte';
+import { SwatchBook, Heart, Clock, ExternalLink } from 'lucide-svelte';
 
 const currentPath = $derived($page.url.pathname);
 
@@ -34,8 +34,8 @@ function openFeedbackLink() {
         </a>
 
         <!-- お気に入りタブ -->
-        <a 
-          href="{base}/favorites" 
+        <a
+          href="{base}/favorites"
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
           class:bg-primary={currentPath === base + '/favorites'}
           class:text-primary-content={currentPath === base + '/favorites'}
@@ -45,6 +45,20 @@ function openFeedbackLink() {
         >
           <Heart class="w-6 h-6 mb-1" />
           <span class="text-xs font-medium">お気に入り</span>
+        </a>
+
+        <!-- 履歴タブ -->
+        <a
+          href="{base}/history"
+          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
+          class:bg-primary={currentPath === base + '/history'}
+          class:text-primary-content={currentPath === base + '/history'}
+          class:text-base-content={currentPath !== base + '/history'}
+          class:hover:bg-base-300={currentPath !== base + '/history'}
+          aria-label="履歴"
+        >
+          <Clock class="w-6 h-6 mb-1" />
+          <span class="text-xs font-medium">履歴</span>
         </a>
 
         <!-- 要望/感想リンク -->
