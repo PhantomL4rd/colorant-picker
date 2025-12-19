@@ -106,7 +106,7 @@ export function generateShareText(favorite: Favorite, shareUrl: string): string 
 提案色：${favorite.suggestedDyes[0].name} / ${favorite.suggestedDyes[1].name}
 配色パターン：${patternLabel}
 
-#FF14カララントピッカー
+#カララントピッカー #FF14 #FFXIV
 ${shareUrl}`;
 }
 
