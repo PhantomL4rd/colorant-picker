@@ -1,6 +1,6 @@
 <script lang="ts">
 import '../app.css';
-import { SwatchBook, Menu, Moon, TriangleAlert } from 'lucide-svelte';
+import { SwatchBook, Menu, Moon, TriangleAlert, MessageSquare } from 'lucide-svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
 
 const { children } = $props();
@@ -43,6 +43,17 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
             tabindex="0"
             class="dropdown-content menu bg-base-200 text-base-content rounded-box z-10 w-52 p-2 shadow mt-2"
           >
+            <li>
+              <a
+                href="https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5609012/"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="flex items-center gap-2"
+              >
+                <MessageSquare class="w-5 h-5" />
+                要望・感想
+              </a>
+            </li>
             <li>
               <a
                 href="https://fortune.pl4rd.com/"

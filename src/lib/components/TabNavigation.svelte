@@ -1,16 +1,9 @@
 <script lang="ts">
 import { page } from '$app/stores';
 import { base } from '$app/paths';
-import { SwatchBook, Heart, Clock, ExternalLink, Sparkles } from 'lucide-svelte';
+import { SwatchBook, Heart, Sparkles } from 'lucide-svelte';
 
 const currentPath = $derived($page.url.pathname);
-
-// 要望/感想リンク
-const feedbackUrl = 'https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5609012/';
-
-function openFeedbackLink() {
-  window.open(feedbackUrl, '_blank', 'noopener,noreferrer');
-}
 </script>
 
 <!-- フッター固定タブナビゲーション -->
@@ -20,8 +13,8 @@ function openFeedbackLink() {
       <!-- タブボタン群 -->
       <div class="flex space-x-8">
         <!-- カララントピッカータブ -->
-        <a 
-          href="{base}/" 
+        <a
+          href="{base}/"
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
           class:bg-primary={currentPath === base + '/' || currentPath === base}
           class:text-primary-content={currentPath === base + '/' || currentPath === base}
@@ -51,39 +44,15 @@ function openFeedbackLink() {
         <a
           href="{base}/favorites"
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={currentPath === base + '/favorites'}
-          class:text-primary-content={currentPath === base + '/favorites'}
-          class:text-base-content={currentPath !== base + '/favorites'}
-          class:hover:bg-base-300={currentPath !== base + '/favorites'}
+          class:bg-primary={currentPath === base + '/favorites' || currentPath.startsWith(base + '/favorites')}
+          class:text-primary-content={currentPath === base + '/favorites' || currentPath.startsWith(base + '/favorites')}
+          class:text-base-content={currentPath !== base + '/favorites' && !currentPath.startsWith(base + '/favorites')}
+          class:hover:bg-base-300={currentPath !== base + '/favorites' && !currentPath.startsWith(base + '/favorites')}
           aria-label="スキ！"
         >
           <Heart class="w-6 h-6 mb-1" />
           <span class="text-xs font-medium">スキ！</span>
         </a>
-
-        <!-- 履歴タブ -->
-        <a
-          href="{base}/history"
-          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={currentPath === base + '/history'}
-          class:text-primary-content={currentPath === base + '/history'}
-          class:text-base-content={currentPath !== base + '/history'}
-          class:hover:bg-base-300={currentPath !== base + '/history'}
-          aria-label="履歴"
-        >
-          <Clock class="w-6 h-6 mb-1" />
-          <span class="text-xs font-medium">履歴</span>
-        </a>
-
-        <!-- 要望/感想リンク -->
-        <button 
-          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px] text-base-content hover:bg-base-300"
-          onclick={openFeedbackLink}
-          aria-label="要望・感想を送る"
-        >
-          <ExternalLink class="w-6 h-6 mb-1" />
-          <span class="text-xs font-medium">要望・感想</span>
-        </button>
       </div>
     </div>
   </div>
@@ -94,19 +63,19 @@ function openFeedbackLink() {
 
 <style>
   /* タブボタンのアクティブ状態アニメーション */
-  a, button {
+  a {
     user-select: none;
     -webkit-user-select: none;
     -moz-user-select: none;
     -ms-user-select: none;
   }
-  
-  a:active, button:active {
+
+  a:active {
     transform: scale(0.95);
   }
-  
+
   /* フォーカス時のアウトライン */
-  a:focus-visible, button:focus-visible {
+  a:focus-visible {
     outline: 2px solid hsl(var(--p));
     outline-offset: 2px;
   }
