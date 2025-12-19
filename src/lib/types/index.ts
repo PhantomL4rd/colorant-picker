@@ -192,3 +192,18 @@ export interface CustomColorsData {
   version: string;
   lastUpdated: string;
 }
+
+// おすすめパレット（サーバーから取得）
+export interface ShowcasePalette {
+  id: number;
+  primaryDyeId: string;
+  suggestedDyeIds: [string, string];
+  pattern: HarmonyPattern;
+  createdAt: string;
+}
+
+// おすすめパレットAPIレスポンス
+export interface ShowcaseData {
+  palettes: ShowcasePalette[];
+  updatedAt: string | null;
+}

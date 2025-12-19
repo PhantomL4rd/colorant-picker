@@ -56,12 +56,12 @@ function closeShareModal() {
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
       <Heart class="w-6 h-6 text-primary" />
-      <h1 class="text-2xl font-bold">お気に入り</h1>
+      <h1 class="text-2xl font-bold">スキ！</h1>
     </div>
-    
+
     {#if favoriteCount > 0}
       <p class="text-base-content/60 text-sm">
-        {favoriteCount}件のお気に入りがあります
+        {favoriteCount}件のスキ！があります
       </p>
     {/if}
   </div>
@@ -75,11 +75,11 @@ function closeShareModal() {
           <Heart class="w-20 h-20 mx-auto mb-4" />
         </div>
         <h2 class="text-xl font-semibold mb-4 text-base-content/70">
-          まだお気に入りがありません
+          まだスキ！がありません
         </h2>
         <div class="text-base-content/60 space-y-2">
           <p>カララントピッカーで気に入った組み合わせを見つけたら、</p>
-          <p>「お気に入りに追加」ボタンで保存しましょう。</p>
+          <p>「スキ！」ボタンで保存しましょう。</p>
         </div>
         <div class="mt-6">
           <div class="badge badge-outline">
@@ -105,7 +105,7 @@ function closeShareModal() {
     {#if favoriteCount >= 5}
       <div class="text-center mt-8 mb-4">
         <p class="text-base-content/40 text-sm">
-          {favoriteCount}件のお気に入りを表示中
+          {favoriteCount}件のスキ！を表示中
         </p>
       </div>
     {/if}

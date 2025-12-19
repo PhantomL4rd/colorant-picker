@@ -28,7 +28,7 @@ let isLoading = $state(true);
 let showCustomColors = $state(false);
 
 // プレビューエリアへの参照
-let previewElement: HTMLElement;
+let previewElement: HTMLElement | undefined = $state();
 
 // ストアから状態を取得
 const selectedDye = $derived($selectionStore.primaryDye);

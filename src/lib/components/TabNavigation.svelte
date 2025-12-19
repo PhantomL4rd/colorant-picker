@@ -1,7 +1,7 @@
 <script lang="ts">
 import { page } from '$app/stores';
 import { base } from '$app/paths';
-import { SwatchBook, Heart, Clock, ExternalLink } from 'lucide-svelte';
+import { SwatchBook, Heart, Clock, ExternalLink, Sparkles } from 'lucide-svelte';
 
 const currentPath = $derived($page.url.pathname);
 
@@ -33,7 +33,21 @@ function openFeedbackLink() {
           <span class="text-xs font-medium">ピッカー</span>
         </a>
 
-        <!-- お気に入りタブ -->
+        <!-- おすすめタブ -->
+        <a
+          href="{base}/showcase"
+          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
+          class:bg-primary={currentPath === base + '/showcase'}
+          class:text-primary-content={currentPath === base + '/showcase'}
+          class:text-base-content={currentPath !== base + '/showcase'}
+          class:hover:bg-base-300={currentPath !== base + '/showcase'}
+          aria-label="おすすめ"
+        >
+          <Sparkles class="w-6 h-6 mb-1" />
+          <span class="text-xs font-medium">おすすめ</span>
+        </a>
+
+        <!-- スキ！タブ -->
         <a
           href="{base}/favorites"
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
@@ -41,10 +55,10 @@ function openFeedbackLink() {
           class:text-primary-content={currentPath === base + '/favorites'}
           class:text-base-content={currentPath !== base + '/favorites'}
           class:hover:bg-base-300={currentPath !== base + '/favorites'}
-          aria-label="お気に入り"
+          aria-label="スキ！"
         >
           <Heart class="w-6 h-6 mb-1" />
-          <span class="text-xs font-medium">お気に入り</span>
+          <span class="text-xs font-medium">スキ！</span>
         </a>
 
         <!-- 履歴タブ -->

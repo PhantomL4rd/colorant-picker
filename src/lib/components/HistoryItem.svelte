@@ -69,7 +69,7 @@ async function handleAddToFavorites() {
       showFeedback = false;
     }, 2000);
   } catch (err) {
-    error = err instanceof Error ? err.message : 'お気に入りの追加に失敗しました。';
+    error = err instanceof Error ? err.message : 'スキ！の追加に失敗しました。';
   } finally {
     isAddingToFavorites = false;
   }
@@ -146,12 +146,12 @@ async function handleAddToFavorites() {
         この組み合わせを選択
       </button>
 
-      <!-- お気に入り追加ボタン -->
+      <!-- スキ！追加ボタン -->
       {#if isAlreadyFavorited}
         <button
           class="btn btn-sm btn-ghost text-success cursor-default"
           disabled
-          aria-label="お気に入り済み"
+          aria-label="スキ！済み"
         >
           <Heart class="w-4 h-4 fill-current" />
         </button>
@@ -162,7 +162,7 @@ async function handleAddToFavorites() {
           class:btn-outline={!showFeedback}
           onclick={handleAddToFavorites}
           disabled={isAddingToFavorites}
-          aria-label="お気に入りに追加"
+          aria-label="スキ！"
         >
           {#if showFeedback}
             <Check class="w-4 h-4" />

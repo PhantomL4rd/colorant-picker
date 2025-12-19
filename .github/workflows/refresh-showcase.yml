@@ -1,0 +1,19 @@
+name: Refresh Showcase
+
+on:
+  schedule:
+    # 毎日UTC 0:00に実行（JST 9:00）
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    # 手動実行も可能
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call refresh endpoint
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.ADMIN_TOKEN }}" \
+            -f \
+            https://colorant-picker.pl4rd.com/api/admin/refresh-showcase

@@ -1,0 +1,18 @@
+name = "colorant-picker"
+compatibility_date = "2025-01-01"
+compatibility_flags = ["nodejs_compat"]
+pages_build_output_dir = "build"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "colorant-picker-showcase"
+database_id = "a3886729-0e7f-4cf3-9d6d-f349a34bc9f6"
+preview_database_id = "a3886729-0e7f-4cf3-9d6d-f349a34bc9f6"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "79716dd0f4714941924e98852a3975eb"
+
+# ローカル開発用（本番はCloudflare Dashboardで設定）
+[vars]
+ADMIN_TOKEN = "local-dev-token"

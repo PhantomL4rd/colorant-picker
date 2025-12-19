@@ -60,7 +60,7 @@ async function handleSave() {
     // 成功を示すトーストを表示（モーダルなしで）
     showToast();
   } catch (error) {
-    saveError = error instanceof Error ? error.message : 'お気に入りの保存に失敗しました。';
+    saveError = error instanceof Error ? error.message : 'スキ！の保存に失敗しました。';
     // エラーの場合はアラートで表示
     alert(saveError);
   } finally {
@@ -74,7 +74,7 @@ function showToast() {
   toast.className = 'toast toast-top toast-end z-50';
   toast.innerHTML = `
     <div class="alert alert-success">
-      <span>お気に入りに追加しました！</span>
+      <span>スキ！しました！</span>
     </div>
   `;
 
@@ -89,15 +89,15 @@ function showToast() {
 }
 </script>
 
-<!-- お気に入り追加ボタン -->
+<!-- スキ！ボタン -->
 {#if isAlreadyFavorited}
   <button
     class="btn btn-ghost btn-sm text-success cursor-default"
     disabled
-    aria-label="お気に入り済み"
+    aria-label="スキ！済み"
   >
     <Heart class="w-4 h-4 fill-current" />
-    お気に入り済み
+    スキ！済み
   </button>
 {:else}
   <button
@@ -106,13 +106,13 @@ function showToast() {
     class:loading={isSaving}
     onclick={openModal}
     disabled={isDisabled || isSaving}
-    aria-label="お気に入りに追加"
+    aria-label="スキ！"
   >
     {#if isSaving}
       保存中...
     {:else}
       <Heart class="w-4 h-4" />
-      お気に入りに追加
+      スキ！
     {/if}
   </button>
 {/if}

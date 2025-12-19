@@ -13,12 +13,13 @@ import { isCustomDye, extractCustomColor } from '$lib/utils/customColorUtils';
 import { hydrateDye, extractStoredDye } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage } from '$lib/utils/storageService';
 import { emitRestorePalette } from './paletteEvents';
+import { submitPalette } from '$lib/utils/paletteSubmit';
 
 // お気に入りストア
 export const favoritesStore = writable<Favorite[]>([]);
 
 // LocalStorageキー
-const STORAGE_KEY = 'ffxiv-colorant-favorites';
+const STORAGE_KEY = 'colorant-picker:favorites';
 const STORAGE_VERSION = '1.0.0';
 const MAX_FAVORITES = 100;
 
@@ -99,7 +100,7 @@ function saveFavoritesToStorage(favorites: Favorite[]): void {
   } catch (error) {
     if (error instanceof DOMException && error.code === 22) {
       // QuotaExceededError - ストレージ容量不足
-      throw new Error('ストレージ容量が不足しています。古いお気に入りを削除してください。');
+      throw new Error('ストレージ容量が不足しています。古いスキ！を削除してください。');
     }
     throw error;
   }
@@ -115,7 +116,7 @@ export function saveFavorite(input: {
     favoritesStore.update((favorites) => {
       // 最大件数チェック
       if (favorites.length >= MAX_FAVORITES) {
-        throw new Error(`お気に入りは最大${MAX_FAVORITES}件まで保存できます。`);
+        throw new Error(`スキ！は最大${MAX_FAVORITES}件まで保存できます。`);
       }
 
       // カスタムカラーの場合は通常のDyeとして保存
@@ -146,6 +147,15 @@ export function saveFavorite(input: {
 
       const updated = [...favorites, newFavorite];
       saveFavoritesToStorage(updated);
+
+      // バックグラウンドでサーバーにパレットを投稿（カスタムカラー除く）
+      // 投稿の成功/失敗に関わらずローカル保存は完了させる
+      submitPalette({
+        primaryDye: primaryDyeForStorage,
+        suggestedDyes: input.suggestedDyes,
+        pattern: input.pattern,
+      });
+
       return updated;
     });
   } catch (error) {

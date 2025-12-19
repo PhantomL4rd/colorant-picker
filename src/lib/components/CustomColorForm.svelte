@@ -156,15 +156,16 @@ function handleCancel() {
 
     <!-- RGB値入力 -->
     <div class="form-control">
-      <label class="label">
+      <span class="label">
         <span class="label-text">RGB値</span>
-      </label>
+      </span>
       <div class="flex gap-3">
         <div class="flex-1">
-          <label class="label py-1">
+          <label class="label py-1" for="rgb-input-r">
             <span class="label-text-alt">R</span>
           </label>
           <input
+            id="rgb-input-r"
             type="number"
             min="0"
             max="255"
@@ -174,10 +175,11 @@ function handleCancel() {
           />
         </div>
         <div class="flex-1">
-          <label class="label py-1">
+          <label class="label py-1" for="rgb-input-g">
             <span class="label-text-alt">G</span>
           </label>
           <input
+            id="rgb-input-g"
             type="number"
             min="0"
             max="255"
@@ -187,10 +189,11 @@ function handleCancel() {
           />
         </div>
         <div class="flex-1">
-          <label class="label py-1">
+          <label class="label py-1" for="rgb-input-b">
             <span class="label-text-alt">B</span>
           </label>
           <input
+            id="rgb-input-b"
             type="number"
             min="0"
             max="255"
@@ -209,9 +212,9 @@ function handleCancel() {
 
     <!-- プレビュー -->
     <div class="form-control">
-      <label class="label">
+      <span class="label">
         <span class="label-text">プレビュー</span>
-      </label>
+      </span>
       <div class="flex items-center gap-3">
         <div
           class="w-12 h-12 rounded-lg border-2 border-base-300"

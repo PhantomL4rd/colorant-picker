@@ -17,7 +17,7 @@ import { selectionStore } from './selection';
 export const historyStore = writable<HistoryEntry[]>([]);
 
 // LocalStorageキー
-const STORAGE_KEY = 'ffxiv-colorant-history';
+const STORAGE_KEY = 'colorant-picker:history';
 const STORAGE_VERSION = '1.0.0';
 const MAX_HISTORY = 10;
 

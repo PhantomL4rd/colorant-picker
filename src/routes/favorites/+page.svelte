@@ -25,7 +25,7 @@ function handleSelectFavorite(favorite: Favorite) {
 </script>
 
 <svelte:head>
-  <title>お気に入り | カララントピッカー</title>
+  <title>スキ！ | カララントピッカー</title>
 </svelte:head>
 
 {#if isLoading}

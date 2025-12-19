@@ -9,7 +9,7 @@ import type {
 import { rgbToHsv, hydrateCustomColor, extractStoredCustomColor } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage as saveStorageUtil } from '$lib/utils/storageService';
 
-const STORAGE_KEY = 'ffxiv-colorant-picker:custom-colors';
+const STORAGE_KEY = 'colorant-picker:custom-colors';
 const VERSION = '1.0.0';
 
 // カスタムカラーストア
