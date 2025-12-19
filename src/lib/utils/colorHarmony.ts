@@ -140,9 +140,7 @@ export function findBridgeDye(dyeA: Dye, dyeB: Dye, palette: Dye[]): Dye {
 
   // 適切な染料が見つからない場合はランダムに選択
   if (!selectedDye) {
-    const availableDyes = palette.filter(
-      (dye) => dye.id !== dyeA.id && dye.id !== dyeB.id
-    );
+    const availableDyes = palette.filter((dye) => dye.id !== dyeA.id && dye.id !== dyeB.id);
     selectedDye = availableDyes[Math.floor(Math.random() * availableDyes.length)];
   }
 
@@ -158,9 +156,9 @@ export function generateSuggestedDyes(
   _seed?: number
 ): [Dye, Dye] {
   if (pattern === 'monochromatic') {
-    return selectMonochromaticDyes(
-      primaryDye, allDyes, {diversifyByLightness: true}
-    ).map(c => c.dye) as [Dye, Dye];
+    return selectMonochromaticDyes(primaryDye, allDyes, { diversifyByLightness: true }).map(
+      (c) => c.dye
+    ) as [Dye, Dye];
   }
 
   // クラッシュパターンの場合は新しいロジックを使用

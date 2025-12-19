@@ -48,7 +48,12 @@ const suggestedDye2 = $derived(getDyeById(palette.suggestedDyeIds[1]));
 // 既にお気に入りに登録済みかチェック
 const isAlreadyFavorited = $derived(
   primaryDye && suggestedDye1 && suggestedDye2
-    ? isFavorited(favorites, primaryDye, [suggestedDye1, suggestedDye2], palette.pattern as HarmonyPattern)
+    ? isFavorited(
+        favorites,
+        primaryDye,
+        [suggestedDye1, suggestedDye2],
+        palette.pattern as HarmonyPattern
+      )
     : false
 );
 

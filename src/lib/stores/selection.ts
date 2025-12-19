@@ -150,11 +150,7 @@ export function setPaletteDirectly(
 // パレット復元イベントをリッスン
 if (typeof window !== 'undefined') {
   paletteEventBus.on('restore-palette', (event) => {
-    setPaletteDirectly(
-      event.data.primaryDye,
-      event.data.suggestedDyes,
-      event.data.pattern
-    );
+    setPaletteDirectly(event.data.primaryDye, event.data.suggestedDyes, event.data.pattern);
   });
 }
 

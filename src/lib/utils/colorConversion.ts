@@ -7,7 +7,7 @@ import type {
   StoredDye,
   StoredCustomColor,
   OklchColor,
-} from "$lib/types";
+} from '$lib/types';
 
 // HSVからRGBに変換
 export function hsvToRgb(hsv: HSVColor): RGBColor {
@@ -87,7 +87,7 @@ export function rgbToHsv(rgb: RGBColor): HSVColor {
 
 // RGBからHEXに変換
 export function rgbToHex(rgb: RGBColor): string {
-  const toHex = (n: number) => n.toString(16).padStart(2, "0").toUpperCase();
+  const toHex = (n: number) => n.toString(16).padStart(2, '0').toUpperCase();
   return `#${toHex(rgb.r)}${toHex(rgb.g)}${toHex(rgb.b)}`;
 }
 
@@ -106,9 +106,7 @@ export function hydrateDye(stored: StoredDye | Dye): Dye {
 /**
  * StoredCustomColorをCustomColorにハイドレート
  */
-export function hydrateCustomColor(
-  stored: StoredCustomColor | CustomColor
-): CustomColor {
+export function hydrateCustomColor(stored: StoredCustomColor | CustomColor): CustomColor {
   return {
     ...stored,
     hsv: rgbToHsv(stored.rgb),
@@ -126,9 +124,7 @@ export function extractStoredDye(dye: Dye): StoredDye {
 /**
  * CustomColorからStoredCustomColorを抽出（保存用）
  */
-export function extractStoredCustomColor(
-  color: CustomColor
-): StoredCustomColor {
+export function extractStoredCustomColor(color: CustomColor): StoredCustomColor {
   const { hsv, ...stored } = color;
   return stored;
 }
@@ -254,8 +250,8 @@ export function rgbToOklch(rgb: RGBColor): OklchColor {
 /**
  * Converts an Oklch color to RGB color space.
  *
- * @param lch 
- * @returns 
+ * @param lch
+ * @returns
  */
 export function oklchToRgb(lch: OklchColor): RGBColor {
   return oklabToRgb(oklchToOklab(lch));
@@ -290,7 +286,7 @@ export function deltaEOklab(c1: OklabColor, c2: OklabColor): number {
 
 /**
  * Calculates the angular difference between two hues.
- * 
+ *
  * @param h1 the first hue
  * @param h2 the second hue
  * @returns the angular difference between the two hues

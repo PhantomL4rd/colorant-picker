@@ -52,20 +52,16 @@ export function loadHistory(): void {
     const validEntries = data.entries
       .filter((entry) => {
         return (
-          entry.id &&
-          entry.primaryDye &&
-          entry.suggestedDyes &&
-          entry.pattern &&
-          entry.createdAt
+          entry.id && entry.primaryDye && entry.suggestedDyes && entry.pattern && entry.createdAt
         );
       })
       .map((entry) => ({
         ...entry,
         primaryDye: hydrateDye(entry.primaryDye),
-        suggestedDyes: [
-          hydrateDye(entry.suggestedDyes[0]),
-          hydrateDye(entry.suggestedDyes[1]),
-        ] as [Dye, Dye],
+        suggestedDyes: [hydrateDye(entry.suggestedDyes[0]), hydrateDye(entry.suggestedDyes[1])] as [
+          Dye,
+          Dye,
+        ],
       }));
 
     historyStore.set(validEntries);

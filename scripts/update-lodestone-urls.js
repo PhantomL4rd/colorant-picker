@@ -15,7 +15,8 @@ const dyesJsonPath = path.join(__dirname, '..', 'static', 'data', 'dyes.json');
 const html = fs.readFileSync(htmlPath, 'utf-8');
 
 // カララントのURLとname属性を抽出（正規表現）
-const regex = /<a href="(\/lodestone\/playguide\/db\/item\/[^"]+)" class="db_popup db-table__txt--detail_link">カララント:([^<]+)<\/a>/g;
+const regex =
+  /<a href="(\/lodestone\/playguide\/db\/item\/[^"]+)" class="db_popup db-table__txt--detail_link">カララント:([^<]+)<\/a>/g;
 const matches = [];
 let match;
 
@@ -35,8 +36,8 @@ let updatedCount = 0;
 const unmatchedDyes = [];
 const unmatchedUrls = [];
 
-dyesData.dyes.forEach(dye => {
-  const match = matches.find(m => m.name === dye.name);
+dyesData.dyes.forEach((dye) => {
+  const match = matches.find((m) => m.name === dye.name);
   if (match) {
     dye.lodestone = match.url;
     updatedCount++;
@@ -46,8 +47,8 @@ dyesData.dyes.forEach(dye => {
 });
 
 // マッチしなかったURLを確認
-matches.forEach(m => {
-  if (!dyesData.dyes.find(d => d.name === m.name)) {
+matches.forEach((m) => {
+  if (!dyesData.dyes.find((d) => d.name === m.name)) {
     unmatchedUrls.push(m);
   }
 });
@@ -57,12 +58,12 @@ console.log(`更新されたカララント数: ${updatedCount}/${dyesData.dyes.
 
 if (unmatchedDyes.length > 0) {
   console.log('\n[警告] JSONに存在するが、HTMLで見つからなかったカララント:');
-  unmatchedDyes.forEach(name => console.log(`  - ${name}`));
+  unmatchedDyes.forEach((name) => console.log(`  - ${name}`));
 }
 
 if (unmatchedUrls.length > 0) {
   console.log('\n[情報] HTMLに存在するが、JSONで見つからなかったカララント:');
-  unmatchedUrls.forEach(m => console.log(`  - ${m.name}: ${m.url}`));
+  unmatchedUrls.forEach((m) => console.log(`  - ${m.name}: ${m.url}`));
 }
 
 // dyes.jsonを更新

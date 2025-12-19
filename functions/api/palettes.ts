@@ -87,26 +87,20 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
           );
         }
         // カウント増加
-        await env.KV.put(
-          rateLimitKey,
-          JSON.stringify({ count: count + 1, timestamp }),
-          { expirationTtl: 60 }
-        );
+        await env.KV.put(rateLimitKey, JSON.stringify({ count: count + 1, timestamp }), {
+          expirationTtl: 60,
+        });
       } else {
         // ウィンドウリセット
-        await env.KV.put(
-          rateLimitKey,
-          JSON.stringify({ count: 1, timestamp: Date.now() }),
-          { expirationTtl: 60 }
-        );
+        await env.KV.put(rateLimitKey, JSON.stringify({ count: 1, timestamp: Date.now() }), {
+          expirationTtl: 60,
+        });
       }
     } else {
       // 初回
-      await env.KV.put(
-        rateLimitKey,
-        JSON.stringify({ count: 1, timestamp: Date.now() }),
-        { expirationTtl: 60 }
-      );
+      await env.KV.put(rateLimitKey, JSON.stringify({ count: 1, timestamp: Date.now() }), {
+        expirationTtl: 60,
+      });
     }
 
     // INSERT OR IGNORE で重複は無視

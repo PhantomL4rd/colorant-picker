@@ -210,7 +210,7 @@ export function restoreFavorite(favorite: Favorite): void {
     } else {
       primaryDye = favorite.primaryDye;
     }
-    
+
     // イベントを発火してパレットを復元
     emitRestorePalette({
       primaryDye,

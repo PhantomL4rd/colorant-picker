@@ -1,5 +1,5 @@
-import type { Dye, OklchColor } from "$lib/types";
-import { hueDiff, oklabToOklch } from "../colorConversion";
+import type { Dye, OklchColor } from '$lib/types';
+import { hueDiff, oklabToOklch } from '../colorConversion';
 
 type Candidate = {
   dye: Dye;
