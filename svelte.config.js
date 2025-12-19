@@ -8,17 +8,14 @@ const config = {
   preprocess: vitePreprocess(),
 
   kit: {
-    // adapter-static for GitHub Pages
+    // adapter-static for Cloudflare Pages (static site)
     adapter: adapter({
-      pages: 'build',
-      assets: 'build',
+      pages: 'public',
+      assets: 'public',
       fallback: 'index.html',
       precompress: false,
       strict: false,
     }),
-    paths: {
-      base: process.argv.includes('dev') ? '' : process.env.BASE_PATH || '',
-    },
   },
 };
 
