@@ -1,12 +1,13 @@
 <script lang="ts">
 import '../app.css';
-import { SwatchBook, Menu, Moon } from 'lucide-svelte';
+import { SwatchBook, Menu, Moon, TriangleAlert } from 'lucide-svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
 
 const { children } = $props();
 
 const siteName = 'カララントピッカー';
 const siteDescription = 'FF14のカララント（染料）から3色の組み合わせを提案するツールです。';
+const newSiteUrl = 'https://colorant-picker.pl4rd.com';
 </script>
 
 <svelte:head>
@@ -15,6 +16,14 @@ const siteDescription = 'FF14のカララント（染料）から3色の組み�
 </svelte:head>
 
 <div class="min-h-screen bg-base-100">
+  <!-- 移転告知バナー -->
+  <div class="alert alert-warning rounded-none">
+    <TriangleAlert class="w-5 h-5" />
+    <span>
+      <a href={newSiteUrl} class="link font-bold">{newSiteUrl}</a>へ移転しました（自動転送されます）
+    </span>
+  </div>
+
   <!-- ヘッダー -->
   <header class="navbar bg-primary text-primary-content mb-8">
     <div class="container mx-auto flex items-center">
