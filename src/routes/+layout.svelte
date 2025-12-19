@@ -29,6 +29,7 @@ const siteDescription = 'FF14のカララント（染料）から3色の組み�
           <div tabindex="0" role="button" class="btn btn-ghost">
             <Menu class="w-6 h-6" />
           </div>
+          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
           <ul
             tabindex="0"
             class="dropdown-content menu bg-base-200 text-base-content rounded-box z-10 w-52 p-2 shadow mt-2"
