@@ -149,13 +149,13 @@ function handleSuggestedDyeClick(dye: Dye): void {
             <div class="tooltip tooltip-bottom tooltip-info">
               <button type="button" class="btn btn-ghost btn-xs gap-1 text-info">
                 <Info class="w-3 h-3" />
-                <span class="text-xs">黄金比で魅せるコーデ術</span>
+                <span class="text-xs">いい感じに染色するコツ</span>
               </button>
               <div class="tooltip-content text-start p-3 max-w-sm">
                 <p class="font-semibold mb-1">配色の黄金比</p>
                 <p><span class="font-medium">メイン</span>: コーデの主役（胴・脚など広い部分に）</p>
-                <p><span class="font-medium">サブ</span>: メインを引き立てる2番手（手・足に）</p>
-                <p><span class="font-medium">アクセント</span>: 個性のワンポイント！</p>
+                <p><span class="font-medium">サブ</span>: メインを引き立てる2番手（手・足など）</p>
+                <p><span class="font-medium">アクセント</span>: 個性際立つワンポイント！</p>
               </div>
             </div>
           </div>
