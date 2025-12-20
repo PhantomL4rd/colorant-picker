@@ -142,7 +142,7 @@ function handleSuggestedDyeClick(dye: Dye): void {
             <div class="tooltip tooltip-bottom tooltip-info">
               <button type="button" class="btn btn-ghost btn-xs gap-1 text-info">
                 <Info class="w-3 h-3" />
-                <span class="text-xs">黄金比について</span>
+                <span class="text-xs">下に書いてあるのはなんの数字？</span>
               </button>
               <div class="tooltip-content text-start p-3">
                 <p>コーデにまとまりを出すための黄金比！</p>
