@@ -3,7 +3,8 @@ import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { RefreshCw, Sparkles } from '@lucide/svelte';
-import type { ShowcasePalette, ShowcaseData, DyeProps, HarmonyPattern, Favorite } from '$lib/types';
+import type { ShowcasePalette, ShowcaseData, DyeProps, Favorite } from '$lib/types';
+import { Palette } from '$lib/models/Palette';
 import ShowcaseItem from '$lib/components/ShowcaseItem.svelte';
 import ShareModal from '$lib/components/ShareModal.svelte';
 import { loadDyes, dyeStore } from '$lib/stores/dyes';
@@ -57,37 +58,19 @@ async function handleRetry() {
   isLoading = false;
 }
 
-// パターン文字列をHarmonyPatternに変換（API: splitComplementary → 型: split-complementary）
-function normalizePattern(pattern: string): HarmonyPattern {
-  const mapping: Record<string, HarmonyPattern> = {
-    triadic: 'triadic',
-    splitComplementary: 'split-complementary',
-    'split-complementary': 'split-complementary',
-    analogous: 'analogous',
-    monochromatic: 'monochromatic',
-    similar: 'similar',
-    contrast: 'contrast',
-    clash: 'clash',
-  };
-  return mapping[pattern] ?? 'triadic';
-}
+function handleSelectPalette(showcasePalette: ShowcasePalette) {
+  const palette = Palette.fromShowcase(showcasePalette, dyes);
 
-function handleSelectPalette(palette: ShowcasePalette) {
-  // IDから染料データを取得
-  const primaryDye = dyes.find((d) => d.id === palette.primaryDyeId);
-  const suggestedDye1 = dyes.find((d) => d.id === palette.suggestedDyeIds[0]);
-  const suggestedDye2 = dyes.find((d) => d.id === palette.suggestedDyeIds[1]);
-
-  if (!primaryDye || !suggestedDye1 || !suggestedDye2) {
-    console.error('Dye not found for palette:', palette);
+  if (!palette) {
+    console.error('Dye not found for palette:', showcasePalette);
     return;
   }
 
   // パレット復元イベントを発火
   emitRestorePalette({
-    primaryDye,
-    suggestedDyes: [suggestedDye1, suggestedDye2],
-    pattern: normalizePattern(palette.pattern),
+    primaryDye: palette.primary,
+    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+    pattern: palette.pattern,
   });
 
   // ピッカーページへ遷移
@@ -109,18 +92,15 @@ function closeShareModal() {
 function getFavoriteForShare(): Favorite | null {
   if (!selectedPaletteForShare) return null;
 
-  const primaryDye = dyes.find((d) => d.id === selectedPaletteForShare!.primaryDyeId);
-  const suggestedDye1 = dyes.find((d) => d.id === selectedPaletteForShare!.suggestedDyeIds[0]);
-  const suggestedDye2 = dyes.find((d) => d.id === selectedPaletteForShare!.suggestedDyeIds[1]);
-
-  if (!primaryDye || !suggestedDye1 || !suggestedDye2) return null;
+  const palette = Palette.fromShowcase(selectedPaletteForShare, dyes);
+  if (!palette) return null;
 
   return {
-    id: `showcase-${selectedPaletteForShare!.id}`,
-    primaryDye,
-    suggestedDyes: [suggestedDye1, suggestedDye2] as [DyeProps, DyeProps],
-    pattern: normalizePattern(selectedPaletteForShare!.pattern),
-    createdAt: selectedPaletteForShare!.createdAt,
+    id: `showcase-${selectedPaletteForShare.id}`,
+    primaryDye: palette.primary,
+    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+    pattern: palette.pattern,
+    createdAt: selectedPaletteForShare.createdAt,
   };
 }
 

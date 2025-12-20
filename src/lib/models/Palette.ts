@@ -1,4 +1,10 @@
-import type { DyeProps, HarmonyPattern, DyeWithRole, PaletteEntry } from '$lib/types';
+import type {
+  DyeProps,
+  HarmonyPattern,
+  DyeWithRole,
+  PaletteEntry,
+  ShowcasePalette,
+} from '$lib/types';
 import { calculateDeltaE, BASE_WEIGHTS, SUPPRESSION_FACTOR } from '$lib/utils/colorRatio';
 
 /**
@@ -18,6 +24,21 @@ export class Palette {
     this.primary = primary;
     this.suggested = suggested;
     this.pattern = pattern;
+  }
+
+  /**
+   * ShowcasePalette（APIレスポンス）からPaletteを生成
+   * @param showcase サーバーから取得したパレットデータ
+   * @param dyes 染料データの配列
+   * @returns Palette または null（染料が見つからない場合）
+   */
+  static fromShowcase(showcase: ShowcasePalette, dyes: DyeProps[]): Palette | null {
+    const primary = dyes.find((d) => d.id === showcase.primaryDyeId);
+    const suggested1 = dyes.find((d) => d.id === showcase.suggestedDyeIds[0]);
+    const suggested2 = dyes.find((d) => d.id === showcase.suggestedDyeIds[1]);
+
+    if (!primary || !suggested1 || !suggested2) return null;
+    return new Palette(primary, [suggested1, suggested2], showcase.pattern);
   }
 
   /**
