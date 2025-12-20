@@ -15,14 +15,7 @@ useMode(modeOklch);
 
 // ===== 定数 =====
 
-// デフォルト比率（黄金比 70:25:5）
-export const DEFAULT_RATIO = {
-  main: 70,
-  sub: 25,
-  accent: 5,
-} as const;
-
-// ベースウェイト（70:25:5を実現する比率）
+// ベースウェイト（黄金比 70:25:5を実現する比率）
 export const BASE_WEIGHTS = {
   main: 1.0,
   sub: 0.357, // サブ (25/70)

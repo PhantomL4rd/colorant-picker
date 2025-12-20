@@ -3,7 +3,7 @@ import { MousePointer, Heart, Check } from '@lucide/svelte';
 import type { ShowcasePalette, DyeProps, Favorite, HarmonyPattern } from '$lib/types';
 import { dyeStore } from '$lib/stores/dyes';
 import { getPatternLabel } from '$lib/constants/patterns';
-import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
+import { saveFavorite, favoritesStore } from '$lib/stores/favorites';
 import ShareButton from './ShareButton.svelte';
 import { Palette } from '$lib/models/Palette';
 
@@ -53,16 +53,7 @@ const colorPalette = $derived.by(() => {
 });
 
 // 既にお気に入りに登録済みかチェック
-const isAlreadyFavorited = $derived(
-  primaryDye && suggestedDye1 && suggestedDye2
-    ? isFavorited(
-        favorites,
-        primaryDye,
-        [suggestedDye1, suggestedDye2],
-        palette.pattern as HarmonyPattern
-      )
-    : false
-);
+const isAlreadyFavorited = $derived(colorPalette?.isIn(favorites) ?? false);
 
 // お気に入り追加の状態
 let isAddingToFavorites = $state(false);

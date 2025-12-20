@@ -1,7 +1,8 @@
 <script lang="ts">
-import { Heart } from '@lucide/svelte';
+import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
-import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
+import { Palette } from '$lib/models/Palette';
+import { Heart } from '@lucide/svelte';
 
 interface Props {
   disabled?: boolean;
@@ -19,29 +20,32 @@ const currentSelection = $derived($selectionStore);
 // お気に入り一覧
 const favorites = $derived($favoritesStore);
 
-// 既にお気に入りに登録済みかチェック
-const isAlreadyFavorited = $derived(
-  isFavorited(
-    favorites,
+// パレットを生成
+const palette = $derived.by(() => {
+  if (!currentSelection.primaryDye || !currentSelection.suggestedDyes) return null;
+  return new Palette(
     currentSelection.primaryDye,
     currentSelection.suggestedDyes,
     currentSelection.pattern
-  )
-);
+  );
+});
+
+// 既にお気に入りに登録済みかチェック
+const isAlreadyFavorited = $derived(palette?.isIn(favorites) ?? false);
 
 // プライマリ染料が選択されていない場合、または既にお気に入り済みの場合は無効
 const isDisabled = $derived(
   disabled || !currentSelection.primaryDye || !currentSelection.suggestedDyes || isAlreadyFavorited
 );
 
-async function openModal() {
+function openModal() {
   if (isDisabled) return;
 
   // 即座にお気に入りに追加（モーダルを表示せずに）
-  await handleSave();
+  handleSave();
 }
 
-async function handleSave() {
+function handleSave() {
   if (!currentSelection.primaryDye || !currentSelection.suggestedDyes) {
     saveError = '組み合わせが選択されていません。';
     return;
@@ -51,7 +55,7 @@ async function handleSave() {
     isSaving = true;
     saveError = '';
 
-    await saveFavorite({
+    saveFavorite({
       primaryDye: currentSelection.primaryDye,
       suggestedDyes: currentSelection.suggestedDyes,
       pattern: currentSelection.pattern,

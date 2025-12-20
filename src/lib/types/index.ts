@@ -67,17 +67,6 @@ export type HarmonyPattern =
   | 'contrast'
   | 'clash';
 
-// 組み合わせ
-export interface DyeCombination {
-  id: string;
-  name?: string;
-  pattern: HarmonyPattern;
-  primaryDye: DyeProps;
-  secondaryDyes: [DyeProps, DyeProps];
-  harmonyScore: number;
-  createdAt: string;
-}
-
 // フィルター設定
 export interface FilterOptions {
   categories: DyeCategory | null;

@@ -1,4 +1,4 @@
-import type { DyeProps, HarmonyPattern, DyeWithRole } from '$lib/types';
+import type { DyeProps, HarmonyPattern, DyeWithRole, PaletteEntry } from '$lib/types';
 import { calculateDeltaE, BASE_WEIGHTS, SUPPRESSION_FACTOR } from '$lib/utils/colorRatio';
 
 /**
@@ -104,5 +104,28 @@ export class Palette {
   /** 役割順でソートされた提案色 [サブ, アクセント] */
   get sortedSuggested(): readonly [DyeWithRole, DyeWithRole] {
     return [this.sub, this.accent] as const;
+  }
+
+  /**
+   * 別のパレットと同一かどうか判定
+   * primary, suggested[0], suggested[1], pattern がすべて一致する場合にtrue
+   */
+  equals(other: Palette | PaletteEntry): boolean {
+    const otherSuggested = 'suggested' in other ? other.suggested : other.suggestedDyes;
+    const otherPrimary = 'primary' in other ? other.primary : other.primaryDye;
+
+    return (
+      this.primary.id === otherPrimary.id &&
+      this.suggested[0].id === otherSuggested[0].id &&
+      this.suggested[1].id === otherSuggested[1].id &&
+      this.pattern === other.pattern
+    );
+  }
+
+  /**
+   * パレットエントリの配列内に同一のパレットが存在するかチェック
+   */
+  isIn(entries: PaletteEntry[]): boolean {
+    return entries.some((entry) => this.equals(entry));
   }
 }

@@ -186,24 +186,6 @@ export function deleteFavorite(favoriteId: string): void {
   }
 }
 
-// 組み合わせが既にお気に入りに存在するかチェック
-export function isFavorited(
-  favorites: Favorite[],
-  primaryDye: DyeProps | ExtendedDye | null,
-  suggestedDyes: [DyeProps, DyeProps] | null,
-  pattern: HarmonyPattern
-): boolean {
-  if (!primaryDye || !suggestedDyes) return false;
-
-  return favorites.some(
-    (f) =>
-      f.primaryDye.id === primaryDye.id &&
-      f.suggestedDyes[0].id === suggestedDyes[0].id &&
-      f.suggestedDyes[1].id === suggestedDyes[1].id &&
-      f.pattern === pattern
-  );
-}
-
 // お気に入りを復元（選択状態に設定、カスタムカラー対応）
 export function restoreFavorite(favorite: Favorite): void {
   try {

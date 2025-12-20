@@ -2,7 +2,7 @@
 import { Calendar, MousePointer, Heart, Check } from '@lucide/svelte';
 import type { HistoryEntry } from '$lib/types';
 import ShareButton from './ShareButton.svelte';
-import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
+import { saveFavorite, favoritesStore } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { Palette } from '$lib/models/Palette';
 
@@ -23,9 +23,7 @@ const palette = $derived(
 const favorites = $derived($favoritesStore);
 
 // 既にお気に入りに登録済みかチェック
-const isAlreadyFavorited = $derived(
-  isFavorited(favorites, entry.primaryDye, entry.suggestedDyes, entry.pattern)
-);
+const isAlreadyFavorited = $derived(palette.isIn(favorites));
 
 // お気に入り追加の状態
 let isAddingToFavorites = $state(false);
