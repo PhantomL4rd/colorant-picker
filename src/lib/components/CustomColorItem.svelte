@@ -2,7 +2,7 @@
 import { deleteCustomColor } from '$lib/stores/customColors';
 import { formatRgbDisplay } from '$lib/utils/customColorUtils';
 import type { CustomColor } from '$lib/types';
-import { Edit2, Trash2 } from '@lucide/svelte';
+import { Pencil, Trash2 } from '@lucide/svelte';
 
 interface Props {
   color: CustomColor;
@@ -56,7 +56,7 @@ function handleDelete() {
           class="btn btn-ghost btn-sm"
           title="編集"
         >
-          <Edit2 size={16} />
+          <Pencil size={16} />
         </button>
         <button
           type="button"
