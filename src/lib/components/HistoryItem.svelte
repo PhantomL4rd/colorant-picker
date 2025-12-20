@@ -4,6 +4,7 @@ import type { HistoryEntry } from '$lib/types';
 import ShareButton from './ShareButton.svelte';
 import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
+import { calculateColorRatio } from '$lib/utils/colorRatio';
 
 interface Props {
   entry: HistoryEntry;
@@ -12,6 +13,20 @@ interface Props {
 }
 
 const { entry, onSelect, onShare }: Props = $props();
+
+// 役割順（差し色→アクセント）で提案色をソート
+const sortedSuggested = $derived.by(() => {
+  const results = calculateColorRatio([
+    entry.primaryDye,
+    entry.suggestedDyes[0],
+    entry.suggestedDyes[1],
+  ]);
+  const subResult = results[1];
+  const accentResult = results[2];
+  const subDye = entry.suggestedDyes.find((d) => d.id === subResult.dyeId)!;
+  const accentDye = entry.suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
+  return [subDye, accentDye] as const;
+});
 
 // お気に入り一覧
 const favorites = $derived($favoritesStore);
@@ -110,27 +125,27 @@ async function handleAddToFavorites() {
           </div>
         </div>
 
-        <!-- 提案染料1 -->
+        <!-- 差し色 -->
         <div class="text-center">
           <div
             class="w-full h-12 rounded border border-base-300"
-            style="background-color: {entry.suggestedDyes[0].hex};"
-            title={entry.suggestedDyes[0].name}
+            style="background-color: {sortedSuggested[0].hex};"
+            title={sortedSuggested[0].name}
           ></div>
-          <div class="text-xs mt-1 truncate" title={entry.suggestedDyes[0].name}>
-            {entry.suggestedDyes[0].name}
+          <div class="text-xs mt-1 truncate" title={sortedSuggested[0].name}>
+            {sortedSuggested[0].name}
           </div>
         </div>
 
-        <!-- 提案染料2 -->
+        <!-- アクセント -->
         <div class="text-center">
           <div
             class="w-full h-12 rounded border border-base-300"
-            style="background-color: {entry.suggestedDyes[1].hex};"
-            title={entry.suggestedDyes[1].name}
+            style="background-color: {sortedSuggested[1].hex};"
+            title={sortedSuggested[1].name}
           ></div>
-          <div class="text-xs mt-1 truncate" title={entry.suggestedDyes[1].name}>
-            {entry.suggestedDyes[1].name}
+          <div class="text-xs mt-1 truncate" title={sortedSuggested[1].name}>
+            {sortedSuggested[1].name}
           </div>
         </div>
       </div>

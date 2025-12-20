@@ -1,7 +1,7 @@
 <script lang="ts">
 import type { Dye, HarmonyPattern, ColorRatioResult } from '$lib/types';
 import { selectPrimaryDye } from '$lib/stores/selection';
-import { calculateColorRatio, findByDyeId } from '$lib/utils/colorRatio';
+import { calculateColorRatio } from '$lib/utils/colorRatio';
 import { BookOpenText, Info } from 'lucide-svelte';
 
 interface Props {
@@ -19,16 +19,21 @@ const ratioResults = $derived.by(() => {
   return calculateColorRatio([selectedDye, suggestedDyes[0], suggestedDyes[1]]);
 });
 
-// 各色の比率情報を取得
-const mainRatio = $derived(
-  selectedDye && ratioResults ? findByDyeId(ratioResults, selectedDye.id) : undefined
-);
-const ratio1 = $derived(
-  suggestedDyes && ratioResults ? findByDyeId(ratioResults, suggestedDyes[0].id) : undefined
-);
-const ratio2 = $derived(
-  suggestedDyes && ratioResults ? findByDyeId(ratioResults, suggestedDyes[1].id) : undefined
-);
+// ratioResultsから役割順（差し色→アクセント）で提案色を取得
+const sortedSuggested = $derived.by(() => {
+  if (!ratioResults || !suggestedDyes) return null;
+  const subResult = ratioResults[1]; // 差し色
+  const accentResult = ratioResults[2]; // アクセント
+  const subDye = suggestedDyes.find((d) => d.id === subResult.dyeId)!;
+  const accentDye = suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
+  return [
+    { dye: subDye, ratio: subResult },
+    { dye: accentDye, ratio: accentResult },
+  ] as const;
+});
+
+// メインの比率情報
+const mainRatio = $derived(ratioResults ? ratioResults[0] : undefined);
 
 function handleSuggestedDyeClick(dye: Dye): void {
   selectPrimaryDye(dye);
@@ -71,69 +76,71 @@ function handleSuggestedDyeClick(dye: Dye): void {
             {/if}
           </div>
 
-          <!-- 提案カララント1 -->
-          <div class="text-center">
-            <button
-              type="button"
-              class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer"
-              style="background-color: {suggestedDyes[0].hex};"
-              onclick={() => handleSuggestedDyeClick(suggestedDyes[0])}
-              title="この色を選択して新しい組み合わせを提案"
-            ></button>
-            <h4 class="font-medium text-sm flex items-center justify-center gap-1">
-              {#if suggestedDyes[0].lodestone}
-                <a
-                  href={suggestedDyes[0].lodestone}
-                  class="hover:text-primary transition-colors flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BookOpenText class="w-3 h-3" />
-                  {suggestedDyes[0].name}
-                </a>
-              {:else}
-                {suggestedDyes[0].name}
+          {#if sortedSuggested}
+            <!-- 差し色 -->
+            <div class="text-center">
+              <button
+                type="button"
+                class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer"
+                style="background-color: {sortedSuggested[0].dye.hex};"
+                onclick={() => handleSuggestedDyeClick(sortedSuggested[0].dye)}
+                title="この色を選択して新しい組み合わせを提案"
+              ></button>
+              <h4 class="font-medium text-sm flex items-center justify-center gap-1">
+                {#if sortedSuggested[0].dye.lodestone}
+                  <a
+                    href={sortedSuggested[0].dye.lodestone}
+                    class="hover:text-primary transition-colors flex items-center gap-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BookOpenText class="w-3 h-3" />
+                    {sortedSuggested[0].dye.name}
+                  </a>
+                {:else}
+                  {sortedSuggested[0].dye.name}
+                {/if}
+              </h4>
+              {#if showRatio}
+                <div class="text-xs text-base-content/70 mt-1">
+                  <span class="font-semibold">{sortedSuggested[0].ratio.role}</span>
+                  <span class="ml-1">{sortedSuggested[0].ratio.percent}%</span>
+                </div>
               {/if}
-            </h4>
-            {#if showRatio && ratio1}
-              <div class="text-xs text-base-content/70 mt-1">
-                <span class="font-semibold">{ratio1.role}</span>
-                <span class="ml-1">{ratio1.percent}%</span>
-              </div>
-            {/if}
-          </div>
+            </div>
 
-          <!-- 提案カララント2 -->
-          <div class="text-center">
-            <button
-              type="button"
-              class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer"
-              style="background-color: {suggestedDyes[1].hex};"
-              onclick={() => handleSuggestedDyeClick(suggestedDyes[1])}
-              title="この色を選択して新しい組み合わせを提案"
-            ></button>
-            <h4 class="font-medium text-sm flex items-center justify-center gap-1">
-              {#if suggestedDyes[1].lodestone}
-                <a
-                  href={suggestedDyes[1].lodestone}
-                  class="hover:text-primary transition-colors flex items-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BookOpenText class="w-3 h-3" />
-                  {suggestedDyes[1].name}
-                </a>
-              {:else}
-                {suggestedDyes[1].name}
+            <!-- アクセント -->
+            <div class="text-center">
+              <button
+                type="button"
+                class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer"
+                style="background-color: {sortedSuggested[1].dye.hex};"
+                onclick={() => handleSuggestedDyeClick(sortedSuggested[1].dye)}
+                title="この色を選択して新しい組み合わせを提案"
+              ></button>
+              <h4 class="font-medium text-sm flex items-center justify-center gap-1">
+                {#if sortedSuggested[1].dye.lodestone}
+                  <a
+                    href={sortedSuggested[1].dye.lodestone}
+                    class="hover:text-primary transition-colors flex items-center gap-1"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
+                    <BookOpenText class="w-3 h-3" />
+                    {sortedSuggested[1].dye.name}
+                  </a>
+                {:else}
+                  {sortedSuggested[1].dye.name}
+                {/if}
+              </h4>
+              {#if showRatio}
+                <div class="text-xs text-base-content/70 mt-1">
+                  <span class="font-semibold">{sortedSuggested[1].ratio.role}</span>
+                  <span class="ml-1">{sortedSuggested[1].ratio.percent}%</span>
+                </div>
               {/if}
-            </h4>
-            {#if showRatio && ratio2}
-              <div class="text-xs text-base-content/70 mt-1">
-                <span class="font-semibold">{ratio2.role}</span>
-                <span class="ml-1">{ratio2.percent}%</span>
-              </div>
-            {/if}
-          </div>
+            </div>
+          {/if}
         </div>
 
         <!-- 黄金比の説明ツールチップ -->
