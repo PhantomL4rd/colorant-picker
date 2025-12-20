@@ -7,7 +7,6 @@ import type {
   ExtendedSharePaletteData,
 } from '$lib/types';
 import { getPatternLabel } from '$lib/constants/patterns';
-import { isCustomDye } from '$lib/utils/customColorUtils';
 import { rgbToHsv, rgbToHex } from '$lib/utils/colorConversion';
 import LZString from 'lz-string';
 import { rgbToOklab } from './colorConversion';

@@ -1,11 +1,4 @@
-import type {
-  DyeProps,
-  RawDyeData,
-  RGBColor,
-  HSVColor,
-  OklabColor,
-  DyeCategory,
-} from '$lib/types';
+import type { DyeProps, RawDyeData, RGBColor, HSVColor, OklabColor, DyeCategory } from '$lib/types';
 import { rgbToHsv, rgbToHex, rgbToOklab } from '$lib/utils/colorConversion';
 
 /**

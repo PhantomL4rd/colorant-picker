@@ -14,11 +14,7 @@ export class Palette {
 
   private _ratioCache: [DyeWithRole, DyeWithRole, DyeWithRole] | null = null;
 
-  constructor(
-    primary: DyeProps,
-    suggested: [DyeProps, DyeProps],
-    pattern: HarmonyPattern
-  ) {
+  constructor(primary: DyeProps, suggested: [DyeProps, DyeProps], pattern: HarmonyPattern) {
     this.primary = primary;
     this.suggested = suggested;
     this.pattern = pattern;
@@ -68,8 +64,8 @@ export class Palette {
 
     // 四捨五入して整数化
     let mainPercent = Math.round(rawMainPercent);
-    let subPercent = Math.round(rawSubPercent);
-    let accentPercent = Math.round(rawAccentPercent);
+    const subPercent = Math.round(rawSubPercent);
+    const accentPercent = Math.round(rawAccentPercent);
 
     // 合計が100%になるように調整
     const total = mainPercent + subPercent + accentPercent;

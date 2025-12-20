@@ -12,7 +12,9 @@ const favoritesPath = resolve('/favorites');
 
 const isHome = $derived(currentPath === homePath || currentPath === homePath.replace(/\/$/, ''));
 const isShowcase = $derived(currentPath === showcasePath);
-const isFavorites = $derived(currentPath === favoritesPath || currentPath.startsWith(favoritesPath + '/'));
+const isFavorites = $derived(
+  currentPath === favoritesPath || currentPath.startsWith(`${favoritesPath}/`)
+);
 </script>
 
 <!-- フッター固定タブナビゲーション -->

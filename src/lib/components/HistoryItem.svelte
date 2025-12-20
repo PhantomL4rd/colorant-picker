@@ -15,9 +15,7 @@ interface Props {
 const { entry, onSelect, onShare }: Props = $props();
 
 // パレットを生成
-const palette = $derived(
-  new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern)
-);
+const palette = $derived(new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern));
 
 // お気に入り一覧
 const favorites = $derived($favoritesStore);

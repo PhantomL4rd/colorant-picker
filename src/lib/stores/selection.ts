@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
 import type { DyeProps, HarmonyPattern, ExtendedDye, CustomColor } from '$lib/types';
-import { Dye } from '$lib/models/Dye';
+import type { Dye } from '$lib/models/Dye';
 import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
 import { filterStore } from './filter';
 import { dyeStore } from './dyes';

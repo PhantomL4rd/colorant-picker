@@ -22,7 +22,6 @@ const palette = $derived.by(() => {
 function handleSuggestedDyeClick(dye: DyeProps): void {
   selectPrimaryDye(dye);
 }
-
 </script>
 
 <div class="card bg-base-100 shadow-lg">

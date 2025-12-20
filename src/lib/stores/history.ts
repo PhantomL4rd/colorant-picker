@@ -1,4 +1,4 @@
-import { writable, get } from 'svelte/store';
+import { writable } from 'svelte/store';
 import type {
   HistoryEntry,
   HistoryData,
@@ -89,10 +89,7 @@ function saveHistoryToStorage(entries: HistoryEntry[]): void {
     const storedEntries: StoredHistoryEntry[] = entries.map((entry) => ({
       id: entry.id,
       primaryDye: toStoredDye(entry.primaryDye),
-      suggestedDyes: [
-        toStoredDye(entry.suggestedDyes[0]),
-        toStoredDye(entry.suggestedDyes[1]),
-      ],
+      suggestedDyes: [toStoredDye(entry.suggestedDyes[0]), toStoredDye(entry.suggestedDyes[1])],
       pattern: entry.pattern,
       createdAt: entry.createdAt,
     }));

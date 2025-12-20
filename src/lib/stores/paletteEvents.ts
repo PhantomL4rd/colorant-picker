@@ -42,7 +42,9 @@ class PaletteEventBus {
   emit(event: PaletteEvent): void {
     const listeners = this.listeners.get(event.type);
     if (listeners) {
-      listeners.forEach((listener) => listener(event));
+      for (const listener of listeners) {
+        listener(event);
+      }
     }
   }
 

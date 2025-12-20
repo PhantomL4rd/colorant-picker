@@ -95,7 +95,9 @@ export function formatRgbDisplay(rgb: RGBColor): string {
 /**
  * DyePropsがカスタムカラーかどうかを判定
  */
-export function isCustomDye(dye: DyeProps | ExtendedDye): dye is ExtendedDye & { source: 'custom' } {
+export function isCustomDye(
+  dye: DyeProps | ExtendedDye
+): dye is ExtendedDye & { source: 'custom' } {
   return (dye as ExtendedDye).source === 'custom';
 }
 

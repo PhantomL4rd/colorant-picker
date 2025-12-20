@@ -114,8 +114,20 @@ export function oklchToOklab(lch: OklchColor): OklabColor {
 const deltaEOklchFn = differenceEuclidean('oklch');
 
 export function deltaEOklab(c1: OklabColor, c2: OklabColor): number {
-  const oklch1: Oklch = { mode: 'oklch', ...oklabToOklch(c1), l: c1.L, c: oklabToOklch(c1).C, h: oklabToOklch(c1).h };
-  const oklch2: Oklch = { mode: 'oklch', ...oklabToOklch(c2), l: c2.L, c: oklabToOklch(c2).C, h: oklabToOklch(c2).h };
+  const oklch1: Oklch = {
+    mode: 'oklch',
+    ...oklabToOklch(c1),
+    l: c1.L,
+    c: oklabToOklch(c1).C,
+    h: oklabToOklch(c1).h,
+  };
+  const oklch2: Oklch = {
+    mode: 'oklch',
+    ...oklabToOklch(c2),
+    l: c2.L,
+    c: oklabToOklch(c2).C,
+    h: oklabToOklch(c2).h,
+  };
   return deltaEOklchFn(oklch1, oklch2);
 }
 
@@ -144,4 +156,3 @@ export function clipOklabColor(oklab: OklabColor): OklabColor {
   const rgb = oklabToRgb(oklab);
   return rgbToOklab(rgb);
 }
-

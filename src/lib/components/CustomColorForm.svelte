@@ -55,7 +55,7 @@ const rgbDisplay = $derived(formatRgbDisplay(rgbInputs));
 // RGB入力ハンドラ
 function handleRgbChange(component: 'r' | 'g' | 'b', value: string) {
   const numValue = parseInt(value, 10);
-  if (!isNaN(numValue)) {
+  if (!Number.isNaN(numValue)) {
     rgbInputs[component] = Math.max(0, Math.min(255, numValue));
   }
   // RGB値エラーをクリア

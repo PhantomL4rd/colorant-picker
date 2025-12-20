@@ -5,12 +5,11 @@ import type {
   DyeProps,
   HarmonyPattern,
   ExtendedDye,
-  CustomColor,
   StoredDye,
   StoredFavorite,
 } from '$lib/types';
 import { Dye } from '$lib/models/Dye';
-import { isCustomDye, extractCustomColor } from '$lib/utils/customColorUtils';
+import { isCustomDye } from '$lib/utils/customColorUtils';
 import { loadFromStorage, saveToStorage } from '$lib/utils/storageService';
 import { emitRestorePalette } from './paletteEvents';
 import { submitPalette } from '$lib/utils/paletteSubmit';
@@ -65,10 +64,10 @@ export function loadFavorites(): void {
       .map((favorite) => ({
         ...favorite,
         primaryDye: new Dye(favorite.primaryDye),
-        suggestedDyes: [
-          new Dye(favorite.suggestedDyes[0]),
-          new Dye(favorite.suggestedDyes[1]),
-        ] as [DyeProps, DyeProps],
+        suggestedDyes: [new Dye(favorite.suggestedDyes[0]), new Dye(favorite.suggestedDyes[1])] as [
+          DyeProps,
+          DyeProps,
+        ],
       }));
 
     favoritesStore.set(validFavorites);
