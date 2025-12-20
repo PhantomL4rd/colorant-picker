@@ -44,6 +44,16 @@ export interface OklchColor {
   h: number; // 0-360
 }
 
+// 色の役割（黄金比計算用）
+export type ColorRole = 'メイン' | '差し色' | 'アクセント';
+
+// 比率計算結果
+export interface ColorRatioResult {
+  dyeId: string;
+  role: ColorRole;
+  percent: number; // 0-100の整数
+}
+
 // カララントカテゴリ
 export type DyeCategory = '白系' | '赤系' | '茶系' | '黄系' | '緑系' | '青系' | '紫系' | 'レア系';
 
