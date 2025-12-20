@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
-import { base } from '$app/paths';
+import { resolve } from '$app/paths';
 import { Heart, Clock } from 'lucide-svelte';
 import FavoritesList from '$lib/components/FavoritesList.svelte';
 import HistoryList from '$lib/components/HistoryList.svelte';
@@ -42,12 +42,12 @@ function setTab(tab: 'favorites' | 'history') {
 
 function handleSelectFavorite() {
   // お気に入りが選択されたらピッカーページに遷移
-  goto(`${base}/`);
+  goto(resolve('/'));
 }
 
 function handleSelectHistory() {
   // 履歴が選択されたらピッカーページに遷移
-  goto(`${base}/`);
+  goto(resolve('/'));
 }
 </script>
 

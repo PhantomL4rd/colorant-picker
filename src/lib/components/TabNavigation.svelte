@@ -1,9 +1,18 @@
 <script lang="ts">
-import { page } from '$app/stores';
-import { base } from '$app/paths';
+import { page } from '$app/state';
+import { resolve } from '$app/paths';
 import { SwatchBook, Heart, Sparkles } from 'lucide-svelte';
 
-const currentPath = $derived($page.url.pathname);
+const currentPath = $derived(page.url.pathname);
+
+// パスを事前に解決
+const homePath = resolve('/');
+const showcasePath = resolve('/showcase');
+const favoritesPath = resolve('/favorites');
+
+const isHome = $derived(currentPath === homePath || currentPath === homePath.replace(/\/$/, ''));
+const isShowcase = $derived(currentPath === showcasePath);
+const isFavorites = $derived(currentPath === favoritesPath || currentPath.startsWith(favoritesPath + '/'));
 </script>
 
 <!-- フッター固定タブナビゲーション -->
@@ -14,12 +23,12 @@ const currentPath = $derived($page.url.pathname);
       <div class="flex space-x-8">
         <!-- カララントピッカータブ -->
         <a
-          href="{base}/"
+          href={homePath}
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={currentPath === base + '/' || currentPath === base}
-          class:text-primary-content={currentPath === base + '/' || currentPath === base}
-          class:text-base-content={currentPath !== base + '/' && currentPath !== base}
-          class:hover:bg-base-300={currentPath !== base + '/' && currentPath !== base}
+          class:bg-primary={isHome}
+          class:text-primary-content={isHome}
+          class:text-base-content={!isHome}
+          class:hover:bg-base-300={!isHome}
           aria-label="カララントピッカー"
         >
           <SwatchBook class="w-6 h-6 mb-1" />
@@ -28,12 +37,12 @@ const currentPath = $derived($page.url.pathname);
 
         <!-- おすすめタブ -->
         <a
-          href="{base}/showcase"
+          href={showcasePath}
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={currentPath === base + '/showcase'}
-          class:text-primary-content={currentPath === base + '/showcase'}
-          class:text-base-content={currentPath !== base + '/showcase'}
-          class:hover:bg-base-300={currentPath !== base + '/showcase'}
+          class:bg-primary={isShowcase}
+          class:text-primary-content={isShowcase}
+          class:text-base-content={!isShowcase}
+          class:hover:bg-base-300={!isShowcase}
           aria-label="おすすめ"
         >
           <Sparkles class="w-6 h-6 mb-1" />
@@ -42,12 +51,12 @@ const currentPath = $derived($page.url.pathname);
 
         <!-- スキ！タブ -->
         <a
-          href="{base}/favorites"
+          href={favoritesPath}
           class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={currentPath === base + '/favorites' || currentPath.startsWith(base + '/favorites')}
-          class:text-primary-content={currentPath === base + '/favorites' || currentPath.startsWith(base + '/favorites')}
-          class:text-base-content={currentPath !== base + '/favorites' && !currentPath.startsWith(base + '/favorites')}
-          class:hover:bg-base-300={currentPath !== base + '/favorites' && !currentPath.startsWith(base + '/favorites')}
+          class:bg-primary={isFavorites}
+          class:text-primary-content={isFavorites}
+          class:text-base-content={!isFavorites}
+          class:hover:bg-base-300={!isFavorites}
           aria-label="スキ！"
         >
           <Heart class="w-6 h-6 mb-1" />

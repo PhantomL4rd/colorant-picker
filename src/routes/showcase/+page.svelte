@@ -1,7 +1,7 @@
 <script lang="ts">
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
-import { base } from '$app/paths';
+import { resolve } from '$app/paths';
 import { RefreshCw, Sparkles } from '@lucide/svelte';
 import type { ShowcasePalette, ShowcaseData, DyeProps, HarmonyPattern, Favorite } from '$lib/types';
 import ShowcaseItem from '$lib/components/ShowcaseItem.svelte';
@@ -91,7 +91,7 @@ function handleSelectPalette(palette: ShowcasePalette) {
   });
 
   // ピッカーページへ遷移
-  goto(`${base}/`);
+  goto(resolve('/'));
 }
 
 // シェア機能
