@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-import fs from 'fs';
-import path from 'path';
-import { fileURLToPath } from 'url';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,14 +17,10 @@ const html = fs.readFileSync(htmlPath, 'utf-8');
 // カララントのURLとname属性を抽出（正規表現）
 const regex =
   /<a href="(\/lodestone\/playguide\/db\/item\/[^"]+)" class="db_popup db-table__txt--detail_link">カララント:([^<]+)<\/a>/g;
-const matches = [];
-let match;
-
-while ((match = regex.exec(html)) !== null) {
-  const url = `https://jp.finalfantasyxiv.com${match[1]}`;
-  const name = match[2];
-  matches.push({ name, url });
-}
+const matches = [...html.matchAll(regex)].map((match) => ({
+  name: match[2],
+  url: `https://jp.finalfantasyxiv.com${match[1]}`,
+}));
 
 console.log(`抽出されたカララント数: ${matches.length}`);
 
@@ -58,12 +54,16 @@ console.log(`更新されたカララント数: ${updatedCount}/${dyesData.dyes.
 
 if (unmatchedDyes.length > 0) {
   console.log('\n[警告] JSONに存在するが、HTMLで見つからなかったカララント:');
-  unmatchedDyes.forEach((name) => console.log(`  - ${name}`));
+  for (const name of unmatchedDyes) {
+    console.log(`  - ${name}`);
+  }
 }
 
 if (unmatchedUrls.length > 0) {
   console.log('\n[情報] HTMLに存在するが、JSONで見つからなかったカララント:');
-  unmatchedUrls.forEach((m) => console.log(`  - ${m.name}: ${m.url}`));
+  for (const m of unmatchedUrls) {
+    console.log(`  - ${m.name}: ${m.url}`);
+  }
 }
 
 // dyes.jsonを更新

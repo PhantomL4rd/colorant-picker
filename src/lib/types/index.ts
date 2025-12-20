@@ -1,7 +1,7 @@
-import type { Rgb, Hsv, Oklab, Oklch } from 'culori/fn';
-
 // ===== culori型をre-export =====
-export type { Rgb, Hsv, Oklab, Oklch } from 'culori/fn';
+// 注: ファイル内で使用するためインポートが必要
+import type { Rgb, Hsv, Oklab, Oklch } from 'culori/fn';
+export type { Rgb, Hsv, Oklab, Oklch };
 
 // 染料のプロパティ形状（クラスDyeが実装するインターフェース）
 export interface DyeProps {

@@ -1,5 +1,11 @@
 import { writable, get } from 'svelte/store';
-import type { CustomColor, CustomColorsData, StoredCustomColor, RGBColor255, Hsv } from '$lib/types';
+import type {
+  CustomColor,
+  CustomColorsData,
+  StoredCustomColor,
+  RGBColor255,
+  Hsv,
+} from '$lib/types';
 import { rgb255ToRgb, toHsv } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage as saveStorageUtil } from '$lib/utils/storageService';
 
