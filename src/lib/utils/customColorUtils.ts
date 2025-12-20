@@ -1,10 +1,10 @@
-import type { CustomColor, Dye, ExtendedDye, RGBColor } from '$lib/types';
+import type { CustomColor, DyeProps, ExtendedDye, RGBColor } from '$lib/types';
 import { rgbToHex, rgbToOklab } from '$lib/utils/colorConversion';
 
 /**
- * CustomColorをDyeライクオブジェクトに変換
+ * CustomColorをDyePropsライクオブジェクトに変換
  */
-export function customColorToDye(customColor: CustomColor): Dye {
+export function customColorToDye(customColor: CustomColor): DyeProps {
   return {
     id: `custom-${customColor.id}`,
     name: customColor.name,
@@ -93,9 +93,9 @@ export function formatRgbDisplay(rgb: RGBColor): string {
 }
 
 /**
- * Dyeがカスタムカラーかどうかを判定
+ * DyePropsがカスタムカラーかどうかを判定
  */
-export function isCustomDye(dye: Dye | ExtendedDye): dye is ExtendedDye & { source: 'custom' } {
+export function isCustomDye(dye: DyeProps | ExtendedDye): dye is ExtendedDye & { source: 'custom' } {
   return (dye as ExtendedDye).source === 'custom';
 }
 

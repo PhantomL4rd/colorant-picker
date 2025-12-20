@@ -1,10 +1,10 @@
 <script lang="ts">
-import type { Dye } from '$lib/types';
+import type { DyeProps } from '$lib/types';
 
 interface Props {
-  dye: Dye;
+  dye: DyeProps;
   isSelected?: boolean;
-  onSelect: (dye: Dye) => void;
+  onSelect: (dye: DyeProps) => void;
 }
 
 const { dye, isSelected = false, onSelect }: Props = $props();

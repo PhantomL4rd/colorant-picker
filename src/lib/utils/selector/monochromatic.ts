@@ -1,8 +1,8 @@
-import type { Dye, OklchColor } from '$lib/types';
+import type { DyeProps, OklchColor } from '$lib/types';
 import { hueDiff, oklabToOklch } from '../colorConversion';
 
 type Candidate = {
-  dye: Dye;
+  dye: DyeProps;
   oklch: OklchColor;
   score: number;
   dh: number;
@@ -25,8 +25,8 @@ function huePenalty(dh: number, theta: number): number {
 }
 
 export function selectMonochromaticDyes(
-  baseDye: Dye,
-  palette: Dye[],
+  baseDye: DyeProps,
+  palette: DyeProps[],
   opts: Options = {}
 ): Candidate[] {
   const {

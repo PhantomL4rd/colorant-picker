@@ -1,5 +1,5 @@
 import type {
-  Dye,
+  DyeProps,
   Favorite,
   HarmonyPattern,
   ExtendedDye,
@@ -251,7 +251,7 @@ export function decodeCustomPaletteFromUrl(url: string): ExtendedSharePaletteDat
 /**
  * URLパラメータからパレットを復元してストアに設定（カスタムカラー対応）
  */
-export function restorePaletteFromUrl(dyes: Dye[]): boolean {
+export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
   try {
     // まずカスタムパレットを確認
     const customData = decodeCustomPaletteFromUrl(window.location.href);

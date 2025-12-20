@@ -1,13 +1,4 @@
-import type {
-  HSVColor,
-  RGBColor,
-  OklabColor,
-  Dye,
-  CustomColor,
-  StoredDye,
-  StoredCustomColor,
-  OklchColor,
-} from '$lib/types';
+import type { HSVColor, RGBColor, OklabColor, OklchColor } from '$lib/types';
 
 // culori Tree-shaking imports
 import {
@@ -154,30 +145,3 @@ export function clipOklabColor(oklab: OklabColor): OklabColor {
   return rgbToOklab(rgb);
 }
 
-// ===== ハイドレーション =====
-
-export function hydrateDye(stored: StoredDye | Dye): Dye {
-  return {
-    ...stored,
-    hsv: rgbToHsv(stored.rgb),
-    hex: rgbToHex(stored.rgb),
-    oklab: rgbToOklab(stored.rgb),
-  };
-}
-
-export function hydrateCustomColor(stored: StoredCustomColor | CustomColor): CustomColor {
-  return {
-    ...stored,
-    hsv: rgbToHsv(stored.rgb),
-  };
-}
-
-export function extractStoredDye(dye: Dye): StoredDye {
-  const { hsv, hex, oklab, ...stored } = dye;
-  return stored;
-}
-
-export function extractStoredCustomColor(color: CustomColor): StoredCustomColor {
-  const { hsv, ...stored } = color;
-  return stored;
-}

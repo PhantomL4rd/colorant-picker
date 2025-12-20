@@ -1,5 +1,6 @@
 import { writable, get } from 'svelte/store';
-import type { Dye, HarmonyPattern, ExtendedDye, CustomColor } from '$lib/types';
+import type { DyeProps, HarmonyPattern, ExtendedDye, CustomColor } from '$lib/types';
+import { Dye } from '$lib/models/Dye';
 import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
 import { filterStore } from './filter';
 import { dyeStore } from './dyes';
@@ -9,8 +10,8 @@ import { paletteEventBus } from './paletteEvents';
 
 // 選択状態ストア
 export const selectionStore = writable<{
-  primaryDye: Dye | ExtendedDye | null;
-  suggestedDyes: [Dye, Dye] | null;
+  primaryDye: DyeProps | ExtendedDye | null;
+  suggestedDyes: [DyeProps, DyeProps] | null;
   pattern: HarmonyPattern;
   harmonySeed: number;
 }>({
@@ -30,7 +31,7 @@ function getDyesForSuggestion(): Dye[] {
 }
 
 // 基本カララント（またはカスタムカラー）を選択
-export function selectPrimaryDye(dye: Dye | ExtendedDye): void {
+export function selectPrimaryDye(dye: DyeProps | ExtendedDye): void {
   selectionStore.update((state) => {
     // 提案生成用のdyesを取得
     // カテゴリフィルターは適用せず、メタリック除外のみ適用
@@ -38,12 +39,12 @@ export function selectPrimaryDye(dye: Dye | ExtendedDye): void {
 
     // 新しいシード値を生成（毎回異なる組み合わせ）
     const newSeed = Date.now();
-    let suggested: [Dye, Dye] | null = null;
+    let suggested: [DyeProps, DyeProps] | null = null;
 
     if (dyesForSuggestion.length > 0) {
       if (isCustomDye(dye)) {
-        // カスタムカラーの場合は通常のDyeとして扱って提案生成
-        const dyeForHarmony: Dye = {
+        // カスタムカラーの場合は通常のDyePropsとして扱って提案生成
+        const dyeForHarmony: DyeProps = {
           id: dye.id,
           name: dye.name,
           category: dye.category,
@@ -135,8 +136,8 @@ export function clearSelection(): void {
 
 // 主色と提案色を直接設定（シェア復元用）
 export function setPaletteDirectly(
-  primaryDye: Dye | ExtendedDye,
-  suggestedDyes: [Dye, Dye],
+  primaryDye: DyeProps | ExtendedDye,
+  suggestedDyes: [DyeProps, DyeProps],
   pattern: HarmonyPattern
 ): void {
   selectionStore.set({

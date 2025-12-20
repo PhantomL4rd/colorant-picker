@@ -1,10 +1,10 @@
 <script lang="ts">
-import type { Dye } from '$lib/types';
+import type { DyeProps } from '$lib/types';
 import { Shuffle } from '@lucide/svelte';
 
 interface Props {
-  dyes: Dye[];
-  onRandomPick: (dyes: [Dye, Dye, Dye]) => void;
+  dyes: DyeProps[];
+  onRandomPick: (dyes: [DyeProps, DyeProps, DyeProps]) => void;
   disabled?: boolean;
 }
 
@@ -15,7 +15,7 @@ function handleRandomPick() {
 
   // ランダムに3色選択
   const shuffled = [...dyes].sort(() => Math.random() - 0.5);
-  const randomDyes: [Dye, Dye, Dye] = [shuffled[0], shuffled[1], shuffled[2]];
+  const randomDyes: [DyeProps, DyeProps, DyeProps] = [shuffled[0], shuffled[1], shuffled[2]];
 
   onRandomPick(randomDyes);
 }

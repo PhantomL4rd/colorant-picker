@@ -1,5 +1,5 @@
-// カララント
-export interface Dye {
+// 染料のプロパティ形状（クラスDyeが実装するインターフェース）
+export interface DyeProps {
   id: string;
   name: string;
   category: DyeCategory;
@@ -12,7 +12,7 @@ export interface Dye {
 }
 
 export type DyeCandidate = {
-  dye: Dye;
+  dye: DyeProps;
   delta: number;
 };
 
@@ -72,8 +72,8 @@ export interface DyeCombination {
   id: string;
   name?: string;
   pattern: HarmonyPattern;
-  primaryDye: Dye;
-  secondaryDyes: [Dye, Dye];
+  primaryDye: DyeProps;
+  secondaryDyes: [DyeProps, DyeProps];
   harmonyScore: number;
   createdAt: string;
 }
@@ -104,14 +104,14 @@ export interface RawDyeDataFile {
 
 // カララントデータJSONの型（後方互換性のため維持）
 export interface DyeData {
-  dyes: Dye[];
+  dyes: DyeProps[];
 }
 
 // パレットエントリ基底型（お気に入り・履歴共通）
 export interface PaletteEntry {
   id: string;
-  primaryDye: Dye;
-  suggestedDyes: [Dye, Dye];
+  primaryDye: DyeProps;
+  suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
   createdAt: string;
 }
@@ -187,7 +187,7 @@ export interface CustomColor {
 // 拡張されたDye（カスタムカラー対応）
 export type DyeSource = 'game' | 'custom';
 
-export interface ExtendedDye extends Dye {
+export interface ExtendedDye extends DyeProps {
   source: DyeSource;
   customColor?: CustomColor;
 }
@@ -208,7 +208,7 @@ export interface ExtendedSharePaletteData {
 
 // カスタムカラー対応お気に入り
 export interface ExtendedFavorite extends Omit<Favorite, 'primaryDye'> {
-  primaryDye: Dye | CustomColor;
+  primaryDye: DyeProps | CustomColor;
 }
 
 // LocalStorage用のカスタムカラーデータ

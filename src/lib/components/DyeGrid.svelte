@@ -1,11 +1,11 @@
 <script lang="ts">
-import type { Dye } from '$lib/types';
+import type { DyeProps } from '$lib/types';
 import DyeCard from './DyeCard.svelte';
 
 interface Props {
-  dyes: Dye[];
-  selectedDye?: Dye | null;
-  onDyeSelect: (dye: Dye) => void;
+  dyes: DyeProps[];
+  selectedDye?: DyeProps | null;
+  onDyeSelect: (dye: DyeProps) => void;
 }
 
 const { dyes, selectedDye = null, onDyeSelect }: Props = $props();

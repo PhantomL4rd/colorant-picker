@@ -1,5 +1,5 @@
 import type {
-  Dye as DyeInterface,
+  DyeProps,
   RawDyeData,
   RGBColor,
   HSVColor,
@@ -14,7 +14,7 @@ import { rgbToHsv, rgbToHex, rgbToOklab } from '$lib/utils/colorConversion';
  * RGBを唯一の真実の源とし、派生値（hsv, hex, oklab）はgetterで純粋関数として計算する。
  * キャッシュなし - シンプルさを優先。
  */
-export class Dye implements DyeInterface {
+export class Dye implements DyeProps {
   readonly id: string;
   readonly name: string;
   readonly category: DyeCategory;

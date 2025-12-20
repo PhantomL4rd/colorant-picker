@@ -1,6 +1,6 @@
 <script lang="ts">
 import { MousePointer, Heart, Check } from '@lucide/svelte';
-import type { ShowcasePalette, Dye, Favorite, HarmonyPattern } from '$lib/types';
+import type { ShowcasePalette, DyeProps, Favorite, HarmonyPattern } from '$lib/types';
 import { dyeStore } from '$lib/stores/dyes';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
@@ -16,7 +16,7 @@ interface Props {
 const { palette, onSelect, onShare }: Props = $props();
 
 // 染料データからIDで検索
-let dyes = $state<Dye[]>([]);
+let dyes = $state<DyeProps[]>([]);
 dyeStore.subscribe((value) => {
   dyes = value;
 });
@@ -25,7 +25,7 @@ dyeStore.subscribe((value) => {
 const favorites = $derived($favoritesStore);
 
 // IDから染料を取得
-function getDyeById(id: string): Dye | undefined {
+function getDyeById(id: string): DyeProps | undefined {
   return dyes.find((dye) => dye.id === id);
 }
 

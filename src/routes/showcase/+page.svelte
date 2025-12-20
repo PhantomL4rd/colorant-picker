@@ -3,7 +3,7 @@ import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { base } from '$app/paths';
 import { RefreshCw, Sparkles } from '@lucide/svelte';
-import type { ShowcasePalette, ShowcaseData, Dye, HarmonyPattern, Favorite } from '$lib/types';
+import type { ShowcasePalette, ShowcaseData, DyeProps, HarmonyPattern, Favorite } from '$lib/types';
 import ShowcaseItem from '$lib/components/ShowcaseItem.svelte';
 import ShareModal from '$lib/components/ShareModal.svelte';
 import { loadDyes, dyeStore } from '$lib/stores/dyes';
@@ -12,7 +12,7 @@ import { emitRestorePalette } from '$lib/stores/paletteEvents';
 let isLoading = $state(true);
 let error = $state<string | null>(null);
 let palettes = $state<ShowcasePalette[]>([]);
-let dyes = $state<Dye[]>([]);
+let dyes = $state<DyeProps[]>([]);
 
 // ShareModal の状態管理
 let shareModalOpen = $state(false);
@@ -118,7 +118,7 @@ function getFavoriteForShare(): Favorite | null {
   return {
     id: `showcase-${selectedPaletteForShare!.id}`,
     primaryDye,
-    suggestedDyes: [suggestedDye1, suggestedDye2] as [Dye, Dye],
+    suggestedDyes: [suggestedDye1, suggestedDye2] as [DyeProps, DyeProps],
     pattern: normalizePattern(selectedPaletteForShare!.pattern),
     createdAt: selectedPaletteForShare!.createdAt,
   };

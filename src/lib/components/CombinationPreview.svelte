@@ -1,12 +1,12 @@
 <script lang="ts">
-import type { Dye, HarmonyPattern, ColorRatioResult } from '$lib/types';
+import type { DyeProps, HarmonyPattern, ColorRatioResult } from '$lib/types';
 import { selectPrimaryDye } from '$lib/stores/selection';
 import { calculateColorRatio } from '$lib/utils/colorRatio';
 import { BookOpenText, Info } from 'lucide-svelte';
 
 interface Props {
-  selectedDye: Dye | null;
-  suggestedDyes: [Dye, Dye] | null;
+  selectedDye: DyeProps | null;
+  suggestedDyes: [DyeProps, DyeProps] | null;
   pattern: HarmonyPattern;
   showRatio?: boolean; // メインピッカー画面でのみtrue
 }
@@ -35,7 +35,7 @@ const sortedSuggested = $derived.by(() => {
 // メインの比率情報
 const mainRatio = $derived(ratioResults ? ratioResults[0] : undefined);
 
-function handleSuggestedDyeClick(dye: Dye): void {
+function handleSuggestedDyeClick(dye: DyeProps): void {
   selectPrimaryDye(dye);
 }
 

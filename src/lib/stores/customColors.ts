@@ -1,12 +1,6 @@
 import { writable, get } from 'svelte/store';
-import type {
-  CustomColor,
-  CustomColorsData,
-  StoredCustomColor,
-  RGBColor,
-  HSVColor,
-} from '$lib/types';
-import { rgbToHsv, hydrateCustomColor, extractStoredCustomColor } from '$lib/utils/colorConversion';
+import type { CustomColor, CustomColorsData, StoredCustomColor, RGBColor } from '$lib/types';
+import { rgbToHsv } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage as saveStorageUtil } from '$lib/utils/storageService';
 
 const STORAGE_KEY = 'colorant-picker:custom-colors';
@@ -32,15 +26,13 @@ export function loadCustomColors(): void {
       lastUpdated: new Date().toISOString(),
     });
 
-    // ハイドレーション + 日付文字列をDateオブジェクトに変換
-    const colors = data.colors.map((color) => {
-      const hydratedColor = hydrateCustomColor(color);
-      return {
-        ...hydratedColor,
-        createdAt: new Date(hydratedColor.createdAt),
-        updatedAt: new Date(hydratedColor.updatedAt),
-      };
-    });
+    // HSVを計算 + 日付文字列をDateオブジェクトに変換
+    const colors: CustomColor[] = data.colors.map((color) => ({
+      ...color,
+      hsv: rgbToHsv(color.rgb),
+      createdAt: new Date(color.createdAt),
+      updatedAt: new Date(color.updatedAt),
+    }));
 
     customColorsStore.set(colors);
   } catch (error) {
@@ -52,12 +44,16 @@ export function loadCustomColors(): void {
 /**
  * LocalStorageにカスタムカラーを保存
  */
+// StoredCustomColor形式に変換（計算値を除外）
+function toStoredCustomColor(color: CustomColor): StoredCustomColor {
+  const { hsv, ...stored } = color;
+  return stored;
+}
+
 function saveToStorage(colors: CustomColor[]): void {
   try {
     // 新形式（軽量）で保存
-    const storedColors: StoredCustomColor[] = colors.map((color) =>
-      extractStoredCustomColor(color)
-    );
+    const storedColors: StoredCustomColor[] = colors.map(toStoredCustomColor);
 
     const data = {
       colors: storedColors,

@@ -11,7 +11,7 @@
  * where k = 2.5 (SUPPRESSION_FACTOR)
  */
 
-import type { Dye, RGBColor, ColorRole, ColorRatioResult } from '$lib/types';
+import type { DyeProps, RGBColor, ColorRole, ColorRatioResult } from '$lib/types';
 import {
   useMode,
   modeRgb,
@@ -65,11 +65,11 @@ export function calculateDeltaE(main: RGBColor, other: RGBColor): number {
 /**
  * 3色パレットの役割と使用比率を計算
  *
- * @param colors 3色のDye配列 [primaryDye, suggestedDye1, suggestedDye2]
+ * @param colors 3色のDyeProps配列 [primaryDye, suggestedDye1, suggestedDye2]
  * @returns 各色の役割と使用比率
  */
 export function calculateColorRatio(
-  colors: [Dye, Dye, Dye]
+  colors: [DyeProps, DyeProps, DyeProps]
 ): [ColorRatioResult, ColorRatioResult, ColorRatioResult] {
   try {
     const [main, color1, color2] = colors;
@@ -79,8 +79,8 @@ export function calculateColorRatio(
     const deltaE2 = calculateDeltaE(main.rgb, color2.rgb);
 
     // 役割判定：色差が小さい方がサブ、大きい方がアクセント
-    let subColor: Dye;
-    let accentColor: Dye;
+    let subColor: DyeProps;
+    let accentColor: DyeProps;
     let subDeltaE: number;
     let accentDeltaE: number;
 

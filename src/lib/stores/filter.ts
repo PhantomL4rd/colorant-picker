@@ -1,5 +1,5 @@
 import { writable, derived } from 'svelte/store';
-import type { Dye, DyeCategory, FilterOptions } from '$lib/types';
+import type { DyeCategory, FilterOptions } from '$lib/types';
 import { dyeStore } from './dyes';
 
 // フィルター設定ストア

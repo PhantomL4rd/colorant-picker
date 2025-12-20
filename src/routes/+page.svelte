@@ -1,6 +1,6 @@
 <script lang="ts">
 import { onMount } from 'svelte';
-import type { Dye, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { loadDyes, dyeStore } from '$lib/stores/dyes';
 import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
 import {
@@ -55,7 +55,7 @@ onMount(async () => {
   }
 });
 
-function handleDyeSelect(dye: Dye) {
+function handleDyeSelect(dye: DyeProps) {
   selectPrimaryDye(dye);
 
   // カラーが選択されたらプレビューまでスクロール
@@ -83,7 +83,7 @@ function handleClearCategories() {
   resetFilters();
 }
 
-function handleRandomPick(randomDyes: [Dye, Dye, Dye]) {
+function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]) {
   const [primary] = randomDyes;
 
   // 配色パターンもランダムに選択

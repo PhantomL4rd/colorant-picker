@@ -1,13 +1,13 @@
 // パレット投稿サービス
 // お気に入り追加時にサーバーへ投稿（カスタムカラー除く）
 
-import type { Dye, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { getOrCreateClientId } from './clientId';
 import { isCustomDye } from './customColorUtils';
 
 interface SubmitPaletteInput {
-  primaryDye: Dye;
-  suggestedDyes: [Dye, Dye];
+  primaryDye: DyeProps;
+  suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
 }
 

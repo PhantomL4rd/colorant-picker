@@ -2,15 +2,15 @@ import { writable } from 'svelte/store';
 import type {
   Favorite,
   FavoritesData,
-  Dye,
+  DyeProps,
   HarmonyPattern,
   ExtendedDye,
   CustomColor,
   StoredDye,
   StoredFavorite,
 } from '$lib/types';
+import { Dye } from '$lib/models/Dye';
 import { isCustomDye, extractCustomColor } from '$lib/utils/customColorUtils';
-import { hydrateDye, extractStoredDye } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage } from '$lib/utils/storageService';
 import { emitRestorePalette } from './paletteEvents';
 import { submitPalette } from '$lib/utils/paletteSubmit';
@@ -51,7 +51,7 @@ export function loadFavorites(): void {
       return;
     }
 
-    // データ検証 + ハイドレーション
+    // データ検証 + Dyeクラスインスタンス化
     const validFavorites = data.favorites
       .filter((favorite) => {
         return (
@@ -64,11 +64,11 @@ export function loadFavorites(): void {
       })
       .map((favorite) => ({
         ...favorite,
-        primaryDye: hydrateDye(favorite.primaryDye),
+        primaryDye: new Dye(favorite.primaryDye),
         suggestedDyes: [
-          hydrateDye(favorite.suggestedDyes[0]),
-          hydrateDye(favorite.suggestedDyes[1]),
-        ] as [Dye, Dye],
+          new Dye(favorite.suggestedDyes[0]),
+          new Dye(favorite.suggestedDyes[1]),
+        ] as [DyeProps, DyeProps],
       }));
 
     favoritesStore.set(validFavorites);
@@ -78,16 +78,27 @@ export function loadFavorites(): void {
   }
 }
 
+// StoredDye形式に変換（計算値を除外）
+function toStoredDye(dye: DyeProps): StoredDye {
+  return {
+    id: dye.id,
+    name: dye.name,
+    category: dye.category,
+    rgb: dye.rgb,
+    tags: dye.tags,
+  };
+}
+
 // LocalStorageにお気に入りを保存
 function saveFavoritesToStorage(favorites: Favorite[]): void {
   try {
     // 新形式（軽量）で保存
     const storedFavorites: StoredFavorite[] = favorites.map((favorite) => ({
       ...favorite,
-      primaryDye: extractStoredDye(favorite.primaryDye),
+      primaryDye: toStoredDye(favorite.primaryDye),
       suggestedDyes: [
-        extractStoredDye(favorite.suggestedDyes[0]),
-        extractStoredDye(favorite.suggestedDyes[1]),
+        toStoredDye(favorite.suggestedDyes[0]),
+        toStoredDye(favorite.suggestedDyes[1]),
       ],
     }));
 
@@ -108,8 +119,8 @@ function saveFavoritesToStorage(favorites: Favorite[]): void {
 
 // お気に入りを保存（カスタムカラー対応）
 export function saveFavorite(input: {
-  primaryDye: Dye | ExtendedDye;
-  suggestedDyes: [Dye, Dye];
+  primaryDye: DyeProps | ExtendedDye;
+  suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
 }): void {
   try {
@@ -119,20 +130,17 @@ export function saveFavorite(input: {
         throw new Error(`スキ！は最大${MAX_FAVORITES}件まで保存できます。`);
       }
 
-      // カスタムカラーの場合は通常のDyeとして保存
-      let primaryDyeForStorage: Dye;
+      // カスタムカラーの場合はDyeクラスインスタンスとして保存
+      let primaryDyeForStorage: DyeProps;
       if (isCustomDye(input.primaryDye)) {
-        // カスタムカラーの場合は簡易的なDyeオブジェクトとして保存
-        primaryDyeForStorage = {
+        // カスタムカラーの場合はDyeクラスインスタンスを生成
+        primaryDyeForStorage = new Dye({
           id: input.primaryDye.id,
           name: input.primaryDye.name,
           category: input.primaryDye.category,
-          hsv: input.primaryDye.hsv,
           rgb: input.primaryDye.rgb,
-          hex: input.primaryDye.hex,
-          oklab: input.primaryDye.oklab,
           tags: ['custom'],
-        };
+        });
       } else {
         primaryDyeForStorage = input.primaryDye;
       }
@@ -181,8 +189,8 @@ export function deleteFavorite(favoriteId: string): void {
 // 組み合わせが既にお気に入りに存在するかチェック
 export function isFavorited(
   favorites: Favorite[],
-  primaryDye: Dye | ExtendedDye | null,
-  suggestedDyes: [Dye, Dye] | null,
+  primaryDye: DyeProps | ExtendedDye | null,
+  suggestedDyes: [DyeProps, DyeProps] | null,
   pattern: HarmonyPattern
 ): boolean {
   if (!primaryDye || !suggestedDyes) return false;
@@ -200,7 +208,7 @@ export function isFavorited(
 export function restoreFavorite(favorite: Favorite): void {
   try {
     // カスタムカラーかチェック（tagsにcustomが含まれている場合）
-    let primaryDye: Dye | ExtendedDye;
+    let primaryDye: DyeProps | ExtendedDye;
     if (favorite.primaryDye.tags?.includes('custom')) {
       // カスタムカラーの場合はExtendedDyeとして扱う
       primaryDye = {

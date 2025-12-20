@@ -2,13 +2,14 @@ import { writable, get } from 'svelte/store';
 import type {
   HistoryEntry,
   HistoryData,
-  Dye,
+  DyeProps,
   HarmonyPattern,
   ExtendedDye,
   StoredHistoryEntry,
+  StoredDye,
 } from '$lib/types';
+import { Dye } from '$lib/models/Dye';
 import { isCustomDye } from '$lib/utils/customColorUtils';
-import { hydrateDye, extractStoredDye } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage } from '$lib/utils/storageService';
 import { emitRestorePalette } from './paletteEvents';
 import { selectionStore } from './selection';
@@ -48,7 +49,7 @@ export function loadHistory(): void {
       return;
     }
 
-    // データ検証 + ハイドレーション
+    // データ検証 + Dyeクラスインスタンス化
     const validEntries = data.entries
       .filter((entry) => {
         return (
@@ -57,10 +58,10 @@ export function loadHistory(): void {
       })
       .map((entry) => ({
         ...entry,
-        primaryDye: hydrateDye(entry.primaryDye),
-        suggestedDyes: [hydrateDye(entry.suggestedDyes[0]), hydrateDye(entry.suggestedDyes[1])] as [
-          Dye,
-          Dye,
+        primaryDye: new Dye(entry.primaryDye),
+        suggestedDyes: [new Dye(entry.suggestedDyes[0]), new Dye(entry.suggestedDyes[1])] as [
+          DyeProps,
+          DyeProps,
         ],
       }));
 
@@ -71,15 +72,26 @@ export function loadHistory(): void {
   }
 }
 
+// StoredDye形式に変換（計算値を除外）
+function toStoredDye(dye: DyeProps): StoredDye {
+  return {
+    id: dye.id,
+    name: dye.name,
+    category: dye.category,
+    rgb: dye.rgb,
+    tags: dye.tags,
+  };
+}
+
 // LocalStorageに履歴を保存
 function saveHistoryToStorage(entries: HistoryEntry[]): void {
   try {
     const storedEntries: StoredHistoryEntry[] = entries.map((entry) => ({
       id: entry.id,
-      primaryDye: extractStoredDye(entry.primaryDye),
+      primaryDye: toStoredDye(entry.primaryDye),
       suggestedDyes: [
-        extractStoredDye(entry.suggestedDyes[0]),
-        extractStoredDye(entry.suggestedDyes[1]),
+        toStoredDye(entry.suggestedDyes[0]),
+        toStoredDye(entry.suggestedDyes[1]),
       ],
       pattern: entry.pattern,
       createdAt: entry.createdAt,
@@ -99,7 +111,7 @@ function saveHistoryToStorage(entries: HistoryEntry[]): void {
 
 // 組み合わせの同一性判定
 function isSameEntry(
-  a: { primaryDye: Dye; suggestedDyes: [Dye, Dye]; pattern: HarmonyPattern },
+  a: { primaryDye: DyeProps; suggestedDyes: [DyeProps, DyeProps]; pattern: HarmonyPattern },
   b: HistoryEntry
 ): boolean {
   return (
@@ -112,23 +124,20 @@ function isSameEntry(
 
 // 履歴に追加
 export function addToHistory(input: {
-  primaryDye: Dye | ExtendedDye;
-  suggestedDyes: [Dye, Dye];
+  primaryDye: DyeProps | ExtendedDye;
+  suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
 }): void {
-  // カスタムカラーの場合は通常のDyeとして扱う
-  let primaryDyeForStorage: Dye;
+  // カスタムカラーの場合はDyeクラスインスタンスを生成
+  let primaryDyeForStorage: DyeProps;
   if (isCustomDye(input.primaryDye)) {
-    primaryDyeForStorage = {
+    primaryDyeForStorage = new Dye({
       id: input.primaryDye.id,
       name: input.primaryDye.name,
       category: input.primaryDye.category,
-      hsv: input.primaryDye.hsv,
       rgb: input.primaryDye.rgb,
-      hex: input.primaryDye.hex,
-      oklab: input.primaryDye.oklab,
       tags: ['custom'],
-    };
+    });
   } else {
     primaryDyeForStorage = input.primaryDye;
   }
@@ -173,7 +182,7 @@ export function addToHistory(input: {
 export function restoreFromHistory(entry: HistoryEntry): void {
   try {
     // カスタムカラーかチェック
-    let primaryDye: Dye | ExtendedDye;
+    let primaryDye: DyeProps | ExtendedDye;
     if (entry.primaryDye.tags?.includes('custom')) {
       primaryDye = {
         ...entry.primaryDye,
@@ -197,8 +206,8 @@ export function restoreFromHistory(entry: HistoryEntry): void {
 
 // selectionStoreの変更を監視して自動記録
 let previousSelection: {
-  primaryDye: Dye | ExtendedDye | null;
-  suggestedDyes: [Dye, Dye] | null;
+  primaryDye: DyeProps | ExtendedDye | null;
+  suggestedDyes: [DyeProps, DyeProps] | null;
   pattern: HarmonyPattern;
 } | null = null;
 
