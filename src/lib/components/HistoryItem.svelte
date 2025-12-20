@@ -4,7 +4,7 @@ import type { HistoryEntry } from '$lib/types';
 import ShareButton from './ShareButton.svelte';
 import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
-import { calculateColorRatio } from '$lib/utils/colorRatio';
+import { Palette } from '$lib/models/Palette';
 
 interface Props {
   entry: HistoryEntry;
@@ -14,19 +14,10 @@ interface Props {
 
 const { entry, onSelect, onShare }: Props = $props();
 
-// 役割順（サブ→アクセント）で提案色をソート
-const sortedSuggested = $derived.by(() => {
-  const results = calculateColorRatio([
-    entry.primaryDye,
-    entry.suggestedDyes[0],
-    entry.suggestedDyes[1],
-  ]);
-  const subResult = results[1];
-  const accentResult = results[2];
-  const subDye = entry.suggestedDyes.find((d) => d.id === subResult.dyeId)!;
-  const accentDye = entry.suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
-  return [subDye, accentDye] as const;
-});
+// パレットを生成
+const palette = $derived(
+  new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern)
+);
 
 // お気に入り一覧
 const favorites = $derived($favoritesStore);
@@ -129,11 +120,11 @@ async function handleAddToFavorites() {
         <div class="text-center">
           <div
             class="w-full h-12 rounded border border-base-300"
-            style="background-color: {sortedSuggested[0].hex};"
-            title={sortedSuggested[0].name}
+            style="background-color: {palette.sub.dye.hex};"
+            title={palette.sub.dye.name}
           ></div>
-          <div class="text-xs mt-1 truncate" title={sortedSuggested[0].name}>
-            {sortedSuggested[0].name}
+          <div class="text-xs mt-1 truncate" title={palette.sub.dye.name}>
+            {palette.sub.dye.name}
           </div>
         </div>
 
@@ -141,11 +132,11 @@ async function handleAddToFavorites() {
         <div class="text-center">
           <div
             class="w-full h-12 rounded border border-base-300"
-            style="background-color: {sortedSuggested[1].hex};"
-            title={sortedSuggested[1].name}
+            style="background-color: {palette.accent.dye.hex};"
+            title={palette.accent.dye.name}
           ></div>
-          <div class="text-xs mt-1 truncate" title={sortedSuggested[1].name}>
-            {sortedSuggested[1].name}
+          <div class="text-xs mt-1 truncate" title={palette.accent.dye.name}>
+            {palette.accent.dye.name}
           </div>
         </div>
       </div>

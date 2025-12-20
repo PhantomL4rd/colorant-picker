@@ -5,7 +5,7 @@ import { dyeStore } from '$lib/stores/dyes';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { saveFavorite, favoritesStore, isFavorited } from '$lib/stores/favorites';
 import ShareButton from './ShareButton.svelte';
-import { calculateColorRatio } from '$lib/utils/colorRatio';
+import { Palette } from '$lib/models/Palette';
 
 interface Props {
   palette: ShowcasePalette;
@@ -46,16 +46,10 @@ const primaryDye = $derived(getDyeById(palette.primaryDyeId));
 const suggestedDye1 = $derived(getDyeById(palette.suggestedDyeIds[0]));
 const suggestedDye2 = $derived(getDyeById(palette.suggestedDyeIds[1]));
 
-// 役割順（サブ→アクセント）で提案色をソート
-const sortedSuggested = $derived.by(() => {
+// パレットを生成
+const colorPalette = $derived.by(() => {
   if (!primaryDye || !suggestedDye1 || !suggestedDye2) return null;
-  const results = calculateColorRatio([primaryDye, suggestedDye1, suggestedDye2]);
-  const subResult = results[1];
-  const accentResult = results[2];
-  const suggestedDyes = [suggestedDye1, suggestedDye2];
-  const subDye = suggestedDyes.find((d) => d.id === subResult.dyeId)!;
-  const accentDye = suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
-  return [subDye, accentDye] as const;
+  return new Palette(primaryDye, [suggestedDye1, suggestedDye2], palette.pattern as HarmonyPattern);
 });
 
 // 既にお気に入りに登録済みかチェック
@@ -147,16 +141,16 @@ const favoriteForShare = $derived<Favorite | null>(
           </div>
         </div>
 
-        {#if sortedSuggested}
+        {#if colorPalette}
           <!-- サブ -->
           <div class="text-center">
             <div
               class="w-full h-12 rounded border border-base-300"
-              style="background-color: {sortedSuggested[0].hex};"
-              title={sortedSuggested[0].name}
+              style="background-color: {colorPalette.sub.dye.hex};"
+              title={colorPalette.sub.dye.name}
             ></div>
-            <div class="text-xs mt-1 truncate" title={sortedSuggested[0].name}>
-              {sortedSuggested[0].name}
+            <div class="text-xs mt-1 truncate" title={colorPalette.sub.dye.name}>
+              {colorPalette.sub.dye.name}
             </div>
           </div>
 
@@ -164,11 +158,11 @@ const favoriteForShare = $derived<Favorite | null>(
           <div class="text-center">
             <div
               class="w-full h-12 rounded border border-base-300"
-              style="background-color: {sortedSuggested[1].hex};"
-              title={sortedSuggested[1].name}
+              style="background-color: {colorPalette.accent.dye.hex};"
+              title={colorPalette.accent.dye.name}
             ></div>
-            <div class="text-xs mt-1 truncate" title={sortedSuggested[1].name}>
-              {sortedSuggested[1].name}
+            <div class="text-xs mt-1 truncate" title={colorPalette.accent.dye.name}>
+              {colorPalette.accent.dye.name}
             </div>
           </div>
         {/if}

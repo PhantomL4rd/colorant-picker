@@ -47,9 +47,9 @@ export interface OklchColor {
 // 色の役割（黄金比計算用）
 export type ColorRole = 'メイン' | 'サブ' | 'アクセント';
 
-// 比率計算結果
-export interface ColorRatioResult {
-  dyeId: string;
+// 役割付きの染料情報（Paletteクラスで使用）
+export interface DyeWithRole {
+  dye: DyeProps;
   role: ColorRole;
   percent: number; // 0-100の整数
 }

@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { DyeProps, HarmonyPattern, ColorRatioResult } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { selectPrimaryDye } from '$lib/stores/selection';
-import { calculateColorRatio } from '$lib/utils/colorRatio';
+import { Palette } from '$lib/models/Palette';
 import { BookOpenText, Info } from 'lucide-svelte';
 
 interface Props {
@@ -13,27 +13,11 @@ interface Props {
 
 const { selectedDye, suggestedDyes, pattern, showRatio = true }: Props = $props();
 
-// 3色が揃っている場合のみ比率を計算
-const ratioResults = $derived.by(() => {
+// 3色が揃っている場合のみパレットを生成
+const palette = $derived.by(() => {
   if (!selectedDye || !suggestedDyes) return null;
-  return calculateColorRatio([selectedDye, suggestedDyes[0], suggestedDyes[1]]);
+  return new Palette(selectedDye, suggestedDyes, pattern);
 });
-
-// ratioResultsから役割順（サブ→アクセント）で提案色を取得
-const sortedSuggested = $derived.by(() => {
-  if (!ratioResults || !suggestedDyes) return null;
-  const subResult = ratioResults[1]; // サブ
-  const accentResult = ratioResults[2]; // アクセント
-  const subDye = suggestedDyes.find((d) => d.id === subResult.dyeId)!;
-  const accentDye = suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
-  return [
-    { dye: subDye, ratio: subResult },
-    { dye: accentDye, ratio: accentResult },
-  ] as const;
-});
-
-// メインの比率情報
-const mainRatio = $derived(ratioResults ? ratioResults[0] : undefined);
 
 function handleSuggestedDyeClick(dye: DyeProps): void {
   selectPrimaryDye(dye);
@@ -68,43 +52,43 @@ function handleSuggestedDyeClick(dye: DyeProps): void {
                 {selectedDye.name}
               {/if}
             </h4>
-            {#if showRatio && mainRatio}
+            {#if showRatio && palette}
               <div class="text-xs text-base-content/70 mt-1">
-                <span class="font-semibold">{mainRatio.role}</span>
-                <span class="ml-1">{mainRatio.percent}%</span>
+                <span class="font-semibold">{palette.main.role}</span>
+                <span class="ml-1">{palette.main.percent}%</span>
               </div>
             {/if}
           </div>
 
-          {#if sortedSuggested}
+          {#if palette}
             <!-- サブ -->
             <div class="text-center">
               <button
                 type="button"
                 class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer"
-                style="background-color: {sortedSuggested[0].dye.hex};"
-                onclick={() => handleSuggestedDyeClick(sortedSuggested[0].dye)}
+                style="background-color: {palette.sub.dye.hex};"
+                onclick={() => handleSuggestedDyeClick(palette.sub.dye)}
                 title="この色を選択して新しい組み合わせを提案"
               ></button>
               <h4 class="font-medium text-sm flex items-center justify-center gap-1">
-                {#if sortedSuggested[0].dye.lodestone}
+                {#if palette.sub.dye.lodestone}
                   <a
-                    href={sortedSuggested[0].dye.lodestone}
+                    href={palette.sub.dye.lodestone}
                     class="hover:text-primary transition-colors flex items-center gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <BookOpenText class="w-3 h-3" />
-                    {sortedSuggested[0].dye.name}
+                    {palette.sub.dye.name}
                   </a>
                 {:else}
-                  {sortedSuggested[0].dye.name}
+                  {palette.sub.dye.name}
                 {/if}
               </h4>
               {#if showRatio}
                 <div class="text-xs text-base-content/70 mt-1">
-                  <span class="font-semibold">{sortedSuggested[0].ratio.role}</span>
-                  <span class="ml-1">{sortedSuggested[0].ratio.percent}%</span>
+                  <span class="font-semibold">{palette.sub.role}</span>
+                  <span class="ml-1">{palette.sub.percent}%</span>
                 </div>
               {/if}
             </div>
@@ -114,29 +98,29 @@ function handleSuggestedDyeClick(dye: DyeProps): void {
               <button
                 type="button"
                 class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer"
-                style="background-color: {sortedSuggested[1].dye.hex};"
-                onclick={() => handleSuggestedDyeClick(sortedSuggested[1].dye)}
+                style="background-color: {palette.accent.dye.hex};"
+                onclick={() => handleSuggestedDyeClick(palette.accent.dye)}
                 title="この色を選択して新しい組み合わせを提案"
               ></button>
               <h4 class="font-medium text-sm flex items-center justify-center gap-1">
-                {#if sortedSuggested[1].dye.lodestone}
+                {#if palette.accent.dye.lodestone}
                   <a
-                    href={sortedSuggested[1].dye.lodestone}
+                    href={palette.accent.dye.lodestone}
                     class="hover:text-primary transition-colors flex items-center gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <BookOpenText class="w-3 h-3" />
-                    {sortedSuggested[1].dye.name}
+                    {palette.accent.dye.name}
                   </a>
                 {:else}
-                  {sortedSuggested[1].dye.name}
+                  {palette.accent.dye.name}
                 {/if}
               </h4>
               {#if showRatio}
                 <div class="text-xs text-base-content/70 mt-1">
-                  <span class="font-semibold">{sortedSuggested[1].ratio.role}</span>
-                  <span class="ml-1">{sortedSuggested[1].ratio.percent}%</span>
+                  <span class="font-semibold">{palette.accent.role}</span>
+                  <span class="ml-1">{palette.accent.percent}%</span>
                 </div>
               {/if}
             </div>
@@ -144,7 +128,7 @@ function handleSuggestedDyeClick(dye: DyeProps): void {
         </div>
 
         <!-- 黄金比の説明ツールチップ -->
-        {#if showRatio && ratioResults}
+        {#if showRatio && palette}
           <div class="flex justify-center">
             <div class="tooltip tooltip-bottom tooltip-info">
               <button type="button" class="btn btn-ghost btn-xs gap-1 text-info">

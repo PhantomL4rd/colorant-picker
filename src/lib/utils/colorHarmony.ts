@@ -1,5 +1,4 @@
 import type { DyeProps, DyeCandidate, HarmonyPattern, RGBColor } from '$lib/types';
-import type { DyeProps, DyeCandidate, HarmonyPattern, RGBColor } from '$lib/types';
 import { deltaEOklab, hsvToRgb, rgbToOklab, rgbToOklch, oklchToRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
@@ -36,15 +35,16 @@ export function calculateClash(baseHue: number): [number, number] {
 }
 
 // 最も近い色相の染料を見つける
-export function findNearestDyes(targetHues: number[], dyes: DyeProps[], excludeDye?: DyeProps): DyeProps[] {
-export function findNearestDyes(targetHues: number[], dyes: DyeProps[], excludeDye?: DyeProps): DyeProps[] {
+export function findNearestDyes(
+  targetHues: number[],
+  dyes: DyeProps[],
+  excludeDye?: DyeProps
+): DyeProps[] {
   const availableDyes = dyes.filter((dye) => !excludeDye || dye.id !== excludeDye.id);
-  const result: DyeProps[] = [];
   const result: DyeProps[] = [];
   const usedDyeIds = new Set<string>();
 
   for (const targetHue of targetHues) {
-    let closestDye: DyeProps | null = null;
     let closestDye: DyeProps | null = null;
     let minDifference = Infinity;
 
@@ -81,12 +81,11 @@ export function findNearestDyes(targetHues: number[], dyes: DyeProps[], excludeD
  * @returns
  */
 export function findNearestDyesInOklab(targets: RGBColor[], palette: DyeProps[]): DyeCandidate[] {
-export function findNearestDyesInOklab(targets: RGBColor[], palette: DyeProps[]): DyeCandidate[] {
   const candidatesByTarget = targets.map((target) => {
     const targetOklab = rgbToOklab(target);
     const candidates: DyeCandidate[] = palette.map((dye) => ({
       dye,
-      delta: deltaEOklab(targetOklab, rgbToOklab(dye.rgb)),
+      delta: deltaEOklab(targetOklab, dye.oklab),
     }));
     return candidates.sort((a, b) => a.delta - b.delta);
   });
@@ -114,7 +113,6 @@ export function findNearestDyesInOklab(targets: RGBColor[], palette: DyeProps[])
  * @returns Oklab中間点に最も近い染料
  */
 export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[]): DyeProps {
-export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[]): DyeProps {
   // Oklab空間での中間点を計算
   const midpointOklab = {
     L: (dyeA.oklab.L + dyeB.oklab.L) / 2,
@@ -123,7 +121,6 @@ export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[
   };
 
   let minDistance = Infinity;
-  let selectedDye: DyeProps | null = null;
   let selectedDye: DyeProps | null = null;
 
   for (const dye of palette) {
@@ -148,20 +145,15 @@ export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[
 }
 
 // 配色パターンに基づいて提案染料を生成
-
 export function generateSuggestedDyes(
-  primaryDye: DyeProps,
   primaryDye: DyeProps,
   pattern: HarmonyPattern,
   allDyes: DyeProps[],
-  allDyes: DyeProps[],
   _seed?: number
-): [DyeProps, DyeProps] {
 ): [DyeProps, DyeProps] {
   if (pattern === 'monochromatic') {
     return selectMonochromaticDyes(primaryDye, allDyes, { diversifyByLightness: true }).map(
       (c) => c.dye
-    ) as [DyeProps, DyeProps];
     ) as [DyeProps, DyeProps];
   }
 
@@ -196,7 +188,6 @@ export function generateSuggestedDyes(
     if (!thirdColorCandidate) {
       // フォールバック: 適切な染料が見つからない場合
       const randomDyes = availableDyes.slice(0, 2);
-      return [randomDyes[0], randomDyes[1]] as [DyeProps, DyeProps];
       return [randomDyes[0], randomDyes[1]] as [DyeProps, DyeProps];
     }
 
