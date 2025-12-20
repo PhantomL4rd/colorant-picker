@@ -1,8 +1,9 @@
 import { writable } from 'svelte/store';
-import type { Dye, DyeData } from '$lib/types';
+import type { Dye as DyeInterface, RawDyeDataFile } from '$lib/types';
+import { Dye } from '$lib/models/Dye';
 
 // カララントデータストア
-export const dyeStore = writable<Dye[]>([]);
+export const dyeStore = writable<DyeInterface[]>([]);
 
 // カララントデータを読み込む
 export async function loadDyes(): Promise<void> {
@@ -14,8 +15,11 @@ export async function loadDyes(): Promise<void> {
     if (!response.ok) {
       throw new Error(`Failed to fetch dyes: ${response.status}`);
     }
-    const data: DyeData = await response.json();
-    dyeStore.set(data.dyes);
+    const data: RawDyeDataFile = await response.json();
+
+    // RawDyeData → Dyeクラスインスタンスに変換
+    const dyes = data.dyes.map((raw) => new Dye(raw));
+    dyeStore.set(dyes);
   } catch (error) {
     console.error('Error loading dyes:', error);
     dyeStore.set([]);

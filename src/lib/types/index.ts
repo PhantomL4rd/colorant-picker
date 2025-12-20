@@ -87,7 +87,22 @@ export interface FilterOptions {
   excludeMetallic: boolean;
 }
 
-// カララントデータJSONの型
+// dyes.jsonからの生データ型（派生値なし、RGBのみ）
+export interface RawDyeData {
+  id: string;
+  name: string;
+  category: DyeCategory;
+  rgb: RGBColor;
+  tags?: string[];
+  lodestone?: string;
+}
+
+// dyes.jsonのルート型
+export interface RawDyeDataFile {
+  dyes: RawDyeData[];
+}
+
+// カララントデータJSONの型（後方互換性のため維持）
 export interface DyeData {
   dyes: Dye[];
 }

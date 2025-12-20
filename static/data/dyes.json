@@ -4,21 +4,10 @@
       "id": "dye_002",
       "name": "スノウホワイト",
       "category": "白系",
-      "hsv": {
-        "h": 45,
-        "s": 9,
-        "v": 89
-      },
       "rgb": {
         "r": 228,
         "g": 223,
         "b": 208
-      },
-      "hex": "#E4DFD0",
-      "oklab": {
-        "L": 0.9034996475394197,
-        "a": -0.0005799732264173962,
-        "b": 0.02081821971624631
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/188d2c75e07/"
@@ -27,21 +16,10 @@
       "id": "dye_003",
       "name": "アッシュグレイ",
       "category": "白系",
-      "hsv": {
-        "h": 36,
-        "s": 6,
-        "v": 67
-      },
       "rgb": {
         "r": 172,
         "g": 168,
         "b": 162
-      },
-      "hex": "#ACA8A2",
-      "oklab": {
-        "L": 0.7331518028100537,
-        "a": 0.0019720656524065405,
-        "b": 0.00949503524039974
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/c5917eabdaa/"
@@ -50,21 +28,10 @@
       "id": "dye_004",
       "name": "グゥーブーグレイ",
       "category": "白系",
-      "hsv": {
-        "h": 36,
-        "s": 4,
-        "v": 54
-      },
       "rgb": {
         "r": 137,
         "g": 135,
         "b": 132
-      },
-      "hex": "#898784",
-      "oklab": {
-        "L": 0.62420189425227,
-        "a": 0.0010262045117210294,
-        "b": 0.004949420957401474
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/2e1dcc9d133/"
@@ -73,21 +40,10 @@
       "id": "dye_005",
       "name": "スレートグレイ",
       "category": "白系",
-      "hsv": {
-        "h": 0,
-        "s": 0,
-        "v": 40
-      },
       "rgb": {
         "r": 101,
         "g": 101,
         "b": 101
-      },
-      "hex": "#656565",
-      "oklab": {
-        "L": 0.50675690922236,
-        "a": 4.102326811583623e-11,
-        "b": 1.8888810349171337e-8
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/2db18e9a29d/"
@@ -96,21 +52,10 @@
       "id": "dye_006",
       "name": "チャコールグレイ",
       "category": "白系",
-      "hsv": {
-        "h": 50,
-        "s": 8,
-        "v": 28
-      },
       "rgb": {
         "r": 72,
         "g": 71,
         "b": 66
-      },
-      "hex": "#484742",
-      "oklab": {
-        "L": 0.39720754013635823,
-        "a": -0.0010927126947813115,
-        "b": 0.008265435479910821
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0fb58c0d79d/"
@@ -119,21 +64,10 @@
       "id": "dye_007",
       "name": "スートブラック",
       "category": "白系",
-      "hsv": {
-        "h": 45,
-        "s": 19,
-        "v": 17
-      },
       "rgb": {
         "r": 43,
         "g": 41,
         "b": 35
-      },
-      "hex": "#2B2923",
-      "oklab": {
-        "L": 0.28095177165259894,
-        "a": -0.00032826064923301146,
-        "b": 0.0110644897418046
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0c0c7f94f09/"
@@ -142,21 +76,10 @@
       "id": "dye_008",
       "name": "ローズピンク",
       "category": "赤系",
-      "hsv": {
-        "h": 7,
-        "s": 35,
-        "v": 90
-      },
       "rgb": {
         "r": 230,
         "g": 159,
         "b": 150
-      },
-      "hex": "#E69F96",
-      "oklab": {
-        "L": 0.7691683596976022,
-        "a": 0.07682756195790824,
-        "b": 0.03958567414641734
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/ee77bb48be9/"
@@ -165,21 +88,10 @@
       "id": "dye_009",
       "name": "ライラックパープル",
       "category": "赤系",
-      "hsv": {
-        "h": 0,
-        "s": 20,
-        "v": 51
-      },
       "rgb": {
         "r": 131,
         "g": 105,
         "b": 105
-      },
-      "hex": "#836969",
-      "oklab": {
-        "L": 0.5462386450840303,
-        "a": 0.03165833641021962,
-        "b": 0.010422338171714451
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/853d5204143/"
@@ -188,21 +100,10 @@
       "id": "dye_010",
       "name": "ロランベリーレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 344,
-        "s": 75,
-        "v": 36
-      },
       "rgb": {
         "r": 91,
         "g": 23,
         "b": 41
-      },
-      "hex": "#5B1729",
-      "oklab": {
-        "L": 0.3233770893685347,
-        "a": 0.0981502498920587,
-        "b": 0.015324992316903402
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/005a8c122b4/"
@@ -211,21 +112,10 @@
       "id": "dye_011",
       "name": "ダラガブレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 0,
-        "s": 78,
-        "v": 47
-      },
       "rgb": {
         "r": 120,
         "g": 26,
         "b": 26
-      },
-      "hex": "#781A1A",
-      "oklab": {
-        "L": 0.3790787076275886,
-        "a": 0.11577716726350198,
-        "b": 0.056104848839956784
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/3faa2bd2b45/"
@@ -234,21 +124,10 @@
       "id": "dye_012",
       "name": "ラストレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 18,
-        "s": 93,
-        "v": 38
-      },
       "rgb": {
         "r": 98,
         "g": 34,
         "b": 7
-      },
-      "hex": "#622207",
-      "oklab": {
-        "L": 0.3453548874130553,
-        "a": 0.07595854945735786,
-        "b": 0.06450570322479507
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/db4292af28c/"
@@ -257,21 +136,10 @@
       "id": "dye_013",
       "name": "ワインレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 5,
-        "s": 75,
-        "v": 27
-      },
       "rgb": {
         "r": 69,
         "g": 21,
         "b": 17
-      },
-      "hex": "#451511",
-      "oklab": {
-        "L": 0.2728392950066896,
-        "a": 0.0663139289552847,
-        "b": 0.03499133356544942
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d03c7e15352/"
@@ -280,21 +148,10 @@
       "id": "dye_014",
       "name": "コーラルピンク",
       "category": "赤系",
-      "hsv": {
-        "h": 8,
-        "s": 54,
-        "v": 80
-      },
       "rgb": {
         "r": 204,
         "g": 108,
         "b": 94
-      },
-      "hex": "#CC6C5E",
-      "oklab": {
-        "L": 0.6385320107548328,
-        "a": 0.10803407854676308,
-        "b": 0.06131611863859188
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0b103790e30/"
@@ -303,21 +160,10 @@
       "id": "dye_015",
       "name": "ブラッドレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 11,
-        "s": 73,
-        "v": 57
-      },
       "rgb": {
         "r": 145,
         "g": 59,
         "b": 39
-      },
-      "hex": "#913B27",
-      "oklab": {
-        "L": 0.4662955628804502,
-        "a": 0.10001344517194075,
-        "b": 0.0686689309219618
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/909e43109be/"
@@ -326,21 +172,10 @@
       "id": "dye_016",
       "name": "サーモンピンク",
       "category": "赤系",
-      "hsv": {
-        "h": 21,
-        "s": 39,
-        "v": 89
-      },
       "rgb": {
         "r": 228,
         "g": 170,
         "b": 138
-      },
-      "hex": "#E4AA8A",
-      "oklab": {
-        "L": 0.7844050055173967,
-        "a": 0.05224948569195598,
-        "b": 0.06233477783854535
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/c18be404e86/"
@@ -349,21 +184,10 @@
       "id": "dye_017",
       "name": "ルビーレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 356,
-        "s": 100,
-        "v": 89
-      },
       "rgb": {
         "r": 228,
         "g": 0,
         "b": 17
-      },
-      "hex": "#E40011",
-      "oklab": {
-        "L": 0.5775544541719457,
-        "a": 0.20851940789922244,
-        "b": 0.11057406080655935
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/637530afad5/"
@@ -372,21 +196,10 @@
       "id": "dye_018",
       "name": "チェリーピンク",
       "category": "赤系",
-      "hsv": {
-        "h": 328,
-        "s": 78,
-        "v": 96
-      },
       "rgb": {
         "r": 245,
         "g": 55,
         "b": 155
-      },
-      "hex": "#F5379B",
-      "oklab": {
-        "L": 0.6571609169638148,
-        "a": 0.23540853820184537,
-        "b": -0.024592173635108128
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/6790ed66a65/"
@@ -395,21 +208,10 @@
       "id": "dye_019",
       "name": "サンセットオレンジ",
       "category": "茶系",
-      "hsv": {
-        "h": 20,
-        "s": 75,
-        "v": 72
-      },
       "rgb": {
         "r": 183,
         "g": 92,
         "b": 45
-      },
-      "hex": "#B75C2D",
-      "oklab": {
-        "L": 0.5762173918130296,
-        "a": 0.09235446538099243,
-        "b": 0.09471520022435548
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/90e6dc94361/"
@@ -418,21 +220,10 @@
       "id": "dye_020",
       "name": "メサレッド",
       "category": "茶系",
-      "hsv": {
-        "h": 26,
-        "s": 95,
-        "v": 49
-      },
       "rgb": {
         "r": 125,
         "g": 57,
         "b": 6
-      },
-      "hex": "#7D3906",
-      "oklab": {
-        "L": 0.42790143487002513,
-        "a": 0.07101411492922327,
-        "b": 0.08373615115308713
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/f2d34ba2b19/"
@@ -441,21 +232,10 @@
       "id": "dye_021",
       "name": "バークブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 24,
-        "s": 48,
-        "v": 42
-      },
       "rgb": {
         "r": 106,
         "g": 75,
         "b": 55
-      },
-      "hex": "#6A4B37",
-      "oklab": {
-        "L": 0.4413702914722698,
-        "a": 0.03100788407048652,
-        "b": 0.042284868149133514
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/09504c576f1/"
@@ -464,21 +244,10 @@
       "id": "dye_022",
       "name": "チョコレートブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 20,
-        "s": 67,
-        "v": 43
-      },
       "rgb": {
         "r": 110,
         "g": 61,
         "b": 36
-      },
-      "hex": "#6E3D24",
-      "oklab": {
-        "L": 0.4148690599364405,
-        "a": 0.053728704267976435,
-        "b": 0.05712618351268506
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/926a4ef21f1/"
@@ -487,21 +256,10 @@
       "id": "dye_023",
       "name": "ラセットブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 18,
-        "s": 61,
-        "v": 31
-      },
       "rgb": {
         "r": 79,
         "g": 45,
         "b": 31
-      },
-      "hex": "#4F2D1F",
-      "oklab": {
-        "L": 0.33660669767901885,
-        "a": 0.04070752553268839,
-        "b": 0.03784096528602446
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/3fa8eeffa41/"
@@ -510,21 +268,10 @@
       "id": "dye_024",
       "name": "コボルドブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 17,
-        "s": 44,
-        "v": 19
-      },
       "rgb": {
         "r": 48,
         "g": 33,
         "b": 27
-      },
-      "hex": "#30211B",
-      "oklab": {
-        "L": 0.26418320482921376,
-        "a": 0.01894647318518068,
-        "b": 0.01752403642877723
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/1ecffd3acce/"
@@ -533,21 +280,10 @@
       "id": "dye_025",
       "name": "コルクブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 31,
-        "s": 57,
-        "v": 79
-      },
       "rgb": {
         "r": 201,
         "g": 145,
         "b": 86
-      },
-      "hex": "#C99156",
-      "oklab": {
-        "L": 0.6988676167838803,
-        "a": 0.04097944577060775,
-        "b": 0.09318117604760079
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/5250c837f57/"
@@ -556,21 +292,10 @@
       "id": "dye_026",
       "name": "キキルンブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 31,
-        "s": 59,
-        "v": 60
-      },
       "rgb": {
         "r": 153,
         "g": 110,
         "b": 63
-      },
-      "hex": "#996E3F",
-      "oklab": {
-        "L": 0.5718971842700277,
-        "a": 0.03236888443464006,
-        "b": 0.07718656285578973
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/386fbf9bc2b/"
@@ -579,21 +304,10 @@
       "id": "dye_027",
       "name": "オポオポブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 36,
-        "s": 63,
-        "v": 48
-      },
       "rgb": {
         "r": 123,
         "g": 92,
         "b": 45
-      },
-      "hex": "#7B5C2D",
-      "oklab": {
-        "L": 0.4966147580990508,
-        "a": 0.018465410386495407,
-        "b": 0.07325264806957488
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/e8e16900586/"
@@ -602,21 +316,10 @@
       "id": "dye_028",
       "name": "アルドゴートブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 37,
-        "s": 43,
-        "v": 64
-      },
       "rgb": {
         "r": 162,
         "g": 135,
         "b": 92
-      },
-      "hex": "#A2875C",
-      "oklab": {
-        "L": 0.6380767303268613,
-        "a": 0.013215650935134965,
-        "b": 0.06625522719456539
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/5c9385d9e3b/"
@@ -625,21 +328,10 @@
       "id": "dye_029",
       "name": "パンプキンオレンジ",
       "category": "茶系",
-      "hsv": {
-        "h": 30,
-        "s": 82,
-        "v": 77
-      },
       "rgb": {
         "r": 197,
         "g": 116,
         "b": 36
-      },
-      "hex": "#C57424",
-      "oklab": {
-        "L": 0.6352744326107671,
-        "a": 0.06788984771350912,
-        "b": 0.1166193400230674
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/840a8a38cdb/"
@@ -648,21 +340,10 @@
       "id": "dye_030",
       "name": "エーコンブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 32,
-        "s": 81,
-        "v": 56
-      },
       "rgb": {
         "r": 142,
         "g": 88,
         "b": 27
-      },
-      "hex": "#8E581B",
-      "oklab": {
-        "L": 0.5104417451560126,
-        "a": 0.04424654722161456,
-        "b": 0.09196187436948872
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/539e80ed6a0/"
@@ -671,21 +352,10 @@
       "id": "dye_031",
       "name": "オーチャードブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 34,
-        "s": 78,
-        "v": 39
-      },
       "rgb": {
         "r": 100,
         "g": 66,
         "b": 22
-      },
-      "hex": "#644216",
-      "oklab": {
-        "L": 0.40921606173520764,
-        "a": 0.026228659834968804,
-        "b": 0.0700989823537918
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/70849afadc9/"
@@ -694,21 +364,10 @@
       "id": "dye_032",
       "name": "チェスナットブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 35,
-        "s": 79,
-        "v": 24
-      },
       "rgb": {
         "r": 61,
         "g": 41,
         "b": 13
-      },
-      "hex": "#3D290D",
-      "oklab": {
-        "L": 0.2987252800638609,
-        "a": 0.015258951682334071,
-        "b": 0.04863631887287165
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/6a2223838b8/"
@@ -717,21 +376,10 @@
       "id": "dye_033",
       "name": "ゴブリンブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 34,
-        "s": 26,
-        "v": 73
-      },
       "rgb": {
         "r": 185,
         "g": 164,
         "b": 137
-      },
-      "hex": "#B9A489",
-      "oklab": {
-        "L": 0.7298775954683264,
-        "a": 0.012386063835252759,
-        "b": 0.04306960453353337
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/bfb8b924f8e/"
@@ -740,21 +388,10 @@
       "id": "dye_034",
       "name": "シェールブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 33,
-        "s": 26,
-        "v": 57
-      },
       "rgb": {
         "r": 146,
         "g": 129,
         "b": 108
-      },
-      "hex": "#92816C",
-      "oklab": {
-        "L": 0.612918498107725,
-        "a": 0.010850935357240632,
-        "b": 0.03527425606293816
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/1aae57e1629/"
@@ -763,21 +400,10 @@
       "id": "dye_035",
       "name": "モールブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 28,
-        "s": 29,
-        "v": 38
-      },
       "rgb": {
         "r": 97,
         "g": 82,
         "b": 69
-      },
-      "hex": "#615245",
-      "oklab": {
-        "L": 0.4497390868699861,
-        "a": 0.013029620329479519,
-        "b": 0.025482053270750094
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/9b43a4bc484/"
@@ -786,21 +412,10 @@
       "id": "dye_036",
       "name": "ロームブラウン",
       "category": "茶系",
-      "hsv": {
-        "h": 27,
-        "s": 35,
-        "v": 25
-      },
       "rgb": {
         "r": 63,
         "g": 51,
         "b": 41
-      },
-      "hex": "#3F3329",
-      "oklab": {
-        "L": 0.33107487425087634,
-        "a": 0.011508272780303003,
-        "b": 0.021317265307464778
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d7876384acd/"
@@ -809,21 +424,10 @@
       "id": "dye_037",
       "name": "ボーンホワイト",
       "category": "黄系",
-      "hsv": {
-        "h": 41,
-        "s": 32,
-        "v": 92
-      },
       "rgb": {
         "r": 235,
         "g": 211,
         "b": 160
-      },
-      "hex": "#EBD3A0",
-      "oklab": {
-        "L": 0.8745514044569647,
-        "a": 0.005431043720183493,
-        "b": 0.07123645158230663
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/b8ec1e42fe1/"
@@ -832,21 +436,10 @@
       "id": "dye_038",
       "name": "ウルダハンブラウン",
       "category": "黄系",
-      "hsv": {
-        "h": 43,
-        "s": 39,
-        "v": 72
-      },
       "rgb": {
         "r": 183,
         "g": 163,
         "b": 112
-      },
-      "hex": "#B7A370",
-      "oklab": {
-        "L": 0.7207303694956554,
-        "a": 0.001249179507580911,
-        "b": 0.07211030142429864
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/2926edd9215/"
@@ -855,21 +448,10 @@
       "id": "dye_039",
       "name": "デザートイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 42,
-        "s": 60,
-        "v": 86
-      },
       "rgb": {
         "r": 219,
         "g": 180,
         "b": 87
-      },
-      "hex": "#DBB457",
-      "oklab": {
-        "L": 0.7864716180003503,
-        "a": 0.007128033557875169,
-        "b": 0.119931593320316
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/c519b1b228f/"
@@ -878,21 +460,10 @@
       "id": "dye_040",
       "name": "ハニーイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 45,
-        "s": 83,
-        "v": 98
-      },
       "rgb": {
         "r": 250,
         "g": 198,
         "b": 43
-      },
-      "hex": "#FAC62B",
-      "oklab": {
-        "L": 0.8495680489876606,
-        "a": 0.005464335233582918,
-        "b": 0.16405523191333782
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/9f278eaf6ff/"
@@ -901,21 +472,10 @@
       "id": "dye_041",
       "name": "ミリオンコーンイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 36,
-        "s": 77,
-        "v": 89
-      },
       "rgb": {
         "r": 228,
         "g": 158,
         "b": 52
-      },
-      "hex": "#E49E34",
-      "oklab": {
-        "L": 0.7504074688777955,
-        "a": 0.041897753330886134,
-        "b": 0.13577946044056743
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d4a95c48789/"
@@ -924,21 +484,10 @@
       "id": "dye_042",
       "name": "クァールイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 43,
-        "s": 98,
-        "v": 74
-      },
       "rgb": {
         "r": 188,
         "g": 136,
         "b": 4
-      },
-      "hex": "#BC8804",
-      "oklab": {
-        "L": 0.6604618124573353,
-        "a": 0.02064319345104651,
-        "b": 0.13394098520641173
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/090214496c7/"
@@ -947,21 +496,10 @@
       "id": "dye_043",
       "name": "クリームイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 48,
-        "s": 54,
-        "v": 95
-      },
       "rgb": {
         "r": 242,
         "g": 215,
         "b": 112
-      },
-      "hex": "#F2D770",
-      "oklab": {
-        "L": 0.8811192287397227,
-        "a": -0.01091412903454092,
-        "b": 0.12617280147576304
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/8fb131a8d6c/"
@@ -970,21 +508,10 @@
       "id": "dye_044",
       "name": "ハラタリイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 43,
-        "s": 71,
-        "v": 65
-      },
       "rgb": {
         "r": 165,
         "g": 132,
         "b": 48
-      },
-      "hex": "#A58430",
-      "oklab": {
-        "L": 0.6289236064618273,
-        "a": 0.005725367526535019,
-        "b": 0.10803425115334953
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0fdc4d145c2/"
@@ -993,21 +520,10 @@
       "id": "dye_045",
       "name": "レーズンブラウン",
       "category": "黄系",
-      "hsv": {
-        "h": 43,
-        "s": 73,
-        "v": 25
-      },
       "rgb": {
         "r": 64,
         "g": 51,
         "b": 17
-      },
-      "hex": "#403311",
-      "oklab": {
-        "L": 0.32752578379129754,
-        "a": 0.0017533350717444385,
-        "b": 0.05289682049444713
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/b1d80258b90/"
@@ -1016,21 +532,10 @@
       "id": "dye_046",
       "name": "カナリーイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 58,
-        "s": 61,
-        "v": 100
-      },
       "rgb": {
         "r": 254,
         "g": 248,
         "b": 100
-      },
-      "hex": "#FEF864",
-      "oklab": {
-        "L": 0.9569845654155875,
-        "a": -0.04843490496480257,
-        "b": 0.15890470608422858
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/31856169018/"
@@ -1039,21 +544,10 @@
       "id": "dye_047",
       "name": "バニライエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 52,
-        "s": 28,
-        "v": 98
-      },
       "rgb": {
         "r": 251,
         "g": 241,
         "b": 180
-      },
-      "hex": "#FBF1B4",
-      "oklab": {
-        "L": 0.9515993460721792,
-        "a": -0.013466337834423026,
-        "b": 0.07732520755379291
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/ce681eda253/"
@@ -1062,21 +556,10 @@
       "id": "dye_048",
       "name": "マッドグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 51,
-        "s": 45,
-        "v": 35
-      },
       "rgb": {
         "r": 88,
         "g": 82,
         "b": 48
-      },
-      "hex": "#585230",
-      "oklab": {
-        "L": 0.435529120338005,
-        "a": -0.00846099649184473,
-        "b": 0.05065834142304099
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d204e597878/"
@@ -1085,21 +568,10 @@
       "id": "dye_049",
       "name": "シルフグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 60,
-        "s": 26,
-        "v": 73
-      },
       "rgb": {
         "r": 187,
         "g": 187,
         "b": 138
-      },
-      "hex": "#BBBB8A",
-      "oklab": {
-        "L": 0.779845749747338,
-        "a": -0.020173610532100483,
-        "b": 0.06270358244243002
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/affd21c6f76/"
@@ -1108,21 +580,10 @@
       "id": "dye_050",
       "name": "ライムグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 63,
-        "s": 52,
-        "v": 69
-      },
       "rgb": {
         "r": 171,
         "g": 176,
         "b": 84
-      },
-      "hex": "#ABB054",
-      "oklab": {
-        "L": 0.7338022343335452,
-        "a": -0.0430399568093332,
-        "b": 0.10793681186912724
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/afb669a9590/"
@@ -1131,21 +592,10 @@
       "id": "dye_051",
       "name": "モスグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 62,
-        "s": 67,
-        "v": 45
-      },
       "rgb": {
         "r": 112,
         "g": 115,
         "b": 38
-      },
-      "hex": "#707326",
-      "oklab": {
-        "L": 0.5370463424580623,
-        "a": -0.03615134517953278,
-        "b": 0.09207202346150095
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/f8469546452/"
@@ -1154,21 +604,10 @@
       "id": "dye_052",
       "name": "メドウグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 78,
-        "s": 37,
-        "v": 61
-      },
       "rgb": {
         "r": 139,
         "g": 156,
         "b": 99
-      },
-      "hex": "#8B9C63",
-      "oklab": {
-        "L": 0.6650776810538715,
-        "a": -0.0433069612616912,
-        "b": 0.06891668597320955
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/79031c0f52f/"
@@ -1177,21 +616,10 @@
       "id": "dye_053",
       "name": "オリーヴグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 73,
-        "s": 39,
-        "v": 32
-      },
       "rgb": {
         "r": 75,
         "g": 82,
         "b": 50
-      },
-      "hex": "#4B5232",
-      "oklab": {
-        "L": 0.4234270541318898,
-        "a": -0.0241118750347456,
-        "b": 0.04412914393467321
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/cabd1f16f2e/"
@@ -1200,21 +628,10 @@
       "id": "dye_054",
       "name": "マーシュグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 71,
-        "s": 39,
-        "v": 21
-      },
       "rgb": {
         "r": 50,
         "g": 54,
         "b": 33
-      },
-      "hex": "#323621",
-      "oklab": {
-        "L": 0.32267602455476224,
-        "a": -0.01616105192542905,
-        "b": 0.031439539374229164
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/8f906a9feed/"
@@ -1223,21 +640,10 @@
       "id": "dye_055",
       "name": "アップルグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 78,
-        "s": 45,
-        "v": 70
-      },
       "rgb": {
         "r": 155,
         "g": 179,
         "b": 99
-      },
-      "hex": "#9BB363",
-      "oklab": {
-        "L": 0.730048399228103,
-        "a": -0.05919949358855042,
-        "b": 0.0918681553197308
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/ef99a5c91c0/"
@@ -1246,21 +652,10 @@
       "id": "dye_056",
       "name": "サボテンダーグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 87,
-        "s": 50,
-        "v": 51
-      },
       "rgb": {
         "r": 101,
         "g": 130,
         "b": 65
-      },
-      "hex": "#658241",
-      "oklab": {
-        "L": 0.5683944036126524,
-        "a": -0.06128418620242487,
-        "b": 0.07598143893913278
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d6bfa81b082/"
@@ -1269,21 +664,10 @@
       "id": "dye_057",
       "name": "ハンターグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 127,
-        "s": 47,
-        "v": 29
-      },
       "rgb": {
         "r": 40,
         "g": 75,
         "b": 44
-      },
-      "hex": "#284B2C",
-      "oklab": {
-        "L": 0.37698648474795055,
-        "a": -0.05546308449399656,
-        "b": 0.036428461847248905
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/73f7ac282d9/"
@@ -1292,21 +676,10 @@
       "id": "dye_058",
       "name": "オチューグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 110,
-        "s": 42,
-        "v": 39
-      },
       "rgb": {
         "r": 64,
         "g": 99,
         "b": 57
-      },
-      "hex": "#406339",
-      "oklab": {
-        "L": 0.4613258032812744,
-        "a": -0.059434958569653,
-        "b": 0.04927569283768146
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/9e68ead2b9d/"
@@ -1315,21 +688,10 @@
       "id": "dye_059",
       "name": "アダマンタスグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 106,
-        "s": 25,
-        "v": 46
-      },
       "rgb": {
         "r": 95,
         "g": 117,
         "b": 88
-      },
-      "hex": "#5F7558",
-      "oklab": {
-        "L": 0.5362586173391147,
-        "a": -0.038225915435843694,
-        "b": 0.03416383428783876
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/5f48906cb92/"
@@ -1338,21 +700,10 @@
       "id": "dye_060",
       "name": "ノフィカグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 123,
-        "s": 23,
-        "v": 30
-      },
       "rgb": {
         "r": 59,
         "g": 77,
         "b": 60
-      },
-      "hex": "#3B4D3C",
-      "oklab": {
-        "L": 0.3994275392849182,
-        "a": -0.030113804334535615,
-        "b": 0.020083759584279437
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/996f0ac6809/"
@@ -1361,21 +712,10 @@
       "id": "dye_061",
       "name": "ディープウッドグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 135,
-        "s": 29,
-        "v": 16
-      },
       "rgb": {
         "r": 30,
         "g": 42,
         "b": 33
-      },
-      "hex": "#1E2A21",
-      "oklab": {
-        "L": 0.2706011093522182,
-        "a": -0.02075452124277183,
-        "b": 0.01089814605341713
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/a17514d0143/"
@@ -1384,21 +724,10 @@
       "id": "dye_062",
       "name": "セレストグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 174,
-        "s": 21,
-        "v": 74
-      },
       "rgb": {
         "r": 150,
         "g": 189,
         "b": 185
-      },
-      "hex": "#96BDB9",
-      "oklab": {
-        "L": 0.7688912815967901,
-        "a": -0.04164297076303436,
-        "b": -0.006298752900211424
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/f4d228923fb/"
@@ -1407,21 +736,10 @@
       "id": "dye_063",
       "name": "ターコイズグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 180,
-        "s": 41,
-        "v": 45
-      },
       "rgb": {
         "r": 67,
         "g": 114,
         "b": 114
-      },
-      "hex": "#437272",
-      "oklab": {
-        "L": 0.5186478954478222,
-        "a": -0.04951079384075627,
-        "b": -0.013900276000076761
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/27a11f0b925/"
@@ -1430,21 +748,10 @@
       "id": "dye_064",
       "name": "モルボルグリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 180,
-        "s": 56,
-        "v": 27
-      },
       "rgb": {
         "r": 31,
         "g": 70,
         "b": 70
-      },
-      "hex": "#1F4646",
-      "oklab": {
-        "L": 0.36601836922177855,
-        "a": -0.042546084643050125,
-        "b": -0.011716802067678722
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/ec06adbbd4f/"
@@ -1453,21 +760,10 @@
       "id": "dye_065",
       "name": "アイスブルー",
       "category": "青系",
-      "hsv": {
-        "h": 201,
-        "s": 14,
-        "v": 81
-      },
       "rgb": {
         "r": 178,
         "g": 196,
         "b": 206
-      },
-      "hex": "#B2C4CE",
-      "oklab": {
-        "L": 0.8097031257105087,
-        "a": -0.014958304458694116,
-        "b": -0.01909411290537988
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/4b5df0df491/"
@@ -1476,21 +772,10 @@
       "id": "dye_066",
       "name": "スカイブルー",
       "category": "青系",
-      "hsv": {
-        "h": 206,
-        "s": 38,
-        "v": 82
-      },
       "rgb": {
         "r": 131,
         "g": 176,
         "b": 210
-      },
-      "hex": "#83B0D2",
-      "oklab": {
-        "L": 0.7372522931684039,
-        "a": -0.0329898386723132,
-        "b": -0.06062893389972723
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/8a87f50e179/"
@@ -1499,21 +784,10 @@
       "id": "dye_067",
       "name": "シーフォグブルー",
       "category": "青系",
-      "hsv": {
-        "h": 211,
-        "s": 38,
-        "v": 63
-      },
       "rgb": {
         "r": 100,
         "g": 129,
         "b": 160
-      },
-      "hex": "#6481A0",
-      "oklab": {
-        "L": 0.5927652165278188,
-        "a": -0.0194231455411763,
-        "b": -0.05486348659208262
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/56afc8783ff/"
@@ -1522,21 +796,10 @@
       "id": "dye_068",
       "name": "ピーコックブルー",
       "category": "青系",
-      "hsv": {
-        "h": 204,
-        "s": 56,
-        "v": 53
-      },
       "rgb": {
         "r": 59,
         "g": 104,
         "b": 134
-      },
-      "hex": "#3B6886",
-      "oklab": {
-        "L": 0.49788868471414777,
-        "a": -0.03522470929259941,
-        "b": -0.05954762553480403
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/1ff080d3a53/"
@@ -1545,21 +808,10 @@
       "id": "dye_069",
       "name": "ロータノブルー",
       "category": "青系",
-      "hsv": {
-        "h": 205,
-        "s": 67,
-        "v": 33
-      },
       "rgb": {
         "r": 28,
         "g": 61,
         "b": 84
-      },
-      "hex": "#1C3D54",
-      "oklab": {
-        "L": 0.34638740391393785,
-        "a": -0.026860884377756855,
-        "b": -0.049077225548075254
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/b2a2dc9a50a/"
@@ -1568,21 +820,10 @@
       "id": "dye_070",
       "name": "コープスブルー",
       "category": "青系",
-      "hsv": {
-        "h": 214,
-        "s": 17,
-        "v": 67
-      },
       "rgb": {
         "r": 142,
         "g": 155,
         "b": 172
-      },
-      "hex": "#8E9BAC",
-      "oklab": {
-        "L": 0.6847640086103874,
-        "a": -0.007478784106229763,
-        "b": -0.028191316391338317
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/e67029752b0/"
@@ -1591,21 +832,10 @@
       "id": "dye_071",
       "name": "セルレアムブルー",
       "category": "青系",
-      "hsv": {
-        "h": 219,
-        "s": 23,
-        "v": 40
-      },
       "rgb": {
         "r": 79,
         "g": 87,
         "b": 102
-      },
-      "hex": "#4F5766",
-      "oklab": {
-        "L": 0.4554070701108316,
-        "a": -0.0032189510625164897,
-        "b": -0.02635717824961009
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/b036656bfda/"
@@ -1614,21 +844,10 @@
       "id": "dye_072",
       "name": "ウォードブルー",
       "category": "青系",
-      "hsv": {
-        "h": 224,
-        "s": 42,
-        "v": 32
-      },
       "rgb": {
         "r": 47,
         "g": 56,
         "b": 81
-      },
-      "hex": "#2F3851",
-      "oklab": {
-        "L": 0.3439684303818078,
-        "a": -0.0010159387987635493,
-        "b": -0.045695913329220295
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/c864e3e34b9/"
@@ -1637,21 +856,10 @@
       "id": "dye_073",
       "name": "インクブルー",
       "category": "青系",
-      "hsv": {
-        "h": 217,
-        "s": 33,
-        "v": 15
-      },
       "rgb": {
         "r": 26,
         "g": 31,
         "b": 39
-      },
-      "hex": "#1A1F27",
-      "oklab": {
-        "L": 0.2378527641543899,
-        "a": -0.0030451781301830405,
-        "b": -0.016852264183490173
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/9ef01a4f17f/"
@@ -1660,21 +868,10 @@
       "id": "dye_074",
       "name": "ラプトルブルー",
       "category": "青系",
-      "hsv": {
-        "h": 219,
-        "s": 53,
-        "v": 75
-      },
       "rgb": {
         "r": 91,
         "g": 127,
         "b": 192
-      },
-      "hex": "#5B7FC0",
-      "oklab": {
-        "L": 0.5981485248809778,
-        "a": -0.0157890205759334,
-        "b": -0.10679082220278946
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/6ec6872ab31/"
@@ -1683,21 +880,10 @@
       "id": "dye_075",
       "name": "オサードブルー",
       "category": "青系",
-      "hsv": {
-        "h": 213,
-        "s": 66,
-        "v": 54
-      },
       "rgb": {
         "r": 47,
         "g": 88,
         "b": 137
-      },
-      "hex": "#2F5889",
-      "oklab": {
-        "L": 0.4546992960485462,
-        "a": -0.02550032784993772,
-        "b": -0.08941197760733594
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/a291e69cbbf/"
@@ -1706,21 +892,10 @@
       "id": "dye_076",
       "name": "ストームブルー",
       "category": "青系",
-      "hsv": {
-        "h": 217,
-        "s": 69,
-        "v": 45
-      },
       "rgb": {
         "r": 35,
         "g": 65,
         "b": 114
-      },
-      "hex": "#234172",
-      "oklab": {
-        "L": 0.37875904948630146,
-        "a": -0.016318731387545082,
-        "b": -0.09002461436261588
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/a1cab97c69f/"
@@ -1729,21 +904,10 @@
       "id": "dye_077",
       "name": "ヴォイドブルー",
       "category": "青系",
-      "hsv": {
-        "h": 212,
-        "s": 75,
-        "v": 27
-      },
       "rgb": {
         "r": 17,
         "g": 41,
         "b": 68
-      },
-      "hex": "#112944",
-      "oklab": {
-        "L": 0.27688525833946503,
-        "a": -0.017099925668522253,
-        "b": -0.05602294802701607
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/b4a2cfa31c7/"
@@ -1752,21 +916,10 @@
       "id": "dye_078",
       "name": "ロイヤルブルー",
       "category": "青系",
-      "hsv": {
-        "h": 232,
-        "s": 62,
-        "v": 40
-      },
       "rgb": {
         "r": 39,
         "g": 48,
         "b": 103
-      },
-      "hex": "#273067",
-      "oklab": {
-        "L": 0.33348563341000986,
-        "a": 0.005179985305578977,
-        "b": -0.09614501739168058
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/23edc014362/"
@@ -1775,21 +928,10 @@
       "id": "dye_079",
       "name": "ミッドナイトブルー",
       "category": "青系",
-      "hsv": {
-        "h": 238,
-        "s": 56,
-        "v": 22
-      },
       "rgb": {
         "r": 24,
         "g": 25,
         "b": 55
-      },
-      "hex": "#181937",
-      "oklab": {
-        "L": 0.23043943053339502,
-        "a": 0.009397519936235776,
-        "b": -0.05625725909336457
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/165e0f93055/"
@@ -1798,21 +940,10 @@
       "id": "dye_080",
       "name": "シャドウブルー",
       "category": "青系",
-      "hsv": {
-        "h": 240,
-        "s": 23,
-        "v": 28
-      },
       "rgb": {
         "r": 55,
         "g": 55,
         "b": 71
-      },
-      "hex": "#373747",
-      "oklab": {
-        "L": 0.3434874740075511,
-        "a": 0.007126546847928933,
-        "b": -0.026893642656324546
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/8d5806d8b72/"
@@ -1821,21 +952,10 @@
       "id": "dye_081",
       "name": "アビサルブルー",
       "category": "青系",
-      "hsv": {
-        "h": 246,
-        "s": 48,
-        "v": 34
-      },
       "rgb": {
         "r": 49,
         "g": 45,
         "b": 87
-      },
-      "hex": "#312D57",
-      "oklab": {
-        "L": 0.32350360884615365,
-        "a": 0.020010427961513172,
-        "b": -0.07023123111977736
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/f318dace1e0/"
@@ -1844,21 +964,10 @@
       "id": "dye_082",
       "name": "ドラグーンブルー",
       "category": "青系",
-      "hsv": {
-        "h": 235,
-        "s": 100,
-        "v": 64
-      },
       "rgb": {
         "r": 0,
         "g": 14,
         "b": 162
-      },
-      "hex": "#000EA2",
-      "oklab": {
-        "L": 0.3309280595855588,
-        "a": -0.0219558786415488,
-        "b": -0.21585944785378608
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/b45492786e0/"
@@ -1867,21 +976,10 @@
       "id": "dye_083",
       "name": "ターコイズブルー",
       "category": "青系",
-      "hsv": {
-        "h": 189,
-        "s": 98,
-        "v": 80
-      },
       "rgb": {
         "r": 4,
         "g": 175,
         "b": 205
-      },
-      "hex": "#04AFCD",
-      "oklab": {
-        "L": 0.6947151683654298,
-        "a": -0.09950364512523407,
-        "b": -0.07198582843539314
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/4f1b319f29b/"
@@ -1890,21 +988,10 @@
       "id": "dye_084",
       "name": "ラベンダーブルー",
       "category": "紫系",
-      "hsv": {
-        "h": 250,
-        "s": 27,
-        "v": 68
-      },
       "rgb": {
         "r": 135,
         "g": 127,
         "b": 174
-      },
-      "hex": "#877FAE",
-      "oklab": {
-        "L": 0.6211499555194003,
-        "a": 0.026452810671211302,
-        "b": -0.06542045970819366
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/ff8b9968d2e/"
@@ -1913,21 +1000,10 @@
       "id": "dye_085",
       "name": "グルームパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 267,
-        "s": 28,
-        "v": 38
-      },
       "rgb": {
         "r": 81,
         "g": 69,
         "b": 96
-      },
-      "hex": "#514560",
-      "oklab": {
-        "L": 0.4134788977793603,
-        "a": 0.026564717038686902,
-        "b": -0.038330035764487846
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/c63b1ba4b1f/"
@@ -1936,21 +1012,10 @@
       "id": "dye_086",
       "name": "カラントパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 264,
-        "s": 25,
-        "v": 23
-      },
       "rgb": {
         "r": 50,
         "g": 44,
         "b": 59
-      },
-      "hex": "#322C3B",
-      "oklab": {
-        "L": 0.30592621689840155,
-        "a": 0.01512595434851638,
-        "b": -0.02325799928812966
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/8cd40d9f5d8/"
@@ -1959,21 +1024,10 @@
       "id": "dye_087",
       "name": "アイリスパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 290,
-        "s": 16,
-        "v": 74
-      },
       "rgb": {
         "r": 183,
         "g": 158,
         "b": 188
-      },
-      "hex": "#B79EBC",
-      "oklab": {
-        "L": 0.7308892723207517,
-        "a": 0.039398427365921196,
-        "b": -0.03232144211968857
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/fdf05e861ce/"
@@ -1982,21 +1036,10 @@
       "id": "dye_088",
       "name": "グレープパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 294,
-        "s": 31,
-        "v": 24
-      },
       "rgb": {
         "r": 59,
         "g": 42,
         "b": 61
-      },
-      "hex": "#3B2A3D",
-      "oklab": {
-        "L": 0.3127138946535932,
-        "a": 0.032336576623066715,
-        "b": -0.024432604914791878
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0798c059238/"
@@ -2005,21 +1048,10 @@
       "id": "dye_089",
       "name": "ロータスピンク",
       "category": "紫系",
-      "hsv": {
-        "h": 311,
-        "s": 19,
-        "v": 100
-      },
       "rgb": {
         "r": 254,
         "g": 206,
         "b": 245
-      },
-      "hex": "#FECEF5",
-      "oklab": {
-        "L": 0.9044302189150836,
-        "a": 0.0655033703894164,
-        "b": -0.03384154818673468
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/e9eb414a2cb/"
@@ -2028,21 +1060,10 @@
       "id": "dye_090",
       "name": "コリブリピンク",
       "category": "紫系",
-      "hsv": {
-        "h": 317,
-        "s": 30,
-        "v": 86
-      },
       "rgb": {
         "r": 220,
         "g": 155,
         "b": 202
-      },
-      "hex": "#DC9BCA",
-      "oklab": {
-        "L": 0.7666786798729456,
-        "a": 0.09065245239703179,
-        "b": -0.03831656021760921
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/a179a659e0f/"
@@ -2051,21 +1072,10 @@
       "id": "dye_091",
       "name": "プラムパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 320,
-        "s": 32,
-        "v": 47
-      },
       "rgb": {
         "r": 121,
         "g": 82,
         "b": 108
-      },
-      "hex": "#79526C",
-      "oklab": {
-        "L": 0.4898816987236034,
-        "a": 0.06003284195830305,
-        "b": -0.0221774558684385
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/f840860d5e3/"
@@ -2074,21 +1084,10 @@
       "id": "dye_092",
       "name": "リーガルパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 327,
-        "s": 53,
-        "v": 40
-      },
       "rgb": {
         "r": 102,
         "g": 48,
         "b": 78
-      },
-      "hex": "#66304E",
-      "oklab": {
-        "L": 0.3913591509629305,
-        "a": 0.08475734600998511,
-        "b": -0.01897021927938758
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/356c9896f78/"
@@ -2097,21 +1096,10 @@
       "id": "dye_093",
       "name": "ピュアホワイト",
       "category": "レア系",
-      "hsv": {
-        "h": 48,
-        "s": 2,
-        "v": 98
-      },
       "rgb": {
         "r": 249,
         "g": 248,
         "b": 244
-      },
-      "hex": "#F9F8F4",
-      "oklab": {
-        "L": 0.9787861419734557,
-        "a": -0.00047955914023745105,
-        "b": 0.005374628286572869
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/6211e78e6d9/"
@@ -2120,21 +1108,10 @@
       "id": "dye_094",
       "name": "ジェットブラック",
       "category": "レア系",
-      "hsv": {
-        "h": 0,
-        "s": 0,
-        "v": 12
-      },
       "rgb": {
         "r": 30,
         "g": 30,
         "b": 30
-      },
-      "hex": "#1E1E1E",
-      "oklab": {
-        "L": 0.23503112361565937,
-        "a": 1.902644708451362e-11,
-        "b": 8.76052844156483e-9
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/12c4a36e31c/"
@@ -2143,21 +1120,10 @@
       "id": "dye_095",
       "name": "パステルピンク",
       "category": "レア系",
-      "hsv": {
-        "h": 2,
-        "s": 22,
-        "v": 99
-      },
       "rgb": {
         "r": 253,
         "g": 200,
         "b": 198
-      },
-      "hex": "#FDC8C6",
-      "oklab": {
-        "L": 0.8788817204363284,
-        "a": 0.05669734127706577,
-        "b": 0.021636255205731647
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d4248d41a25/"
@@ -2166,21 +1132,10 @@
       "id": "dye_096",
       "name": "ダークレッド",
       "category": "レア系",
-      "hsv": {
-        "h": 0,
-        "s": 50,
-        "v": 20
-      },
       "rgb": {
         "r": 50,
         "g": 25,
         "b": 25
-      },
-      "hex": "#321919",
-      "oklab": {
-        "L": 0.2482653331334142,
-        "a": 0.03763999932464786,
-        "b": 0.01394688735160493
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/46b81b67a92/"
@@ -2189,21 +1144,10 @@
       "id": "dye_097",
       "name": "ダークブラウン",
       "category": "レア系",
-      "hsv": {
-        "h": 25,
-        "s": 30,
-        "v": 16
-      },
       "rgb": {
         "r": 40,
         "g": 33,
         "b": 28
-      },
-      "hex": "#28211C",
-      "oklab": {
-        "L": 0.25404938805554217,
-        "a": 0.00758225385047577,
-        "b": 0.011936314577339957
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/c8a96360dff/"
@@ -2212,21 +1156,10 @@
       "id": "dye_098",
       "name": "パステルグリーン",
       "category": "レア系",
-      "hsv": {
-        "h": 94,
-        "s": 18,
-        "v": 81
-      },
       "rgb": {
         "r": 186,
         "g": 207,
         "b": 170
-      },
-      "hex": "#BACFAA",
-      "oklab": {
-        "L": 0.8288286348976485,
-        "a": -0.036814661373713586,
-        "b": 0.04128298923589191
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/ce58845f9ab/"
@@ -2235,21 +1168,10 @@
       "id": "dye_099",
       "name": "ダークグリーン",
       "category": "レア系",
-      "hsv": {
-        "h": 180,
-        "s": 52,
-        "v": 17
-      },
       "rgb": {
         "r": 21,
         "g": 44,
         "b": 44
-      },
-      "hex": "#152C2C",
-      "oklab": {
-        "L": 0.2743467771300297,
-        "a": -0.02799342909003541,
-        "b": -0.007811035108108183
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/8ae009a2d4b/"
@@ -2258,21 +1180,10 @@
       "id": "dye_100",
       "name": "パステルブルー",
       "category": "レア系",
-      "hsv": {
-        "h": 227,
-        "s": 31,
-        "v": 85
-      },
       "rgb": {
         "r": 150,
         "g": 164,
         "b": 217
-      },
-      "hex": "#96A4D9",
-      "oklab": {
-        "L": 0.7271553600722607,
-        "a": 0.0039325630669122535,
-        "b": -0.0787241369347611
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/dfcf9ed3b94/"
@@ -2281,21 +1192,10 @@
       "id": "dye_101",
       "name": "ダークブルー",
       "category": "レア系",
-      "hsv": {
-        "h": 211,
-        "s": 60,
-        "v": 18
-      },
       "rgb": {
         "r": 18,
         "g": 31,
         "b": 45
-      },
-      "hex": "#121F2D",
-      "oklab": {
-        "L": 0.2345809300529495,
-        "a": -0.010607632151743387,
-        "b": -0.031000251846470983
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/9495d7d85fe/"
@@ -2304,21 +1204,10 @@
       "id": "dye_102",
       "name": "パステルパープル",
       "category": "レア系",
-      "hsv": {
-        "h": 250,
-        "s": 17,
-        "v": 85
-      },
       "rgb": {
         "r": 187,
         "g": 181,
         "b": 218
-      },
-      "hex": "#BBB5DA",
-      "oklab": {
-        "L": 0.7901548810917534,
-        "a": 0.020104396259421342,
-        "b": -0.048305966015456336
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/cf30e756804/"
@@ -2327,21 +1216,10 @@
       "id": "dye_103",
       "name": "ダークパープル",
       "category": "レア系",
-      "hsv": {
-        "h": 270,
-        "s": 16,
-        "v": 15
-      },
       "rgb": {
         "r": 35,
         "g": 32,
         "b": 38
-      },
-      "hex": "#232026",
-      "oklab": {
-        "L": 0.24937180224485084,
-        "a": 0.007367314939576763,
-        "b": -0.009454042054205858
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/f4489265237/"
@@ -2350,297 +1228,178 @@
       "id": "dye_104",
       "name": "シャインシルバー",
       "category": "レア系",
-      "hsv": {
-        "h": 0,
-        "s": 0,
-        "v": 65
-      },
       "rgb": {
         "r": 167,
         "g": 167,
         "b": 167
       },
-      "hex": "#A7A7A7",
-      "oklab": {
-        "L": 0.7283778493671927,
-        "a": 5.896416688244699e-11,
-        "b": 2.7149488768252183e-8
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/5b32bb8603a/"
     },
     {
       "id": "dye_105",
       "name": "シャインゴールド",
       "category": "レア系",
-      "hsv": {
-        "h": 58,
-        "s": 74,
-        "v": 93
-      },
       "rgb": {
         "r": 237,
         "g": 230,
         "b": 61
       },
-      "hex": "#EDE63D",
-      "oklab": {
-        "L": 0.9029057309772273,
-        "a": -0.05177501145272667,
-        "b": 0.16920432933525897
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/1d87dbc8fbb/"
     },
     {
       "id": "dye_106",
       "name": "メタリックレッド",
       "category": "レア系",
-      "hsv": {
-        "h": 342,
-        "s": 84,
-        "v": 71
-      },
       "rgb": {
         "r": 182,
         "g": 29,
         "b": 75
       },
-      "hex": "#B61D4B",
-      "oklab": {
-        "L": 0.5078582264330467,
-        "a": 0.18265604722676052,
-        "b": 0.03475315312998872
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/351ff2db47a/"
     },
     {
       "id": "dye_107",
       "name": "メタリックオレンジ",
       "category": "レア系",
-      "hsv": {
-        "h": 31,
-        "s": 79,
-        "v": 89
-      },
       "rgb": {
         "r": 228,
         "g": 140,
         "b": 47
       },
-      "hex": "#E48C2F",
-      "oklab": {
-        "L": 0.7176026747188922,
-        "a": 0.06890280465648468,
-        "b": 0.13025246650532446
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0e32cdf0c04/"
     },
     {
       "id": "dye_108",
       "name": "メタリックイエロー",
       "category": "レア系",
-      "hsv": {
-        "h": 51,
-        "s": 71,
-        "v": 96
-      },
       "rgb": {
         "r": 244,
         "g": 218,
         "b": 70
       },
-      "hex": "#F4DA46",
-      "oklab": {
-        "L": 0.8849586178518463,
-        "a": -0.025210015307723987,
-        "b": 0.159583407032572
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/aea226f7992/"
     },
     {
       "id": "dye_109",
       "name": "メタリックグリーン",
       "category": "レア系",
-      "hsv": {
-        "h": 144,
-        "s": 80,
-        "v": 65
-      },
       "rgb": {
         "r": 34,
         "g": 167,
         "b": 87
       },
-      "hex": "#22A757",
-      "oklab": {
-        "L": 0.6416767750859742,
-        "a": -0.14090203135784898,
-        "b": 0.07740976940800404
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/d8c4a370e72/"
     },
     {
       "id": "dye_110",
       "name": "メタリックスカイブルー",
       "category": "レア系",
-      "hsv": {
-        "h": 188,
-        "s": 59,
-        "v": 90
-      },
       "rgb": {
         "r": 94,
         "g": 212,
         "b": 230
       },
-      "hex": "#5ED4E6",
-      "oklab": {
-        "L": 0.8093785000624514,
-        "a": -0.09472273189219049,
-        "b": -0.05222370027511469
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/a53443deda8/"
     },
     {
       "id": "dye_111",
       "name": "メタリックブルー",
       "category": "レア系",
-      "hsv": {
-        "h": 239,
-        "s": 63,
-        "v": 85
-      },
       "rgb": {
         "r": 80,
         "g": 82,
         "b": 217
       },
-      "hex": "#5052D9",
-      "oklab": {
-        "L": 0.5195788011236349,
-        "a": 0.021605197441345092,
-        "b": -0.20033995951650269
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/0330daf480e/"
     },
     {
       "id": "dye_112",
       "name": "メタリックパープル",
       "category": "レア系",
-      "hsv": {
-        "h": 280,
-        "s": 47,
-        "v": 76
-      },
       "rgb": {
         "r": 163,
         "g": 102,
         "b": 194
       },
-      "hex": "#A366C2",
-      "oklab": {
-        "L": 0.6129551619354432,
-        "a": 0.10140679718393192,
-        "b": -0.10746796912971451
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/58bec677cf5/"
     },
     {
       "id": "dye_113",
       "name": "ガンメタル",
       "category": "レア系",
-      "hsv": {
-        "h": 240,
-        "s": 8,
-        "v": 41
-      },
       "rgb": {
         "r": 96,
         "g": 96,
         "b": 104
       },
-      "hex": "#606068",
-      "oklab": {
-        "L": 0.4918380064629403,
-        "a": 0.0034663023266306714,
-        "b": -0.012147490847487563
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/fe3ff8cbfd5/"
     },
     {
       "id": "dye_114",
       "name": "パールホワイト",
       "category": "レア系",
-      "hsv": {
-        "h": 36,
-        "s": 6,
-        "v": 91
-      },
       "rgb": {
         "r": 233,
         "g": 227,
         "b": 218
       },
-      "hex": "#E9E3DA",
-      "oklab": {
-        "L": 0.9180553778105334,
-        "a": 0.0027967126460902714,
-        "b": 0.013456981694756287
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/e8eca8fabb8/"
     },
     {
       "id": "dye_115",
       "name": "シャインブラス",
       "category": "レア系",
-      "hsv": {
-        "h": 44,
-        "s": 35,
-        "v": 91
-      },
       "rgb": {
         "r": 231,
         "g": 209,
         "b": 151
       },
-      "hex": "#E7D197",
-      "oklab": {
-        "L": 0.865315184009744,
-        "a": 0.00046452163163202,
-        "b": 0.07876998458779094
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/08afceeb7e2/"
     },
     {
       "id": "dye_116",
       "name": "カーマインレッド",
       "category": "赤系",
-      "hsv": {
-        "h": 357,
-        "s": 95,
-        "v": 87
-      },
       "rgb": {
         "r": 222,
         "g": 11,
         "b": 22
-      },
-      "hex": "#DE0B16",
-      "oklab": {
-        "L": 0.5686935919325485,
-        "a": 0.2024219455540573,
-        "b": 0.10644728558064664
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/175414ea02e/"
@@ -2649,21 +1408,10 @@
       "id": "dye_117",
       "name": "ネオンピンク",
       "category": "赤系",
-      "hsv": {
-        "h": 326,
-        "s": 93,
-        "v": 93
-      },
       "rgb": {
         "r": 237,
         "g": 17,
         "b": 142
-      },
-      "hex": "#ED118E",
-      "oklab": {
-        "L": 0.6214408725340673,
-        "a": 0.2486994458579056,
-        "b": -0.021717453345691584
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/6be29580edd/"
@@ -2672,21 +1420,10 @@
       "id": "dye_118",
       "name": "ブライトオレンジ",
       "category": "茶系",
-      "hsv": {
-        "h": 17,
-        "s": 93,
-        "v": 96
-      },
       "rgb": {
         "r": 244,
         "g": 80,
         "b": 17
-      },
-      "hex": "#F45011",
-      "oklab": {
-        "L": 0.6530852565431907,
-        "a": 0.16653078528461218,
-        "b": 0.12768200473106822
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/5ec6df03bb4/"
@@ -2695,21 +1432,10 @@
       "id": "dye_119",
       "name": "ネオンイエロー",
       "category": "黄系",
-      "hsv": {
-        "h": 63,
-        "s": 97,
-        "v": 92
-      },
       "rgb": {
         "r": 223,
         "g": 234,
         "b": 8
-      },
-      "hex": "#DFEA08",
-      "oklab": {
-        "L": 0.8983288251066318,
-        "a": -0.07862870430807806,
-        "b": 0.1835576241021175
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/a2600dc0985/"
@@ -2718,21 +1444,10 @@
       "id": "dye_120",
       "name": "ネオングリーン",
       "category": "緑系",
-      "hsv": {
-        "h": 77,
-        "s": 94,
-        "v": 97
-      },
       "rgb": {
         "r": 181,
         "g": 247,
         "b": 16
-      },
-      "hex": "#B5F710",
-      "oklab": {
-        "L": 0.8982918015455252,
-        "a": -0.13712876711087502,
-        "b": 0.18321958448935294
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/3f5ab56e66b/"
@@ -2741,21 +1456,10 @@
       "id": "dye_121",
       "name": "アズールブルー",
       "category": "青系",
-      "hsv": {
-        "h": 227,
-        "s": 60,
-        "v": 56
-      },
       "rgb": {
         "r": 58,
         "g": 76,
         "b": 144
-      },
-      "hex": "#3A4C90",
-      "oklab": {
-        "L": 0.437730878765969,
-        "a": 0.000049431141615985386,
-        "b": -0.11372655895593092
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/3aea62a37bc/"
@@ -2764,21 +1468,10 @@
       "id": "dye_122",
       "name": "バイオレットパープル",
       "category": "紫系",
-      "hsv": {
-        "h": 257,
-        "s": 44,
-        "v": 56
-      },
       "rgb": {
         "r": 98,
         "g": 80,
         "b": 143
-      },
-      "hex": "#62508F",
-      "oklab": {
-        "L": 0.4779025934957652,
-        "a": 0.04322549537981468,
-        "b": -0.09056681774214725
       },
       "tags": [],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/463601ca525/"
@@ -2787,92 +1480,56 @@
       "id": "dye_123",
       "name": "メタリックピンク",
       "category": "レア系",
-      "hsv": {
-        "h": 345,
-        "s": 45,
-        "v": 64
-      },
       "rgb": {
         "r": 162,
         "g": 89,
         "b": 107
       },
-      "hex": "#A2596B",
-      "oklab": {
-        "L": 0.5540911993656422,
-        "a": 0.09727241183696594,
-        "b": 0.008456628419694634
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/283531f9e7f/"
     },
     {
       "id": "dye_124",
       "name": "メタリックルビーレッド",
       "category": "レア系",
-      "hsv": {
-        "h": 0,
-        "s": 100,
-        "v": 12
-      },
       "rgb": {
         "r": 31,
         "g": 0,
         "b": 0
       },
-      "hex": "#1F0000",
-      "oklab": {
-        "L": 0.15026493136727817,
-        "a": 0.05380801655239777,
-        "b": 0.030114060007450635
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/faa28adedc9/"
     },
     {
       "id": "dye_125",
       "name": "メタリックコバルトグリーン",
       "category": "レア系",
-      "hsv": {
-        "h": 176,
-        "s": 68,
-        "v": 26
-      },
       "rgb": {
         "r": 21,
         "g": 66,
         "b": 63
       },
-      "hex": "#15423F",
-      "oklab": {
-        "L": 0.3474818458101119,
-        "a": -0.04826951177242597,
-        "b": -0.00767311726270542
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/2afb816b41f/"
     },
     {
       "id": "dye_126",
       "name": "メタリックダークブルー",
       "category": "レア系",
-      "hsv": {
-        "h": 252,
-        "s": 94,
-        "v": 12
-      },
       "rgb": {
         "r": 8,
         "g": 2,
         "b": 31
       },
-      "hex": "#08021F",
-      "oklab": {
-        "L": 0.13205122947047201,
-        "a": 0.01917434085745559,
-        "b": -0.060246391787610626
-      },
-      "tags": ["metallic"],
+      "tags": [
+        "metallic"
+      ],
       "lodestone": "https://jp.finalfantasyxiv.com/lodestone/playguide/db/item/fa3370c0ba1/"
     }
   ]
