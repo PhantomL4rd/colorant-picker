@@ -34,11 +34,12 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    // D1から最新20件を取得し、ランダムで5件を選択
+    // D1から最新20件を取得し、ランダムで5件を選択（重複パレットは除外）
     const result = await env.DB.prepare(
-      `SELECT id, primary_dye_id, suggested_dye_id_1, suggested_dye_id_2, pattern, created_at
+      `SELECT MAX(id) as id, primary_dye_id, suggested_dye_id_1, suggested_dye_id_2, pattern, MAX(created_at) as created_at
        FROM palettes
-       ORDER BY created_at DESC
+       GROUP BY primary_dye_id, suggested_dye_id_1, suggested_dye_id_2, pattern
+       ORDER BY MAX(created_at) DESC
        LIMIT 20`
     ).all<DbPalette>();
 
