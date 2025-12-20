@@ -45,7 +45,7 @@ export interface OklchColor {
 }
 
 // 色の役割（黄金比計算用）
-export type ColorRole = 'メイン' | '差し色' | 'アクセント';
+export type ColorRole = 'メイン' | 'サブ' | 'アクセント';
 
 // 比率計算結果
 export interface ColorRatioResult {

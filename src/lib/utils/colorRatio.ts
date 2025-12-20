@@ -3,7 +3,7 @@
  *
  * 基礎ウェイト（補正なしで約70:25:5）:
  * - メイン: 1.0
- * - 差し色: 0.357
+ * - サブ: 0.357
  * - アクセント: 0.071
  *
  * 非線形補正:
@@ -37,7 +37,7 @@ export const DEFAULT_RATIO = {
 // ベースウェイト（70:25:5を実現する比率）
 export const BASE_WEIGHTS = {
   main: 1.0,
-  sub: 0.357,    // 差し色 (25/70)
+  sub: 0.357,    // サブ (25/70)
   accent: 0.071, // アクセント (5/70)
 } as const;
 
@@ -78,7 +78,7 @@ export function calculateColorRatio(
     const deltaE1 = calculateDeltaE(main.rgb, color1.rgb);
     const deltaE2 = calculateDeltaE(main.rgb, color2.rgb);
 
-    // 役割判定：色差が小さい方が差し色、大きい方がアクセント
+    // 役割判定：色差が小さい方がサブ、大きい方がアクセント
     let subColor: Dye;
     let accentColor: Dye;
     let subDeltaE: number;
@@ -121,28 +121,28 @@ export function calculateColorRatio(
 
     return [
       { dyeId: main.id, role: 'メイン' as ColorRole, percent: mainPercent },
-      { dyeId: subColor.id, role: '差し色' as ColorRole, percent: subPercent },
+      { dyeId: subColor.id, role: 'サブ' as ColorRole, percent: subPercent },
       { dyeId: accentColor.id, role: 'アクセント' as ColorRole, percent: accentPercent },
     ];
   } catch {
     // エラー時はデフォルト比率を返す
     return [
       { dyeId: colors[0].id, role: 'メイン' as ColorRole, percent: DEFAULT_RATIO.main },
-      { dyeId: colors[1].id, role: '差し色' as ColorRole, percent: DEFAULT_RATIO.sub },
+      { dyeId: colors[1].id, role: 'サブ' as ColorRole, percent: DEFAULT_RATIO.sub },
       { dyeId: colors[2].id, role: 'アクセント' as ColorRole, percent: DEFAULT_RATIO.accent },
     ];
   }
 }
 
 /**
- * 役割でソートされた結果を取得（メイン→差し色→アクセントの順）
+ * 役割でソートされた結果を取得（メイン→サブ→アクセントの順）
  */
 export function getSortedByRole(
   results: [ColorRatioResult, ColorRatioResult, ColorRatioResult]
 ): [ColorRatioResult, ColorRatioResult, ColorRatioResult] {
   const roleOrder: Record<ColorRole, number> = {
     'メイン': 0,
-    '差し色': 1,
+    'サブ': 1,
     'アクセント': 2,
   };
 

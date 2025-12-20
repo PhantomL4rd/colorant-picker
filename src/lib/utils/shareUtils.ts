@@ -12,6 +12,7 @@ import { rgbToHsv, rgbToHex } from '$lib/utils/colorConversion';
 import LZString from 'lz-string';
 import { rgbToOklab } from './colorConversion';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
+import { calculateColorRatio } from '$lib/utils/colorRatio';
 
 // セキュリティ定数
 const MAX_QUERY_LENGTH = 2048; // URLクエリパラメータの最大長
@@ -102,8 +103,19 @@ export function generateShareUrl(favorite: Favorite): string {
 export function generateShareText(favorite: Favorite, shareUrl: string): string {
   const patternLabel = getPatternLabel(favorite.pattern);
 
-  return `主色：${favorite.primaryDye.name}
-提案色：${favorite.suggestedDyes[0].name} / ${favorite.suggestedDyes[1].name}
+  // 役割順（サブ→アクセント）でソート
+  const ratioResults = calculateColorRatio([
+    favorite.primaryDye,
+    favorite.suggestedDyes[0],
+    favorite.suggestedDyes[1],
+  ]);
+  const subResult = ratioResults[1];
+  const accentResult = ratioResults[2];
+  const subDye = favorite.suggestedDyes.find((d) => d.id === subResult.dyeId)!;
+  const accentDye = favorite.suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
+
+  return `メイン：${favorite.primaryDye.name}
+サブ：${subDye.name} / アクセント：${accentDye.name}
 配色パターン：${patternLabel}
 
 #カララントピッカー #FF14 #FFXIV

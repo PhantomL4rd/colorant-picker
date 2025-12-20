@@ -46,7 +46,7 @@ const primaryDye = $derived(getDyeById(palette.primaryDyeId));
 const suggestedDye1 = $derived(getDyeById(palette.suggestedDyeIds[0]));
 const suggestedDye2 = $derived(getDyeById(palette.suggestedDyeIds[1]));
 
-// 役割順（差し色→アクセント）で提案色をソート
+// 役割順（サブ→アクセント）で提案色をソート
 const sortedSuggested = $derived.by(() => {
   if (!primaryDye || !suggestedDye1 || !suggestedDye2) return null;
   const results = calculateColorRatio([primaryDye, suggestedDye1, suggestedDye2]);
@@ -148,7 +148,7 @@ const favoriteForShare = $derived<Favorite | null>(
         </div>
 
         {#if sortedSuggested}
-          <!-- 差し色 -->
+          <!-- サブ -->
           <div class="text-center">
             <div
               class="w-full h-12 rounded border border-base-300"

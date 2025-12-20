@@ -14,7 +14,7 @@ interface Props {
 
 const { favorite, onSelect, onShare }: Props = $props();
 
-// 役割順（差し色→アクセント）で提案色をソート
+// 役割順（サブ→アクセント）で提案色をソート
 const sortedSuggested = $derived.by(() => {
   const results = calculateColorRatio([
     favorite.primaryDye,
@@ -142,7 +142,7 @@ function handleShare() {
           </div>
         </div>
         
-        <!-- 差し色 -->
+        <!-- サブ -->
         <div class="text-center">
           <div
             class="w-full h-12 rounded border border-base-300"

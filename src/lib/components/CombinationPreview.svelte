@@ -19,10 +19,10 @@ const ratioResults = $derived.by(() => {
   return calculateColorRatio([selectedDye, suggestedDyes[0], suggestedDyes[1]]);
 });
 
-// ratioResultsから役割順（差し色→アクセント）で提案色を取得
+// ratioResultsから役割順（サブ→アクセント）で提案色を取得
 const sortedSuggested = $derived.by(() => {
   if (!ratioResults || !suggestedDyes) return null;
-  const subResult = ratioResults[1]; // 差し色
+  const subResult = ratioResults[1]; // サブ
   const accentResult = ratioResults[2]; // アクセント
   const subDye = suggestedDyes.find((d) => d.id === subResult.dyeId)!;
   const accentDye = suggestedDyes.find((d) => d.id === accentResult.dyeId)!;
@@ -77,7 +77,7 @@ function handleSuggestedDyeClick(dye: Dye): void {
           </div>
 
           {#if sortedSuggested}
-            <!-- 差し色 -->
+            <!-- サブ -->
             <div class="text-center">
               <button
                 type="button"
@@ -149,12 +149,13 @@ function handleSuggestedDyeClick(dye: Dye): void {
             <div class="tooltip tooltip-bottom tooltip-info">
               <button type="button" class="btn btn-ghost btn-xs gap-1 text-info">
                 <Info class="w-3 h-3" />
-                <span class="text-xs">下に書いてあるのはなんの数字？</span>
+                <span class="text-xs">黄金比で魅せるコーデ術</span>
               </button>
-              <div class="tooltip-content text-start p-3">
-                <p>コーデにまとまりを出すための黄金比！</p>
-                <p>メインを土台に、差し色とアクセントで</p>
-                <p>気分に合わせてスパイスをどうぞ🎨</p>
+              <div class="tooltip-content text-start p-3 max-w-sm">
+                <p class="font-semibold mb-1">配色の黄金比</p>
+                <p><span class="font-medium">メイン</span>: コーデの主役（胴・脚など広い部分に）</p>
+                <p><span class="font-medium">サブ</span>: メインを引き立てる2番手（手・足に）</p>
+                <p><span class="font-medium">アクセント</span>: 個性のワンポイント！</p>
               </div>
             </div>
           </div>
