@@ -1,12 +1,17 @@
+import type { Rgb, Hsv, Oklab, Oklch } from 'culori/fn';
+
+// ===== culori型をre-export =====
+export type { Rgb, Hsv, Oklab, Oklch } from 'culori/fn';
+
 // 染料のプロパティ形状（クラスDyeが実装するインターフェース）
 export interface DyeProps {
   id: string;
   name: string;
   category: DyeCategory;
-  hsv: HSVColor;
-  rgb: RGBColor;
+  rgb: Rgb; // culori Rgb (0-1範囲, mode: 'rgb')
+  hsv: Hsv; // culori Hsv (s,v: 0-1範囲, mode: 'hsv')
   hex: string;
-  oklab: OklabColor;
+  oklab: Oklab; // culori Oklab (mode: 'oklab')
   tags?: string[];
   lodestone?: string;
 }
@@ -16,32 +21,13 @@ export type DyeCandidate = {
   delta: number;
 };
 
-// HSV色空間
-export interface HSVColor {
-  h: number; // 0-360
-  s: number; // 0-100
-  v: number; // 0-100
-}
+// ===== 保存・共有用の型（0-255範囲） =====
 
-// RGB色空間
-export interface RGBColor {
+// 保存用RGB（0-255範囲）- JSONやLocalStorageで使用
+export interface RGBColor255 {
   r: number; // 0-255
   g: number; // 0-255
   b: number; // 0-255
-}
-
-// Oklab色空間
-export interface OklabColor {
-  L: number; // 0.0-1.0
-  a: number; // unbounded but in practice ranging from -0.5 to +0.5
-  b: number; // unbounded but in practice ranging from -0.5 to +0.5
-}
-
-// Oklch色空間
-export interface OklchColor {
-  L: number; // 0.0-1.0
-  C: number; // 0.0-? (typically up to ~0.5)
-  h: number; // 0-360
 }
 
 // 色の役割（黄金比計算用）
@@ -76,12 +62,12 @@ export interface FilterOptions {
   excludeMetallic: boolean;
 }
 
-// dyes.jsonからの生データ型（派生値なし、RGBのみ）
+// dyes.jsonからの生データ型（派生値なし、RGBのみ、0-255範囲）
 export interface RawDyeData {
   id: string;
   name: string;
   category: DyeCategory;
-  rgb: RGBColor;
+  rgb: RGBColor255; // JSONは0-255範囲
   tags?: string[];
   lodestone?: string;
 }
@@ -115,19 +101,19 @@ export interface Favorite extends PaletteEntry {
   // 追加プロパティなし
 }
 
-// 保存用の軽量型定義（hsv/hex除外）
+// 保存用の軽量型定義（hsv/hex除外、0-255範囲）
 export interface StoredDye {
   id: string;
   name: string;
   category: DyeCategory;
-  rgb: RGBColor;
+  rgb: RGBColor255; // LocalStorage保存は0-255範囲
   tags?: string[];
 }
 
 export interface StoredCustomColor {
   id: string;
   name: string;
-  rgb: RGBColor;
+  rgb: RGBColor255; // LocalStorage保存は0-255範囲
   createdAt: Date;
   updatedAt: Date;
 }
@@ -163,12 +149,12 @@ export interface HistoryData {
   version: string;
 }
 
-// カスタムカラー
+// カスタムカラー（内部はculori型）
 export interface CustomColor {
   id: string;
   name: string;
-  rgb: RGBColor;
-  hsv: HSVColor;
+  rgb: Rgb; // culori Rgb (0-1範囲)
+  hsv: Hsv; // culori Hsv (s,v: 0-1範囲)
   createdAt: Date;
   updatedAt: Date;
 }
@@ -181,12 +167,11 @@ export interface ExtendedDye extends DyeProps {
   customColor?: CustomColor;
 }
 
-// カスタムカラー対応シェアデータ
+// カスタムカラー対応シェアデータ（共有用は0-255範囲）
 export interface CustomColorShare {
   type: 'custom';
   name: string;
-  rgb: RGBColor;
-  // hsv削除（必要時にrgbから計算）
+  rgb: RGBColor255; // 共有URLは0-255範囲
 }
 
 export interface ExtendedSharePaletteData {

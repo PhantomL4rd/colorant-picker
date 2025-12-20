@@ -1,5 +1,11 @@
-import type { CustomColor, DyeProps, ExtendedDye, RGBColor } from '$lib/types';
-import { rgbToHex, rgbToOklab } from '$lib/utils/colorConversion';
+/**
+ * カスタムカラーユーティリティ
+ *
+ * culori型を直接使用。
+ */
+
+import type { CustomColor, DyeProps, ExtendedDye, RGBColor255, Oklab } from '$lib/types';
+import { toOklab, formatHex } from '$lib/utils/colorConversion';
 
 /**
  * CustomColorをDyePropsライクオブジェクトに変換
@@ -11,8 +17,8 @@ export function customColorToDye(customColor: CustomColor): DyeProps {
     category: '白系', // カスタムカラーは仮にwhite系に分類
     hsv: customColor.hsv,
     rgb: customColor.rgb,
-    hex: rgbToHex(customColor.rgb),
-    oklab: rgbToOklab(customColor.rgb),
+    hex: formatHex(customColor.rgb).toUpperCase(),
+    oklab: toOklab(customColor.rgb) as Oklab,
     tags: ['custom'],
   };
 }
@@ -29,9 +35,9 @@ export function createCustomDye(customColor: CustomColor): ExtendedDye {
 }
 
 /**
- * RGB値のバリデーション
+ * RGB値のバリデーション（0-255範囲）
  */
-export function validateRgbInput(rgb: RGBColor): boolean {
+export function validateRgbInput(rgb: RGBColor255): boolean {
   return (
     Number.isInteger(rgb.r) &&
     rgb.r >= 0 &&
@@ -64,8 +70,9 @@ export function validateCustomColorName(name: string): { valid: boolean; error?:
 
 /**
  * RGB文字列パース（例: "120,85,45" または "120, 85, 45"）
+ * @returns 0-255範囲のRGB値
  */
-export function parseRgbString(input: string): RGBColor | null {
+export function parseRgbString(input: string): RGBColor255 | null {
   try {
     const parts = input.split(',').map((part) => part.trim());
 
@@ -77,7 +84,7 @@ export function parseRgbString(input: string): RGBColor | null {
     const g = parseInt(parts[1], 10);
     const b = parseInt(parts[2], 10);
 
-    const rgb: RGBColor = { r, g, b };
+    const rgb: RGBColor255 = { r, g, b };
 
     return validateRgbInput(rgb) ? rgb : null;
   } catch {
@@ -87,8 +94,9 @@ export function parseRgbString(input: string): RGBColor | null {
 
 /**
  * RGB値を文字列として表示（例: "120, 85, 45"）
+ * @param rgb 0-255範囲のRGB値
  */
-export function formatRgbDisplay(rgb: RGBColor): string {
+export function formatRgbDisplay(rgb: RGBColor255): string {
   return `${rgb.r}, ${rgb.g}, ${rgb.b}`;
 }
 

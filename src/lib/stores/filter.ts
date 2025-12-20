@@ -24,18 +24,23 @@ export const filteredDyes = derived([dyeStore, filterStore], ([$dyes, $filter]) 
       return false;
     }
 
+    // culori Hsvはh,s,vがundefinedの可能性がある（無彩色など）
+    const h = dye.hsv.h ?? 0;
+    const s = (dye.hsv.s ?? 0) * 100; // 0-1 → 0-100
+    const v = (dye.hsv.v ?? 0) * 100; // 0-1 → 0-100
+
     // 色相範囲フィルター
-    if (dye.hsv.h < $filter.hueRange[0] || dye.hsv.h > $filter.hueRange[1]) {
+    if (h < $filter.hueRange[0] || h > $filter.hueRange[1]) {
       return false;
     }
 
     // 彩度範囲フィルター
-    if (dye.hsv.s < $filter.saturationRange[0] || dye.hsv.s > $filter.saturationRange[1]) {
+    if (s < $filter.saturationRange[0] || s > $filter.saturationRange[1]) {
       return false;
     }
 
     // 明度範囲フィルター
-    if (dye.hsv.v < $filter.valueRange[0] || dye.hsv.v > $filter.valueRange[1]) {
+    if (v < $filter.valueRange[0] || v > $filter.valueRange[1]) {
       return false;
     }
 

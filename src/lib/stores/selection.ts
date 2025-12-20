@@ -4,8 +4,7 @@ import type { Dye } from '$lib/models/Dye';
 import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
 import { filterStore } from './filter';
 import { dyeStore } from './dyes';
-import { isCustomDye } from '$lib/utils/customColorUtils';
-import { rgbToOklab } from '$lib/utils/colorConversion';
+import { isCustomDye, createCustomDye } from '$lib/utils/customColorUtils';
 import { paletteEventBus } from './paletteEvents';
 
 // 選択状態ストア
@@ -158,18 +157,5 @@ if (typeof window !== 'undefined') {
 // カスタムカラーを選択（便利関数）
 export function selectCustomColor(customColor: CustomColor): void {
   // CustomColorをExtendedDyeに変換してから選択
-  const customDye: ExtendedDye = {
-    id: `custom-${customColor.id}`,
-    name: customColor.name,
-    category: '白系',
-    hsv: customColor.hsv,
-    rgb: customColor.rgb,
-    hex: `#${customColor.rgb.r.toString(16).padStart(2, '0')}${customColor.rgb.g.toString(16).padStart(2, '0')}${customColor.rgb.b.toString(16).padStart(2, '0')}`,
-    oklab: rgbToOklab(customColor.rgb),
-    tags: ['custom'],
-    source: 'custom',
-    customColor,
-  };
-
-  selectPrimaryDye(customDye);
+  selectPrimaryDye(createCustomDye(customColor));
 }

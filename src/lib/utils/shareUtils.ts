@@ -1,3 +1,9 @@
+/**
+ * シェアユーティリティ
+ *
+ * culori型を直接使用。共有データは0-255範囲で保存。
+ */
+
 import type {
   DyeProps,
   Favorite,
@@ -5,11 +11,13 @@ import type {
   ExtendedDye,
   CustomColorShare,
   ExtendedSharePaletteData,
+  RGBColor255,
+  Hsv,
+  Oklab,
 } from '$lib/types';
 import { getPatternLabel } from '$lib/constants/patterns';
-import { rgbToHsv, rgbToHex } from '$lib/utils/colorConversion';
+import { rgb255ToRgb, rgbToRgb255, toHsv, toOklab, rgbToHex } from '$lib/utils/colorConversion';
 import LZString from 'lz-string';
-import { rgbToOklab } from './colorConversion';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
 import { Palette } from '$lib/models/Palette';
 
@@ -28,7 +36,7 @@ function isValidString(value: unknown, maxLength: number): value is string {
   return typeof value === 'string' && value.length > 0 && value.length <= maxLength;
 }
 
-function isValidRgbObject(rgb: unknown): rgb is { r: number; g: number; b: number } {
+function isValidRgbObject(rgb: unknown): rgb is RGBColor255 {
   return (
     typeof rgb === 'object' &&
     rgb !== null &&
@@ -55,12 +63,11 @@ export function generateShareUrl(favorite: Favorite): string {
   const isCustom = favorite.primaryDye.tags?.includes('custom');
 
   if (isCustom) {
-    // カスタムカラーの場合は拡張データ形式で保存（rgb のみ）
+    // カスタムカラーの場合は拡張データ形式で保存（rgb は0-255範囲に変換）
     const customColorShare: CustomColorShare = {
       type: 'custom',
       name: favorite.primaryDye.name,
-      rgb: favorite.primaryDye.rgb,
-      // hsvは削除（必要時に計算）
+      rgb: rgbToRgb255(favorite.primaryDye.rgb),
     };
 
     const extendedData: ExtendedSharePaletteData = {
@@ -247,15 +254,18 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
     if (customData) {
       // カスタムカラーの場合
       if (typeof customData.p === 'object' && customData.p.type === 'custom') {
-        // カスタムカラーからExtendedDyeを作成（hsv/hexは動的に計算）
+        // 0-255範囲からculori型に変換
+        const rgb = rgb255ToRgb(customData.p.rgb);
+
+        // カスタムカラーからExtendedDyeを作成
         const customDye: ExtendedDye = {
           id: `custom-temp-${Date.now()}`, // 一時的なID
           name: customData.p.name,
           category: '白系',
-          hsv: rgbToHsv(customData.p.rgb), // rgbから計算
-          rgb: customData.p.rgb,
-          hex: rgbToHex(customData.p.rgb), // rgbから計算
-          oklab: rgbToOklab(customData.p.rgb),
+          hsv: toHsv(rgb) as Hsv,
+          rgb,
+          hex: rgbToHex(rgb),
+          oklab: toOklab(rgb) as Oklab,
           tags: ['custom'],
           source: 'custom',
         };
@@ -269,7 +279,6 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
           return false;
         }
 
-        // ストアに設定
         // イベントを発火してパレットを復元
         emitRestorePalette({
           primaryDye: customDye,
@@ -306,7 +315,6 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
       return false;
     }
 
-    // ストアに設定（保存された提案色をそのまま復元）
     // イベントを発火してパレットを復元
     emitRestorePalette({
       primaryDye,

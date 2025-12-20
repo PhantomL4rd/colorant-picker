@@ -1,9 +1,15 @@
-import type { DyeProps, OklchColor } from '$lib/types';
-import { hueDiff, oklabToOklch } from '../colorConversion';
+/**
+ * モノクロマティック配色セレクター
+ *
+ * culori型を直接使用。
+ */
+
+import type { DyeProps, Oklch } from '$lib/types';
+import { hueDiff, toOklch } from '../colorConversion';
 
 type Candidate = {
   dye: DyeProps;
-  oklch: OklchColor;
+  oklch: Oklch;
   score: number;
   dh: number;
   dC: number;
@@ -37,20 +43,20 @@ export function selectMonochromaticDyes(
     diversifyByLightness = false,
   } = opts;
 
-  const base = oklabToOklch(baseDye.oklab);
+  const base = toOklch(baseDye.oklab) as Oklch;
 
   // 1) 基準色との色相・彩度・明度の差を重み付けしてスコアリング
   const scored: Candidate[] = palette
     .filter((d) => d.id !== baseDye.id)
     .map((dye) => {
-      const c = oklabToOklch(dye.oklab);
-      const dh = hueDiff(base.h, c.h);
-      const dC = Math.abs(c.C - base.C);
-      const dL = Math.abs(c.L - base.L);
+      const c = toOklch(dye.oklab) as Oklch;
+      const dh = hueDiff(base.h ?? 0, c.h ?? 0);
+      const dC = Math.abs(c.c - base.c);
+      const dL = Math.abs(c.l - base.l);
 
       const s =
         weights.wh * huePenalty(dh, thetaDeg) +
-        weights.wc * (dC / (base.C + 1e-6)) +
+        weights.wc * (dC / (base.c + 1e-6)) +
         weights.wl * dL;
 
       return { dye, oklch: c, score: s, dh, dC, dL };
@@ -78,19 +84,19 @@ export function selectMonochromaticDyes(
 
     // 候補色をその L の値域で3分割し、各クラスタから均等に選定する
     const bins: Candidate[][] = [[], [], []]; // low/mid/high
-    const Ls = sorted.map((x) => x.oklch.L);
-    Ls.push(base.L); // 基準色の L も考慮する
+    const Ls = sorted.map((x) => x.oklch.l);
+    Ls.push(base.l); // 基準色の L も考慮する
     const Lmin = Math.min(...Ls);
     const Lmax = Math.max(...Ls);
     const step = (Lmax - Lmin) / 3 || 1;
 
     for (const c of sorted) {
-      const bin = Math.min(2, Math.floor((c.oklch.L - Lmin) / step));
+      const bin = Math.min(2, Math.floor((c.oklch.l - Lmin) / step));
       if (bins[bin].length < Math.ceil(numResults / 3)) bins[bin].push(c);
     }
 
     // 基準色の属するクラスタを除外（numResults >= 3 の場合は要調整）
-    const banned = Math.floor((base.L - Lmin) / step);
+    const banned = Math.floor((base.l - Lmin) / step);
     const selectedBins = bins.filter((_, i) => i !== banned);
 
     picked = ([] as Candidate[]).concat(...selectedBins).slice(0, numResults);

@@ -1,5 +1,11 @@
-import type { DyeProps, DyeCandidate, HarmonyPattern, RGBColor } from '$lib/types';
-import { deltaEOklab, hsvToRgb, rgbToOklab, rgbToOklch, oklchToRgb } from './colorConversion';
+/**
+ * 色調和アルゴリズム
+ *
+ * culori型を直接使用。
+ */
+
+import type { DyeProps, DyeCandidate, HarmonyPattern, Rgb, Oklch, Hsv, Oklab } from '$lib/types';
+import { deltaEOklab, toRgb, toOklch, toOklab } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
 // トライアド（三色配色）- 色相環で120度ずつ離れた色
@@ -52,9 +58,10 @@ export function findNearestDyes(
       // すでに結果として選ばれている染料はスキップする
       if (usedDyeIds.has(dye.id)) continue;
 
+      const dyeHue = dye.hsv.h ?? 0;
       const hueDifference = Math.min(
-        Math.abs(dye.hsv.h - targetHue),
-        360 - Math.abs(dye.hsv.h - targetHue)
+        Math.abs(dyeHue - targetHue),
+        360 - Math.abs(dyeHue - targetHue)
       );
 
       if (hueDifference < minDifference) {
@@ -75,14 +82,10 @@ export function findNearestDyes(
 
 /**
  * Find the nearest dyes for each targets in a palette based on color difference in Oklab space.
- *
- * @param targets
- * @param palette
- * @returns
  */
-export function findNearestDyesInOklab(targets: RGBColor[], palette: DyeProps[]): DyeCandidate[] {
+export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): DyeCandidate[] {
   const candidatesByTarget = targets.map((target) => {
-    const targetOklab = rgbToOklab(target);
+    const targetOklab = toOklab(target) as Oklab;
     const candidates: DyeCandidate[] = palette.map((dye) => ({
       dye,
       delta: deltaEOklab(targetOklab, dye.oklab),
@@ -106,16 +109,12 @@ export function findNearestDyesInOklab(targets: RGBColor[], palette: DyeProps[])
 /**
  * dyeAとdyeBのOklab空間での中間点に最も近い染料を見つける
  * 2色の「橋渡し」となる色を選ぶ
- *
- * @param dyeA 第1の基本色
- * @param dyeB 第2の色
- * @param palette 選択可能な染料リスト
- * @returns Oklab中間点に最も近い染料
  */
 export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[]): DyeProps {
   // Oklab空間での中間点を計算
-  const midpointOklab = {
-    L: (dyeA.oklab.L + dyeB.oklab.L) / 2,
+  const midpointOklab: Oklab = {
+    mode: 'oklab',
+    l: (dyeA.oklab.l + dyeB.oklab.l) / 2,
     a: (dyeA.oklab.a + dyeB.oklab.a) / 2,
     b: (dyeA.oklab.b + dyeB.oklab.b) / 2,
   };
@@ -162,25 +161,22 @@ export function generateSuggestedDyes(
     const availableDyes = allDyes.filter((dye) => dye.id !== primaryDye.id);
 
     // 1. Base色をOklchに変換
-    const baseOklch = rgbToOklch(primaryDye.rgb);
+    const baseOklch = toOklch(primaryDye.rgb) as Oklch;
 
     // 2. 補色の色相を計算（色相 + 180度）
-    const complementHue = (baseOklch.h + 180) % 360;
+    const complementHue = ((baseOklch.h ?? 0) + 180) % 360;
 
     // 3. 明度を逆方向に調整
     // Base色が明るい（L > 0.5）なら暗く、暗いなら明るく
-    const adjustedL = baseOklch.L > 0.5 ? 0.3 : 0.75;
+    const adjustedL = baseOklch.l > 0.5 ? 0.3 : 0.75;
 
     // 4. 彩度を逆方向に調整
     // Base色の彩度が高い（C > 0.1）なら低く、低いなら高く
-    const adjustedC = baseOklch.C > 0.1 ? 0.05 : 0.15;
+    const adjustedC = baseOklch.c > 0.1 ? 0.05 : 0.15;
 
     // 5. 調整されたOklchから3色目のターゲット色を作成
-    const thirdColorTarget = oklchToRgb({
-      L: adjustedL,
-      C: adjustedC,
-      h: complementHue,
-    });
+    const thirdColorOklch: Oklch = { mode: 'oklch', l: adjustedL, c: adjustedC, h: complementHue };
+    const thirdColorTarget = toRgb(thirdColorOklch) as Rgb;
 
     // 6. ターゲット色に最も近い染料を3色目として選択
     const thirdColorCandidate = findNearestDyesInOklab([thirdColorTarget], availableDyes)[0];
@@ -201,28 +197,35 @@ export function generateSuggestedDyes(
 
   // その他のパターンは既存のロジックを使用
   let targetHues: [number, number];
+  const baseHue = primaryDye.hsv.h ?? 0;
 
   switch (pattern) {
     case 'triadic':
-      targetHues = calculateTriadic(primaryDye.hsv.h);
+      targetHues = calculateTriadic(baseHue);
       break;
     case 'split-complementary':
-      targetHues = calculateSplitComplementary(primaryDye.hsv.h);
+      targetHues = calculateSplitComplementary(baseHue);
       break;
     case 'analogous':
-      targetHues = calculateAnalogous(primaryDye.hsv.h);
+      targetHues = calculateAnalogous(baseHue);
       break;
     case 'similar':
-      targetHues = calculateSimilar(primaryDye.hsv.h);
+      targetHues = calculateSimilar(baseHue);
       break;
     case 'contrast':
-      targetHues = calculateContrast(primaryDye.hsv.h);
+      targetHues = calculateContrast(baseHue);
       break;
     default:
-      targetHues = calculateTriadic(primaryDye.hsv.h);
+      targetHues = calculateTriadic(baseHue);
   }
 
-  const targets = targetHues.map((h) => hsvToRgb({ ...primaryDye.hsv, h }));
+  // ターゲット色相を持つRGB色を生成
+  const primaryHsv = primaryDye.hsv;
+  const targets = targetHues.map((h) => {
+    const hsv: Hsv = { mode: 'hsv', h, s: primaryHsv.s ?? 0, v: primaryHsv.v ?? 0 };
+    return toRgb(hsv) as Rgb;
+  });
+
   const nearestDyes = findNearestDyesInOklab(
     targets,
     allDyes.filter((dye) => dye.id !== primaryDye.id)

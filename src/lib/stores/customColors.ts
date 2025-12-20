@@ -1,6 +1,6 @@
 import { writable, get } from 'svelte/store';
-import type { CustomColor, CustomColorsData, StoredCustomColor, RGBColor } from '$lib/types';
-import { rgbToHsv } from '$lib/utils/colorConversion';
+import type { CustomColor, CustomColorsData, StoredCustomColor, RGBColor255, Hsv } from '$lib/types';
+import { rgb255ToRgb, toHsv } from '$lib/utils/colorConversion';
 import { loadFromStorage, saveToStorage as saveStorageUtil } from '$lib/utils/storageService';
 
 const STORAGE_KEY = 'colorant-picker:custom-colors';
@@ -26,13 +26,17 @@ export function loadCustomColors(): void {
       lastUpdated: new Date().toISOString(),
     });
 
-    // HSVを計算 + 日付文字列をDateオブジェクトに変換
-    const colors: CustomColor[] = data.colors.map((color) => ({
-      ...color,
-      hsv: rgbToHsv(color.rgb),
-      createdAt: new Date(color.createdAt),
-      updatedAt: new Date(color.updatedAt),
-    }));
+    // 0-255範囲からculori型に変換 + 日付文字列をDateオブジェクトに変換
+    const colors: CustomColor[] = data.colors.map((color) => {
+      const rgb = rgb255ToRgb(color.rgb);
+      return {
+        ...color,
+        rgb,
+        hsv: toHsv(rgb) as Hsv,
+        createdAt: new Date(color.createdAt),
+        updatedAt: new Date(color.updatedAt),
+      };
+    });
 
     customColorsStore.set(colors);
   } catch (error) {
@@ -44,10 +48,19 @@ export function loadCustomColors(): void {
 /**
  * LocalStorageにカスタムカラーを保存
  */
-// StoredCustomColor形式に変換（計算値を除外）
+// StoredCustomColor形式に変換（計算値を除外、0-255範囲に変換）
 function toStoredCustomColor(color: CustomColor): StoredCustomColor {
-  const { hsv, ...stored } = color;
-  return stored;
+  return {
+    id: color.id,
+    name: color.name,
+    rgb: {
+      r: Math.round(color.rgb.r * 255),
+      g: Math.round(color.rgb.g * 255),
+      b: Math.round(color.rgb.b * 255),
+    },
+    createdAt: color.createdAt,
+    updatedAt: color.updatedAt,
+  };
 }
 
 function saveToStorage(colors: CustomColor[]): void {
@@ -70,13 +83,15 @@ function saveToStorage(colors: CustomColor[]): void {
 
 /**
  * 新しいカスタムカラーを保存
+ * @param colorData 0-255範囲のRGB値と名前
  */
-export function saveCustomColor(colorData: { name: string; rgb: RGBColor }): void {
+export function saveCustomColor(colorData: { name: string; rgb: RGBColor255 }): void {
+  const rgb = rgb255ToRgb(colorData.rgb);
   const newColor: CustomColor = {
     id: crypto.randomUUID(),
     name: colorData.name.trim(),
-    rgb: colorData.rgb,
-    hsv: rgbToHsv(colorData.rgb),
+    rgb,
+    hsv: toHsv(rgb) as Hsv,
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -90,24 +105,26 @@ export function saveCustomColor(colorData: { name: string; rgb: RGBColor }): voi
 
 /**
  * カスタムカラーを更新
+ * @param updates rgb255は0-255範囲
  */
 export function updateCustomColor(
   id: string,
-  updates: Partial<Pick<CustomColor, 'name' | 'rgb'>>
+  updates: Partial<Pick<CustomColor, 'name'>> & { rgb255?: RGBColor255 }
 ): void {
   customColorsStore.update((colors) => {
     const updated = colors.map((color) => {
       if (color.id !== id) return color;
 
-      const updatedColor = {
+      const updatedColor: CustomColor = {
         ...color,
         ...updates,
         updatedAt: new Date(),
       };
 
-      // RGB値が更新された場合はHSV値も再計算
-      if (updates.rgb) {
-        updatedColor.hsv = rgbToHsv(updates.rgb);
+      // RGB値が更新された場合はculori型に変換してHSV値も再計算
+      if (updates.rgb255) {
+        updatedColor.rgb = rgb255ToRgb(updates.rgb255);
+        updatedColor.hsv = toHsv(updatedColor.rgb) as Hsv;
       }
 
       return updatedColor;

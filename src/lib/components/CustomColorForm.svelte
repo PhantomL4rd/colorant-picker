@@ -10,7 +10,8 @@ import {
   validateRgbInput,
   formatRgbDisplay,
 } from '$lib/utils/customColorUtils';
-import type { RGBColor } from '$lib/types';
+import type { RGBColor255 } from '$lib/types';
+import { rgbToRgb255 } from '$lib/utils/colorConversion';
 import { X, Save } from '@lucide/svelte';
 
 interface Props {
@@ -36,7 +37,8 @@ $effect(() => {
   const color = editingColor;
   if (color) {
     name = color.name;
-    rgbInputs = { ...color.rgb };
+    // culori Rgb (0-1) から 0-255 に変換
+    rgbInputs = rgbToRgb255(color.rgb);
   } else {
     name = '';
     rgbInputs = { r: 120, g: 85, b: 45 }; // デフォルト値（髪色っぽい色）
@@ -92,11 +94,11 @@ async function handleSubmit() {
       return;
     }
 
-    // 保存処理
+    // 保存処理（rgbInputsは0-255範囲）
     if (editColorId) {
       updateCustomColor(editColorId, {
         name: name.trim(),
-        rgb: rgbInputs,
+        rgb255: rgbInputs,
       });
     } else {
       saveCustomColor({
