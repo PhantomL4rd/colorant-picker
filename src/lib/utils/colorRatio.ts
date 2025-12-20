@@ -27,11 +27,18 @@ useMode(modeOklch);
 
 // ===== 定数 =====
 
-// ベースウェイト（60:30:10を実現する比率）
+// デフォルト比率（黄金比 70:25:5）
+export const DEFAULT_RATIO = {
+  main: 70,
+  sub: 25,
+  accent: 5,
+} as const;
+
+// ベースウェイト（70:25:5を実現する比率）
 export const BASE_WEIGHTS = {
   main: 1.0,
-  sub: 0.5,    // 差し色 (30/60 = 0.5)
-  accent: 0.167, // アクセント (10/60 ≈ 0.167)
+  sub: 0.357,    // 差し色 (25/70)
+  accent: 0.071, // アクセント (5/70)
 } as const;
 
 export const SUPPRESSION_FACTOR = 2.5; // 非線形補正の係数k
@@ -118,11 +125,11 @@ export function calculateColorRatio(
       { dyeId: accentColor.id, role: 'アクセント' as ColorRole, percent: accentPercent },
     ];
   } catch {
-    // エラー時はデフォルト比率（60:30:10）を返す
+    // エラー時はデフォルト比率を返す
     return [
-      { dyeId: colors[0].id, role: 'メイン' as ColorRole, percent: 60 },
-      { dyeId: colors[1].id, role: '差し色' as ColorRole, percent: 30 },
-      { dyeId: colors[2].id, role: 'アクセント' as ColorRole, percent: 10 },
+      { dyeId: colors[0].id, role: 'メイン' as ColorRole, percent: DEFAULT_RATIO.main },
+      { dyeId: colors[1].id, role: '差し色' as ColorRole, percent: DEFAULT_RATIO.sub },
+      { dyeId: colors[2].id, role: 'アクセント' as ColorRole, percent: DEFAULT_RATIO.accent },
     ];
   }
 }
