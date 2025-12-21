@@ -85,10 +85,10 @@ const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
           <p>組み合わせが自動的に記録されます。</p>
         </div>
         <div class="mt-6">
-          <div class="badge badge-outline">
-            <Shuffle class="w-3 h-3 mr-1" />
-            ピッカータブで組み合わせを探してみましょう
-          </div>
+          <a href="/" class="btn btn-outline btn-sm gap-2">
+            <Shuffle class="w-4 h-4" />
+            ピッカータブで組み合わせを探す
+          </a>
         </div>
       </div>
     </div>
