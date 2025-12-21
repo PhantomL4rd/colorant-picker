@@ -1,112 +1,31 @@
-import { writable } from 'svelte/store';
+/**
+ * 履歴ストア
+ * パレットの選択履歴を管理（LocalStorage永続化）
+ */
+
 import type {
   HistoryEntry,
-  HistoryData,
   DyeProps,
   HarmonyPattern,
   ExtendedDye,
   StoredHistoryEntry,
-  StoredDye,
 } from '$lib/types';
 import { Dye } from '$lib/models/Dye';
 import { isCustomDye } from '$lib/utils/customColorUtils';
-import { loadFromStorage, saveToStorage } from '$lib/utils/storageService';
+import { createPersistentStore } from '$lib/utils/persistentStore';
+import { dyeToStorable } from '$lib/utils/dyeSerializer';
 import { emitRestorePalette } from './paletteEvents';
 import { selectionStore } from './selection';
 
-// 履歴ストア
-export const historyStore = writable<HistoryEntry[]>([]);
+// ===== 定数 =====
 
-// LocalStorageキー
 const STORAGE_KEY = 'colorant-picker:history';
 const STORAGE_VERSION = '1.0.0';
 const MAX_HISTORY = 10;
 
-// UUIDを生成
-function generateId(): string {
-  if (typeof crypto !== 'undefined' && crypto.randomUUID) {
-    return crypto.randomUUID();
-  }
-  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, (c) => {
-    const r = (Math.random() * 16) | 0;
-    const v = c === 'x' ? r : (r & 0x3) | 0x8;
-    return v.toString(16);
-  });
-}
-
-// LocalStorageから履歴を読み込み
-export function loadHistory(): void {
-  try {
-    const data: HistoryData = loadFromStorage<HistoryData>(STORAGE_KEY, {
-      entries: [],
-      version: STORAGE_VERSION,
-    });
-
-    // データバージョンチェック
-    if (data.version !== STORAGE_VERSION) {
-      console.warn('履歴データのバージョンが異なります。初期化します。');
-      historyStore.set([]);
-      return;
-    }
-
-    // データ検証 + Dyeクラスインスタンス化
-    const validEntries = data.entries
-      .filter((entry) => {
-        return (
-          entry.id && entry.primaryDye && entry.suggestedDyes && entry.pattern && entry.createdAt
-        );
-      })
-      .map((entry) => ({
-        ...entry,
-        primaryDye: new Dye(entry.primaryDye),
-        suggestedDyes: [new Dye(entry.suggestedDyes[0]), new Dye(entry.suggestedDyes[1])] as [
-          DyeProps,
-          DyeProps,
-        ],
-      }));
-
-    historyStore.set(validEntries);
-  } catch (error) {
-    console.error('履歴の読み込みに失敗しました:', error);
-    historyStore.set([]);
-  }
-}
-
-// StoredDye形式に変換（計算値を除外）
-function toStoredDye(dye: DyeProps): StoredDye {
-  return {
-    id: dye.id,
-    name: dye.name,
-    category: dye.category,
-    rgb: dye.rgb,
-    tags: dye.tags,
-  };
-}
-
-// LocalStorageに履歴を保存
-function saveHistoryToStorage(entries: HistoryEntry[]): void {
-  try {
-    const storedEntries: StoredHistoryEntry[] = entries.map((entry) => ({
-      id: entry.id,
-      primaryDye: toStoredDye(entry.primaryDye),
-      suggestedDyes: [toStoredDye(entry.suggestedDyes[0]), toStoredDye(entry.suggestedDyes[1])],
-      pattern: entry.pattern,
-      createdAt: entry.createdAt,
-    }));
-
-    const data: HistoryData = {
-      entries: storedEntries,
-      version: STORAGE_VERSION,
-    };
-
-    saveToStorage(STORAGE_KEY, data);
-  } catch (error) {
-    // 容量制限エラー等はログ出力のみで処理継続
-    console.error('履歴の保存に失敗しました:', error);
-  }
-}
-
-// 組み合わせの同一性判定
+/**
+ * 組み合わせの同一性判定
+ */
 function isSameEntry(
   a: { primaryDye: DyeProps; suggestedDyes: [DyeProps, DyeProps]; pattern: HarmonyPattern },
   b: HistoryEntry
@@ -119,7 +38,51 @@ function isSameEntry(
   );
 }
 
-// 履歴に追加
+// ===== 永続化ストア =====
+
+const historyPersistence = createPersistentStore<HistoryEntry, StoredHistoryEntry>({
+  key: STORAGE_KEY,
+  version: STORAGE_VERSION,
+  maxItems: MAX_HISTORY,
+  toStorable: (entry) => ({
+    id: entry.id,
+    primaryDye: dyeToStorable(entry.primaryDye),
+    suggestedDyes: [dyeToStorable(entry.suggestedDyes[0]), dyeToStorable(entry.suggestedDyes[1])],
+    pattern: entry.pattern,
+    createdAt: entry.createdAt,
+  }),
+  fromStorable: (stored) => ({
+    id: stored.id,
+    primaryDye: new Dye(stored.primaryDye),
+    suggestedDyes: [new Dye(stored.suggestedDyes[0]), new Dye(stored.suggestedDyes[1])] as [
+      DyeProps,
+      DyeProps,
+    ],
+    pattern: stored.pattern,
+    createdAt: stored.createdAt,
+  }),
+  validate: (stored) => {
+    return !!(
+      stored.id &&
+      stored.primaryDye &&
+      stored.suggestedDyes &&
+      stored.pattern &&
+      stored.createdAt
+    );
+  },
+});
+
+// ===== 公開API =====
+
+/** 履歴ストア（subscribe可能） */
+export const historyStore = historyPersistence.store;
+
+/** 履歴を読み込み */
+export function loadHistory(): void {
+  historyPersistence.load();
+}
+
+/** 履歴に追加（重複時は先頭に移動） */
 export function addToHistory(input: {
   primaryDye: DyeProps | ExtendedDye;
   suggestedDyes: [DyeProps, DyeProps];
@@ -145,40 +108,36 @@ export function addToHistory(input: {
     pattern: input.pattern,
   };
 
+  // 重複チェックのためストアを直接操作
   historyStore.update((entries) => {
-    // 重複チェック
     const existingIndex = entries.findIndex((e) => isSameEntry(entryData, e));
 
     if (existingIndex !== -1) {
-      // 既存エントリを先頭に移動
+      // 既存エントリを先頭に移動（createdAtを更新）
       const existing = entries[existingIndex];
       const updated = [
         { ...existing, createdAt: new Date().toISOString() },
         ...entries.slice(0, existingIndex),
         ...entries.slice(existingIndex + 1),
       ];
-      saveHistoryToStorage(updated);
+      historyPersistence.setItems(updated);
       return updated;
     }
 
-    // 新規エントリを作成
-    const newEntry: HistoryEntry = {
-      id: generateId(),
-      ...entryData,
-      createdAt: new Date().toISOString(),
-    };
-
-    // 先頭に追加し、MAX_HISTORYを超えたら末尾を削除
-    const updated = [newEntry, ...entries].slice(0, MAX_HISTORY);
-    saveHistoryToStorage(updated);
-    return updated;
+    // 新規エントリを追加
+    const newEntry = historyPersistence.add(entryData);
+    // addは内部でstore.updateを呼ぶので、ここでは何も返さなくてよいが、
+    // update関数なので現在の状態を返す必要がある
+    // ただし、addは既にストアを更新しているので、単に現在の状態を取得
+    let current: HistoryEntry[] = [];
+    historyStore.subscribe((v) => (current = v))();
+    return current;
   });
 }
 
-// 履歴から復元
+/** 履歴から復元 */
 export function restoreFromHistory(entry: HistoryEntry): void {
   try {
-    // カスタムカラーかチェック
     let primaryDye: DyeProps | ExtendedDye;
     if (entry.primaryDye.tags?.includes('custom')) {
       primaryDye = {
@@ -189,7 +148,6 @@ export function restoreFromHistory(entry: HistoryEntry): void {
       primaryDye = entry.primaryDye;
     }
 
-    // イベントを発火してパレットを復元
     emitRestorePalette({
       primaryDye,
       suggestedDyes: entry.suggestedDyes,
@@ -201,7 +159,8 @@ export function restoreFromHistory(entry: HistoryEntry): void {
   }
 }
 
-// selectionStoreの変更を監視して自動記録
+// ===== 自動記録（selectionStore監視） =====
+
 let previousSelection: {
   primaryDye: DyeProps | ExtendedDye | null;
   suggestedDyes: [DyeProps, DyeProps] | null;

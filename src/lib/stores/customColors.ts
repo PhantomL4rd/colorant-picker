@@ -1,62 +1,25 @@
-import { writable, get } from 'svelte/store';
-import type {
-  CustomColor,
-  CustomColorsData,
-  StoredCustomColor,
-  RGBColor255,
-  Hsv,
-} from '$lib/types';
+/**
+ * カスタムカラーストア
+ * ユーザー定義カラーの管理（LocalStorage永続化）
+ */
+
+import { get } from 'svelte/store';
+import type { CustomColor, StoredCustomColor, RGBColor255, Hsv } from '$lib/types';
 import { rgb255ToRgb, toHsv } from '$lib/utils/colorConversion';
-import { loadFromStorage, saveToStorage as saveStorageUtil } from '$lib/utils/storageService';
+import { createPersistentStore } from '$lib/utils/persistentStore';
+import { generateId } from '$lib/utils/uuid';
+
+// ===== 定数 =====
 
 const STORAGE_KEY = 'colorant-picker:custom-colors';
-const VERSION = '1.0.0';
+const STORAGE_VERSION = '1.0.0';
 
-// カスタムカラーストア
-export const customColorsStore = writable<CustomColor[]>([]);
+// ===== 永続化ストア =====
 
-/**
- * LocalStorageからカスタムカラーを読み込み
- */
-export function loadCustomColors(): void {
-  try {
-    // ブラウザ環境チェック
-    if (typeof localStorage === 'undefined') {
-      customColorsStore.set([]);
-      return;
-    }
-
-    const data: CustomColorsData = loadFromStorage<CustomColorsData>(STORAGE_KEY, {
-      colors: [],
-      version: VERSION,
-      lastUpdated: new Date().toISOString(),
-    });
-
-    // 0-255範囲からculori型に変換 + 日付文字列をDateオブジェクトに変換
-    const colors: CustomColor[] = data.colors.map((color) => {
-      const rgb = rgb255ToRgb(color.rgb);
-      return {
-        ...color,
-        rgb,
-        hsv: toHsv(rgb) as Hsv,
-        createdAt: new Date(color.createdAt),
-        updatedAt: new Date(color.updatedAt),
-      };
-    });
-
-    customColorsStore.set(colors);
-  } catch (error) {
-    console.error('Failed to load custom colors:', error);
-    customColorsStore.set([]);
-  }
-}
-
-/**
- * LocalStorageにカスタムカラーを保存
- */
-// StoredCustomColor形式に変換（計算値を除外、0-255範囲に変換）
-function toStoredCustomColor(color: CustomColor): StoredCustomColor {
-  return {
+const customColorsPersistence = createPersistentStore<CustomColor, StoredCustomColor>({
+  key: STORAGE_KEY,
+  version: STORAGE_VERSION,
+  toStorable: (color) => ({
     id: color.id,
     name: color.name,
     rgb: {
@@ -66,25 +29,31 @@ function toStoredCustomColor(color: CustomColor): StoredCustomColor {
     },
     createdAt: color.createdAt,
     updatedAt: color.updatedAt,
-  };
-}
-
-function saveToStorage(colors: CustomColor[]): void {
-  try {
-    // 新形式（軽量）で保存
-    const storedColors: StoredCustomColor[] = colors.map(toStoredCustomColor);
-
-    const data = {
-      colors: storedColors,
-      version: VERSION,
-      lastUpdated: new Date().toISOString(),
+  }),
+  fromStorable: (stored) => {
+    const rgb = rgb255ToRgb(stored.rgb);
+    return {
+      id: stored.id,
+      name: stored.name,
+      rgb,
+      hsv: toHsv(rgb) as Hsv,
+      createdAt: new Date(stored.createdAt),
+      updatedAt: new Date(stored.updatedAt),
     };
+  },
+  validate: (stored) => {
+    return !!(stored.id && stored.name && stored.rgb && stored.createdAt && stored.updatedAt);
+  },
+});
 
-    saveStorageUtil(STORAGE_KEY, data);
-  } catch (error) {
-    console.error('Failed to save custom colors:', error);
-    throw new Error('カスタムカラーの保存に失敗しました');
-  }
+// ===== 公開API =====
+
+/** カスタムカラーストア（subscribe可能） */
+export const customColorsStore = customColorsPersistence.store;
+
+/** カスタムカラーを読み込み */
+export function loadCustomColors(): void {
+  customColorsPersistence.load();
 }
 
 /**
@@ -93,19 +62,16 @@ function saveToStorage(colors: CustomColor[]): void {
  */
 export function saveCustomColor(colorData: { name: string; rgb: RGBColor255 }): void {
   const rgb = rgb255ToRgb(colorData.rgb);
-  const newColor: CustomColor = {
-    id: crypto.randomUUID(),
+  const now = new Date();
+
+  // ファクトリのaddを使用（id, createdAtを明示的に設定）
+  customColorsPersistence.add({
+    id: generateId(),
     name: colorData.name.trim(),
     rgb,
     hsv: toHsv(rgb) as Hsv,
-    createdAt: new Date(),
-    updatedAt: new Date(),
-  };
-
-  customColorsStore.update((colors) => {
-    const updated = [...colors, newColor];
-    saveToStorage(updated);
-    return updated;
+    createdAt: now,
+    updatedAt: now,
   });
 }
 
@@ -136,7 +102,7 @@ export function updateCustomColor(
       return updatedColor;
     });
 
-    saveToStorage(updated);
+    customColorsPersistence.setItems(updated);
     return updated;
   });
 }
@@ -145,11 +111,7 @@ export function updateCustomColor(
  * カスタムカラーを削除
  */
 export function deleteCustomColor(id: string): void {
-  customColorsStore.update((colors) => {
-    const updated = colors.filter((color) => color.id !== id);
-    saveToStorage(updated);
-    return updated;
-  });
+  customColorsPersistence.remove(id);
 }
 
 /**
@@ -171,5 +133,8 @@ export function isNameDuplicate(name: string, excludeId?: string): boolean {
   return colors.some((color) => color.name === trimmedName && color.id !== excludeId);
 }
 
-// 初期化時にカスタムカラーを読み込み
-loadCustomColors();
+// ===== 初期化 =====
+
+if (typeof window !== 'undefined') {
+  loadCustomColors();
+}

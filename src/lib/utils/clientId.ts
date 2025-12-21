@@ -1,6 +1,8 @@
 // クライアント識別ID管理
 // 匿名ユーザーの重複投稿を防ぐためのUUID v4
 
+import { generateId, isValidUUID } from './uuid';
+
 const STORAGE_KEY = 'colorant-picker:client-id';
 
 /**
@@ -10,7 +12,7 @@ const STORAGE_KEY = 'colorant-picker:client-id';
 export function getOrCreateClientId(): string {
   // ブラウザ環境チェック
   if (typeof window === 'undefined' || typeof localStorage === 'undefined') {
-    return crypto.randomUUID();
+    return generateId();
   }
 
   const existingId = localStorage.getItem(STORAGE_KEY);
@@ -18,15 +20,7 @@ export function getOrCreateClientId(): string {
     return existingId;
   }
 
-  const newId = crypto.randomUUID();
+  const newId = generateId();
   localStorage.setItem(STORAGE_KEY, newId);
   return newId;
-}
-
-/**
- * UUID v4形式のバリデーション
- */
-function isValidUUID(id: string): boolean {
-  const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
-  return UUID_REGEX.test(id);
 }

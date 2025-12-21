@@ -137,18 +137,6 @@ export interface StoredFavorite extends StoredPaletteEntry {
   // 追加プロパティなし
 }
 
-// LocalStorage用のお気に入りデータ
-export interface FavoritesData {
-  favorites: Favorite[];
-  version: string;
-}
-
-// LocalStorage用の履歴データ
-export interface HistoryData {
-  entries: StoredHistoryEntry[];
-  version: string;
-}
-
 // カスタムカラー（内部はculori型）
 export interface CustomColor {
   id: string;
@@ -183,13 +171,6 @@ export interface ExtendedSharePaletteData {
 // カスタムカラー対応お気に入り
 export interface ExtendedFavorite extends Omit<Favorite, 'primaryDye'> {
   primaryDye: DyeProps | CustomColor;
-}
-
-// LocalStorage用のカスタムカラーデータ
-export interface CustomColorsData {
-  colors: CustomColor[];
-  version: string;
-  lastUpdated: string;
 }
 
 // おすすめパレット（サーバーから取得）

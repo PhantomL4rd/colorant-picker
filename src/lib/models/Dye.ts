@@ -1,4 +1,13 @@
-import type { DyeProps, RawDyeData, DyeCategory, RGBColor255, Rgb, Hsv, Oklab } from '$lib/types';
+import type {
+  DyeProps,
+  RawDyeData,
+  DyeCategory,
+  RGBColor255,
+  Rgb,
+  Hsv,
+  Oklab,
+  StoredDye,
+} from '$lib/types';
 import { toHsv, toOklab, formatHex } from '$lib/utils/colorConversion';
 
 /**
@@ -53,6 +62,20 @@ export class Dye implements DyeProps {
       r: Math.round(this.rgb.r * 255),
       g: Math.round(this.rgb.g * 255),
       b: Math.round(this.rgb.b * 255),
+    };
+  }
+
+  /**
+   * LocalStorage保存用の軽量オブジェクトに変換
+   * 計算可能な派生値（hsv, hex, oklab）を除外し、RGBは0-255範囲で保存
+   */
+  toStorable(): StoredDye {
+    return {
+      id: this.id,
+      name: this.name,
+      category: this.category,
+      rgb: this.rgb255, // 0-255範囲で保存
+      tags: this.tags,
     };
   }
 }
