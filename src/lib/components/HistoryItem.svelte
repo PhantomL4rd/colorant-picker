@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Calendar, Heart, Check } from '@lucide/svelte';
+import { Calendar, Heart } from '@lucide/svelte';
 import type { HistoryEntry } from '$lib/types';
 import ShareButton from './ShareButton.svelte';
 import PaletteColorPreview from './PaletteColorPreview.svelte';
@@ -77,7 +77,7 @@ async function handleAddToFavorites() {
     showFeedback = true;
     setTimeout(() => {
       showFeedback = false;
-    }, 2000);
+    }, 800);
   } catch (err) {
     error = err instanceof Error ? err.message : 'スキ！の追加に失敗しました。';
   } finally {
@@ -100,7 +100,15 @@ async function handleAddToFavorites() {
       <!-- 操作ボタン -->
       <div class="flex gap-1 ml-2">
         <!-- スキ！追加ボタン -->
-        {#if isAlreadyFavorited}
+        {#if showFeedback}
+          <button
+            class="btn btn-ghost btn-sm btn-circle text-red-500"
+            disabled
+            aria-label="スキ！"
+          >
+            <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
+          </button>
+        {:else if isAlreadyFavorited}
           <button
             class="btn btn-ghost btn-sm btn-circle text-success"
             disabled
@@ -111,14 +119,11 @@ async function handleAddToFavorites() {
         {:else}
           <button
             class="btn btn-ghost btn-sm btn-circle"
-            class:text-success={showFeedback}
             onclick={handleAddToFavorites}
             disabled={isAddingToFavorites}
             aria-label="スキ！"
           >
-            {#if showFeedback}
-              <Check class="w-4 h-4" />
-            {:else if isAddingToFavorites}
+            {#if isAddingToFavorites}
               <span class="loading loading-spinner loading-sm"></span>
             {:else}
               <Heart class="w-4 h-4" />

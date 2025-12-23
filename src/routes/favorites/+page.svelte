@@ -6,7 +6,6 @@ import { Heart, Clock } from 'lucide-svelte';
 import FavoritesList from '$lib/components/FavoritesList.svelte';
 import HistoryList from '$lib/components/HistoryList.svelte';
 import { loadDyes } from '$lib/stores/dyes';
-
 let isLoading = $state(true);
 
 // URLハッシュからタブを取得 (#history があれば履歴タブ)
@@ -56,23 +55,23 @@ function handleSelectHistory() {
 </svelte:head>
 
 <!-- サブタブナビゲーション -->
-<div class="tabs tabs-boxed mb-4 justify-center">
-  <button
-    class="tab tab-lg gap-2"
-    class:tab-active={activeTab === 'favorites'}
-    onclick={() => setTab('favorites')}
-  >
-    <Heart class="w-5 h-5" />
-    スキ！
-  </button>
-  <button
-    class="tab tab-lg gap-2"
-    class:tab-active={activeTab === 'history'}
-    onclick={() => setTab('history')}
-  >
-    <Clock class="w-5 h-5" />
-    履歴
-  </button>
+<div class="flex justify-center mb-4 px-4">
+  <div class="inline-flex bg-base-200 rounded-xl p-1 shadow-md">
+    <button
+      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'favorites' ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/60 hover:text-base-content hover:bg-base-300'}"
+      onclick={() => setTab('favorites')}
+    >
+      <Heart class="w-5 h-5" />
+      スキ！
+    </button>
+    <button
+      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'history' ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/60 hover:text-base-content hover:bg-base-300'}"
+      onclick={() => setTab('history')}
+    >
+      <Clock class="w-5 h-5" />
+      履歴
+    </button>
+  </div>
 </div>
 
 {#if isLoading}

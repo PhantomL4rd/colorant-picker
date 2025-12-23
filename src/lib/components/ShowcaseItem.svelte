@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Heart, Check } from '@lucide/svelte';
+import { Heart } from '@lucide/svelte';
 import type { ShowcasePalette, DyeProps, Favorite, HarmonyPattern } from '$lib/types';
 import { dyeStore } from '$lib/stores/dyes';
 import { getPatternLabel } from '$lib/constants/patterns';
@@ -97,7 +97,7 @@ async function handleAddToFavorites() {
     showFeedback = true;
     setTimeout(() => {
       showFeedback = false;
-    }, 2000);
+    }, 800);
   } catch (err) {
     error = err instanceof Error ? err.message : 'スキ！の追加に失敗しました。';
   } finally {
@@ -125,7 +125,15 @@ const favoriteForShare = $derived<Favorite | null>(
     <div class="flex justify-end items-center mb-4">
       <div class="flex gap-1">
         <!-- スキ！追加ボタン -->
-        {#if isAlreadyFavorited}
+        {#if showFeedback}
+          <button
+            class="btn btn-ghost btn-sm btn-circle text-red-500"
+            disabled
+            aria-label="スキ！"
+          >
+            <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
+          </button>
+        {:else if isAlreadyFavorited}
           <button
             class="btn btn-ghost btn-sm btn-circle text-success"
             disabled
@@ -136,14 +144,11 @@ const favoriteForShare = $derived<Favorite | null>(
         {:else}
           <button
             class="btn btn-ghost btn-sm btn-circle"
-            class:text-success={showFeedback}
             onclick={handleAddToFavorites}
             disabled={isAddingToFavorites || !primaryDye}
             aria-label="スキ！"
           >
-            {#if showFeedback}
-              <Check class="w-4 h-4" />
-            {:else if isAddingToFavorites}
+            {#if isAddingToFavorites}
               <span class="loading loading-spinner loading-sm"></span>
             {:else}
               <Heart class="w-4 h-4" />

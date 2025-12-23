@@ -2,7 +2,7 @@
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { selectPrimaryDye } from '$lib/stores/selection';
 import { Palette } from '$lib/models/Palette';
-import { Info } from 'lucide-svelte';
+import { BookOpenText, Info } from 'lucide-svelte';
 
 interface Props {
   selectedDye: DyeProps | null;
@@ -31,13 +31,13 @@ function textColor(dye: DyeProps): string {
 <div class="card bg-base-100 shadow-lg">
   <div class="card-body">
     {#if selectedDye && suggestedDyes}
-      <div class="space-y-6">
+      <div class="space-y-1 animate-fade-in-up">
         <!-- 3色のプレビュー -->
         <div class="grid grid-cols-3 gap-2 md:gap-4">
           <!-- 基本カララント -->
-          <div class="text-center min-w-0">
+          <div class="text-center min-w-0 color-swatch" style="--delay: 0ms;">
             <div
-              class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 flex items-center justify-center"
+              class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 flex items-center justify-center transition-all duration-300"
               style="background-color: {selectedDye.hex};"
             >
               {#if showRatio && palette}
@@ -54,11 +54,12 @@ function textColor(dye: DyeProps): string {
               {#if selectedDye.lodestone}
                 <a
                   href={selectedDye.lodestone}
-                  class="hover:text-primary transition-colors"
+                  class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {selectedDye.name}
+                  <BookOpenText class="w-3 h-3 flex-shrink-0" />
+                  <span>{selectedDye.name}</span>
                 </a>
               {:else}
                 {selectedDye.name}
@@ -68,10 +69,10 @@ function textColor(dye: DyeProps): string {
 
           {#if palette}
             <!-- サブ -->
-            <div class="text-center min-w-0">
+            <div class="text-center min-w-0 color-swatch" style="--delay: 50ms;">
               <button
                 type="button"
-                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 hover:border-primary transition-colors cursor-pointer flex items-center justify-center"
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 transition-all duration-200 cursor-pointer flex items-center justify-center hover:border-primary hover:scale-105 hover:shadow-md active:scale-95"
                 style="background-color: {palette.sub.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.sub.dye)}
                 title="この色を選択して新しい組み合わせを提案"
@@ -91,11 +92,12 @@ function textColor(dye: DyeProps): string {
                 {#if palette.sub.dye.lodestone}
                   <a
                     href={palette.sub.dye.lodestone}
-                    class="hover:text-primary transition-colors"
+                    class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {palette.sub.dye.name}
+                    <BookOpenText class="w-3 h-3 flex-shrink-0" />
+                    <span>{palette.sub.dye.name}</span>
                   </a>
                 {:else}
                   {palette.sub.dye.name}
@@ -104,10 +106,10 @@ function textColor(dye: DyeProps): string {
             </div>
 
             <!-- アクセント -->
-            <div class="text-center min-w-0">
+            <div class="text-center min-w-0 color-swatch" style="--delay: 100ms;">
               <button
                 type="button"
-                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 hover:border-primary transition-colors cursor-pointer flex items-center justify-center"
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 transition-all duration-200 cursor-pointer flex items-center justify-center hover:border-primary hover:scale-105 hover:shadow-md active:scale-95"
                 style="background-color: {palette.accent.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.accent.dye)}
                 title="この色を選択して新しい組み合わせを提案"
@@ -127,11 +129,12 @@ function textColor(dye: DyeProps): string {
                 {#if palette.accent.dye.lodestone}
                   <a
                     href={palette.accent.dye.lodestone}
-                    class="hover:text-primary transition-colors"
+                    class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    {palette.accent.dye.name}
+                    <BookOpenText class="w-3 h-3 flex-shrink-0" />
+                    <span>{palette.accent.dye.name}</span>
                   </a>
                 {:else}
                   {palette.accent.dye.name}
@@ -143,11 +146,11 @@ function textColor(dye: DyeProps): string {
 
         <!-- 黄金比の説明ツールチップ -->
         {#if showRatio && palette}
-          <div class="flex justify-center">
+          <div class="flex justify-center relative z-10">
             <div class="tooltip tooltip-bottom tooltip-info">
               <button type="button" class="btn btn-ghost btn-xs gap-1 text-info">
                 <Info class="w-3 h-3" />
-                <span class="text-xs">いい感じに染色するコツ</span>
+                <span class="text-xs">いい感じに染色するコツ！</span>
               </button>
               <div class="tooltip-content text-start p-3 max-w-sm">
                 <p class="font-semibold mb-1">配色の黄金比</p>
@@ -175,3 +178,31 @@ function textColor(dye: DyeProps): string {
     {/if}
   </div>
 </div>
+
+<style>
+  /* 色スウォッチのスタッガーアニメーション */
+  .color-swatch {
+    animation: swatch-appear 0.3s ease-out forwards;
+    animation-delay: var(--delay, 0ms);
+    opacity: 0;
+  }
+
+  @keyframes swatch-appear {
+    from {
+      opacity: 0;
+      transform: scale(0.9);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  /* Reduced Motion */
+  @media (prefers-reduced-motion: reduce) {
+    .color-swatch {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

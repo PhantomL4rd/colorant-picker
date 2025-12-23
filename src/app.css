@@ -9,3 +9,150 @@
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
+
+/* ===== UX Psychology Animations ===== */
+
+/* バウンスアニメーション（クリック時） */
+@keyframes bounce-subtle {
+  0%, 100% { transform: scale(1); }
+  40% { transform: scale(0.95); }
+  60% { transform: scale(1.03); }
+}
+
+.animate-bounce-subtle {
+  animation: bounce-subtle 0.3s ease-out;
+}
+
+/* フェードイン + 上昇アニメーション（段階的表示用） */
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fade-in-up 0.3s ease-out forwards;
+}
+
+/* パルスリングアニメーション（選択状態） */
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 oklch(var(--p) / 0.4); }
+  70% { box-shadow: 0 0 0 6px oklch(var(--p) / 0); }
+  100% { box-shadow: 0 0 0 0 oklch(var(--p) / 0); }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 1.5s ease-out infinite;
+}
+
+/* ハートバウンス（お気に入り追加時） */
+@keyframes heart-bounce {
+  0% { transform: scale(1); }
+  15% { transform: scale(1.4); }
+  30% { transform: scale(0.85); }
+  45% { transform: scale(1.2); }
+  60% { transform: scale(0.95); }
+  75% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+.animate-heart-bounce {
+  animation: heart-bounce 0.6s ease-out;
+}
+
+/* ハートポップ（スキ！追加時の強調） */
+@keyframes heart-pop {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  20% {
+    transform: scale(1.5);
+    filter: brightness(1.2);
+  }
+  40% {
+    transform: scale(0.8);
+  }
+  60% {
+    transform: scale(1.3);
+  }
+  80% {
+    transform: scale(0.95);
+  }
+  100% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+}
+
+.animate-heart-pop {
+  animation: heart-pop 0.7s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+/* ハートフリップ（縦軸回転 + バウンド） */
+@keyframes heart-flip {
+  0% {
+    transform: perspective(400px) rotateY(0deg) scale(1);
+  }
+  30% {
+    transform: perspective(400px) rotateY(180deg) scale(1.3);
+  }
+  60% {
+    transform: perspective(400px) rotateY(360deg) scale(0.9);
+  }
+  80% {
+    transform: perspective(400px) rotateY(360deg) scale(1.1);
+  }
+  100% {
+    transform: perspective(400px) rotateY(360deg) scale(1);
+  }
+}
+
+.animate-heart-flip {
+  animation: heart-flip 0.8s ease-out;
+}
+
+/* ゆっくりパルス（空状態のアイコン用） */
+@keyframes pulse-slow {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.7; transform: scale(1.05); }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* スライドイン（トースト用） */
+@keyframes slide-in-right {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation: slide-in-right 0.3s ease-out forwards;
+}
+
+/* ===== Reduced Motion Support ===== */
+@media (prefers-reduced-motion: reduce) {
+  .animate-bounce-subtle,
+  .animate-fade-in-up,
+  .animate-pulse-ring,
+  .animate-heart-bounce,
+  .animate-heart-pop,
+  .animate-heart-flip,
+  .animate-pulse-slow,
+  .animate-slide-in-right {
+    animation: none;
+  }
+}

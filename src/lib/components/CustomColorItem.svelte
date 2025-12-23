@@ -1,6 +1,7 @@
 <script lang="ts">
 import { deleteCustomColor } from '$lib/stores/customColors';
 import { formatRgbDisplay } from '$lib/utils/customColorUtils';
+import { rgbToRgb255 } from '$lib/utils/colorConversion';
 import type { CustomColor } from '$lib/types';
 import { Pencil, Trash2 } from '@lucide/svelte';
 
@@ -12,9 +13,10 @@ interface Props {
 
 let { color, onSelect, onEdit }: Props = $props();
 
-const colorStyle = $derived(`rgb(${color.rgb.r}, ${color.rgb.g}, ${color.rgb.b})`);
-
-const rgbDisplay = $derived(formatRgbDisplay(color.rgb));
+// culori形式(0-1)を0-255に変換して表示
+const rgb255 = $derived(rgbToRgb255(color.rgb));
+const colorStyle = $derived(`rgb(${rgb255.r}, ${rgb255.g}, ${rgb255.b})`);
+const rgbDisplay = $derived(formatRgbDisplay(rgb255));
 
 function handleDelete() {
   if (confirm(`「${color.name}」を削除しますか？`)) {

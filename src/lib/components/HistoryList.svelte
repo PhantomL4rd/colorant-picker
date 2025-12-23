@@ -58,8 +58,8 @@ const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
   <!-- ヘッダー -->
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <Clock class="w-6 h-6 text-primary" />
-      <h1 class="text-2xl font-bold">履歴</h1>
+      <Clock class="w-5 h-5 text-primary" />
+      <h1 class="text-xl font-bold">履歴</h1>
     </div>
 
     {#if historyCount > 0}
@@ -85,9 +85,9 @@ const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
           <p>組み合わせが自動的に記録されます。</p>
         </div>
         <div class="mt-6">
-          <a href="/" class="btn btn-outline btn-sm gap-2">
+          <a href="/" class="btn btn-primary btn-sm gap-2">
             <Shuffle class="w-4 h-4" />
-            ピッカータブで組み合わせを探す
+            配色を探しに行く
           </a>
         </div>
       </div>
@@ -103,15 +103,6 @@ const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
         />
       {/each}
     </div>
-
-    <!-- ページ下部の余白確保メッセージ -->
-    {#if historyCount >= 5}
-      <div class="text-center mt-8 mb-4">
-        <p class="text-base-content/40 text-sm">
-          最新{historyCount}件を表示中（最大10件まで保持）
-        </p>
-      </div>
-    {/if}
   {/if}
 </div>
 

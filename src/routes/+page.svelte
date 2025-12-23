@@ -11,7 +11,9 @@ import {
   toggleExcludeMetallic,
 } from '$lib/stores/filter';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
-import { PaintBucket, Blend } from 'lucide-svelte';
+import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
+import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
+import { PaintBucket, Blend, Eye } from 'lucide-svelte';
 
 import DyeGrid from '$lib/components/DyeGrid.svelte';
 import CombinationPreview from '$lib/components/CombinationPreview.svelte';
@@ -30,6 +32,15 @@ let showCustomColors = $state(false);
 // 配色パターン選択エリアへの参照（スクロール先）
 let patternSelectorElement: HTMLElement | undefined = $state();
 
+// PatternSelectorコンポーネントの参照
+let patternSelectorComponent: ReturnType<typeof PatternSelector> | undefined = $state();
+
+// 動的に生成されたパターンビジュアル
+let dynamicPatternVisuals: PatternVisual[] | undefined = $state();
+
+// 未選択時のプレースホルダー用サンプル色
+let placeholderColors: [string, string, string] | undefined = $state();
+
 // ストアから状態を取得
 const selectedDye = $derived($selectionStore.primaryDye);
 const suggestedDyes = $derived($selectionStore.suggestedDyes);
@@ -42,10 +53,25 @@ onMount(async () => {
   try {
     await loadDyes();
 
-    // URL復元処理
     const dyes = $dyeStore;
     if (dyes.length > 0) {
+      // URL復元処理
       restorePaletteFromUrl(dyes);
+
+      // パターンサンプル用の代表色を選択（赤系の「ダラガブレッド」など鮮やかな色）
+      const representativeDye =
+        dyes.find((d) => d.name === 'ダラガブレッド') ||
+        dyes.find((d) => d.category === '赤系') ||
+        dyes[0];
+
+      if (representativeDye) {
+        // 実際のカララントでパターンビジュアルを生成
+        dynamicPatternVisuals = generatePatternVisualsWithDyes(representativeDye, dyes);
+
+        // プレースホルダー用のサンプル色を生成（triadicパターンを使用）
+        const [sub, accent] = generateSuggestedDyes(representativeDye, 'triadic', dyes);
+        placeholderColors = [representativeDye.hex, sub.hex, accent.hex];
+      }
     }
 
     isLoading = false;
@@ -103,6 +129,11 @@ function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]) {
 
   // その後、主色を選択（提案は自動生成される）
   selectPrimaryDye(primary);
+
+  // 選択されたパターンをスクロールして表示
+  setTimeout(() => {
+    patternSelectorComponent?.scrollToPattern(randomPattern);
+  }, 100);
 }
 
 function handleExcludeMetallicChange() {
@@ -137,22 +168,27 @@ function handleClearAll() {
     <div bind:this={patternSelectorElement} class="card bg-base-200 shadow-md">
       <div class="card-body">
         <PatternSelector
+          bind:this={patternSelectorComponent}
           {selectedPattern}
           onPatternChange={handlePatternChange}
           {excludeMetallic}
           onExcludeMetallicChange={handleExcludeMetallicChange}
+          patternVisuals={dynamicPatternVisuals}
         />
       </div>
     </div>
 
     <!-- プレビュー -->
-    <div aria-live="polite">
+    <div aria-live="polite" class="relative z-10">
       {#if selectedDye && suggestedDyes}
         <!-- 組み合わせプレビュー -->
         <div class="card bg-base-200 shadow-md">
           <div class="card-body p-3 md:p-6">
             <div class="flex justify-between items-center mb-2 md:mb-4">
-              <h2 class="card-title text-base md:text-lg">プレビュー</h2>
+              <h2 class="card-title text-lg flex items-center gap-1">
+                <Eye class="w-5 h-5" />
+                プレビュー
+              </h2>
               <div class="flex gap-2">
                 <AddToFavoritesButton disabled={!selectedDye || !suggestedDyes} />
                 <ShareButton disabled={!selectedDye || !suggestedDyes} />
@@ -166,15 +202,48 @@ function handleClearAll() {
           </div>
         </div>
       {:else}
-        <!-- 未選択時のメッセージ -->
+        <!-- 未選択時のプレースホルダー -->
         <div class="card bg-base-200 shadow-md">
-          <div class="card-body p-3 md:p-6 text-center">
-            <div class="text-base-content/60">
-              <Blend class="h-12 w-12 md:h-16 md:w-16 mx-auto mb-2 md:mb-4 opacity-50" />
-              <p class="text-base md:text-lg font-medium mb-1 md:mb-2">カララントを選択してください</p>
-              <p class="text-xs md:text-sm">
-                カララント一覧から気に入った色を選ぶか、<br />
-                ランダムピックボタンで自動選択してみましょう。
+          <div class="card-body p-3 md:p-6">
+            <h2 class="card-title text-lg flex items-center gap-1 text-base-content/40 mb-4">
+              <Eye class="w-5 h-5" />
+              プレビュー
+            </h2>
+
+            <!-- プレースホルダー色（実際のカララント組み合わせ） -->
+            <div class="card bg-base-100 shadow-lg opacity-50">
+              <div class="card-body">
+                <div class="grid grid-cols-3 gap-2 md:gap-4">
+                  <div class="text-center">
+                    <div
+                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
+                      style="background-color: {placeholderColors?.[0] ?? '#E63946'};"
+                    ></div>
+                    <span class="text-xs text-base-content/50">メイン</span>
+                  </div>
+                  <div class="text-center">
+                    <div
+                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
+                      style="background-color: {placeholderColors?.[1] ?? '#457B9D'};"
+                    ></div>
+                    <span class="text-xs text-base-content/50">サブ</span>
+                  </div>
+                  <div class="text-center">
+                    <div
+                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
+                      style="background-color: {placeholderColors?.[2] ?? '#F4A261'};"
+                    ></div>
+                    <span class="text-xs text-base-content/50">アクセント</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- ガイドメッセージ -->
+            <div class="text-center mt-4">
+              <p class="text-sm text-base-content/60">
+                <Blend class="inline-block w-4 h-4 mr-1 align-text-bottom" />
+                下のカララント一覧から色を選んでみよう！
               </p>
             </div>
           </div>
@@ -216,7 +285,7 @@ function handleClearAll() {
             </div>
           {:else}
             <!-- 通常のカララント一覧表示 -->
-            <h2 class="card-title text-lg mb-4 flex items-center gap-2">
+            <h2 class="card-title text-lg mb-4 flex items-center gap-1">
               <PaintBucket class="w-5 h-5" />
               カララント一覧
             </h2>

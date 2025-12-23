@@ -55,8 +55,8 @@ function closeShareModal() {
   <!-- ヘッダー -->
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <Heart class="w-6 h-6 text-primary" />
-      <h1 class="text-2xl font-bold">スキ！</h1>
+      <Heart class="w-5 h-5 text-primary" />
+      <h1 class="text-xl font-bold">スキ！</h1>
     </div>
 
     {#if favoriteCount > 0}
@@ -69,22 +69,27 @@ function closeShareModal() {
   <!-- コンテンツ -->
   {#if sortedFavorites.length === 0}
     <!-- 空状態 -->
-    <div class="card bg-base-200 shadow-md">
-      <div class="card-body text-center py-16">
-        <div class="text-base-content/40 mb-6">
-          <Heart class="w-20 h-20 mx-auto mb-4" />
+    <div class="card bg-base-200 shadow-md animate-fade-in-up">
+      <div class="card-body text-center py-12">
+        <!-- ハートアイコン（アニメーション付き） -->
+        <div class="mb-6">
+          <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 animate-pulse-slow">
+            <Heart class="w-12 h-12 text-primary/60" />
+          </div>
         </div>
-        <h2 class="text-xl font-semibold mb-4 text-base-content/70">
+
+        <h2 class="text-xl font-semibold mb-3 text-base-content/80">
           まだスキ！がありません
         </h2>
-        <div class="text-base-content/60 space-y-2">
-          <p>カララントピッカーで気に入った組み合わせを見つけたら、</p>
-          <p>「スキ！」ボタンで保存しましょう。</p>
-        </div>
+
+        <p class="text-base-content/60 text-sm max-w-xs mx-auto">
+          ピッカーで気に入った配色を見つけたら、ハートボタンで保存してみよう
+        </p>
+
         <div class="mt-6">
-          <a href="/" class="btn btn-outline btn-sm gap-2">
+          <a href="/" class="btn btn-primary btn-sm gap-2">
             <Shuffle class="w-4 h-4" />
-            ピッカータブで組み合わせを探す
+            配色を探しに行く
           </a>
         </div>
       </div>
@@ -100,15 +105,6 @@ function closeShareModal() {
         />
       {/each}
     </div>
-
-    <!-- ページ下部の余白確保メッセージ -->
-    {#if favoriteCount >= 5}
-      <div class="text-center mt-8 mb-4">
-        <p class="text-base-content/40 text-sm">
-          {favoriteCount}件のスキ！を表示中
-        </p>
-      </div>
-    {/if}
   {/if}
 </div>
 
@@ -124,20 +120,9 @@ function closeShareModal() {
   .container {
     scroll-behavior: smooth;
   }
-  
-  /* お気に入り項目のアニメーション */
+
+  /* お気に入り項目のアニメーション（グローバルのfade-in-upを使用） */
   .space-y-4 > :global(*) {
-    animation: fadeInUp 0.3s ease-out;
-  }
-  
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+    animation: fade-in-up 0.3s ease-out forwards;
   }
 </style>

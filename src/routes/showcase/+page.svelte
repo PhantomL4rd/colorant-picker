@@ -115,8 +115,8 @@ const favoriteForShare = $derived(getFavoriteForShare());
   <!-- ヘッダー -->
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <Sparkles class="w-6 h-6 text-primary" />
-      <h1 class="text-2xl font-bold">おすすめ</h1>
+      <Sparkles class="w-5 h-5 text-primary" />
+      <h1 class="text-xl font-bold">おすすめ</h1>
     </div>
 
     {#if palettes.length > 0}
@@ -166,13 +166,6 @@ const favoriteForShare = $derived(getFavoriteForShare());
       {#each palettes as palette (palette.id)}
         <ShowcaseItem {palette} onSelect={handleSelectPalette} onShare={handleShare} />
       {/each}
-    </div>
-
-    <!-- ページ下部のメッセージ -->
-    <div class="text-center mt-8 mb-4">
-      <p class="text-base-content/40 text-sm">
-        {palettes.length}件のおすすめパレット
-      </p>
     </div>
   {/if}
 </div>
