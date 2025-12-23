@@ -45,7 +45,7 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
           >
             <li>
               <a
-                href="https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5609012/"
+                href="https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5639802/"
                 target="_blank"
                 rel="noopener noreferrer"
                 class="flex items-center gap-2"
