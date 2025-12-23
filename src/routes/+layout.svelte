@@ -20,7 +20,7 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
   <div class="alert alert-warning rounded-none">
     <TriangleAlert class="w-5 h-5" />
     <span>
-      <a href={newSiteUrl} class="link font-bold">{newSiteUrl}</a>へ移転しました（自動転送されます）
+      <a href={newSiteUrl} class="link font-bold">{newSiteUrl}</a>へ移転しました（ブックマークを更新してください）
     </span>
   </div>
 
