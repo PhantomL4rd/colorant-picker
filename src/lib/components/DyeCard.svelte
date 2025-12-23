@@ -14,14 +14,16 @@ function handleClick() {
 }
 </script>
 
-<div 
-  class="card bg-base-100 shadow-md hover:shadow-lg transition-shadow cursor-pointer {isSelected ? 'ring-2 ring-primary' : ''}"
+<div
+  class="card bg-base-100 shadow-md hover:shadow-lg transition-shadow cursor-pointer min-w-0 {isSelected ? 'ring-2 ring-primary' : ''}"
   onclick={handleClick}
   role="button"
   tabindex="0"
   onkeydown={(e) => e.key === 'Enter' && handleClick()}
+  aria-label="{dye.name}を選択"
+  aria-pressed={isSelected}
 >
-  <div class="card-body p-4">
+  <div class="card-body p-4 min-w-0">
     <!-- カラーサンプル -->
     <div 
       class="w-full h-16 rounded-lg border-2 border-base-300 mb-3 shadow-sm"
@@ -29,7 +31,7 @@ function handleClick() {
     ></div>
     
     <!-- カララント名 -->
-    <h3 class="card-title text-base font-medium text-center mb-2">{dye.name}</h3>
+    <h3 class="card-title text-sm font-medium text-center justify-center text-balance">{dye.name}</h3>
     
   </div>
 </div>

@@ -27,8 +27,8 @@ let isLoading = $state(true);
 // カスタムカラー表示モード管理
 let showCustomColors = $state(false);
 
-// プレビューエリアへの参照
-let previewElement: HTMLElement | undefined = $state();
+// 配色パターン選択エリアへの参照（スクロール先）
+let patternSelectorElement: HTMLElement | undefined = $state();
 
 // ストアから状態を取得
 const selectedDye = $derived($selectionStore.primaryDye);
@@ -58,16 +58,16 @@ onMount(async () => {
 function handleDyeSelect(dye: DyeProps) {
   selectPrimaryDye(dye);
 
-  // カラーが選択されたらプレビューまでスクロール
+  // カラーが選択されたら配色パターン選択までスクロール
   setTimeout(() => {
-    if (previewElement) {
-      previewElement.scrollIntoView({
+    if (patternSelectorElement) {
+      patternSelectorElement.scrollIntoView({
         behavior: 'smooth',
         block: 'start',
         inline: 'nearest',
       });
     }
-  }, 100); // 少し遅延させてDOMの更新を待つ
+  }, 100);
 }
 
 function handlePatternChange(pattern: HarmonyPattern) {
@@ -133,46 +133,32 @@ function handleClearAll() {
   </div>
 {:else}
   <div class="space-y-8">
-    <!-- フィルターとコントロール -->
-    <div class="space-y-6">
-      
-      <!-- 配色パターン選択 -->
-      <div class="card bg-base-200 shadow-md">
-        <div class="card-body">
-          <PatternSelector 
-            {selectedPattern}
-            onPatternChange={handlePatternChange}
-            {excludeMetallic}
-            onExcludeMetallicChange={handleExcludeMetallicChange}
-          />
-        </div>
-      </div>
-      
-      <!-- ランダムピック -->
-      <div class="card bg-base-200 shadow-md">
-        <div class="card-body">
-          <RandomPickButton 
-            dyes={filteredDyesList}
-            onRandomPick={handleRandomPick}
-          />
-        </div>
+    <!-- 配色パターン選択 -->
+    <div bind:this={patternSelectorElement} class="card bg-base-200 shadow-md">
+      <div class="card-body">
+        <PatternSelector
+          {selectedPattern}
+          onPatternChange={handlePatternChange}
+          {excludeMetallic}
+          onExcludeMetallicChange={handleExcludeMetallicChange}
+        />
       </div>
     </div>
-    
+
     <!-- プレビュー -->
-    <div class="space-y-6" bind:this={previewElement}>
+    <div aria-live="polite">
       {#if selectedDye && suggestedDyes}
         <!-- 組み合わせプレビュー -->
         <div class="card bg-base-200 shadow-md">
-          <div class="card-body">
-            <div class="flex justify-between items-center mb-4">
-              <h2 class="card-title text-lg">プレビュー</h2>
+          <div class="card-body p-3 md:p-6">
+            <div class="flex justify-between items-center mb-2 md:mb-4">
+              <h2 class="card-title text-base md:text-lg">プレビュー</h2>
               <div class="flex gap-2">
                 <AddToFavoritesButton disabled={!selectedDye || !suggestedDyes} />
                 <ShareButton disabled={!selectedDye || !suggestedDyes} />
               </div>
             </div>
-            <CombinationPreview 
+            <CombinationPreview
               selectedDye={selectedDye}
               suggestedDyes={suggestedDyes}
               pattern={selectedPattern}
@@ -182,11 +168,11 @@ function handleClearAll() {
       {:else}
         <!-- 未選択時のメッセージ -->
         <div class="card bg-base-200 shadow-md">
-          <div class="card-body text-center">
+          <div class="card-body p-3 md:p-6 text-center">
             <div class="text-base-content/60">
-              <Blend class="h-16 w-16 mx-auto mb-4 opacity-50" />
-              <p class="text-lg font-medium mb-2">カララントを選択してください</p>
-              <p class="text-sm">
+              <Blend class="h-12 w-12 md:h-16 md:w-16 mx-auto mb-2 md:mb-4 opacity-50" />
+              <p class="text-base md:text-lg font-medium mb-1 md:mb-2">カララントを選択してください</p>
+              <p class="text-xs md:text-sm">
                 カララント一覧から気に入った色を選ぶか、<br />
                 ランダムピックボタンで自動選択してみましょう。
               </p>
@@ -195,7 +181,17 @@ function handleClearAll() {
         </div>
       {/if}
     </div>
-    
+
+    <!-- ランダム -->
+    <div class="card bg-base-200 shadow-md">
+      <div class="card-body">
+        <RandomPickButton
+          dyes={filteredDyesList}
+          onRandomPick={handleRandomPick}
+        />
+      </div>
+    </div>
+
     <!-- カテゴリフィルター -->
     <div class="card bg-base-200 shadow-md">
       <div class="card-body">

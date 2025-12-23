@@ -1,10 +1,11 @@
 <script lang="ts">
-import { MousePointer, Heart, Check } from '@lucide/svelte';
+import { Heart, Check } from '@lucide/svelte';
 import type { ShowcasePalette, DyeProps, Favorite, HarmonyPattern } from '$lib/types';
 import { dyeStore } from '$lib/stores/dyes';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { saveFavorite, favoritesStore } from '$lib/stores/favorites';
 import ShareButton from './ShareButton.svelte';
+import PaletteColorPreview from './PaletteColorPreview.svelte';
 import { Palette } from '$lib/models/Palette';
 
 interface Props {
@@ -50,6 +51,16 @@ const suggestedDye2 = $derived(getDyeById(palette.suggestedDyeIds[1]));
 const colorPalette = $derived.by(() => {
   if (!primaryDye || !suggestedDye1 || !suggestedDye2) return null;
   return new Palette(primaryDye, [suggestedDye1, suggestedDye2], palette.pattern as HarmonyPattern);
+});
+
+// プレビュー用のカラー情報
+const previewColors = $derived.by(() => {
+  if (!colorPalette) return null;
+  return [
+    { hex: getDyeColor(palette.primaryDyeId), name: getDyeName(palette.primaryDyeId) },
+    { hex: colorPalette.sub.dye.hex, name: colorPalette.sub.dye.name },
+    { hex: colorPalette.accent.dye.hex, name: colorPalette.accent.dye.name },
+  ] as [{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }];
 });
 
 // 既にお気に入りに登録済みかチェック
@@ -110,6 +121,45 @@ const favoriteForShare = $derived<Favorite | null>(
 
 <div class="card bg-base-100 shadow-md border border-base-300 transition-shadow hover:shadow-lg">
   <div class="card-body p-4">
+    <!-- ヘッダー：操作ボタン -->
+    <div class="flex justify-end items-center mb-4">
+      <div class="flex gap-1">
+        <!-- スキ！追加ボタン -->
+        {#if isAlreadyFavorited}
+          <button
+            class="btn btn-ghost btn-sm btn-circle text-success"
+            disabled
+            aria-label="スキ！済み"
+          >
+            <Heart class="w-4 h-4 fill-current" />
+          </button>
+        {:else}
+          <button
+            class="btn btn-ghost btn-sm btn-circle"
+            class:text-success={showFeedback}
+            onclick={handleAddToFavorites}
+            disabled={isAddingToFavorites || !primaryDye}
+            aria-label="スキ！"
+          >
+            {#if showFeedback}
+              <Check class="w-4 h-4" />
+            {:else if isAddingToFavorites}
+              <span class="loading loading-spinner loading-sm"></span>
+            {:else}
+              <Heart class="w-4 h-4" />
+            {/if}
+          </button>
+        {/if}
+
+        {#if favoriteForShare}
+          <ShareButton
+            favorite={favoriteForShare}
+            onShare={handleShare}
+          />
+        {/if}
+      </div>
+    </div>
+
     <!-- エラーメッセージ -->
     {#if error}
       <div class="alert alert-error alert-sm mb-4">
@@ -117,92 +167,10 @@ const favoriteForShare = $derived<Favorite | null>(
       </div>
     {/if}
 
-    <!-- カラープレビュー -->
+    <!-- カラープレビュー（クリックで選択） -->
     <div class="mb-4">
-      <div class="grid grid-cols-3 gap-2">
-        <!-- プライマリ染料 -->
-        <div class="text-center">
-          <div
-            class="w-full h-12 rounded border border-base-300"
-            style="background-color: {getDyeColor(palette.primaryDyeId)};"
-            title={getDyeName(palette.primaryDyeId)}
-          ></div>
-          <div class="text-xs mt-1 truncate" title={getDyeName(palette.primaryDyeId)}>
-            {getDyeName(palette.primaryDyeId)}
-          </div>
-        </div>
-
-        {#if colorPalette}
-          <!-- サブ -->
-          <div class="text-center">
-            <div
-              class="w-full h-12 rounded border border-base-300"
-              style="background-color: {colorPalette.sub.dye.hex};"
-              title={colorPalette.sub.dye.name}
-            ></div>
-            <div class="text-xs mt-1 truncate" title={colorPalette.sub.dye.name}>
-              {colorPalette.sub.dye.name}
-            </div>
-          </div>
-
-          <!-- アクセント -->
-          <div class="text-center">
-            <div
-              class="w-full h-12 rounded border border-base-300"
-              style="background-color: {colorPalette.accent.dye.hex};"
-              title={colorPalette.accent.dye.name}
-            ></div>
-            <div class="text-xs mt-1 truncate" title={colorPalette.accent.dye.name}>
-              {colorPalette.accent.dye.name}
-            </div>
-          </div>
-        {/if}
-      </div>
-    </div>
-
-    <!-- 操作ボタン -->
-    <div class="flex gap-2">
-      <button
-        class="btn btn-primary btn-sm flex-1"
-        onclick={handleSelect}
-      >
-        <MousePointer class="w-4 h-4" />
-        この組み合わせを選択
-      </button>
-
-      <!-- スキ！追加ボタン -->
-      {#if isAlreadyFavorited}
-        <button
-          class="btn btn-sm btn-ghost text-success cursor-default"
-          disabled
-          aria-label="スキ！済み"
-        >
-          <Heart class="w-4 h-4 fill-current" />
-        </button>
-      {:else}
-        <button
-          class="btn btn-sm"
-          class:btn-success={showFeedback}
-          class:btn-outline={!showFeedback}
-          onclick={handleAddToFavorites}
-          disabled={isAddingToFavorites || !primaryDye}
-          aria-label="スキ！"
-        >
-          {#if showFeedback}
-            <Check class="w-4 h-4" />
-          {:else if isAddingToFavorites}
-            <span class="loading loading-spinner loading-xs"></span>
-          {:else}
-            <Heart class="w-4 h-4" />
-          {/if}
-        </button>
-      {/if}
-
-      {#if favoriteForShare}
-        <ShareButton
-          favorite={favoriteForShare}
-          onShare={handleShare}
-        />
+      {#if previewColors}
+        <PaletteColorPreview colors={previewColors} onSelect={handleSelect} />
       {/if}
     </div>
 

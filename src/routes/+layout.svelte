@@ -15,7 +15,7 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
   <meta name="description" content={siteDescription} />
 </svelte:head>
 
-<div class="min-h-screen bg-base-100">
+<div class="min-h-dvh bg-base-100">
   <!-- 移転告知バナー -->
   <div class="alert alert-warning rounded-none">
     <TriangleAlert class="w-5 h-5" />

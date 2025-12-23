@@ -63,28 +63,26 @@ function closeShareModal() {
   <!-- FavoriteItem用（従来の動作） -->
   <button
     type="button"
-    class="btn btn-outline btn-sm"
+    class="btn btn-ghost btn-sm btn-circle"
     onclick={handleShare}
-    title="パレットをシェア"
+    aria-label="パレットをシェア"
   >
     <Share class="w-4 h-4" />
-    シェア
   </button>
 {:else}
   <!-- プレビュー用（新規） -->
   <button
-    class="btn btn-outline btn-sm"
+    class="btn btn-ghost btn-sm btn-circle"
     class:btn-disabled={isDisabled}
     onclick={handleShare}
     disabled={isDisabled}
     aria-label="パレットをシェア"
   >
     <Share class="w-4 h-4" />
-    シェア
   </button>
-  
+
   <!-- ShareModal -->
-  <ShareModal 
+  <ShareModal
     isOpen={shareModalOpen}
     favorite={tempFavorite}
     onClose={closeShareModal}

@@ -1,7 +1,8 @@
 <script lang="ts">
-import { Calendar, MousePointer, Heart, Check } from '@lucide/svelte';
+import { Calendar, Heart, Check } from '@lucide/svelte';
 import type { HistoryEntry } from '$lib/types';
 import ShareButton from './ShareButton.svelte';
+import PaletteColorPreview from './PaletteColorPreview.svelte';
 import { saveFavorite, favoritesStore } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { Palette } from '$lib/models/Palette';
@@ -16,6 +17,13 @@ const { entry, onSelect, onShare }: Props = $props();
 
 // パレットを生成
 const palette = $derived(new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern));
+
+// プレビュー用のカラー情報
+const previewColors = $derived<[{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }]>([
+  { hex: entry.primaryDye.hex, name: entry.primaryDye.name },
+  { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
+  { hex: palette.accent.dye.hex, name: palette.accent.dye.name },
+]);
 
 // お気に入り一覧
 const favorites = $derived($favoritesStore);
@@ -80,13 +88,48 @@ async function handleAddToFavorites() {
 
 <div class="card bg-base-100 shadow-md border border-base-300 transition-shadow hover:shadow-lg">
   <div class="card-body p-4">
-    <!-- ヘッダー部分：日時 -->
-    <div class="flex justify-between items-start mb-4">
+    <!-- ヘッダー部分：日時と操作ボタン -->
+    <div class="flex justify-between items-center mb-4">
       <div class="flex-1 min-w-0">
         <div class="flex items-center gap-1 text-xs text-base-content/60">
-          <Calendar class="w-3 h-3" />
+          <Calendar class="w-4 h-4" />
           {formatDate(entry.createdAt)}
         </div>
+      </div>
+
+      <!-- 操作ボタン -->
+      <div class="flex gap-1 ml-2">
+        <!-- スキ！追加ボタン -->
+        {#if isAlreadyFavorited}
+          <button
+            class="btn btn-ghost btn-sm btn-circle text-success"
+            disabled
+            aria-label="スキ！済み"
+          >
+            <Heart class="w-4 h-4 fill-current" />
+          </button>
+        {:else}
+          <button
+            class="btn btn-ghost btn-sm btn-circle"
+            class:text-success={showFeedback}
+            onclick={handleAddToFavorites}
+            disabled={isAddingToFavorites}
+            aria-label="スキ！"
+          >
+            {#if showFeedback}
+              <Check class="w-4 h-4" />
+            {:else if isAddingToFavorites}
+              <span class="loading loading-spinner loading-sm"></span>
+            {:else}
+              <Heart class="w-4 h-4" />
+            {/if}
+          </button>
+        {/if}
+
+        <ShareButton
+          favorite={entry}
+          onShare={handleShare}
+        />
       </div>
     </div>
 
@@ -97,89 +140,9 @@ async function handleAddToFavorites() {
       </div>
     {/if}
 
-    <!-- カラープレビュー -->
+    <!-- カラープレビュー（クリックで選択） -->
     <div class="mb-4">
-      <div class="grid grid-cols-3 gap-2">
-        <!-- プライマリ染料 -->
-        <div class="text-center">
-          <div
-            class="w-full h-12 rounded border border-base-300"
-            style="background-color: {entry.primaryDye.hex};"
-            title={entry.primaryDye.name}
-          ></div>
-          <div class="text-xs mt-1 truncate" title={entry.primaryDye.name}>
-            {entry.primaryDye.name}
-          </div>
-        </div>
-
-        <!-- サブ -->
-        <div class="text-center">
-          <div
-            class="w-full h-12 rounded border border-base-300"
-            style="background-color: {palette.sub.dye.hex};"
-            title={palette.sub.dye.name}
-          ></div>
-          <div class="text-xs mt-1 truncate" title={palette.sub.dye.name}>
-            {palette.sub.dye.name}
-          </div>
-        </div>
-
-        <!-- アクセント -->
-        <div class="text-center">
-          <div
-            class="w-full h-12 rounded border border-base-300"
-            style="background-color: {palette.accent.dye.hex};"
-            title={palette.accent.dye.name}
-          ></div>
-          <div class="text-xs mt-1 truncate" title={palette.accent.dye.name}>
-            {palette.accent.dye.name}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- 操作ボタン -->
-    <div class="flex gap-2">
-      <button
-        class="btn btn-primary btn-sm flex-1"
-        onclick={handleSelect}
-      >
-        <MousePointer class="w-4 h-4" />
-        この組み合わせを選択
-      </button>
-
-      <!-- スキ！追加ボタン -->
-      {#if isAlreadyFavorited}
-        <button
-          class="btn btn-sm btn-ghost text-success cursor-default"
-          disabled
-          aria-label="スキ！済み"
-        >
-          <Heart class="w-4 h-4 fill-current" />
-        </button>
-      {:else}
-        <button
-          class="btn btn-sm"
-          class:btn-success={showFeedback}
-          class:btn-outline={!showFeedback}
-          onclick={handleAddToFavorites}
-          disabled={isAddingToFavorites}
-          aria-label="スキ！"
-        >
-          {#if showFeedback}
-            <Check class="w-4 h-4" />
-          {:else if isAddingToFavorites}
-            <span class="loading loading-spinner loading-xs"></span>
-          {:else}
-            <Heart class="w-4 h-4" />
-          {/if}
-        </button>
-      {/if}
-
-      <ShareButton
-        favorite={entry}
-        onShare={handleShare}
-      />
+      <PaletteColorPreview colors={previewColors} onSelect={handleSelect} />
     </div>
 
     <!-- パターン表示 -->

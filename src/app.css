@@ -1,2 +1,11 @@
 @import "tailwindcss";
 @plugin "daisyui";
+
+/* スクロールバー非表示ユーティリティ */
+.scrollbar-hide {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;
+}

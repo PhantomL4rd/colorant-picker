@@ -21,13 +21,14 @@ function handleRandomPick() {
 }
 </script>
 
-<button 
+<button
   class="btn btn-secondary btn-block"
   onclick={handleRandomPick}
   disabled={disabled || dyes.length < 3}
+  aria-label="ランダムに色を選択"
 >
   <Shuffle class="h-5 w-5" />
-  ランダムピック
+  ランダム
 </button>
 
 {#if dyes.length < 3}

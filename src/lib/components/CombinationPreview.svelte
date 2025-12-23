@@ -2,7 +2,7 @@
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { selectPrimaryDye } from '$lib/stores/selection';
 import { Palette } from '$lib/models/Palette';
-import { BookOpenText, Info } from 'lucide-svelte';
+import { Info } from 'lucide-svelte';
 
 interface Props {
   selectedDye: DyeProps | null;
@@ -33,30 +33,31 @@ function textColor(dye: DyeProps): string {
     {#if selectedDye && suggestedDyes}
       <div class="space-y-6">
         <!-- 3色のプレビュー -->
-        <div class="grid grid-cols-3 gap-4">
+        <div class="grid grid-cols-3 gap-2 md:gap-4">
           <!-- 基本カララント -->
-          <div class="text-center">
+          <div class="text-center min-w-0">
             <div
-              class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 flex items-center justify-center"
+              class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 flex items-center justify-center"
               style="background-color: {selectedDye.hex};"
             >
               {#if showRatio && palette}
-                <span
-                  class="text-xs font-semibold opacity-80"
+                <div
+                  class="text-xs font-semibold opacity-80 text-center"
                   style="color: {textColor(selectedDye)};"
-                  >{palette.main.role}</span
                 >
+                  <div>{palette.main.role}</div>
+                  <div>{palette.main.percent}%</div>
+                </div>
               {/if}
             </div>
-            <h4 class="font-medium text-sm flex items-center justify-center gap-1">
+            <h4 class="font-medium text-xs text-balance">
               {#if selectedDye.lodestone}
                 <a
                   href={selectedDye.lodestone}
-                  class="hover:text-primary transition-colors flex items-center gap-1"
+                  class="hover:text-primary transition-colors"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <BookOpenText class="w-3 h-3" />
                   {selectedDye.name}
                 </a>
               {:else}
@@ -67,31 +68,33 @@ function textColor(dye: DyeProps): string {
 
           {#if palette}
             <!-- サブ -->
-            <div class="text-center">
+            <div class="text-center min-w-0">
               <button
                 type="button"
-                class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer flex items-center justify-center"
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 hover:border-primary transition-colors cursor-pointer flex items-center justify-center"
                 style="background-color: {palette.sub.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.sub.dye)}
                 title="この色を選択して新しい組み合わせを提案"
+                aria-label="{palette.sub.dye.name}を選択"
               >
                 {#if showRatio}
-                  <span
-                    class="text-xs font-semibold opacity-80"
+                  <div
+                    class="text-xs font-semibold opacity-80 text-center"
                     style="color: {textColor(palette.sub.dye)};"
-                    >{palette.sub.role}</span
                   >
+                    <div>{palette.sub.role}</div>
+                    <div>{palette.sub.percent}%</div>
+                  </div>
                 {/if}
               </button>
-              <h4 class="font-medium text-sm flex items-center justify-center gap-1">
+              <h4 class="font-medium text-xs text-balance">
                 {#if palette.sub.dye.lodestone}
                   <a
                     href={palette.sub.dye.lodestone}
-                    class="hover:text-primary transition-colors flex items-center gap-1"
+                    class="hover:text-primary transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <BookOpenText class="w-3 h-3" />
                     {palette.sub.dye.name}
                   </a>
                 {:else}
@@ -101,31 +104,33 @@ function textColor(dye: DyeProps): string {
             </div>
 
             <!-- アクセント -->
-            <div class="text-center">
+            <div class="text-center min-w-0">
               <button
                 type="button"
-                class="w-full h-20 rounded-lg border-2 border-base-300 mb-2 hover:border-primary transition-colors cursor-pointer flex items-center justify-center"
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 hover:border-primary transition-colors cursor-pointer flex items-center justify-center"
                 style="background-color: {palette.accent.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.accent.dye)}
                 title="この色を選択して新しい組み合わせを提案"
+                aria-label="{palette.accent.dye.name}を選択"
               >
                 {#if showRatio}
-                  <span
-                    class="text-xs font-semibold opacity-80"
+                  <div
+                    class="text-xs font-semibold opacity-80 text-center"
                     style="color: {textColor(palette.accent.dye)};"
-                    >{palette.accent.role}</span
                   >
+                    <div>{palette.accent.role}</div>
+                    <div>{palette.accent.percent}%</div>
+                  </div>
                 {/if}
               </button>
-              <h4 class="font-medium text-sm flex items-center justify-center gap-1">
+              <h4 class="font-medium text-xs text-balance">
                 {#if palette.accent.dye.lodestone}
                   <a
                     href={palette.accent.dye.lodestone}
-                    class="hover:text-primary transition-colors flex items-center gap-1"
+                    class="hover:text-primary transition-colors"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <BookOpenText class="w-3 h-3" />
                     {palette.accent.dye.name}
                   </a>
                 {:else}
@@ -147,15 +152,15 @@ function textColor(dye: DyeProps): string {
               <div class="tooltip-content text-start p-3 max-w-sm">
                 <p class="font-semibold mb-1">配色の黄金比</p>
                 <p>
-                  <span class="font-medium">メイン({palette.main.percent}%)</span>:
+                  <span class="font-medium">メイン</span>:
                   コーデの主役（胴・脚など広い部分に）
                 </p>
                 <p>
-                  <span class="font-medium">サブ({palette.sub.percent}%)</span>:
+                  <span class="font-medium">サブ</span>:
                   メインを引き立てる2番手（手・足など）
                 </p>
                 <p>
-                  <span class="font-medium">アクセント({palette.accent.percent}%)</span>:
+                  <span class="font-medium">アクセント</span>:
                   個性際立つワンポイント！
                 </p>
               </div>

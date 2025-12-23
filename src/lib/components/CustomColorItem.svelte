@@ -43,7 +43,7 @@ function handleDelete() {
           onclick={onSelect}
           class="text-left hover:text-primary transition-colors cursor-pointer block w-full"
         >
-          <div class="font-medium text-base truncate">{color.name}</div>
+          <div class="font-medium text-base text-balance">{color.name}</div>
           <div class="text-sm text-gray-500">RGB({rgbDisplay})</div>
         </button>
       </div>

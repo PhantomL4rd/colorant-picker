@@ -70,16 +70,13 @@ function handleKeydown(event: KeyboardEvent) {
 <!-- モーダル -->
 {#if isOpen && favorite}
   <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-  <dialog 
-    class="modal modal-open" 
+  <dialog
+    class="modal modal-open"
     onkeydown={handleKeydown}
     aria-labelledby="share-modal-title"
     aria-describedby="share-modal-description"
   >
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div class="modal-backdrop" onclick={handleBackdropClick} role="button" tabindex="-1">
-      <div class="modal-box w-11/12 max-w-2xl" onclick={(e) => e.stopPropagation()}>
+    <div class="modal-box w-11/12 max-w-2xl">
         <!-- ヘッダー -->
         <div class="flex items-center justify-between mb-6">
           <h3 id="share-modal-title" class="text-lg font-bold">パレットをシェア</h3>
@@ -99,36 +96,36 @@ function handleKeydown(event: KeyboardEvent) {
             <!-- 主色 -->
             {#if primaryDye}
               <div class="text-center">
-                <div 
-                  class="w-full h-16 rounded-lg border-2 border-base-300 mb-2"
+                <div
+                  class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
                   style="background-color: {primaryDye.hex};"
                   title={primaryDye.name}
                 ></div>
-                <h4 class="font-medium text-sm text-base-content">{primaryDye.name}</h4>
+                <div class="text-xs mt-1 text-balance">{primaryDye.name}</div>
               </div>
             {/if}
-            
+
             <!-- 提案色1 -->
             {#if suggestedDye1}
               <div class="text-center">
-                <div 
-                  class="w-full h-16 rounded-lg border-2 border-base-300 mb-2"
+                <div
+                  class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
                   style="background-color: {suggestedDye1.hex};"
                   title={suggestedDye1.name}
                 ></div>
-                <h4 class="font-medium text-sm text-base-content">{suggestedDye1.name}</h4>
+                <div class="text-xs mt-1 text-balance">{suggestedDye1.name}</div>
               </div>
             {/if}
-            
+
             <!-- 提案色2 -->
             {#if suggestedDye2}
               <div class="text-center">
-                <div 
-                  class="w-full h-16 rounded-lg border-2 border-base-300 mb-2"
+                <div
+                  class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
                   style="background-color: {suggestedDye2.hex};"
                   title={suggestedDye2.name}
                 ></div>
-                <h4 class="font-medium text-sm text-base-content">{suggestedDye2.name}</h4>
+                <div class="text-xs mt-1 text-balance">{suggestedDye2.name}</div>
               </div>
             {/if}
           </div>
@@ -186,7 +183,9 @@ function handleKeydown(event: KeyboardEvent) {
             {/if}
           </button>
         </div>
-      </div>
     </div>
+    <!-- svelte-ignore a11y_click_events_have_key_events -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="modal-backdrop" onclick={onClose}></div>
   </dialog>
 {/if}
