@@ -1,5 +1,8 @@
 @import "tailwindcss";
-@plugin "daisyui";
+
+@plugin "daisyui" {
+   themes: wireframe --default, black --prefersdark;
+ }
 
 /* スクロールバー非表示ユーティリティ */
 .scrollbar-hide {
