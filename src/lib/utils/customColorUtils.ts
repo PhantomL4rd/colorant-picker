@@ -14,7 +14,7 @@ export function customColorToDye(customColor: CustomColor): DyeProps {
   return {
     id: `custom-${customColor.id}`,
     name: customColor.name,
-    category: '白系', // カスタムカラーは仮にwhite系に分類
+    category: 'white', // カスタムカラーは仮にwhite系に分類
     hsv: customColor.hsv,
     rgb: customColor.rgb,
     hex: formatHex(customColor.rgb).toUpperCase(),

@@ -40,8 +40,25 @@ export interface DyeWithRole {
   percent: number; // 0-100の整数
 }
 
-// カララントカテゴリ
-export type DyeCategory = '白系' | '赤系' | '茶系' | '黄系' | '緑系' | '青系' | '紫系' | 'レア系';
+// カララントカテゴリ（内部キー・英語）
+export type DyeCategory = 'white' | 'red' | 'brown' | 'yellow' | 'green' | 'blue' | 'purple' | 'rare';
+
+// ===== i18n関連 =====
+
+// サポート言語
+export type Locale = 'en' | 'ja';
+
+// 翻訳データ構造
+export interface DyeTranslations {
+  dyes: Record<string, string>; // id → 翻訳名
+  categories: Record<DyeCategory, string>; // カテゴリキー → 翻訳名
+}
+
+// Lodestoneドメインマッピング
+export const LODESTONE_DOMAINS: Record<Locale, string> = {
+  en: 'na.finalfantasyxiv.com',
+  ja: 'jp.finalfantasyxiv.com',
+};
 
 // 配色パターン
 export type HarmonyPattern =

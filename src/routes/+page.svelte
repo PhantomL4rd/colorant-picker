@@ -57,10 +57,10 @@ onMount(async () => {
       // URL復元処理
       restorePaletteFromUrl(dyes);
 
-      // パターンサンプル用の代表色を選択（赤系の「ダラガブレッド」など鮮やかな色）
+      // パターンサンプル用の代表色を選択（赤系の「Dalamud Red」など鮮やかな色）
       const representativeDye =
-        dyes.find((d) => d.name === 'ダラガブレッド') ||
-        dyes.find((d) => d.category === '赤系') ||
+        dyes.find((d) => d.name === 'Dalamud Red') ||
+        dyes.find((d) => d.category === 'red') ||
         dyes[0];
 
       if (representativeDye) {

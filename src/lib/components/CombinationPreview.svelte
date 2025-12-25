@@ -2,6 +2,8 @@
 import { BookOpenText, Info } from 'lucide-svelte';
 import { Palette } from '$lib/models/Palette';
 import { selectPrimaryDye } from '$lib/stores/selection';
+import { localeStore, translationsStore } from '$lib/stores/locale';
+import { translateDyeName, getLodestoneUrl } from '$lib/utils/i18n';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 
 interface Props {
@@ -12,6 +14,20 @@ interface Props {
 }
 
 const { selectedDye, suggestedDyes, pattern, showRatio = true }: Props = $props();
+
+const locale = $derived($localeStore);
+const translations = $derived($translationsStore);
+
+// 染料名を翻訳
+function getDyeName(dye: DyeProps): string {
+  return translateDyeName(dye.id, dye.name, translations);
+}
+
+// Lodestone URLをローカライズ
+function getDyeLodestoneUrl(dye: DyeProps): string | undefined {
+  if (!dye.lodestone) return undefined;
+  return getLodestoneUrl(dye.lodestone, locale);
+}
 
 // 3色が揃っている場合のみパレットを生成
 const palette = $derived.by(() => {
@@ -51,18 +67,18 @@ function textColor(dye: DyeProps): string {
               {/if}
             </div>
             <h4 class="font-medium text-xs text-balance">
-              {#if selectedDye.lodestone}
+              {#if getDyeLodestoneUrl(selectedDye)}
                 <a
-                  href={selectedDye.lodestone}
+                  href={getDyeLodestoneUrl(selectedDye)}
                   class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
                   target="_blank"
                   rel="noopener noreferrer"
                 >
                   <BookOpenText class="w-3 h-3 flex-shrink-0" />
-                  <span>{selectedDye.name}</span>
+                  <span>{getDyeName(selectedDye)}</span>
                 </a>
               {:else}
-                {selectedDye.name}
+                {getDyeName(selectedDye)}
               {/if}
             </h4>
           </div>
@@ -76,7 +92,7 @@ function textColor(dye: DyeProps): string {
                 style="background-color: {palette.sub.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.sub.dye)}
                 title="この色を選択して新しい組み合わせを提案"
-                aria-label="{palette.sub.dye.name}を選択"
+                aria-label="{getDyeName(palette.sub.dye)}を選択"
               >
                 {#if showRatio}
                   <div
@@ -89,18 +105,18 @@ function textColor(dye: DyeProps): string {
                 {/if}
               </button>
               <h4 class="font-medium text-xs text-balance">
-                {#if palette.sub.dye.lodestone}
+                {#if getDyeLodestoneUrl(palette.sub.dye)}
                   <a
-                    href={palette.sub.dye.lodestone}
+                    href={getDyeLodestoneUrl(palette.sub.dye)}
                     class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <BookOpenText class="w-3 h-3 flex-shrink-0" />
-                    <span>{palette.sub.dye.name}</span>
+                    <span>{getDyeName(palette.sub.dye)}</span>
                   </a>
                 {:else}
-                  {palette.sub.dye.name}
+                  {getDyeName(palette.sub.dye)}
                 {/if}
               </h4>
             </div>
@@ -113,7 +129,7 @@ function textColor(dye: DyeProps): string {
                 style="background-color: {palette.accent.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.accent.dye)}
                 title="この色を選択して新しい組み合わせを提案"
-                aria-label="{palette.accent.dye.name}を選択"
+                aria-label="{getDyeName(palette.accent.dye)}を選択"
               >
                 {#if showRatio}
                   <div
@@ -126,18 +142,18 @@ function textColor(dye: DyeProps): string {
                 {/if}
               </button>
               <h4 class="font-medium text-xs text-balance">
-                {#if palette.accent.dye.lodestone}
+                {#if getDyeLodestoneUrl(palette.accent.dye)}
                   <a
-                    href={palette.accent.dye.lodestone}
+                    href={getDyeLodestoneUrl(palette.accent.dye)}
                     class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
                     target="_blank"
                     rel="noopener noreferrer"
                   >
                     <BookOpenText class="w-3 h-3 flex-shrink-0" />
-                    <span>{palette.accent.dye.name}</span>
+                    <span>{getDyeName(palette.accent.dye)}</span>
                   </a>
                 {:else}
-                  {palette.accent.dye.name}
+                  {getDyeName(palette.accent.dye)}
                 {/if}
               </h4>
             </div>

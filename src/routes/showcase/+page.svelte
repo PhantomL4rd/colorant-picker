@@ -8,11 +8,15 @@ import ShareModal from '$lib/components/ShareModal.svelte';
 import { Palette } from '$lib/models/Palette';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
+import { translationsStore } from '$lib/stores/locale';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
+import { translateDyeName } from '$lib/utils/i18n';
 import type { DyeProps, Favorite, HarmonyPattern, ShowcaseData, ShowcasePalette } from '$lib/types';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
+
+const translations = $derived($translationsStore);
 
 let isLoading = $state(true);
 let error = $state<string | null>(null);
@@ -113,14 +117,17 @@ const favoriteForShare = $derived(getFavoriteForShare());
 // お気に入り一覧
 const favorites = $derived($favoritesStore);
 
-// プレビュー用のカラー情報を生成
+// プレビュー用のカラー情報を生成（翻訳適用）
 function getPreviewColors(showcasePalette: ShowcasePalette): PreviewColors | null {
   const palette = Palette.fromShowcase(showcasePalette, dyes);
   if (!palette) return null;
+  const primary = palette.primary;
+  const sub = palette.sub.dye;
+  const accent = palette.accent.dye;
   return [
-    { hex: palette.primary.hex, name: palette.primary.name },
-    { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
-    { hex: palette.accent.dye.hex, name: palette.accent.dye.name },
+    { hex: primary.hex, name: translateDyeName(primary.id, primary.name, translations) },
+    { hex: sub.hex, name: translateDyeName(sub.id, sub.name, translations) },
+    { hex: accent.hex, name: translateDyeName(accent.id, accent.name, translations) },
   ];
 }
 

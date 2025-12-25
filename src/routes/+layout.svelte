@@ -1,8 +1,11 @@
 <script lang="ts">
 import '../app.css';
+import { onMount } from 'svelte';
 import { HelpCircle, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
 import CoachMark from '$lib/components/CoachMark.svelte';
+import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
+import { initLocale } from '$lib/stores/locale';
 
 const { children } = $props();
 
@@ -11,6 +14,11 @@ const siteDescription = 'FF14のカララント（染料）から3色の組み�
 
 // コーチマーク表示状態
 let isCoachMarkOpen = $state(false);
+
+// 言語初期化
+onMount(() => {
+  initLocale();
+});
 
 function openCoachMark() {
   isCoachMarkOpen = true;
@@ -45,6 +53,9 @@ function closeCoachMark() {
         </h1>
       </div>
       <div class="flex-none flex items-center gap-1">
+        <!-- 言語切替 -->
+        <LanguageSwitcher />
+
         <!-- ヘルプボタン -->
         <button
           type="button"

@@ -2,12 +2,16 @@
 import { Heart, Shuffle } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
+import { translationsStore } from '$lib/stores/locale';
+import { translateDyeName } from '$lib/utils/i18n';
 import type { Favorite } from '$lib/types';
 import PaletteCard from './PaletteCard.svelte';
 import ShareModal from './ShareModal.svelte';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
+
+const translations = $derived($translationsStore);
 
 interface Props {
   onSelectFavorite?: (favorite: Favorite) => void;
@@ -54,13 +58,16 @@ function closeShareModal() {
   selectedFavoriteForShare = null;
 }
 
-// プレビュー用のカラー情報を生成
+// プレビュー用のカラー情報を生成（翻訳適用）
 function getPreviewColors(favorite: Favorite): PreviewColors {
   const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+  const primary = favorite.primaryDye;
+  const sub = palette.sub.dye;
+  const accent = palette.accent.dye;
   return [
-    { hex: favorite.primaryDye.hex, name: favorite.primaryDye.name },
-    { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
-    { hex: palette.accent.dye.hex, name: palette.accent.dye.name },
+    { hex: primary.hex, name: translateDyeName(primary.id, primary.name, translations) },
+    { hex: sub.hex, name: translateDyeName(sub.id, sub.name, translations) },
+    { hex: accent.hex, name: translateDyeName(accent.id, accent.name, translations) },
   ];
 }
 </script>

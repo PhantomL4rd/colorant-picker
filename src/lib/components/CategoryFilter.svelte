@@ -1,5 +1,7 @@
 <script lang="ts">
 import type { DyeCategory } from '$lib/types';
+import { translationsStore } from '$lib/stores/locale';
+import { translateCategory } from '$lib/utils/i18n';
 
 interface Props {
   selectedCategory: DyeCategory | null;
@@ -18,15 +20,17 @@ const {
 }: Props = $props();
 
 const categories: DyeCategory[] = [
-  '白系',
-  '赤系',
-  '茶系',
-  '黄系',
-  '緑系',
-  '青系',
-  '紫系',
-  'レア系',
+  'white',
+  'red',
+  'brown',
+  'yellow',
+  'green',
+  'blue',
+  'purple',
+  'rare',
 ];
+
+const translations = $derived($translationsStore);
 
 function isSelected(category: DyeCategory): boolean {
   return selectedCategory === category;
@@ -47,9 +51,9 @@ function handleCustomColorsClick() {
         <button
           class="btn btn-sm flex-shrink-0 snap-start min-h-11 min-w-11 {isSelected(category) ? 'btn-primary' : 'btn-outline'}"
           onclick={() => onToggleCategory(category)}
-          aria-label="{category}カテゴリを選択"
+          aria-label="{translateCategory(category, translations)}カテゴリを選択"
         >
-          {category}
+          {translateCategory(category, translations)}
         </button>
       {/each}
 

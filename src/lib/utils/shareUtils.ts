@@ -261,7 +261,7 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
         const customDye: ExtendedDye = {
           id: `custom-temp-${Date.now()}`, // 一時的なID
           name: customData.p.name,
-          category: '白系',
+          category: 'white',
           hsv: toHsv(rgb) as Hsv,
           rgb,
           hex: rgbToHex(rgb),

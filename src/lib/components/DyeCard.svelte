@@ -1,5 +1,7 @@
 <script lang="ts">
 import type { DyeProps } from '$lib/types';
+import { translationsStore } from '$lib/stores/locale';
+import { translateDyeName } from '$lib/utils/i18n';
 
 interface Props {
   dye: DyeProps;
@@ -9,6 +11,9 @@ interface Props {
 }
 
 const { dye, isSelected = false, onSelect, animationDelay = 0 }: Props = $props();
+
+const translations = $derived($translationsStore);
+const displayName = $derived(translateDyeName(dye.id, dye.name, translations));
 
 let isClicking = $state(false);
 
@@ -34,7 +39,7 @@ function handleClick() {
   role="button"
   tabindex="0"
   onkeydown={(e) => e.key === 'Enter' && handleClick()}
-  aria-label="{dye.name}を選択"
+  aria-label="{displayName}を選択"
   aria-pressed={isSelected}
 >
   <div class="card-body p-4 min-w-0">
@@ -47,7 +52,7 @@ function handleClick() {
 
     <!-- カララント名 -->
     <h3 class="card-title text-sm font-medium text-center justify-center text-balance">
-      {dye.name}
+      {displayName}
     </h3>
   </div>
 </div>
