@@ -15,8 +15,8 @@ const { visual, isSelected, onSelect }: Props = $props();
   type="button"
   class="flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 ease-out min-w-[100px]
     {isSelected
-      ? 'border-primary bg-primary/10 shadow-md'
-      : 'border-base-300 bg-base-100 hover:border-primary/50 hover:shadow-md'}"
+      ? 'border-accent bg-accent/10 shadow-md scale-105'
+      : 'border-base-300 bg-base-100 hover:border-accent/50 hover:shadow-md'}"
   onclick={onSelect}
   aria-pressed={isSelected}
   aria-label="{visual.label}パターンを選択"
@@ -39,9 +39,16 @@ const { visual, isSelected, onSelect }: Props = $props();
     {/if}
   </div>
 
-  <!-- 説明（選択時のみ表示） -->
+  <!-- 印象タグ（常に表示） -->
+  <div class="flex gap-1 mt-1 flex-wrap justify-center">
+    {#each visual.tags as tag}
+      <span class="badge badge-primary badge-xs">#{tag}</span>
+    {/each}
+  </div>
+
+  <!-- 説明文（選択時のみ表示） -->
   {#if isSelected}
-    <span class="text-xs text-base-content/70 mt-1 text-center">
+    <span class="text-xs text-base-content/70 mt-2 text-center leading-tight">
       {visual.description}
     </span>
   {/if}

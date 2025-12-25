@@ -1,5 +1,6 @@
 <script lang="ts">
 import '../app.css';
+import { browser } from '$app/environment';
 import { CircleHelp, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
 import CoachMark from '$lib/components/CoachMark.svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
@@ -12,6 +13,10 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
 
 // コーチマーク表示状態
 let isCoachMarkOpen = $state(false);
+
+// 移転バナー表示判定（旧サイトからのアクセス時のみ表示）
+const OLD_SITE_URL = 'https://phantoml4rd.github.io/ffxiv-colorant-picker/';
+const showMigrationBanner = $derived(browser && document.referrer.startsWith(OLD_SITE_URL));
 
 function openCoachMark() {
   isCoachMarkOpen = true;
@@ -28,13 +33,15 @@ function closeCoachMark() {
 </svelte:head>
 
 <div class="min-h-dvh bg-base-100">
-  <!-- 移転告知バナー -->
-  <div class="alert alert-warning rounded-none">
-    <TriangleAlert class="w-5 h-5" />
-    <span>
-      <a href={newSiteUrl} class="link font-bold">{newSiteUrl}</a>へ移転しました（ブックマークを更新してください）
-    </span>
-  </div>
+  <!-- 移転告知バナー（旧サイトからのアクセス時のみ表示） -->
+  {#if showMigrationBanner}
+    <div class="alert alert-warning rounded-none">
+      <TriangleAlert class="w-5 h-5" />
+      <span>
+        <a href={newSiteUrl} class="link font-bold">{newSiteUrl}</a>へ移転しました（ブックマークを更新してください）
+      </span>
+    </div>
+  {/if}
 
   <!-- ヘッダー -->
   <header class="navbar bg-primary text-primary-content mb-8">

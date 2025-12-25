@@ -6,6 +6,7 @@ export interface PatternVisual {
   pattern: HarmonyPattern;
   label: string;
   description: string;
+  tags: string[]; // 印象タグ
   sampleColors: [string, string, string]; // サンプル色（表示用）
   colorWheelAngles: [number, number, number]; // カラーホイール上の角度（0-360）
   isPopular?: boolean; // 人気バッジ
@@ -31,6 +32,17 @@ export const PATTERN_DESCRIPTIONS: Record<HarmonyPattern, string> = {
   similar: '馴染みやすい近い色味の3色',
   contrast: 'はっきりとした対比のある3色',
   clash: 'ガウガウ元気になる3色',
+};
+
+// パターンの印象タグ
+export const PATTERN_TAGS: Record<HarmonyPattern, string[]> = {
+  triadic: ['万能', '上品'],
+  'split-complementary': ['個性派', 'おしゃれ'],
+  analogous: ['やさしい', 'ナチュラル'],
+  monochromatic: ['落ち着き', 'シック'],
+  similar: ['なじむ', 'ベーシック'],
+  contrast: ['インパクト', 'メリハリ'],
+  clash: ['元気', 'ポップ'],
 };
 
 // パターンの配列（セレクトボックス用）
@@ -141,6 +153,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'triadic',
     label: PATTERN_LABELS.triadic,
     description: PATTERN_DESCRIPTIONS.triadic,
+    tags: PATTERN_TAGS.triadic,
     sampleColors: ['#E63946', '#457B9D', '#F4A261'],
     colorWheelAngles: [0, 120, 240],
     isPopular: true,
@@ -149,6 +162,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'split-complementary',
     label: PATTERN_LABELS['split-complementary'],
     description: PATTERN_DESCRIPTIONS['split-complementary'],
+    tags: PATTERN_TAGS['split-complementary'],
     sampleColors: ['#6A4C93', '#C9E4CA', '#F7B267'],
     colorWheelAngles: [0, 150, 210],
   },
@@ -156,6 +170,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'analogous',
     label: PATTERN_LABELS.analogous,
     description: PATTERN_DESCRIPTIONS.analogous,
+    tags: PATTERN_TAGS.analogous,
     sampleColors: ['#3A86FF', '#5390D9', '#7FB3D5'],
     colorWheelAngles: [0, 30, 60],
     isPopular: true,
@@ -164,6 +179,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'monochromatic',
     label: PATTERN_LABELS.monochromatic,
     description: PATTERN_DESCRIPTIONS.monochromatic,
+    tags: PATTERN_TAGS.monochromatic,
     sampleColors: ['#2D6A4F', '#40916C', '#74C69D'],
     colorWheelAngles: [0, 0, 0],
   },
@@ -171,6 +187,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'similar',
     label: PATTERN_LABELS.similar,
     description: PATTERN_DESCRIPTIONS.similar,
+    tags: PATTERN_TAGS.similar,
     sampleColors: ['#FFBE0B', '#FB5607', '#FF8FA3'],
     colorWheelAngles: [0, 15, 30],
   },
@@ -178,6 +195,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'contrast',
     label: PATTERN_LABELS.contrast,
     description: PATTERN_DESCRIPTIONS.contrast,
+    tags: PATTERN_TAGS.contrast,
     sampleColors: ['#1D3557', '#E63946', '#F1FAEE'],
     colorWheelAngles: [0, 180, 90],
   },
@@ -185,6 +203,7 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     pattern: 'clash',
     label: PATTERN_LABELS.clash,
     description: PATTERN_DESCRIPTIONS.clash,
+    tags: PATTERN_TAGS.clash,
     sampleColors: ['#FF006E', '#8338EC', '#3A86FF'],
     colorWheelAngles: [0, 90, 270],
   },
