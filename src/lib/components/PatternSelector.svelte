@@ -53,12 +53,13 @@ function handlePatternSelect(pattern: HarmonyPattern) {
       bind:this={carouselContainer}
       class="flex overflow-x-auto gap-3 pb-1 scroll-smooth scrollbar-hide snap-x"
     >
-      {#each patternVisuals as visual (visual.pattern)}
+      {#each patternVisuals as visual, index (visual.pattern)}
         <div class="snap-start flex-shrink-0" data-pattern={visual.pattern}>
           <PatternCard
             {visual}
             isSelected={selectedPattern === visual.pattern}
             onSelect={() => handlePatternSelect(visual.pattern)}
+            animationDelay={index * 60}
           />
         </div>
       {/each}

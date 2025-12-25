@@ -6,17 +6,19 @@ interface Props {
   visual: PatternVisual;
   isSelected: boolean;
   onSelect: () => void;
+  animationDelay?: number;
 }
 
-const { visual, isSelected, onSelect }: Props = $props();
+const { visual, isSelected, onSelect, animationDelay = 0 }: Props = $props();
 </script>
 
 <button
   type="button"
-  class="flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 ease-out min-w-[100px]
+  class="pattern-card flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 ease-out min-w-[100px]
     {isSelected
       ? 'border-accent bg-accent/10 shadow-md scale-105'
       : 'border-base-300 bg-base-100 hover:border-accent/50 hover:shadow-md'}"
+  style="--delay: {animationDelay}ms;"
   onclick={onSelect}
   aria-pressed={isSelected}
   aria-label="{visual.label}パターンを選択"
@@ -53,3 +55,30 @@ const { visual, isSelected, onSelect }: Props = $props();
     </span>
   {/if}
 </button>
+
+<style>
+  /* 段階的フェードイン */
+  .pattern-card {
+    animation: card-appear 0.4s ease-out forwards;
+    animation-delay: var(--delay, 0ms);
+    opacity: 0;
+  }
+
+  @keyframes card-appear {
+    from {
+      opacity: 0;
+      transform: translateY(8px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .pattern-card {
+      animation: none;
+      opacity: 1;
+    }
+  }
+</style>

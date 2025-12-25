@@ -40,8 +40,9 @@ function handleClick() {
   <div class="card-body p-4 min-w-0">
     <!-- カラーサンプル -->
     <div
-      class="w-full h-16 rounded-lg border-2 border-base-300 mb-3 shadow-sm transition-shadow duration-200"
-      style="background-color: {dye.hex};"
+      class="w-full h-16 rounded-lg border-2 border-base-300 mb-3 shadow-sm transition-all duration-200
+        {isClicking ? 'tap-pulse' : ''}"
+      style="background-color: {dye.hex}; --tap-color: {dye.hex};"
     ></div>
 
     <!-- カララント名 -->
@@ -50,3 +51,31 @@ function handleClick() {
     </h3>
   </div>
 </div>
+
+<style>
+  /* タップ時のパルスエフェクト */
+  .tap-pulse {
+    animation: color-pulse 0.3s ease-out;
+  }
+
+  @keyframes color-pulse {
+    0% {
+      box-shadow: 0 0 0 0 var(--tap-color);
+      transform: scale(1);
+    }
+    50% {
+      box-shadow: 0 0 0 8px transparent;
+      transform: scale(1.05);
+    }
+    100% {
+      box-shadow: 0 0 0 0 transparent;
+      transform: scale(1);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tap-pulse {
+      animation: none;
+    }
+  }
+</style>
