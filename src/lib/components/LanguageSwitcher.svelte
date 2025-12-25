@@ -8,13 +8,16 @@
 
   async function handleLocaleChange(locale: Locale) {
     await setLocale(locale);
+    // ドロップダウンを閉じる
+    (document.activeElement as HTMLElement)?.blur();
   }
 </script>
 
 <div class="dropdown dropdown-end">
-  <button type="button" class="btn btn-ghost btn-circle" aria-label="言語切替">
+  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+  <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label="言語切替">
     <Globe class="w-5 h-5" />
-  </button>
+  </div>
   <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
   <ul
     tabindex="0"

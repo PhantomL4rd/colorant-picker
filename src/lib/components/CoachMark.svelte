@@ -189,21 +189,6 @@ $effect(() => {
     onkeydown={handleKeydown}
     onclick={handleOverlayClick}
   >
-    <!-- スポットライト -->
-    {#if paddedRects.length > 0}
-      <svg class="coach-spotlight" viewBox="0 0 {window.innerWidth} {window.innerHeight}">
-        <defs>
-          <mask id="spotlight-mask">
-            <rect x="0" y="0" width="100%" height="100%" fill="white" />
-            {#each paddedRects as rect}
-              <rect x={rect.x} y={rect.y} width={rect.width} height={rect.height} rx="8" fill="black" />
-            {/each}
-          </mask>
-        </defs>
-        <rect x="0" y="0" width="100%" height="100%" fill="rgba(0,0,0,0.6)" mask="url(#spotlight-mask)" />
-      </svg>
-    {/if}
-
     <!-- ツールチップ -->
     <div class="coach-tooltip bg-primary text-primary-content">
       <header class="flex items-start justify-between gap-2 mb-2">
