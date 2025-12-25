@@ -1,7 +1,7 @@
 <script lang="ts">
-import { X, Copy, Check } from '@lucide/svelte';
+import { Check, Copy, X } from '@lucide/svelte';
 import type { Favorite } from '$lib/types';
-import { generateShareUrl, generateShareText, copyToClipboard } from '$lib/utils/shareUtils';
+import { copyToClipboard, generateShareText, generateShareUrl } from '$lib/utils/shareUtils';
 import CombinationPreview from './CombinationPreview.svelte';
 
 interface Props {

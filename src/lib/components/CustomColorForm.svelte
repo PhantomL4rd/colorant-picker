@@ -1,18 +1,18 @@
 <script lang="ts">
+import { Save, X } from '@lucide/svelte';
 import {
   customColorsStore,
+  isNameDuplicate,
   saveCustomColor,
   updateCustomColor,
-  isNameDuplicate,
 } from '$lib/stores/customColors';
-import {
-  validateCustomColorName,
-  validateRgbInput,
-  formatRgbDisplay,
-} from '$lib/utils/customColorUtils';
 import type { RGBColor255 } from '$lib/types';
 import { rgbToRgb255 } from '$lib/utils/colorConversion';
-import { X, Save } from '@lucide/svelte';
+import {
+  formatRgbDisplay,
+  validateCustomColorName,
+  validateRgbInput,
+} from '$lib/utils/customColorUtils';
 
 interface Props {
   editColorId?: string | null;

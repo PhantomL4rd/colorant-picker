@@ -3,7 +3,7 @@
  * LocalStorage永続化の共通ロジックを提供
  */
 
-import { writable, type Writable } from 'svelte/store';
+import { type Writable, writable } from 'svelte/store';
 import { loadFromStorage, saveToStorage } from './storageService';
 import { generateId } from './uuid';
 

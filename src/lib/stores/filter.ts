@@ -1,4 +1,4 @@
-import { writable, derived } from 'svelte/store';
+import { derived, writable } from 'svelte/store';
 import type { DyeCategory, FilterOptions } from '$lib/types';
 import { dyeStore } from './dyes';
 

@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Calendar, Heart } from '@lucide/svelte';
-import type { HistoryEntry } from '$lib/types';
-import ShareButton from './ShareButton.svelte';
-import PaletteColorPreview from './PaletteColorPreview.svelte';
-import { saveFavorite, favoritesStore } from '$lib/stores/favorites';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { Palette } from '$lib/models/Palette';
+import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
+import type { HistoryEntry } from '$lib/types';
+import PaletteColorPreview from './PaletteColorPreview.svelte';
+import ShareButton from './ShareButton.svelte';
 
 interface Props {
   entry: HistoryEntry;

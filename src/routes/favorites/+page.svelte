@@ -1,11 +1,12 @@
 <script lang="ts">
+import { Clock, Heart } from 'lucide-svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
-import { Heart, Clock } from 'lucide-svelte';
 import FavoritesList from '$lib/components/FavoritesList.svelte';
 import HistoryList from '$lib/components/HistoryList.svelte';
 import { loadDyes } from '$lib/stores/dyes';
+
 let isLoading = $state(true);
 
 // URLハッシュからタブを取得 (#history があれば履歴タブ)

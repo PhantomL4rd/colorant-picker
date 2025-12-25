@@ -3,13 +3,13 @@
  * パレットのお気に入り機能を提供（LocalStorage永続化）
  */
 
-import type { Favorite, DyeProps, HarmonyPattern, ExtendedDye, StoredFavorite } from '$lib/types';
 import { Dye } from '$lib/models/Dye';
+import type { DyeProps, ExtendedDye, Favorite, HarmonyPattern, StoredFavorite } from '$lib/types';
 import { isCustomDye } from '$lib/utils/customColorUtils';
-import { createPersistentStore } from '$lib/utils/persistentStore';
 import { dyeToStorable } from '$lib/utils/dyeSerializer';
-import { emitRestorePalette } from './paletteEvents';
 import { submitPalette } from '$lib/utils/paletteSubmit';
+import { createPersistentStore } from '$lib/utils/persistentStore';
+import { emitRestorePalette } from './paletteEvents';
 
 // ===== 定数 =====
 

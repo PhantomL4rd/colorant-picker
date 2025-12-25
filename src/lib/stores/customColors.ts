@@ -4,7 +4,7 @@
  */
 
 import { get } from 'svelte/store';
-import type { CustomColor, StoredCustomColor, RGBColor255, Hsv } from '$lib/types';
+import type { CustomColor, Hsv, RGBColor255, StoredCustomColor } from '$lib/types';
 import { rgb255ToRgb, toHsv } from '$lib/utils/colorConversion';
 import { createPersistentStore } from '$lib/utils/persistentStore';
 import { generateId } from '$lib/utils/uuid';

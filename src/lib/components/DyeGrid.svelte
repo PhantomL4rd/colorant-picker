@@ -1,7 +1,7 @@
 <script lang="ts">
+import { ChevronDown } from 'lucide-svelte';
 import type { DyeProps } from '$lib/types';
 import DyeCard from './DyeCard.svelte';
-import { ChevronDown } from 'lucide-svelte';
 
 interface Props {
   dyes: DyeProps[];

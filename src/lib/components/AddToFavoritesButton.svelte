@@ -1,8 +1,8 @@
 <script lang="ts">
+import { Heart } from 'lucide-svelte';
+import { Palette } from '$lib/models/Palette';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
-import { Palette } from '$lib/models/Palette';
-import { Heart } from 'lucide-svelte';
 
 interface Props {
   disabled?: boolean;

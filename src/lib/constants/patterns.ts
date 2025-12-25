@@ -1,4 +1,4 @@
-import type { HarmonyPattern, DyeProps } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
 
 // パターンのビジュアルデータ

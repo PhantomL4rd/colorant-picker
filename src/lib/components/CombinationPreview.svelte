@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { selectPrimaryDye } from '$lib/stores/selection';
-import { Palette } from '$lib/models/Palette';
 import { BookOpenText, Info } from 'lucide-svelte';
+import { Palette } from '$lib/models/Palette';
+import { selectPrimaryDye } from '$lib/stores/selection';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 
 interface Props {
   selectedDye: DyeProps | null;

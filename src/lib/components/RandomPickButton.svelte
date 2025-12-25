@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { DyeProps } from '$lib/types';
 import { Shuffle } from '@lucide/svelte';
+import type { DyeProps } from '$lib/types';
 
 interface Props {
   dyes: DyeProps[];

@@ -1,12 +1,12 @@
 <script lang="ts">
 import { Heart } from '@lucide/svelte';
-import type { ShowcasePalette, DyeProps, Favorite, HarmonyPattern } from '$lib/types';
-import { dyeStore } from '$lib/stores/dyes';
 import { getPatternLabel } from '$lib/constants/patterns';
-import { saveFavorite, favoritesStore } from '$lib/stores/favorites';
-import ShareButton from './ShareButton.svelte';
-import PaletteColorPreview from './PaletteColorPreview.svelte';
 import { Palette } from '$lib/models/Palette';
+import { dyeStore } from '$lib/stores/dyes';
+import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
+import type { DyeProps, Favorite, HarmonyPattern, ShowcasePalette } from '$lib/types';
+import PaletteColorPreview from './PaletteColorPreview.svelte';
+import ShareButton from './ShareButton.svelte';
 
 interface Props {
   palette: ShowcasePalette;

@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Share } from '@lucide/svelte';
 import { selectionStore } from '$lib/stores/selection';
-import ShareModal from './ShareModal.svelte';
 import type { Favorite } from '$lib/types';
+import ShareModal from './ShareModal.svelte';
 
 interface Props {
   disabled?: boolean;

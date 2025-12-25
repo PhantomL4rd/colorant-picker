@@ -1,8 +1,8 @@
 <script lang="ts">
-import type { HarmonyPattern } from '$lib/types';
-import { PATTERN_VISUALS, type PatternVisual } from '$lib/constants/patterns';
-import PatternCard from './PatternCard.svelte';
 import { Palette } from '@lucide/svelte';
+import { PATTERN_VISUALS, type PatternVisual } from '$lib/constants/patterns';
+import type { HarmonyPattern } from '$lib/types';
+import PatternCard from './PatternCard.svelte';
 
 interface Props {
   selectedPattern: HarmonyPattern;

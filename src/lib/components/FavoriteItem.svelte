@@ -1,11 +1,11 @@
 <script lang="ts">
-import { Trash2, X, Calendar } from '@lucide/svelte';
-import type { Favorite } from '$lib/types';
-import ShareButton from './ShareButton.svelte';
-import PaletteColorPreview from './PaletteColorPreview.svelte';
-import { deleteFavorite } from '$lib/stores/favorites';
+import { Calendar, Trash2, X } from '@lucide/svelte';
 import { getPatternLabel } from '$lib/constants/patterns';
 import { Palette } from '$lib/models/Palette';
+import { deleteFavorite } from '$lib/stores/favorites';
+import type { Favorite } from '$lib/types';
+import PaletteColorPreview from './PaletteColorPreview.svelte';
+import ShareButton from './ShareButton.svelte';
 
 interface Props {
   favorite: Favorite;

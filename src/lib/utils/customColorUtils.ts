@@ -4,8 +4,8 @@
  * culori型を直接使用。
  */
 
-import type { CustomColor, DyeProps, ExtendedDye, RGBColor255, Oklab } from '$lib/types';
-import { toOklab, formatHex } from '$lib/utils/colorConversion';
+import type { CustomColor, DyeProps, ExtendedDye, Oklab, RGBColor255 } from '$lib/types';
+import { formatHex, toOklab } from '$lib/utils/colorConversion';
 
 /**
  * CustomColorをDyePropsライクオブジェクトに変換

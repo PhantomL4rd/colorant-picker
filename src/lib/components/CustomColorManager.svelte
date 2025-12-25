@@ -1,10 +1,10 @@
 <script lang="ts">
+import { CircleUser, Plus } from '@lucide/svelte';
 import { customColorsStore } from '$lib/stores/customColors';
-import { createCustomDye } from '$lib/utils/customColorUtils';
 import { selectPrimaryDye } from '$lib/stores/selection';
+import { createCustomDye } from '$lib/utils/customColorUtils';
 import CustomColorForm from './CustomColorForm.svelte';
 import CustomColorItem from './CustomColorItem.svelte';
-import { Plus, CircleUser } from '@lucide/svelte';
 
 let showForm = $state(false);
 let editingColor = $state<string | null>(null);

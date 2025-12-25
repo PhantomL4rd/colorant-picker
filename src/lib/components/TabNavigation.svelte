@@ -1,7 +1,7 @@
 <script lang="ts">
-import { page } from '$app/state';
+import { Heart, Sparkles, SwatchBook } from 'lucide-svelte';
 import { resolve } from '$app/paths';
-import { SwatchBook, Heart, Sparkles } from 'lucide-svelte';
+import { page } from '$app/state';
 
 const currentPath = $derived(page.url.pathname);
 

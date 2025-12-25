@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Clock, Shuffle } from '@lucide/svelte';
-import type { HistoryEntry, Favorite } from '$lib/types';
 import { historyStore, restoreFromHistory } from '$lib/stores/history';
+import type { Favorite, HistoryEntry } from '$lib/types';
 import HistoryItem from './HistoryItem.svelte';
 import ShareModal from './ShareModal.svelte';
 

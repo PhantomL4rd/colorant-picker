@@ -1,6 +1,6 @@
 <script lang="ts">
 import '../app.css';
-import { SwatchBook, Menu, Moon, TriangleAlert, MessageSquare } from 'lucide-svelte';
+import { Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
 
 const { children } = $props();

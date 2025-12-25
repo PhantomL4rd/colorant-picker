@@ -1,6 +1,6 @@
 import { writable } from 'svelte/store';
-import type { RawDyeDataFile } from '$lib/types';
 import { Dye } from '$lib/models/Dye';
+import type { RawDyeDataFile } from '$lib/types';
 
 // カララントデータストア（Dyeクラスインスタンスを保持）
 export const dyeStore = writable<Dye[]>([]);

@@ -1,14 +1,14 @@
 import type {
-  DyeProps,
-  RawDyeData,
   DyeCategory,
-  RGBColor255,
-  Rgb,
+  DyeProps,
   Hsv,
   Oklab,
+  RawDyeData,
+  RGBColor255,
+  Rgb,
   StoredDye,
 } from '$lib/types';
-import { toHsv, toOklab, formatHex } from '$lib/utils/colorConversion';
+import { formatHex, toHsv, toOklab } from '$lib/utils/colorConversion';
 
 /**
  * 染料クラス

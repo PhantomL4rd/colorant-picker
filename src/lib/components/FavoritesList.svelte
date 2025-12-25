@@ -1,7 +1,7 @@
 <script lang="ts">
 import { Heart, Shuffle } from '@lucide/svelte';
-import type { Favorite } from '$lib/types';
 import { favoritesStore, restoreFavorite } from '$lib/stores/favorites';
+import type { Favorite } from '$lib/types';
 import FavoriteItem from './FavoriteItem.svelte';
 import ShareModal from './ShareModal.svelte';
 

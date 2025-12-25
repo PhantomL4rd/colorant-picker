@@ -1,14 +1,14 @@
 <script lang="ts">
+import { RefreshCw, Sparkles } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
-import { RefreshCw, Sparkles } from '@lucide/svelte';
-import type { ShowcasePalette, ShowcaseData, DyeProps, Favorite } from '$lib/types';
-import { Palette } from '$lib/models/Palette';
-import ShowcaseItem from '$lib/components/ShowcaseItem.svelte';
 import ShareModal from '$lib/components/ShareModal.svelte';
-import { loadDyes, dyeStore } from '$lib/stores/dyes';
+import ShowcaseItem from '$lib/components/ShowcaseItem.svelte';
+import { Palette } from '$lib/models/Palette';
+import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
+import type { DyeProps, Favorite, ShowcaseData, ShowcasePalette } from '$lib/types';
 
 let isLoading = $state(true);
 let error = $state<string | null>(null);

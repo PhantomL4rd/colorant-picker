@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { PatternVisual } from '$lib/constants/patterns';
 import { Star } from 'lucide-svelte';
+import type { PatternVisual } from '$lib/constants/patterns';
 
 interface Props {
   visual: PatternVisual;

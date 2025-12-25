@@ -1,28 +1,27 @@
 <script lang="ts">
+import { Blend, Eye, PaintBucket } from 'lucide-svelte';
 import { onMount } from 'svelte';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { loadDyes, dyeStore } from '$lib/stores/dyes';
-import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
+import AddToFavoritesButton from '$lib/components/AddToFavoritesButton.svelte';
+import CategoryFilter from '$lib/components/CategoryFilter.svelte';
+import CombinationPreview from '$lib/components/CombinationPreview.svelte';
+import CustomColorManager from '$lib/components/CustomColorManager.svelte';
+import DyeGrid from '$lib/components/DyeGrid.svelte';
+import PatternSelector from '$lib/components/PatternSelector.svelte';
+import RandomPickButton from '$lib/components/RandomPickButton.svelte';
+import ShareButton from '$lib/components/ShareButton.svelte';
+import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
+import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import {
-  filterStore,
   filteredDyes,
-  toggleCategory,
+  filterStore,
   resetFilters,
+  toggleCategory,
   toggleExcludeMetallic,
 } from '$lib/stores/filter';
-import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
-import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
+import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
-import { PaintBucket, Blend, Eye } from 'lucide-svelte';
-
-import DyeGrid from '$lib/components/DyeGrid.svelte';
-import CombinationPreview from '$lib/components/CombinationPreview.svelte';
-import PatternSelector from '$lib/components/PatternSelector.svelte';
-import CategoryFilter from '$lib/components/CategoryFilter.svelte';
-import RandomPickButton from '$lib/components/RandomPickButton.svelte';
-import AddToFavoritesButton from '$lib/components/AddToFavoritesButton.svelte';
-import ShareButton from '$lib/components/ShareButton.svelte';
-import CustomColorManager from '$lib/components/CustomColorManager.svelte';
+import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
 
 let isLoading = $state(true);
 

@@ -4,8 +4,8 @@
  * Paletteクラスから使用される基本的なユーティリティ。
  */
 
-import type { Rgb, Oklch } from '$lib/types';
-import { toOklch, deltaEOklch } from './colorConversion';
+import type { Oklch, Rgb } from '$lib/types';
+import { deltaEOklch, toOklch } from './colorConversion';
 
 // ===== 定数 =====
 
