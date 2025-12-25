@@ -3,6 +3,7 @@ import { Heart } from 'lucide-svelte';
 import { Palette } from '$lib/models/Palette';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
+import HeartBurst, { type HeartBurstApi } from './HeartBurst.svelte';
 
 interface Props {
   disabled?: boolean;
@@ -14,6 +15,9 @@ const { disabled = false }: Props = $props();
 let isSaving = $state(false);
 let justSaved = $state(false);
 let saveError = $state('');
+
+// ハートバースト
+let heartBurst: HeartBurstApi;
 
 // 現在の選択状態
 const currentSelection = $derived($selectionStore);
@@ -60,7 +64,8 @@ function handleSave() {
       pattern: currentSelection.pattern,
     });
 
-    // ハートポップアニメーション
+    // ハートバースト + ポップアニメーション
+    heartBurst?.trigger();
     justSaved = true;
     setTimeout(() => {
       justSaved = false;
@@ -106,41 +111,45 @@ function showToast() {
 </script>
 
 <!-- スキ！ボタン -->
-{#if justSaved}
-  <!-- アニメーション中 -->
-  <button
-    class="btn btn-ghost btn-sm text-red-500 cursor-default"
-    disabled
-    aria-label="スキ！"
-  >
-    <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
-    スキ！
-  </button>
-{:else if isAlreadyFavorited}
-  <button
-    class="btn btn-ghost btn-sm text-success cursor-default"
-    disabled
-    aria-label="スキ！済み"
-  >
-    <Heart class="w-4 h-4 fill-current" />
-    スキ！済み
-  </button>
-{:else}
-  <div class="tooltip tooltip-top tooltip-accent" class:tooltip-open={favorites.length === 0} data-tip="気に入ったら押してみて！">
+<div class="relative inline-block">
+  <HeartBurst bind:this={heartBurst} />
+
+  {#if justSaved}
+    <!-- アニメーション中 -->
     <button
-      class="btn btn-primary btn-sm gap-1"
-      class:btn-disabled={isDisabled}
-      class:loading={isSaving}
-      onclick={openModal}
-      disabled={isDisabled || isSaving}
+      class="btn btn-ghost btn-sm text-red-500 cursor-default"
+      disabled
       aria-label="スキ！"
     >
-      {#if isSaving}
-        保存中...
-      {:else}
-        <Heart class="w-4 h-4" />
-        スキ！
-      {/if}
+      <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
+      スキ！
     </button>
-  </div>
-{/if}
+  {:else if isAlreadyFavorited}
+    <button
+      class="btn btn-ghost btn-sm text-success cursor-default"
+      disabled
+      aria-label="スキ！済み"
+    >
+      <Heart class="w-4 h-4 fill-current" />
+      スキ！済み
+    </button>
+  {:else}
+    <div class="tooltip tooltip-top tooltip-accent" class:tooltip-open={favorites.length === 0} data-tip="気に入ったら押してみて！">
+      <button
+        class="btn btn-primary btn-sm gap-1"
+        class:btn-disabled={isDisabled}
+        class:loading={isSaving}
+        onclick={openModal}
+        disabled={isDisabled || isSaving}
+        aria-label="スキ！"
+      >
+        {#if isSaving}
+          保存中...
+        {:else}
+          <Heart class="w-4 h-4" />
+          スキ！
+        {/if}
+      </button>
+    </div>
+  {/if}
+</div>

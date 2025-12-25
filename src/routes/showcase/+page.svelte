@@ -3,12 +3,16 @@ import { RefreshCw, Sparkles } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
+import PaletteCard from '$lib/components/PaletteCard.svelte';
 import ShareModal from '$lib/components/ShareModal.svelte';
-import ShowcaseItem from '$lib/components/ShowcaseItem.svelte';
 import { Palette } from '$lib/models/Palette';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
+import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
-import type { DyeProps, Favorite, ShowcaseData, ShowcasePalette } from '$lib/types';
+import type { DyeProps, Favorite, HarmonyPattern, ShowcaseData, ShowcasePalette } from '$lib/types';
+
+type PreviewColor = { hex: string; name: string };
+type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
 
 let isLoading = $state(true);
 let error = $state<string | null>(null);
@@ -105,6 +109,51 @@ function getFavoriteForShare(): Favorite | null {
 }
 
 const favoriteForShare = $derived(getFavoriteForShare());
+
+// お気に入り一覧
+const favorites = $derived($favoritesStore);
+
+// プレビュー用のカラー情報を生成
+function getPreviewColors(showcasePalette: ShowcasePalette): PreviewColors | null {
+  const palette = Palette.fromShowcase(showcasePalette, dyes);
+  if (!palette) return null;
+  return [
+    { hex: palette.primary.hex, name: palette.primary.name },
+    { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
+    { hex: palette.accent.dye.hex, name: palette.accent.dye.name },
+  ];
+}
+
+// お気に入り済みかチェック
+function isFavorited(showcasePalette: ShowcasePalette): boolean {
+  const palette = Palette.fromShowcase(showcasePalette, dyes);
+  if (!palette) return false;
+  return palette.isIn(favorites);
+}
+
+// お気に入りに追加
+function handleAddToFavorites(showcasePalette: ShowcasePalette) {
+  const palette = Palette.fromShowcase(showcasePalette, dyes);
+  if (!palette) return;
+  saveFavorite({
+    primaryDye: palette.primary,
+    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+    pattern: palette.pattern,
+  });
+}
+
+// Favorite形式に変換
+function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | null {
+  const palette = Palette.fromShowcase(showcasePalette, dyes);
+  if (!palette) return null;
+  return {
+    id: `showcase-${showcasePalette.id}`,
+    primaryDye: palette.primary,
+    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+    pattern: palette.pattern,
+    createdAt: showcasePalette.createdAt,
+  };
+}
 </script>
 
 <svelte:head>
@@ -163,8 +212,21 @@ const favoriteForShare = $derived(getFavoriteForShare());
   {:else}
     <!-- パレット一覧 -->
     <div class="space-y-4">
-      {#each palettes as palette (palette.id)}
-        <ShowcaseItem {palette} onSelect={handleSelectPalette} onShare={handleShare} />
+      {#each palettes as showcasePalette (showcasePalette.id)}
+        {@const colors = getPreviewColors(showcasePalette)}
+        {@const favoriteData = getFavoriteForPalette(showcasePalette)}
+        {#if colors && favoriteData}
+          <PaletteCard
+            {colors}
+            pattern={showcasePalette.pattern as HarmonyPattern}
+            favoriteForShare={favoriteData}
+            showFavoriteButton={true}
+            isFavorited={isFavorited(showcasePalette)}
+            onSelect={() => handleSelectPalette(showcasePalette)}
+            onShare={() => handleShare(showcasePalette)}
+            onFavorite={() => handleAddToFavorites(showcasePalette)}
+          />
+        {/if}
       {/each}
     </div>
   {/if}

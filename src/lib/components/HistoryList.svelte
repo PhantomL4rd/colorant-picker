@@ -1,9 +1,14 @@
 <script lang="ts">
 import { Clock, Shuffle } from '@lucide/svelte';
+import { Palette } from '$lib/models/Palette';
+import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { historyStore, restoreFromHistory } from '$lib/stores/history';
 import type { Favorite, HistoryEntry } from '$lib/types';
-import HistoryItem from './HistoryItem.svelte';
+import PaletteCard from './PaletteCard.svelte';
 import ShareModal from './ShareModal.svelte';
+
+type PreviewColor = { hex: string; name: string };
+type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
 
 interface Props {
   onSelectHistory?: (entry: HistoryEntry) => void;
@@ -52,6 +57,34 @@ function closeShareModal() {
 
 // ShareModal用にFavorite形式に変換（HistoryEntryとFavoriteは同じ構造）
 const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
+
+// お気に入り一覧
+const favorites = $derived($favoritesStore);
+
+// プレビュー用のカラー情報を生成
+function getPreviewColors(entry: HistoryEntry): PreviewColors {
+  const palette = new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern);
+  return [
+    { hex: entry.primaryDye.hex, name: entry.primaryDye.name },
+    { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
+    { hex: palette.accent.dye.hex, name: palette.accent.dye.name },
+  ];
+}
+
+// お気に入り済みかチェック
+function isFavorited(entry: HistoryEntry): boolean {
+  const palette = new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern);
+  return palette.isIn(favorites);
+}
+
+// お気に入りに追加
+function handleAddToFavorites(entry: HistoryEntry) {
+  saveFavorite({
+    primaryDye: entry.primaryDye,
+    suggestedDyes: entry.suggestedDyes,
+    pattern: entry.pattern,
+  });
+}
 </script>
 
 <div class="container mx-auto px-4 pb-20 pt-4">
@@ -96,10 +129,16 @@ const favoriteForShare = $derived<Favorite | null>(selectedEntryForShare);
     <!-- 履歴一覧 -->
     <div class="space-y-4">
       {#each sortedHistory as entry (entry.id)}
-        <HistoryItem
-          {entry}
-          onSelect={handleSelectHistory}
-          onShare={handleShare}
+        <PaletteCard
+          colors={getPreviewColors(entry)}
+          pattern={entry.pattern}
+          favoriteForShare={entry}
+          createdAt={entry.createdAt}
+          showFavoriteButton={true}
+          isFavorited={isFavorited(entry)}
+          onSelect={() => handleSelectHistory(entry)}
+          onShare={() => handleShare(entry)}
+          onFavorite={() => handleAddToFavorites(entry)}
         />
       {/each}
     </div>

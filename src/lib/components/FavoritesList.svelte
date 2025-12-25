@@ -1,9 +1,13 @@
 <script lang="ts">
 import { Heart, Shuffle } from '@lucide/svelte';
-import { favoritesStore, restoreFavorite } from '$lib/stores/favorites';
+import { Palette } from '$lib/models/Palette';
+import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
 import type { Favorite } from '$lib/types';
-import FavoriteItem from './FavoriteItem.svelte';
+import PaletteCard from './PaletteCard.svelte';
 import ShareModal from './ShareModal.svelte';
+
+type PreviewColor = { hex: string; name: string };
+type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
 
 interface Props {
   onSelectFavorite?: (favorite: Favorite) => void;
@@ -48,6 +52,16 @@ function handleShare(favorite: Favorite) {
 function closeShareModal() {
   shareModalOpen = false;
   selectedFavoriteForShare = null;
+}
+
+// プレビュー用のカラー情報を生成
+function getPreviewColors(favorite: Favorite): PreviewColors {
+  const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+  return [
+    { hex: favorite.primaryDye.hex, name: favorite.primaryDye.name },
+    { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
+    { hex: palette.accent.dye.hex, name: palette.accent.dye.name },
+  ];
 }
 </script>
 
@@ -98,10 +112,15 @@ function closeShareModal() {
     <!-- お気に入り一覧 -->
     <div class="space-y-4">
       {#each sortedFavorites as favorite (favorite.id)}
-        <FavoriteItem 
-          {favorite}
-          onSelect={handleSelectFavorite}
-          onShare={handleShare}
+        <PaletteCard
+          colors={getPreviewColors(favorite)}
+          pattern={favorite.pattern}
+          favoriteForShare={favorite}
+          createdAt={favorite.createdAt}
+          showDeleteButton={true}
+          onSelect={() => handleSelectFavorite(favorite)}
+          onShare={() => handleShare(favorite)}
+          onDelete={() => deleteFavorite(favorite.id)}
         />
       {/each}
     </div>

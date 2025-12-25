@@ -120,6 +120,31 @@
   animation: heart-flip 0.8s ease-out;
 }
 
+/* ハートバースト（スキ！時に小ハートが弾ける） */
+@keyframes heart-burst {
+  0% {
+    opacity: 1;
+    transform: translate(var(--burst-x, 0), 0) scale(0.5);
+  }
+  15% {
+    opacity: 1;
+    transform: translate(var(--burst-x, 0), calc(var(--burst-y, -25px) * 0.25)) scale(1.1);
+  }
+  50% {
+    opacity: 0.9;
+    transform: translate(var(--burst-x, 0), calc(var(--burst-y, -25px) * 0.6)) scale(0.9);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(var(--burst-x, 0), var(--burst-y, -35px)) scale(0.6);
+  }
+}
+
+.animate-heart-burst {
+  animation: heart-burst 0.55s ease-out forwards;
+  pointer-events: none;
+}
+
 /* ゆっくりパルス（空状態のアイコン用） */
 @keyframes pulse-slow {
   0%, 100% { opacity: 1; transform: scale(1); }
@@ -154,6 +179,7 @@
   .animate-heart-bounce,
   .animate-heart-pop,
   .animate-heart-flip,
+  .animate-heart-burst,
   .animate-pulse-slow,
   .animate-slide-in-right {
     animation: none;
