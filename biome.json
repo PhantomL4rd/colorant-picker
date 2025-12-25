@@ -1,12 +1,13 @@
 {
-  "$schema": "https://biomejs.dev/schemas/2.2.4/schema.json",
+  "$schema": "https://biomejs.dev/schemas/2.3.10/schema.json",
   "vcs": {
     "enabled": true,
     "clientKind": "git",
     "useIgnoreFile": true
   },
   "files": {
-    "ignoreUnknown": false
+    "ignoreUnknown": false,
+    "includes": ["src/**", "!src/app.css"]
   },
   "formatter": {
     "enabled": true,
@@ -22,17 +23,38 @@
     "rules": {
       "recommended": true,
       "style": {
-        "noNonNullAssertion": "off"
+        "noNonNullAssertion": "off",
+        "useBlockStatements": "off",
+        "noParameterAssign": "off"
       },
       "suspicious": {
-        "noExplicitAny": "off"
+        "noExplicitAny": "off",
+        "noConfusingVoidType": "off"
+      },
+      "complexity": {
+        "noForEach": "off"
+      },
+      "correctness": {
+        "noUnusedFunctionParameters": "off"
       }
     }
   },
   "css": {
     "parser": {
       "cssModules": false,
-      "tailwindDirectives": true
+      "allowWrongLineComments": true
+    },
+    "assist": {
+      "enabled": true
+    },
+    "linter": {
+      "enabled": true
+    },
+    "formatter": {
+      "enabled": true,
+      "indentStyle": "space",
+      "indentWidth": 2,
+      "lineWidth": 100
     }
   },
   "javascript": {
@@ -46,21 +68,50 @@
       "bracketSameLine": false,
       "quoteStyle": "single",
       "attributePosition": "auto"
-    }
+    },
+    "globals": ["$state", "$derived", "$effect", "$props", "$bindable", "$inspect", "$host"]
   },
   "overrides": [
     {
-      "includes": ["**/*.svelte"],
+      "includes": ["**/*.svelte", "**/*.svelte.ts"],
       "linter": {
         "rules": {
           "style": {
             "useConst": "off",
-            "useImportType": "off"
+            "useImportType": "off",
+            "noParameterAssign": "off"
           },
           "correctness": {
             "noUnusedVariables": "off",
             "noUnusedImports": "off",
-            "noUnusedPrivateClassMembers": "off"
+            "noUnusedPrivateClassMembers": "off",
+            "noUnusedFunctionParameters": "off"
+          },
+          "suspicious": {
+            "noAssignInExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/stores/**/*.ts"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedVariables": "off"
+          },
+          "suspicious": {
+            "noAssignInExpressions": "off"
+          }
+        }
+      }
+    },
+    {
+      "includes": ["**/*.ts", "**/*.js"],
+      "linter": {
+        "rules": {
+          "correctness": {
+            "noUnusedImports": "warn"
           }
         }
       }

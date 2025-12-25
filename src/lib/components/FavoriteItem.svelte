@@ -21,7 +21,9 @@ const palette = $derived(
 );
 
 // プレビュー用のカラー情報
-const previewColors = $derived<[{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }]>([
+const previewColors = $derived<
+  [{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }]
+>([
   { hex: favorite.primaryDye.hex, name: favorite.primaryDye.name },
   { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
   { hex: palette.accent.dye.hex, name: palette.accent.dye.name },

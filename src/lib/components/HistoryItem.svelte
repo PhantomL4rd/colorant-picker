@@ -19,7 +19,9 @@ const { entry, onSelect, onShare }: Props = $props();
 const palette = $derived(new Palette(entry.primaryDye, entry.suggestedDyes, entry.pattern));
 
 // プレビュー用のカラー情報
-const previewColors = $derived<[{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }]>([
+const previewColors = $derived<
+  [{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }]
+>([
   { hex: entry.primaryDye.hex, name: entry.primaryDye.name },
   { hex: palette.sub.dye.hex, name: palette.sub.dye.name },
   { hex: palette.accent.dye.hex, name: palette.accent.dye.name },

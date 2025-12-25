@@ -60,7 +60,11 @@ const previewColors = $derived.by(() => {
     { hex: getDyeColor(palette.primaryDyeId), name: getDyeName(palette.primaryDyeId) },
     { hex: colorPalette.sub.dye.hex, name: colorPalette.sub.dye.name },
     { hex: colorPalette.accent.dye.hex, name: colorPalette.accent.dye.name },
-  ] as [{ hex: string; name: string }, { hex: string; name: string }, { hex: string; name: string }];
+  ] as [
+    { hex: string; name: string },
+    { hex: string; name: string },
+    { hex: string; name: string },
+  ];
 });
 
 // 既にお気に入りに登録済みかチェック
