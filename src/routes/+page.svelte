@@ -164,7 +164,7 @@ function handleClearAll() {
 {:else}
   <div class="space-y-8">
     <!-- 配色パターン選択 -->
-    <div bind:this={patternSelectorElement} class="card bg-base-200 shadow-md">
+    <div bind:this={patternSelectorElement} class="card bg-base-200 shadow-md" data-coach="pattern-selector">
       <div class="card-body">
         <PatternSelector
           bind:this={patternSelectorComponent}
@@ -251,7 +251,7 @@ function handleClearAll() {
     </div>
 
     <!-- ランダム -->
-    <div class="card bg-base-200 shadow-md">
+    <div class="card bg-base-200 shadow-md" data-coach="random-button">
       <div class="card-body">
         <RandomPickButton
           dyes={filteredDyesList}
@@ -274,7 +274,7 @@ function handleClearAll() {
     </div>
     
     <!-- カララント一覧またはカスタムカラー管理 -->
-    <div>
+    <div data-coach="dye-grid">
       <div class="card bg-base-200 shadow-md">
         <div class="card-body">
           {#if showCustomColors}

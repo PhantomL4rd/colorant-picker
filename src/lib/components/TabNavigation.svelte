@@ -32,6 +32,7 @@ const isFavorites = $derived(
           class:text-base-content={!isHome}
           class:hover:bg-base-300={!isHome}
           aria-label="カララントピッカー"
+          data-coach="home-tab"
         >
           <SwatchBook class="w-6 h-6 mb-1" />
           <span class="text-xs font-medium">ピッカー</span>
@@ -46,6 +47,7 @@ const isFavorites = $derived(
           class:text-base-content={!isShowcase}
           class:hover:bg-base-300={!isShowcase}
           aria-label="おすすめ"
+          data-coach="showcase-tab"
         >
           <Sparkles class="w-6 h-6 mb-1" />
           <span class="text-xs font-medium">おすすめ</span>

@@ -52,7 +52,7 @@ let isDeleting = $state(false);
 let error = $state('');
 
 // ハートバースト
-let heartBurst: HeartBurstApi;
+let heartBurst: HeartBurstApi | undefined = $state();
 
 // 作成日時のフォーマット
 function formatDate(dateStr: string): string {

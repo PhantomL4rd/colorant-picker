@@ -1,6 +1,7 @@
 <script lang="ts">
 import '../app.css';
-import { Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
+import { CircleHelp, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
+import CoachMark from '$lib/components/CoachMark.svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
 
 const { children } = $props();
@@ -8,6 +9,17 @@ const { children } = $props();
 const siteName = 'カララントピッカー';
 const siteDescription = 'FF14のカララント（染料）から3色の組み合わせを提案するツールです。';
 const newSiteUrl = 'https://colorant-picker.pl4rd.com';
+
+// コーチマーク表示状態
+let isCoachMarkOpen = $state(false);
+
+function openCoachMark() {
+  isCoachMarkOpen = true;
+}
+
+function closeCoachMark() {
+  isCoachMarkOpen = false;
+}
 </script>
 
 <svelte:head>
@@ -33,7 +45,18 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
           {siteName}
         </h1>
       </div>
-      <div class="flex-none">
+      <div class="flex-none flex items-center gap-1">
+        <!-- ヘルプボタン -->
+        <button
+          type="button"
+          class="btn btn-ghost btn-circle"
+          onclick={openCoachMark}
+          aria-label="使い方を見る"
+        >
+          <CircleHelp class="w-6 h-6" />
+        </button>
+
+        <!-- メニュー -->
         <div class="dropdown dropdown-end">
           <div tabindex="0" role="button" class="btn btn-ghost">
             <Menu class="w-6 h-6" />
@@ -79,4 +102,7 @@ const newSiteUrl = 'https://colorant-picker.pl4rd.com';
   
   <!-- フッター固定タブナビゲーション -->
   <TabNavigation />
+
+  <!-- コーチマーク -->
+  <CoachMark isOpen={isCoachMarkOpen} onClose={closeCoachMark} />
 </div>
