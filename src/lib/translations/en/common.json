@@ -24,16 +24,16 @@
     "likeError": "Failed to save favorite"
   },
   "state": {
-    "loading": "Loading colorant data...",
+    "loading": "Loading dye data...",
     "empty": "No data available",
     "error": "An error occurred",
-    "needMoreColors": "Need at least 3 colorants"
+    "needMoreColors": "Need at least 3 dyes"
   },
   "filter": {
     "excludeMetallic": "Exclude metallic"
   },
   "nav": {
-    "picker": "Picker",
+    "picker": "Harmony",
     "favorites": "Favorites",
     "history": "History",
     "showcase": "Picks"

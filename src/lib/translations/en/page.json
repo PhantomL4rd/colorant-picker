@@ -2,10 +2,10 @@
   "home": {
     "title": "Dye Harmony",
     "heading": "Pick your colors",
-    "selectPrompt": "Pick a colorant below to start!",
+    "selectPrompt": "Pick a dye below to start!",
     "preview": "Preview",
     "patternSection": "Color Pattern",
-    "dyeList": "Colorant List",
+    "dyeList": "Dye List",
     "ratioTip": {
       "title": "Tips for great dyeing!",
       "heading": "Color Ratio Guide",
@@ -14,7 +14,7 @@
       "accent": "A pop of personality!"
     },
     "dyeGrid": {
-      "empty": "No colorants match",
+      "empty": "No dyes match",
       "emptyHint": "Try changing the filter",
       "showMore": "Show more ({count} remaining)"
     }
@@ -71,7 +71,7 @@
     "copied": "Copied!",
     "copying": "Copying...",
     "copyFailed": "Failed to copy. Please copy manually.",
-    "shareText": "Main: {main}\nSub: {sub} / Accent: {accent}\nPattern: {pattern}\n\n#ColorantPicker #FF14 #FFXIV\n{url}"
+    "shareText": "Main: {main}\nSub: {sub} / Accent: {accent}\nPattern: {pattern}\n\n#DyeHarmony #FF14 #FFXIV\n{url}"
   },
   "coachMark": {
     "step1": {
@@ -80,7 +80,7 @@
     },
     "step2": {
       "title": "Step 2/3",
-      "message": "Pick a colorant"
+      "message": "Pick a dye"
     },
     "step3": {
       "title": "Step 3/3",
