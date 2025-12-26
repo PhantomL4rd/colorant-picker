@@ -171,12 +171,6 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
       <Sparkles class="w-5 h-5 text-primary" />
       <h1 class="text-xl font-bold">{$t('page.showcase.heading')}</h1>
     </div>
-
-    {#if palettes.length > 0}
-      <p class="text-base-content/60 text-sm">
-        {$t('common.nav.showcase')}
-      </p>
-    {/if}
   </div>
 
   <!-- コンテンツ -->

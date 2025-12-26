@@ -32,8 +32,8 @@
     }
   },
   "showcase": {
-    "title": "Picks | Dye Harmony",
-    "heading": "Today's Picks",
+    "title": "Featured | Dye Harmony",
+    "heading": "Today's Featured",
     "empty": "No recommendations available yet.",
     "error": "Failed to load recommendations."
   },
@@ -84,7 +84,7 @@
     },
     "step3": {
       "title": "Step 3/3",
-      "message": "Try Random or Picks if unsure!"
+      "message": "Try Random or Featured if unsure!"
     },
     "close": "Close",
     "next": "Next",

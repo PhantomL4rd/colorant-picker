@@ -41,7 +41,15 @@ export interface DyeWithRole {
 }
 
 // カララントカテゴリ（内部キー・英語）
-export type DyeCategory = 'white' | 'red' | 'brown' | 'yellow' | 'green' | 'blue' | 'purple' | 'rare';
+export type DyeCategory =
+  | 'white'
+  | 'red'
+  | 'brown'
+  | 'yellow'
+  | 'green'
+  | 'blue'
+  | 'purple'
+  | 'rare';
 
 // ===== i18n関連 =====
 

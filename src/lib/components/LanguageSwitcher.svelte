@@ -1,21 +1,21 @@
 <script lang="ts">
-  import { Globe } from 'lucide-svelte';
-  import {
-    locale,
-    setLocale,
-    SUPPORTED_LOCALES,
-    LOCALE_NAMES,
-    t,
-    type Locale,
-  } from '$lib/translations';
+import { Globe } from 'lucide-svelte';
+import {
+  locale,
+  setLocale,
+  SUPPORTED_LOCALES,
+  LOCALE_NAMES,
+  t,
+  type Locale,
+} from '$lib/translations';
 
-  const currentLocale = $derived($locale as Locale);
+const currentLocale = $derived($locale as Locale);
 
-  async function handleLocaleChange(newLocale: Locale) {
-    await setLocale(newLocale);
-    // ドロップダウンを閉じる
-    (document.activeElement as HTMLElement)?.blur();
-  }
+async function handleLocaleChange(newLocale: Locale) {
+  await setLocale(newLocale);
+  // ドロップダウンを閉じる
+  (document.activeElement as HTMLElement)?.blur();
+}
 </script>
 
 <div class="dropdown dropdown-end">
