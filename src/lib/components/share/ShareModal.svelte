@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Check, Copy, X } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
+import { FEEDBACK_DURATION } from '$lib/constants/timing';
 import { t } from '$lib/translations';
 import type { Favorite } from '$lib/types';
 import { copyToClipboard, generateShareUrl } from '$lib/utils/shareUtils';
@@ -54,10 +55,10 @@ async function handleCopy() {
     const success = await copyToClipboard(shareText);
     if (success) {
       copySuccess = true;
-      // 2秒後にリセット
+      // リセット
       setTimeout(() => {
         copySuccess = false;
-      }, 2000);
+      }, FEEDBACK_DURATION.COPY_SUCCESS);
     } else {
       copyError = $t('page.share.copyFailed');
     }

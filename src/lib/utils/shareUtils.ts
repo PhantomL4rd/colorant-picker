@@ -24,16 +24,13 @@ import {
   toHsv,
   toOklab,
 } from '$lib/utils/color/colorConversion';
+import { ID_LIMITS, RGB_BOUNDS, SHARE_LIMITS } from '$lib/constants/validation';
 
-// セキュリティ定数
-const MAX_QUERY_LENGTH = 2048; // URLクエリパラメータの最大長
-const MAX_JSON_LENGTH = 10000; // 解凍後JSONの最大長
-const MAX_NAME_LENGTH = 50; // カスタムカラー名の最大長
 const BASE_URL_FOR_SHARE = 'https://colorant-picker.pl4rd.com/share';
 
 // 検証ヘルパー関数
 function isValidRgbValue(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value >= 0 && value <= 255;
+  return typeof value === 'number' && Number.isInteger(value) && value >= RGB_BOUNDS.MIN && value <= RGB_BOUNDS.MAX;
 }
 
 function isValidString(value: unknown, maxLength: number): value is string {
@@ -116,7 +113,7 @@ export function decodePaletteFromUrl(url: string): SharePaletteData | null {
     const paletteParam = urlObj.searchParams.get('palette');
 
     // 長さ制限チェック
-    if (!paletteParam || paletteParam.length > MAX_QUERY_LENGTH) {
+    if (!paletteParam || paletteParam.length > SHARE_LIMITS.MAX_QUERY_LENGTH) {
       return null;
     }
 
@@ -124,7 +121,7 @@ export function decodePaletteFromUrl(url: string): SharePaletteData | null {
     const jsonString = LZString.decompressFromEncodedURIComponent(paletteParam);
 
     // 解凍後の長さ制限チェック
-    if (!jsonString || jsonString.length > MAX_JSON_LENGTH) {
+    if (!jsonString || jsonString.length > SHARE_LIMITS.MAX_JSON_LENGTH) {
       console.warn('Failed to decompress or decompressed data too large');
       return null;
     }
@@ -133,12 +130,12 @@ export function decodePaletteFromUrl(url: string): SharePaletteData | null {
 
     // 厳密な型・構造チェック
     if (
-      !isValidString(data.p, 100) ||
+      !isValidString(data.p, ID_LIMITS.MAX_PALETTE_ID_LENGTH) ||
       !Array.isArray(data.s) ||
       data.s.length !== 2 ||
-      !isValidString(data.s[0], 100) ||
-      !isValidString(data.s[1], 100) ||
-      !isValidString(data.pt, 50)
+      !isValidString(data.s[0], ID_LIMITS.MAX_DYE_ID_LENGTH) ||
+      !isValidString(data.s[1], ID_LIMITS.MAX_DYE_ID_LENGTH) ||
+      !isValidString(data.pt, ID_LIMITS.MAX_PATTERN_LENGTH)
     ) {
       console.warn('Invalid palette data structure or value');
       return null;
@@ -191,7 +188,7 @@ export function decodeCustomPaletteFromUrl(url: string): ExtendedSharePaletteDat
     const paletteParam = urlObj.searchParams.get('custom-palette');
 
     // 長さ制限チェック
-    if (!paletteParam || paletteParam.length > MAX_QUERY_LENGTH) {
+    if (!paletteParam || paletteParam.length > SHARE_LIMITS.MAX_QUERY_LENGTH) {
       return null;
     }
 
@@ -199,7 +196,7 @@ export function decodeCustomPaletteFromUrl(url: string): ExtendedSharePaletteDat
     const jsonString = LZString.decompressFromEncodedURIComponent(paletteParam);
 
     // 解凍後の長さ制限チェック
-    if (!jsonString || jsonString.length > MAX_JSON_LENGTH) {
+    if (!jsonString || jsonString.length > SHARE_LIMITS.MAX_JSON_LENGTH) {
       console.warn('Failed to decompress or decompressed custom data too large');
       return null;
     }
@@ -213,14 +210,14 @@ export function decodeCustomPaletteFromUrl(url: string): ExtendedSharePaletteDat
       !('type' in data.p) ||
       data.p.type !== 'custom' ||
       !('name' in data.p) ||
-      !isValidString(data.p.name, MAX_NAME_LENGTH) ||
+      !isValidString(data.p.name, ID_LIMITS.MAX_COLOR_NAME_LENGTH) ||
       !('rgb' in data.p) ||
       !isValidRgbObject(data.p.rgb) ||
       !Array.isArray(data.s) ||
       data.s.length !== 2 ||
-      !isValidString(data.s[0], 100) ||
-      !isValidString(data.s[1], 100) ||
-      !isValidString(data.pt, 50)
+      !isValidString(data.s[0], ID_LIMITS.MAX_DYE_ID_LENGTH) ||
+      !isValidString(data.s[1], ID_LIMITS.MAX_DYE_ID_LENGTH) ||
+      !isValidString(data.pt, ID_LIMITS.MAX_PATTERN_LENGTH)
     ) {
       console.warn('Invalid custom palette data structure or value');
       return null;

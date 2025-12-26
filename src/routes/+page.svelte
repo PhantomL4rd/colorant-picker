@@ -10,6 +10,7 @@ import PatternSelector from '$lib/components/palette/PatternSelector.svelte';
 import RandomPickButton from '$lib/components/RandomPickButton.svelte';
 import ShareButton from '$lib/components/share/ShareButton.svelte';
 import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
+import { SCROLL_TIMING } from '$lib/constants/timing';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import {
   filteredDyes,
@@ -93,7 +94,7 @@ function handleDyeSelect(dye: DyeProps) {
         inline: 'nearest',
       });
     }
-  }, 100);
+  }, SCROLL_TIMING.SCROLL_DELAY);
 }
 
 function handlePatternChange(pattern: HarmonyPattern) {
@@ -133,7 +134,7 @@ function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]) {
   // 選択されたパターンをスクロールして表示
   setTimeout(() => {
     patternSelectorComponent?.scrollToPattern(randomPattern);
-  }, 100);
+  }, SCROLL_TIMING.SCROLL_DELAY);
 }
 
 function handleExcludeMetallicChange() {

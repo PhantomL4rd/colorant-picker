@@ -5,39 +5,42 @@
  */
 
 import type { DyeCandidate, DyeProps, HarmonyPattern, Hsv, Oklab, Oklch, Rgb } from '$lib/types';
+import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/color';
 import { deltaEOklab, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
+const { TRIADIC_OFFSET_1, TRIADIC_OFFSET_2, COMPLEMENTARY, SPLIT_COMPLEMENTARY_ADJUSTMENT, ANALOGOUS_RANGE, SIMILAR_RANGE, CONTRAST_OFFSET } = HARMONY_ANGLES;
+
 // トライアド（三色配色）- 色相環で120度ずつ離れた色
 export function calculateTriadic(baseHue: number): [number, number] {
-  return [(baseHue + 120) % 360, (baseHue + 240) % 360];
+  return [(baseHue + TRIADIC_OFFSET_1) % HUE_CIRCLE_MAX, (baseHue + TRIADIC_OFFSET_2) % HUE_CIRCLE_MAX];
 }
 
 // スプリット・コンプリメンタリー - 補色の両隣の色
 export function calculateSplitComplementary(baseHue: number): [number, number] {
-  const complement = (baseHue + 180) % 360;
-  return [(complement - 30 + 360) % 360, (complement + 30) % 360];
+  const complement = (baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX;
+  return [(complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX];
 }
 
 // アナログ（類似色）- 色相環で隣接する色
 export function calculateAnalogous(baseHue: number): [number, number] {
-  return [(baseHue - 30 + 360) % 360, (baseHue + 30) % 360];
+  return [(baseHue - ANALOGOUS_RANGE + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (baseHue + ANALOGOUS_RANGE) % HUE_CIRCLE_MAX];
 }
 
 // 類似色 - 近い色相での組み合わせ
 export function calculateSimilar(baseHue: number): [number, number] {
-  return [(baseHue - 15 + 360) % 360, (baseHue + 15) % 360];
+  return [(baseHue - SIMILAR_RANGE + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (baseHue + SIMILAR_RANGE) % HUE_CIRCLE_MAX];
 }
 
 // コントラスト - 補色関係を含む組み合わせ
 export function calculateContrast(baseHue: number): [number, number] {
-  return [(baseHue + 180) % 360, (baseHue + 90) % 360];
+  return [(baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX, (baseHue + CONTRAST_OFFSET) % HUE_CIRCLE_MAX];
 }
 
 // クラッシュ - 補色±30°（挑戦的な配色）
 export function calculateClash(baseHue: number): [number, number] {
-  const complement = (baseHue + 180) % 360;
-  return [(complement - 30 + 360) % 360, (complement + 30) % 360];
+  const complement = (baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX;
+  return [(complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX];
 }
 
 // 最も近い色相の染料を見つける
@@ -61,7 +64,7 @@ export function findNearestDyes(
       const dyeHue = dye.hsv.h ?? 0;
       const hueDifference = Math.min(
         Math.abs(dyeHue - targetHue),
-        360 - Math.abs(dyeHue - targetHue)
+        HUE_CIRCLE_MAX - Math.abs(dyeHue - targetHue)
       );
 
       if (hueDifference < minDifference) {
@@ -164,15 +167,19 @@ export function generateSuggestedDyes(
     const baseOklch = toOklch(primaryDye.rgb) as Oklch;
 
     // 2. 補色の色相を計算（色相 + 180度）
-    const complementHue = ((baseOklch.h ?? 0) + 180) % 360;
+    const complementHue = ((baseOklch.h ?? 0) + COMPLEMENTARY) % HUE_CIRCLE_MAX;
 
     // 3. 明度を逆方向に調整
-    // Base色が明るい（L > 0.5）なら暗く、暗いなら明るく
-    const adjustedL = baseOklch.l > 0.5 ? 0.3 : 0.75;
+    // Base色が明るい（L > threshold）なら暗く、暗いなら明るく
+    const adjustedL = baseOklch.l > CLASH_CONFIG.LIGHTNESS_THRESHOLD
+      ? CLASH_CONFIG.TARGET_LIGHTNESS_DARK
+      : CLASH_CONFIG.TARGET_LIGHTNESS_LIGHT;
 
     // 4. 彩度を逆方向に調整
-    // Base色の彩度が高い（C > 0.1）なら低く、低いなら高く
-    const adjustedC = baseOklch.c > 0.1 ? 0.05 : 0.15;
+    // Base色の彩度が高い（C > threshold）なら低く、低いなら高く
+    const adjustedC = baseOklch.c > CLASH_CONFIG.CHROMA_THRESHOLD
+      ? CLASH_CONFIG.TARGET_CHROMA_LOW
+      : CLASH_CONFIG.TARGET_CHROMA_HIGH;
 
     // 5. 調整されたOklchから3色目のターゲット色を作成
     const thirdColorOklch: Oklch = { mode: 'oklch', l: adjustedL, c: adjustedC, h: complementHue };

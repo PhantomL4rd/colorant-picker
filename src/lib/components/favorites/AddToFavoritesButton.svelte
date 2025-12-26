@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Heart } from 'lucide-svelte';
 import { Palette } from '$lib/models/Palette';
+import { FEEDBACK_DURATION, TOAST_TIMING } from '$lib/constants/timing';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
 import { t } from '$lib/translations';
@@ -70,7 +71,7 @@ function handleSave() {
     justSaved = true;
     setTimeout(() => {
       justSaved = false;
-    }, 800);
+    }, FEEDBACK_DURATION.BUTTON);
 
     // 成功を示すトーストを表示
     showToast();
@@ -100,14 +101,14 @@ function showToast() {
   setTimeout(() => {
     if (document.body.contains(toast)) {
       toast.style.opacity = '0';
-      toast.style.transition = 'opacity 0.2s ease-out';
+      toast.style.transition = `opacity ${TOAST_TIMING.FADE_DURATION}ms ease-out`;
       setTimeout(() => {
         if (document.body.contains(toast)) {
           document.body.removeChild(toast);
         }
-      }, 200);
+      }, TOAST_TIMING.FADE_DURATION);
     }
-  }, 2500);
+  }, TOAST_TIMING.DISPLAY_DURATION);
 }
 </script>
 

@@ -1,5 +1,13 @@
 // POST /api/admin/refresh-showcase - キャッシュ更新用管理エンドポイント
 
+// ===== 定数 =====
+const SHOWCASE = {
+  /** データベースから取得する最大パレット数 */
+  FETCH_LIMIT: 10,
+  /** 表示するランダム選択パレット数 */
+  DISPLAY_COUNT: 5,
+} as const;
+
 interface DbPalette {
   id: number;
   primary_dye_id: string;
@@ -34,14 +42,14 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
   }
 
   try {
-    // D1から最新20件を取得し、ランダムで5件を選択（重複パレットは除外）
+    // D1から最新N件を取得し、ランダムでM件を選択（重複パレットは除外）
     const result = await env.DB.prepare(
       `SELECT MAX(id) as id, primary_dye_id, suggested_dye_id_1, suggested_dye_id_2, pattern, MAX(created_at) as created_at
        FROM palettes
        GROUP BY primary_dye_id, suggested_dye_id_1, suggested_dye_id_2, pattern
        ORDER BY MAX(created_at) DESC
-       LIMIT 20`
-    ).all<DbPalette>();
+       LIMIT ?`
+    ).bind(SHOWCASE.FETCH_LIMIT).all<DbPalette>();
 
     const allPalettes: ShowcasePalette[] = (result.results ?? []).map((row: DbPalette) => ({
       id: row.id,
@@ -51,13 +59,13 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       createdAt: row.created_at,
     }));
 
-    // Fisher-Yatesシャッフルでランダムに5件選択
+    // Fisher-YatesシャッフルでランダムにN件選択
     const shuffled = [...allPalettes];
     for (let i = shuffled.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
-    const palettes = shuffled.slice(0, 5);
+    const palettes = shuffled.slice(0, SHOWCASE.DISPLAY_COUNT);
 
     const showcaseData: ShowcaseData = {
       palettes,

@@ -7,7 +7,8 @@ interface SubmitPaletteRequest {
   clientId: string;
 }
 
-const UUID_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+// ===== 定数 =====
+const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const DYE_ID_REGEX = /^[a-z0-9_-]+$/;
 const VALID_PATTERNS = [
   'triadic',
@@ -17,11 +18,20 @@ const VALID_PATTERNS = [
   'similar',
   'contrast',
   'clash',
-];
+] as const;
 
-// レート制限: clientIdごとに1分間に5回まで
-const RATE_LIMIT_WINDOW = 60 * 1000; // 1分
-const RATE_LIMIT_MAX = 5;
+/** 提案色の数 */
+const SUGGESTED_DYE_COUNT = 2;
+
+// レート制限設定
+const RATE_LIMIT = {
+  /** ウィンドウ（ミリ秒）: 1分 */
+  WINDOW_MS: 60 * 1000,
+  /** 最大リクエスト数 */
+  MAX_REQUESTS: 5,
+  /** KVのTTL（秒） */
+  TTL_SECONDS: 60,
+} as const;
 
 function validateRequest(body: unknown): SubmitPaletteRequest | null {
   if (!body || typeof body !== 'object') return null;
@@ -36,19 +46,19 @@ function validateRequest(body: unknown): SubmitPaletteRequest | null {
   // suggestedDyeIds validation
   if (
     !Array.isArray(req.suggestedDyeIds) ||
-    req.suggestedDyeIds.length !== 2 ||
+    req.suggestedDyeIds.length !== SUGGESTED_DYE_COUNT ||
     !req.suggestedDyeIds.every((id) => typeof id === 'string' && DYE_ID_REGEX.test(id))
   ) {
     return null;
   }
 
   // pattern validation
-  if (typeof req.pattern !== 'string' || !VALID_PATTERNS.includes(req.pattern)) {
+  if (typeof req.pattern !== 'string' || !VALID_PATTERNS.includes(req.pattern as typeof VALID_PATTERNS[number])) {
     return null;
   }
 
   // clientId validation (UUID v4)
-  if (typeof req.clientId !== 'string' || !UUID_REGEX.test(req.clientId)) {
+  if (typeof req.clientId !== 'string' || !UUID_V4_REGEX.test(req.clientId)) {
     return null;
   }
 
@@ -79,8 +89,8 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
       const { count, timestamp } = JSON.parse(rateLimitData);
       const elapsed = Date.now() - timestamp;
 
-      if (elapsed < RATE_LIMIT_WINDOW) {
-        if (count >= RATE_LIMIT_MAX) {
+      if (elapsed < RATE_LIMIT.WINDOW_MS) {
+        if (count >= RATE_LIMIT.MAX_REQUESTS) {
           return Response.json(
             { error: 'Rate limit exceeded. Please wait a moment.' },
             { status: 429 }
@@ -88,18 +98,18 @@ export const onRequestPost: PagesFunction<Env> = async (context) => {
         }
         // カウント増加
         await env.KV.put(rateLimitKey, JSON.stringify({ count: count + 1, timestamp }), {
-          expirationTtl: 60,
+          expirationTtl: RATE_LIMIT.TTL_SECONDS,
         });
       } else {
         // ウィンドウリセット
         await env.KV.put(rateLimitKey, JSON.stringify({ count: 1, timestamp: Date.now() }), {
-          expirationTtl: 60,
+          expirationTtl: RATE_LIMIT.TTL_SECONDS,
         });
       }
     } else {
       // 初回
       await env.KV.put(rateLimitKey, JSON.stringify({ count: 1, timestamp: Date.now() }), {
-        expirationTtl: 60,
+        expirationTtl: RATE_LIMIT.TTL_SECONDS,
       });
     }
 

@@ -5,19 +5,21 @@ export type HeartBurstApi = {
 </script>
 
 <script lang="ts">
+import { HEART_BURST } from '$lib/constants/timing';
+
 type BurstHeart = { id: number; x: number; y: number };
 let burstHearts = $state<BurstHeart[]>([]);
 let burstId = 0;
 
 export function trigger() {
-  const count = 2 + Math.floor(Math.random() * 2); // 2〜3個
+  const count = HEART_BURST.MIN_COUNT + Math.floor(Math.random() * HEART_BURST.RANDOM_RANGE);
   const newHearts: BurstHeart[] = [];
 
   for (let i = 0; i < count; i++) {
     newHearts.push({
       id: burstId++,
-      x: (Math.random() - 0.5) * 24, // ±12px
-      y: -25 - Math.random() * 15, // -25〜-40px
+      x: (Math.random() - 0.5) * HEART_BURST.X_RANGE, // ±12px
+      y: -HEART_BURST.Y_BASE - Math.random() * HEART_BURST.Y_VARIATION, // -25〜-40px
     });
   }
 
@@ -25,7 +27,7 @@ export function trigger() {
 
   setTimeout(() => {
     burstHearts = [];
-  }, 600);
+  }, HEART_BURST.DURATION);
 }
 </script>
 

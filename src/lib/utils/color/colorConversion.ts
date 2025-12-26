@@ -17,6 +17,7 @@ import {
   useMode,
 } from 'culori/fn';
 import type { RGBColor255 } from '$lib/types';
+import { HUE_CIRCLE_MAX, HUE_DIFFERENCE_MAX, RGB_MAX } from '$lib/constants/color';
 
 // 使用する色空間を登録
 useMode(modeRgb);
@@ -37,15 +38,15 @@ export { formatHex };
 
 /** 0-255範囲からculori Rgbに変換 */
 export function rgb255ToRgb(rgb255: RGBColor255): Rgb {
-  return { mode: 'rgb', r: rgb255.r / 255, g: rgb255.g / 255, b: rgb255.b / 255 };
+  return { mode: 'rgb', r: rgb255.r / RGB_MAX, g: rgb255.g / RGB_MAX, b: rgb255.b / RGB_MAX };
 }
 
 /** culori Rgbから0-255範囲に変換 */
 export function rgbToRgb255(rgb: Rgb): RGBColor255 {
   return {
-    r: Math.round(Math.max(0, Math.min(1, rgb.r)) * 255),
-    g: Math.round(Math.max(0, Math.min(1, rgb.g)) * 255),
-    b: Math.round(Math.max(0, Math.min(1, rgb.b)) * 255),
+    r: Math.round(Math.max(0, Math.min(1, rgb.r)) * RGB_MAX),
+    g: Math.round(Math.max(0, Math.min(1, rgb.g)) * RGB_MAX),
+    b: Math.round(Math.max(0, Math.min(1, rgb.b)) * RGB_MAX),
   };
 }
 
@@ -86,14 +87,14 @@ export function deltaEOklch(c1: Oklch, c2: Oklch): number {
 /** 2つの色相の差（0-180） */
 export function hueDelta(h1: number, h2: number): number {
   let d = Math.abs(h1 - h2);
-  if (d > 180) d = 360 - d;
+  if (d > HUE_DIFFERENCE_MAX) d = HUE_CIRCLE_MAX - d;
   return d;
 }
 
 /** 2つの色相の差（0-180） */
 export function hueDiff(h1: number, h2: number): number {
-  const diff = Math.abs(h1 - h2) % 360;
-  return diff > 180 ? 360 - diff : diff;
+  const diff = Math.abs(h1 - h2) % HUE_CIRCLE_MAX;
+  return diff > HUE_DIFFERENCE_MAX ? HUE_CIRCLE_MAX - diff : diff;
 }
 
 // ===== sRGBクリップ処理 =====

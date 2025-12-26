@@ -5,6 +5,7 @@
  */
 
 import type { CustomColor, DyeProps, ExtendedDye, Oklab, RGBColor255 } from '$lib/types';
+import { ID_LIMITS, RGB_BOUNDS } from '$lib/constants/validation';
 import { formatHex, toOklab } from './colorConversion';
 
 /**
@@ -40,14 +41,14 @@ export function createCustomDye(customColor: CustomColor): ExtendedDye {
 export function validateRgbInput(rgb: RGBColor255): boolean {
   return (
     Number.isInteger(rgb.r) &&
-    rgb.r >= 0 &&
-    rgb.r <= 255 &&
+    rgb.r >= RGB_BOUNDS.MIN &&
+    rgb.r <= RGB_BOUNDS.MAX &&
     Number.isInteger(rgb.g) &&
-    rgb.g >= 0 &&
-    rgb.g <= 255 &&
+    rgb.g >= RGB_BOUNDS.MIN &&
+    rgb.g <= RGB_BOUNDS.MAX &&
     Number.isInteger(rgb.b) &&
-    rgb.b >= 0 &&
-    rgb.b <= 255
+    rgb.b >= RGB_BOUNDS.MIN &&
+    rgb.b <= RGB_BOUNDS.MAX
   );
 }
 
@@ -61,8 +62,8 @@ export function validateCustomColorName(name: string): { valid: boolean; error?:
     return { valid: false, error: '名前を入力してください' };
   }
 
-  if (trimmed.length > 50) {
-    return { valid: false, error: '名前は50文字以内で入力してください' };
+  if (trimmed.length > ID_LIMITS.MAX_COLOR_NAME_LENGTH) {
+    return { valid: false, error: `名前は${ID_LIMITS.MAX_COLOR_NAME_LENGTH}文字以内で入力してください` };
   }
 
   return { valid: true };

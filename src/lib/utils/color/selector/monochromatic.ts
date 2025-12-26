@@ -5,6 +5,7 @@
  */
 
 import type { DyeProps, Oklch } from '$lib/types';
+import { EPSILON, MONOCHROMATIC_CONFIG } from '$lib/constants/color';
 import { hueDiff, toOklch } from '../colorConversion';
 
 type Candidate = {
@@ -36,9 +37,13 @@ export function selectMonochromaticDyes(
   opts: Options = {}
 ): Candidate[] {
   const {
-    hueWindowDeg = 35,
-    thetaDeg = 30,
-    weights = { wh: 1.0, wc: 0.3, wl: 0.2 },
+    hueWindowDeg = MONOCHROMATIC_CONFIG.HUE_WINDOW_DEG,
+    thetaDeg = MONOCHROMATIC_CONFIG.THETA_DEG,
+    weights = {
+      wh: MONOCHROMATIC_CONFIG.WEIGHTS.HUE,
+      wc: MONOCHROMATIC_CONFIG.WEIGHTS.CHROMA,
+      wl: MONOCHROMATIC_CONFIG.WEIGHTS.LIGHTNESS,
+    },
     numResults = 2,
     diversifyByLightness = false,
   } = opts;
@@ -56,7 +61,7 @@ export function selectMonochromaticDyes(
 
       const s =
         weights.wh * huePenalty(dh, thetaDeg) +
-        weights.wc * (dC / (base.c + 1e-6)) +
+        weights.wc * (dC / (base.c + EPSILON)) +
         weights.wl * dL;
 
       return { dye, oklch: c, score: s, dh, dC, dL };
@@ -82,17 +87,17 @@ export function selectMonochromaticDyes(
   } else {
     const sorted = filtered.sort((a, b) => a.score - b.score);
 
-    // 候補色をその L の値域で3分割し、各クラスタから均等に選定する
-    const bins: Candidate[][] = [[], [], []]; // low/mid/high
+    // 候補色をその L の値域でクラスタ分割し、各クラスタから均等に選定する
+    const bins: Candidate[][] = Array.from({ length: MONOCHROMATIC_CONFIG.LIGHTNESS_BINS }, () => []);
     const Ls = sorted.map((x) => x.oklch.l);
     Ls.push(base.l); // 基準色の L も考慮する
     const Lmin = Math.min(...Ls);
     const Lmax = Math.max(...Ls);
-    const step = (Lmax - Lmin) / 3 || 1;
+    const step = (Lmax - Lmin) / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS || 1;
 
     for (const c of sorted) {
-      const bin = Math.min(2, Math.floor((c.oklch.l - Lmin) / step));
-      if (bins[bin].length < Math.ceil(numResults / 3)) bins[bin].push(c);
+      const bin = Math.min(MONOCHROMATIC_CONFIG.LIGHTNESS_BINS - 1, Math.floor((c.oklch.l - Lmin) / step));
+      if (bins[bin].length < Math.ceil(numResults / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS)) bins[bin].push(c);
     }
 
     // 基準色の属するクラスタを除外（numResults >= 3 の場合は要調整）

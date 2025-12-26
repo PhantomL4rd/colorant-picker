@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Calendar, Heart, Trash2, X } from '@lucide/svelte';
+import { FEEDBACK_DURATION } from '$lib/constants/timing';
 import { t } from '$lib/translations';
 import type { Favorite, HarmonyPattern } from '$lib/types';
 import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
@@ -84,7 +85,7 @@ async function handleFavorite() {
     showFeedback = true;
     setTimeout(() => {
       showFeedback = false;
-    }, 800);
+    }, FEEDBACK_DURATION.BUTTON);
   } catch (err) {
     error = err instanceof Error ? err.message : $t('common.action.likeError');
   } finally {
