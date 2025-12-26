@@ -1,6 +1,8 @@
 <script lang="ts">
 import '../app.css';
 import { HelpCircle, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
+import { goto } from '$app/navigation';
+import { resolve } from '$app/paths';
 import CoachMark from '$lib/components/CoachMark.svelte';
 import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
@@ -12,6 +14,8 @@ const { children } = $props();
 let isCoachMarkOpen = $state(false);
 
 function openCoachMark() {
+  // コーチマークはピッカータブで表示するため、ホームに遷移
+  goto(resolve('/'));
   isCoachMarkOpen = true;
 }
 
