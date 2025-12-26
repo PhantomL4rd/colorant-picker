@@ -8,12 +8,12 @@ import {
 } from '$lib/stores/customColors';
 import { t } from '$lib/translations';
 import type { RGBColor255 } from '$lib/types';
-import { rgbToRgb255 } from '$lib/utils/colorConversion';
+import { rgbToRgb255 } from '$lib/utils/color/colorConversion';
 import {
   formatRgbDisplay,
   validateCustomColorName,
   validateRgbInput,
-} from '$lib/utils/customColorUtils';
+} from '$lib/utils/color/customColorUtils';
 
 interface Props {
   editColorId?: string | null;

@@ -17,7 +17,13 @@ import type {
   Oklab,
   RGBColor255,
 } from '$lib/types';
-import { rgb255ToRgb, rgbToHex, rgbToRgb255, toHsv, toOklab } from '$lib/utils/colorConversion';
+import {
+  rgb255ToRgb,
+  rgbToHex,
+  rgbToRgb255,
+  toHsv,
+  toOklab,
+} from '$lib/utils/color/colorConversion';
 
 // セキュリティ定数
 const MAX_QUERY_LENGTH = 2048; // URLクエリパラメータの最大長

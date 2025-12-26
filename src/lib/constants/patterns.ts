@@ -1,5 +1,5 @@
 import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
+import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 
 // パターンのビジュアルデータ
 export interface PatternVisual {

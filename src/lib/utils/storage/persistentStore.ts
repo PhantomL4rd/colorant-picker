@@ -5,7 +5,7 @@
 
 import { type Writable, writable } from 'svelte/store';
 import { loadFromStorage, saveToStorage } from './storageService';
-import { generateId } from './uuid';
+import { generateId } from '../uuid';
 
 // ===== エラー定義 =====
 

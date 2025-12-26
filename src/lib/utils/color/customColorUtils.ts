@@ -5,7 +5,7 @@
  */
 
 import type { CustomColor, DyeProps, ExtendedDye, Oklab, RGBColor255 } from '$lib/types';
-import { formatHex, toOklab } from '$lib/utils/colorConversion';
+import { formatHex, toOklab } from './colorConversion';
 
 /**
  * CustomColorをDyePropsライクオブジェクトに変換

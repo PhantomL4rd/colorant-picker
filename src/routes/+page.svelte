@@ -21,7 +21,7 @@ import {
 import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
 import { t } from '$lib/translations';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
+import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
 
 let isLoading = $state(true);

@@ -5,10 +5,10 @@
 
 import { Dye } from '$lib/models/Dye';
 import type { DyeProps, ExtendedDye, Favorite, HarmonyPattern, StoredFavorite } from '$lib/types';
-import { isCustomDye } from '$lib/utils/customColorUtils';
-import { dyeToStorable } from '$lib/utils/dyeSerializer';
-import { submitPalette } from '$lib/utils/paletteSubmit';
-import { createPersistentStore } from '$lib/utils/persistentStore';
+import { isCustomDye } from '$lib/utils/color/customColorUtils';
+import { dyeToStorable } from '$lib/utils/storage/dyeSerializer';
+import { submitPalette } from '$lib/utils/api/paletteSubmit';
+import { createPersistentStore } from '$lib/utils/storage/persistentStore';
 import { emitRestorePalette } from './paletteEvents';
 
 // ===== 定数 =====

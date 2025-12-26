@@ -3,7 +3,7 @@
 
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { getOrCreateClientId } from './clientId';
-import { isCustomDye } from './customColorUtils';
+import { isCustomDye } from '../color/customColorUtils';
 
 interface SubmitPaletteInput {
   primaryDye: DyeProps;

@@ -1,8 +1,8 @@
 import { get, writable } from 'svelte/store';
 import type { Dye } from '$lib/models/Dye';
 import type { CustomColor, DyeProps, ExtendedDye, HarmonyPattern } from '$lib/types';
-import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
-import { createCustomDye, isCustomDye } from '$lib/utils/customColorUtils';
+import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
+import { createCustomDye, isCustomDye } from '$lib/utils/color/customColorUtils';
 import { dyeStore } from './dyes';
 import { filterStore } from './filter';
 import { paletteEventBus } from './paletteEvents';

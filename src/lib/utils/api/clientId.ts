@@ -1,7 +1,7 @@
 // クライアント識別ID管理
 // 匿名ユーザーの重複投稿を防ぐためのUUID v4
 
-import { generateId, isValidUUID } from './uuid';
+import { generateId, isValidUUID } from '../uuid';
 
 const STORAGE_KEY = 'colorant-picker:client-id';
 

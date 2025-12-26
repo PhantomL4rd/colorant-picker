@@ -2,8 +2,8 @@
 import { Pencil, Trash2 } from '@lucide/svelte';
 import { deleteCustomColor } from '$lib/stores/customColors';
 import type { CustomColor } from '$lib/types';
-import { rgbToRgb255 } from '$lib/utils/colorConversion';
-import { formatRgbDisplay } from '$lib/utils/customColorUtils';
+import { rgbToRgb255 } from '$lib/utils/color/colorConversion';
+import { formatRgbDisplay } from '$lib/utils/color/customColorUtils';
 
 interface Props {
   color: CustomColor;

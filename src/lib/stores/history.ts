@@ -11,9 +11,9 @@ import type {
   HistoryEntry,
   StoredHistoryEntry,
 } from '$lib/types';
-import { isCustomDye } from '$lib/utils/customColorUtils';
-import { dyeToStorable } from '$lib/utils/dyeSerializer';
-import { createPersistentStore } from '$lib/utils/persistentStore';
+import { isCustomDye } from '$lib/utils/color/customColorUtils';
+import { dyeToStorable } from '$lib/utils/storage/dyeSerializer';
+import { createPersistentStore } from '$lib/utils/storage/persistentStore';
 import { emitRestorePalette } from './paletteEvents';
 import { selectionStore } from './selection';
 

@@ -5,8 +5,8 @@
 
 import { get } from 'svelte/store';
 import type { CustomColor, Hsv, RGBColor255, StoredCustomColor } from '$lib/types';
-import { rgb255ToRgb, toHsv } from '$lib/utils/colorConversion';
-import { createPersistentStore } from '$lib/utils/persistentStore';
+import { rgb255ToRgb, toHsv } from '$lib/utils/color/colorConversion';
+import { createPersistentStore } from '$lib/utils/storage/persistentStore';
 import { generateId } from '$lib/utils/uuid';
 
 // ===== 定数 =====

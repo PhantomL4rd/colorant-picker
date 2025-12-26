@@ -8,7 +8,7 @@ import type {
   Rgb,
   StoredDye,
 } from '$lib/types';
-import { formatHex, toHsv, toOklab } from '$lib/utils/colorConversion';
+import { formatHex, toHsv, toOklab } from '$lib/utils/color/colorConversion';
 
 /**
  * 染料クラス

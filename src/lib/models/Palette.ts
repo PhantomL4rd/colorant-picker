@@ -5,7 +5,7 @@ import type {
   PaletteEntry,
   ShowcasePalette,
 } from '$lib/types';
-import { BASE_WEIGHTS, calculateDeltaE, SUPPRESSION_FACTOR } from '$lib/utils/colorRatio';
+import { BASE_WEIGHTS, calculateDeltaE, SUPPRESSION_FACTOR } from '$lib/utils/color/colorRatio';
 
 /**
  * パレットクラス

@@ -3,7 +3,7 @@ import { CircleUser, Plus } from '@lucide/svelte';
 import { customColorsStore } from '$lib/stores/customColors';
 import { selectPrimaryDye } from '$lib/stores/selection';
 import { t } from '$lib/translations';
-import { createCustomDye } from '$lib/utils/customColorUtils';
+import { createCustomDye } from '$lib/utils/color/customColorUtils';
 import CustomColorForm from './CustomColorForm.svelte';
 import CustomColorItem from './CustomColorItem.svelte';
 
