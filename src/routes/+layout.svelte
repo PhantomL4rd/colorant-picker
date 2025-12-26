@@ -26,7 +26,6 @@ function closeCoachMark() {
 
 <svelte:head>
   <title>{$t('common.app.name')}</title>
-  <meta name="description" content={$t('common.app.description')} />
 </svelte:head>
 
 <div class="min-h-dvh bg-base-100">

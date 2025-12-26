@@ -1,6 +1,6 @@
 {
   "home": {
-    "title": "Colorant Picker",
+    "title": "Dye Harmony",
     "heading": "Pick your colors",
     "selectPrompt": "Pick a colorant below to start!",
     "preview": "Preview",
@@ -20,7 +20,7 @@
     }
   },
   "favorites": {
-    "title": "Favorites | Colorant Picker",
+    "title": "Favorites | Dye Harmony",
     "heading": "Your Favorites",
     "tabs": {
       "favorites": "Favorites",
@@ -32,7 +32,7 @@
     }
   },
   "showcase": {
-    "title": "Picks | Colorant Picker",
+    "title": "Picks | Dye Harmony",
     "heading": "Today's Picks",
     "empty": "No recommendations available yet.",
     "error": "Failed to load recommendations."

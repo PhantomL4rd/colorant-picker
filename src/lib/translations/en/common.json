@@ -1,7 +1,7 @@
 {
   "app": {
-    "name": "Colorant Picker",
-    "description": "A tool that suggests 3-color combinations from FFXIV colorants."
+    "name": "Dye Harmony",
+    "description": "A tool that suggests harmonious 3-color dye combinations for FFXIV."
   },
   "role": {
     "main": "Main",
