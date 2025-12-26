@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Shuffle } from '@lucide/svelte';
+import { t } from '$lib/translations';
 import type { DyeProps } from '$lib/types';
 
 interface Props {
@@ -25,14 +26,14 @@ function handleRandomPick() {
   class="btn btn-secondary btn-block"
   onclick={handleRandomPick}
   disabled={disabled || dyes.length < 3}
-  aria-label="ランダムに色を選択"
+  aria-label={$t('common.action.random')}
 >
   <Shuffle class="h-5 w-5" />
-  ランダム
+  {$t('common.action.random')}
 </button>
 
 {#if dyes.length < 3}
   <div class="text-xs text-error text-center mt-1">
-    3色以上のカララントが必要です
+    {$t('common.state.needMoreColors')}
   </div>
 {/if}

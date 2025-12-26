@@ -1,0 +1,102 @@
+{
+  "home": {
+    "title": "カララントピッカー",
+    "heading": "色を選ぼう",
+    "selectPrompt": "下のカララント一覧から色を選んでみよう！",
+    "preview": "プレビュー",
+    "patternSection": "配色パターン",
+    "dyeList": "カララント一覧",
+    "ratioTip": {
+      "title": "いい感じに染色するコツ！",
+      "heading": "配色の黄金比",
+      "main": "コーデの主役（胴・脚など広い部分に）",
+      "sub": "メインを引き立てる2番手（手・足など）",
+      "accent": "個性際立つワンポイント！"
+    },
+    "dyeGrid": {
+      "empty": "該当するカララントがありません",
+      "emptyHint": "フィルターを変更してみてください",
+      "showMore": "もっと見る（残り{count}色）"
+    }
+  },
+  "favorites": {
+    "title": "スキ！ | カララントピッカー",
+    "heading": "お気に入り",
+    "tabs": {
+      "favorites": "スキ！",
+      "history": "履歴"
+    },
+    "empty": {
+      "favorites": "まだお気に入りがありません。気に入った組み合わせのハートをタップ！",
+      "history": "まだ履歴がありません。色を選んでみましょう！"
+    }
+  },
+  "showcase": {
+    "title": "おすすめ | カララントピッカー",
+    "heading": "今日のおすすめ",
+    "empty": "まだおすすめがありません。",
+    "error": "おすすめの読み込みに失敗しました。"
+  },
+  "customColor": {
+    "title": "カスタムカラー",
+    "yourColors": "あなたの色",
+    "add": "カスタムカラーを追加",
+    "edit": "カスタムカラーを編集",
+    "newColor": "新しい色を追加",
+    "emptyTitle": "まだあなたの色が登録されていません",
+    "emptyDescription": "「新しい色を追加」ボタンからあなたの髪色や肌色、目の色を登録してみましょう",
+    "name": "名前",
+    "namePlaceholder": "例: 私の髪色",
+    "preview": "プレビュー",
+    "rgb": "RGB",
+    "rgbPlaceholder": "255, 255, 255",
+    "save": "保存",
+    "update": "更新",
+    "cancel": "キャンセル",
+    "delete": "削除",
+    "deleteConfirm": "「{name}」を削除しますか？",
+    "selectColor": "この色を選択",
+    "validation": {
+      "nameRequired": "色の名前は必須です",
+      "rgbInvalid": "正しいRGB値を入力してください（例: 255, 128, 0）",
+      "rgbRange": "RGB値は0-255の範囲で入力してください",
+      "duplicateName": "この名前の色は既に存在します"
+    },
+    "saveFailed": "保存に失敗しました"
+  },
+  "share": {
+    "title": "パレットをシェア",
+    "shareTextLabel": "シェア用テキスト",
+    "copyUrl": "URLをコピー",
+    "copied": "コピー完了！",
+    "copying": "コピー中...",
+    "copyFailed": "コピーに失敗しました。手動でコピーしてください。",
+    "shareText": "メイン：{main}\nサブ：{sub} / アクセント：{accent}\n配色パターン：{pattern}\n\n#カララントピッカー #FF14 #FFXIV\n{url}"
+  },
+  "coachMark": {
+    "step1": {
+      "title": "ステップ 1/3",
+      "message": "配色パターンを選ぼう"
+    },
+    "step2": {
+      "title": "ステップ 2/3",
+      "message": "カララントを選ぼう"
+    },
+    "step3": {
+      "title": "ステップ 3/3",
+      "message": "迷ったらランダムやおすすめを使おう"
+    },
+    "close": "閉じる",
+    "next": "次へ",
+    "done": "完了",
+    "closeGuide": "ガイドを閉じる"
+  },
+  "palette": {
+    "unknownDate": "日時不明",
+    "deleteFailed": "削除に失敗しました",
+    "delete": "削除",
+    "confirmDelete": "削除を確認",
+    "cancelDelete": "削除をキャンセル",
+    "noSelection": "組み合わせが選択されていません"
+  }
+}

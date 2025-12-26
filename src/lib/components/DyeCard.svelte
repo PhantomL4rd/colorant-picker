@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { DyeProps } from '$lib/types';
-import { translationsStore } from '$lib/stores/locale';
-import { translateDyeName } from '$lib/utils/i18n';
+import { t } from '$lib/translations';
 
 interface Props {
   dye: DyeProps;
@@ -12,8 +11,7 @@ interface Props {
 
 const { dye, isSelected = false, onSelect, animationDelay = 0 }: Props = $props();
 
-const translations = $derived($translationsStore);
-const displayName = $derived(translateDyeName(dye.id, dye.name, translations));
+const displayName = $derived($t(`dye.names.${dye.id}`) || dye.name);
 
 let isClicking = $state(false);
 
@@ -39,7 +37,7 @@ function handleClick() {
   role="button"
   tabindex="0"
   onkeydown={(e) => e.key === 'Enter' && handleClick()}
-  aria-label="{displayName}を選択"
+  aria-label={displayName}
   aria-pressed={isSelected}
 >
   <div class="card-body p-4 min-w-0">

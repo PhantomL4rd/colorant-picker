@@ -95,9 +95,9 @@ export class Palette {
     }
 
     this._ratioCache = [
-      { dye: this.primary, role: 'メイン', percent: mainPercent },
-      { dye: subDye, role: 'サブ', percent: subPercent },
-      { dye: accentDye, role: 'アクセント', percent: accentPercent },
+      { dye: this.primary, role: 'main', percent: mainPercent },
+      { dye: subDye, role: 'sub', percent: subPercent },
+      { dye: accentDye, role: 'accent', percent: accentPercent },
     ];
 
     return this._ratioCache;

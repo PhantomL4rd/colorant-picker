@@ -6,6 +6,7 @@ import { resolve } from '$app/paths';
 import FavoritesList from '$lib/components/FavoritesList.svelte';
 import HistoryList from '$lib/components/HistoryList.svelte';
 import { loadDyes } from '$lib/stores/dyes';
+import { t } from '$lib/translations';
 
 let isLoading = $state(true);
 
@@ -52,7 +53,7 @@ function handleSelectHistory() {
 </script>
 
 <svelte:head>
-  <title>{activeTab === 'history' ? '履歴' : 'スキ！'} | カララントピッカー</title>
+  <title>{$t('page.favorites.title')}</title>
 </svelte:head>
 
 <!-- サブタブナビゲーション -->
@@ -63,14 +64,14 @@ function handleSelectHistory() {
       onclick={() => setTab('favorites')}
     >
       <Heart class="w-5 h-5" />
-      スキ！
+      {$t('page.favorites.tabs.favorites')}
     </button>
     <button
       class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'history' ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/60 hover:text-base-content hover:bg-base-300'}"
       onclick={() => setTab('history')}
     >
       <Clock class="w-5 h-5" />
-      履歴
+      {$t('page.favorites.tabs.history')}
     </button>
   </div>
 </div>

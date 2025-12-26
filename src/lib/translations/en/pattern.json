@@ -1,0 +1,41 @@
+{
+  "triadic": {
+    "name": "Balance",
+    "description": "Three vibrant, well-balanced colors",
+    "tags": "versatile,elegant"
+  },
+  "split-complementary": {
+    "name": "Accent",
+    "description": "Three distinctive colors that complement the main",
+    "tags": "unique,stylish"
+  },
+  "analogous": {
+    "name": "Gradient",
+    "description": "Three gentle, naturally flowing colors",
+    "tags": "soft,natural"
+  },
+  "monochromatic": {
+    "name": "Mono",
+    "description": "Three calm, unified colors",
+    "tags": "calm,chic"
+  },
+  "similar": {
+    "name": "Natural",
+    "description": "Three easily blending similar colors",
+    "tags": "blend,basic"
+  },
+  "contrast": {
+    "name": "Contrast",
+    "description": "Three colors with clear distinction",
+    "tags": "impact,sharp"
+  },
+  "clash": {
+    "name": "Clash",
+    "description": "Three energetic, lively colors",
+    "tags": "energetic,pop"
+  },
+  "group": {
+    "standard": "Standard Palettes",
+    "unique": "Unique Palettes"
+  }
+}

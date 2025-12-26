@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Star } from 'lucide-svelte';
 import type { PatternVisual } from '$lib/constants/patterns';
+import { t } from '$lib/translations';
 
 interface Props {
   visual: PatternVisual;
@@ -10,6 +11,12 @@ interface Props {
 }
 
 const { visual, isSelected, onSelect, animationDelay = 0 }: Props = $props();
+
+// パターンキーから翻訳を取得
+const patternName = $derived($t(`pattern.${visual.pattern}.name`));
+const patternDescription = $derived($t(`pattern.${visual.pattern}.description`));
+const patternTagsRaw = $derived($t(`pattern.${visual.pattern}.tags`));
+const patternTags = $derived(patternTagsRaw ? patternTagsRaw.split(',') : []);
 </script>
 
 <button
@@ -21,7 +28,7 @@ const { visual, isSelected, onSelect, animationDelay = 0 }: Props = $props();
   style="--delay: {animationDelay}ms;"
   onclick={onSelect}
   aria-pressed={isSelected}
-  aria-label="{visual.label}パターンを選択"
+  aria-label={$t('common.aria.selectCombination')}
 >
   <!-- サンプル色プレビュー -->
   <div class="flex gap-1 mb-2">
@@ -35,7 +42,7 @@ const { visual, isSelected, onSelect, animationDelay = 0 }: Props = $props();
 
   <!-- ラベル + 人気バッジ -->
   <div class="flex items-center gap-1">
-    <span class="text-sm font-medium">{visual.label}</span>
+    <span class="text-sm font-medium">{patternName}</span>
     {#if visual.isPopular}
       <Star class="w-3 h-3 text-warning fill-warning" />
     {/if}
@@ -43,7 +50,7 @@ const { visual, isSelected, onSelect, animationDelay = 0 }: Props = $props();
 
   <!-- 印象タグ（常に表示） -->
   <div class="flex gap-1 mt-1 flex-wrap justify-center">
-    {#each visual.tags as tag}
+    {#each patternTags as tag}
       <span class="badge badge-primary badge-xs">#{tag}</span>
     {/each}
   </div>
@@ -51,7 +58,7 @@ const { visual, isSelected, onSelect, animationDelay = 0 }: Props = $props();
   <!-- 説明文（選択時のみ表示） -->
   {#if isSelected}
     <span class="text-xs text-base-content/70 mt-2 text-center leading-tight">
-      {visual.description}
+      {patternDescription}
     </span>
   {/if}
 </button>

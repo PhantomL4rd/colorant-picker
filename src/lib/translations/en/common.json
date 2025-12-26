@@ -1,0 +1,53 @@
+{
+  "app": {
+    "name": "Colorant Picker",
+    "description": "A tool that suggests 3-color combinations from FFXIV colorants."
+  },
+  "role": {
+    "main": "Main",
+    "sub": "Sub",
+    "accent": "Accent"
+  },
+  "action": {
+    "random": "Random",
+    "share": "Share",
+    "restore": "Restore",
+    "addToFavorites": "Add to Favorites",
+    "removeFromFavorites": "Remove from Favorites",
+    "copied": "Copied!",
+    "copy": "Copy",
+    "close": "Close",
+    "clear": "Clear",
+    "like": "Like!",
+    "liked": "Liked!",
+    "alreadyLiked": "Liked",
+    "likeError": "Failed to save favorite"
+  },
+  "state": {
+    "loading": "Loading colorant data...",
+    "empty": "No data available",
+    "error": "An error occurred",
+    "needMoreColors": "Need at least 3 colorants"
+  },
+  "filter": {
+    "excludeMetallic": "Exclude metallic"
+  },
+  "nav": {
+    "picker": "Picker",
+    "favorites": "Favorites",
+    "history": "History",
+    "showcase": "Picks"
+  },
+  "aria": {
+    "selectColor": "Select this color for new suggestions",
+    "selectCombination": "Select this combination",
+    "languageSwitch": "Switch language",
+    "help": "View how to use",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
+  },
+  "feedback": {
+    "label": "Feedback",
+    "placeholder": "Your feedback or feature request"
+  }
+}

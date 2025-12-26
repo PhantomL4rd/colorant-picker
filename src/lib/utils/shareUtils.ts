@@ -5,8 +5,6 @@
  */
 
 import LZString from 'lz-string';
-import { getPatternLabel } from '$lib/constants/patterns';
-import { Palette } from '$lib/models/Palette';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
 import type {
   CustomColorShare,
@@ -101,21 +99,6 @@ export function generateShareUrl(favorite: Favorite): string {
       return window.location.href;
     }
   }
-}
-
-/**
- * シェア用テキストを生成
- */
-export function generateShareText(favorite: Favorite, shareUrl: string): string {
-  const patternLabel = getPatternLabel(favorite.pattern);
-  const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
-
-  return `メイン：${favorite.primaryDye.name}
-サブ：${palette.sub.dye.name} / アクセント：${palette.accent.dye.name}
-配色パターン：${patternLabel}
-
-#カララントピッカー #FF14 #FFXIV
-${shareUrl}`;
 }
 
 /**

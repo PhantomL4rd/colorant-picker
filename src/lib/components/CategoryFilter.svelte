@@ -1,7 +1,6 @@
 <script lang="ts">
 import type { DyeCategory } from '$lib/types';
-import { translationsStore } from '$lib/stores/locale';
-import { translateCategory } from '$lib/utils/i18n';
+import { t } from '$lib/translations';
 
 interface Props {
   selectedCategory: DyeCategory | null;
@@ -30,7 +29,10 @@ const categories: DyeCategory[] = [
   'rare',
 ];
 
-const translations = $derived($translationsStore);
+// カテゴリ名を翻訳
+function getCategoryName(category: DyeCategory): string {
+  return $t(`dye.categories.${category}`);
+}
 
 function isSelected(category: DyeCategory): boolean {
   return selectedCategory === category;
@@ -51,9 +53,9 @@ function handleCustomColorsClick() {
         <button
           class="btn btn-sm flex-shrink-0 snap-start min-h-11 min-w-11 {isSelected(category) ? 'btn-primary' : 'btn-outline'}"
           onclick={() => onToggleCategory(category)}
-          aria-label="{translateCategory(category, translations)}カテゴリを選択"
+          aria-label={getCategoryName(category)}
         >
-          {translateCategory(category, translations)}
+          {getCategoryName(category)}
         </button>
       {/each}
 
@@ -62,9 +64,9 @@ function handleCustomColorsClick() {
         <button
           class="btn btn-sm flex-shrink-0 snap-start min-h-11 {isCustomColorsSelected ? 'btn-secondary' : 'btn-outline'}"
           onclick={handleCustomColorsClick}
-          aria-label="カスタムカラーを選択"
+          aria-label={$t('page.customColor.yourColors')}
         >
-          あなたの色
+          {$t('page.customColor.yourColors')}
         </button>
       {/if}
 
@@ -72,9 +74,9 @@ function handleCustomColorsClick() {
         <button
           class="btn btn-sm btn-outline flex-shrink-0 snap-start min-h-11"
           onclick={onClearCategories}
-          aria-label="フィルターをクリア"
+          aria-label={$t('common.action.clear')}
         >
-          クリア
+          {$t('common.action.clear')}
         </button>
       {/if}
     </div>

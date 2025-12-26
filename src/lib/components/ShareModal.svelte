@@ -1,7 +1,9 @@
 <script lang="ts">
 import { Check, Copy, X } from '@lucide/svelte';
+import { Palette } from '$lib/models/Palette';
+import { t } from '$lib/translations';
 import type { Favorite } from '$lib/types';
-import { copyToClipboard, generateShareText, generateShareUrl } from '$lib/utils/shareUtils';
+import { copyToClipboard, generateShareUrl } from '$lib/utils/shareUtils';
 import CombinationPreview from './CombinationPreview.svelte';
 
 interface Props {
@@ -16,9 +18,23 @@ let copySuccess = $state(false);
 let copyError = $state('');
 let iscopying = $state(false);
 
-// シェア用データの計算（derivedで直接計算 - 関数構文なし）
+// シェア用データの計算
 const shareUrl = $derived(favorite ? generateShareUrl(favorite) : '');
-const shareText = $derived(favorite && shareUrl ? generateShareText(favorite, shareUrl) : '');
+
+// シェアテキストを翻訳テンプレートから生成
+const shareText = $derived.by(() => {
+  if (!favorite || !shareUrl) return '';
+  const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+  const patternName = $t(`pattern.${favorite.pattern}.name`);
+
+  // テンプレートから置換
+  return $t('page.share.shareText')
+    .replace('{main}', favorite.primaryDye.name)
+    .replace('{sub}', palette.sub.dye.name)
+    .replace('{accent}', palette.accent.dye.name)
+    .replace('{pattern}', patternName)
+    .replace('{url}', shareUrl);
+});
 
 // 個別のderived変数でアクセス（関数構文なし）
 const primaryDye = $derived(favorite?.primaryDye || null);
@@ -43,10 +59,10 @@ async function handleCopy() {
         copySuccess = false;
       }, 2000);
     } else {
-      copyError = 'コピーに失敗しました。手動でコピーしてください。';
+      copyError = $t('page.share.copyFailed');
     }
   } catch (error) {
-    copyError = 'コピーに失敗しました。手動でコピーしてください。';
+    copyError = $t('page.share.copyFailed');
   } finally {
     iscopying = false;
   }
@@ -79,12 +95,12 @@ function handleKeydown(event: KeyboardEvent) {
     <div class="modal-box w-11/12 max-w-2xl">
         <!-- ヘッダー -->
         <div class="flex items-center justify-between mb-6">
-          <h3 id="share-modal-title" class="text-lg font-bold">パレットをシェア</h3>
+          <h3 id="share-modal-title" class="text-lg font-bold">{$t('page.share.title')}</h3>
           <button
             type="button"
             class="btn btn-sm btn-ghost"
             onclick={onClose}
-            aria-label="モーダルを閉じる"
+            aria-label={$t('common.action.close')}
           >
             <X class="w-4 h-4" />
           </button>
@@ -134,7 +150,7 @@ function handleKeydown(event: KeyboardEvent) {
         <!-- シェア用テキスト -->
         <div class="mb-6">
           <label for="share-text" class="label">
-            <span class="label-text font-medium">シェア用テキスト</span>
+            <span class="label-text font-medium">{$t('page.share.shareTextLabel')}</span>
           </label>
           
           <textarea
@@ -162,7 +178,7 @@ function handleKeydown(event: KeyboardEvent) {
             class="btn btn-soft"
             onclick={onClose}
           >
-            閉じる
+            {$t('common.action.close')}
           </button>
           <button
             type="button"
@@ -173,13 +189,13 @@ function handleKeydown(event: KeyboardEvent) {
           >
             {#if copySuccess}
               <Check class="w-4 h-4" />
-              コピー完了！
+              {$t('page.share.copied')}
             {:else if iscopying}
               <span class="loading loading-spinner loading-xs"></span>
-              コピー中...
+              {$t('page.share.copying')}
             {:else}
               <Copy class="w-4 h-4" />
-              コピー
+              {$t('common.action.copy')}
             {/if}
           </button>
         </div>

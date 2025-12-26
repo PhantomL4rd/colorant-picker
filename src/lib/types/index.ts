@@ -30,8 +30,8 @@ export interface RGBColor255 {
   b: number; // 0-255
 }
 
-// 色の役割（黄金比計算用）
-export type ColorRole = 'メイン' | 'サブ' | 'アクセント';
+// 色の役割（黄金比計算用）- 翻訳キーとして使用
+export type ColorRole = 'main' | 'sub' | 'accent';
 
 // 役割付きの染料情報（Paletteクラスで使用）
 export interface DyeWithRole {

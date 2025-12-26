@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Calendar, Heart, Trash2, X } from '@lucide/svelte';
-import { getPatternLabel } from '$lib/constants/patterns';
+import { t } from '$lib/translations';
 import type { Favorite, HarmonyPattern } from '$lib/types';
 import HeartBurst, { type HeartBurstApi } from './HeartBurst.svelte';
 import PaletteColorPreview from './PaletteColorPreview.svelte';
@@ -58,7 +58,7 @@ let heartBurst: HeartBurstApi | undefined = $state();
 function formatDate(dateStr: string): string {
   try {
     const date = new Date(dateStr);
-    return date.toLocaleDateString('ja-JP', {
+    return date.toLocaleDateString(undefined, {
       year: 'numeric',
       month: 'short',
       day: 'numeric',
@@ -66,7 +66,7 @@ function formatDate(dateStr: string): string {
       minute: '2-digit',
     });
   } catch {
-    return '日時不明';
+    return $t('page.palette.unknownDate');
   }
 }
 
@@ -86,7 +86,7 @@ async function handleFavorite() {
       showFeedback = false;
     }, 800);
   } catch (err) {
-    error = err instanceof Error ? err.message : 'スキ！の追加に失敗しました。';
+    error = err instanceof Error ? err.message : $t('common.action.likeError');
   } finally {
     isAddingToFavorites = false;
   }
@@ -102,7 +102,7 @@ function handleDelete() {
     try {
       onDelete();
     } catch (err) {
-      error = err instanceof Error ? err.message : '削除に失敗しました。';
+      error = err instanceof Error ? err.message : $t('page.palette.deleteFailed');
       isDeleting = false;
     }
   }
@@ -137,7 +137,7 @@ function cancelDelete() {
               <button
                 class="btn btn-ghost btn-sm btn-circle text-red-500"
                 disabled
-                aria-label="スキ！"
+                aria-label={$t('common.action.like')}
               >
                 <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
               </button>
@@ -145,7 +145,7 @@ function cancelDelete() {
               <button
                 class="btn btn-ghost btn-sm btn-circle text-success"
                 disabled
-                aria-label="スキ！済み"
+                aria-label={$t('common.action.alreadyLiked')}
               >
                 <Heart class="w-4 h-4 fill-current" />
               </button>
@@ -154,7 +154,7 @@ function cancelDelete() {
                 class="btn btn-ghost btn-sm btn-circle"
                 onclick={handleFavorite}
                 disabled={isAddingToFavorites}
-                aria-label="スキ！"
+                aria-label={$t('common.action.like')}
               >
                 {#if isAddingToFavorites}
                   <span class="loading loading-spinner loading-sm"></span>
@@ -184,20 +184,20 @@ function cancelDelete() {
 
     <!-- フッター：パターンと削除ボタン -->
     <div class="flex justify-center items-center mt-2 relative">
-      <span class="badge badge-outline badge-sm">{getPatternLabel(pattern)}</span>
+      <span class="badge badge-outline badge-sm">{$t(`pattern.${pattern}.name`)}</span>
 
       {#if showDeleteButton}
         <!-- 削除ボタン -->
         <div class="absolute right-0">
           {#if isDeleting}
             <div class="flex gap-1">
-              <button class="btn btn-error btn-xs" onclick={handleDelete} aria-label="削除を確認">
-                削除
+              <button class="btn btn-error btn-xs" onclick={handleDelete} aria-label={$t('page.palette.confirmDelete')}>
+                {$t('page.palette.delete')}
               </button>
               <button
                 class="btn btn-ghost btn-xs"
                 onclick={cancelDelete}
-                aria-label="削除をキャンセル"
+                aria-label={$t('page.palette.cancelDelete')}
               >
                 <X class="w-3 h-3" />
               </button>
@@ -206,7 +206,7 @@ function cancelDelete() {
             <button
               class="btn btn-ghost btn-xs btn-circle"
               onclick={handleDelete}
-              aria-label="削除"
+              aria-label={$t('page.palette.delete')}
             >
               <Trash2 class="w-3 h-3 text-error" />
             </button>

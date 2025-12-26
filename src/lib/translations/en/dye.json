@@ -1,5 +1,15 @@
 {
-  "dyes": {
+  "categories": {
+    "white": "White",
+    "red": "Red",
+    "brown": "Brown",
+    "yellow": "Yellow",
+    "green": "Green",
+    "blue": "Blue",
+    "purple": "Purple",
+    "rare": "Special"
+  },
+  "names": {
     "dye_002": "Snow White",
     "dye_003": "Ash Grey",
     "dye_004": "Goobbue Grey",
@@ -125,15 +135,5 @@
     "dye_124": "Metallic Ruby Red",
     "dye_125": "Metallic Cobalt Green",
     "dye_126": "Metallic Dark Blue"
-  },
-  "categories": {
-    "white": "White",
-    "red": "Red",
-    "brown": "Brown",
-    "yellow": "Yellow",
-    "green": "Green",
-    "blue": "Blue",
-    "purple": "Purple",
-    "rare": "Special"
   }
 }

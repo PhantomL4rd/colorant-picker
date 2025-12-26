@@ -1,0 +1,41 @@
+{
+  "triadic": {
+    "name": "バランス",
+    "description": "バランスよく調和した鮮やかな3色",
+    "tags": "万能,上品"
+  },
+  "split-complementary": {
+    "name": "アクセント",
+    "description": "メインカラーに映える個性的な3色",
+    "tags": "個性派,おしゃれ"
+  },
+  "analogous": {
+    "name": "グラデーション",
+    "description": "自然につながる優しい3色",
+    "tags": "やさしい,ナチュラル"
+  },
+  "monochromatic": {
+    "name": "同系色",
+    "description": "統一感のある落ち着いた3色",
+    "tags": "落ち着き,シック"
+  },
+  "similar": {
+    "name": "ナチュラル",
+    "description": "馴染みやすい近い色味の3色",
+    "tags": "なじむ,ベーシック"
+  },
+  "contrast": {
+    "name": "コントラスト",
+    "description": "はっきりとした対比のある3色",
+    "tags": "インパクト,メリハリ"
+  },
+  "clash": {
+    "name": "クラッシュ",
+    "description": "ガウガウ元気になる3色",
+    "tags": "元気,ポップ"
+  },
+  "group": {
+    "standard": "定番の配色",
+    "unique": "個性派の配色"
+  }
+}

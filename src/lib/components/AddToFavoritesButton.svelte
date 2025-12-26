@@ -3,6 +3,7 @@ import { Heart } from 'lucide-svelte';
 import { Palette } from '$lib/models/Palette';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
+import { t } from '$lib/translations';
 import HeartBurst, { type HeartBurstApi } from './HeartBurst.svelte';
 
 interface Props {
@@ -74,7 +75,7 @@ function handleSave() {
     // 成功を示すトーストを表示
     showToast();
   } catch (error) {
-    saveError = error instanceof Error ? error.message : 'スキ！の保存に失敗しました。';
+    saveError = error instanceof Error ? error.message : $t('common.action.likeError');
     alert(saveError);
   } finally {
     isSaving = false;
@@ -90,7 +91,7 @@ function showToast() {
       <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
         <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
       </svg>
-      <span>スキ！しました</span>
+      <span>${$t('common.action.liked')}</span>
     </div>
   `;
 
@@ -110,7 +111,7 @@ function showToast() {
 }
 </script>
 
-<!-- スキ！ボタン -->
+<!-- Like button -->
 <div class="relative inline-block">
   <HeartBurst bind:this={heartBurst} />
 
@@ -119,35 +120,35 @@ function showToast() {
     <button
       class="btn btn-ghost btn-sm text-red-500 cursor-default"
       disabled
-      aria-label="スキ！"
+      aria-label={$t('common.action.like')}
     >
       <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
-      スキ！
+      {$t('common.action.like')}
     </button>
   {:else if isAlreadyFavorited}
     <button
       class="btn btn-ghost btn-sm text-success cursor-default"
       disabled
-      aria-label="スキ！済み"
+      aria-label={$t('common.action.alreadyLiked')}
     >
       <Heart class="w-4 h-4 fill-current" />
-      スキ！済み
+      {$t('common.action.alreadyLiked')}
     </button>
   {:else}
-    <div class="tooltip tooltip-top tooltip-accent" class:tooltip-open={favorites.length === 0} data-tip="気に入ったら押してみて！">
+    <div class="tooltip tooltip-top tooltip-accent" class:tooltip-open={favorites.length === 0} data-tip={$t('common.action.like')}>
       <button
         class="btn btn-primary btn-sm gap-1"
         class:btn-disabled={isDisabled}
         class:loading={isSaving}
         onclick={openModal}
         disabled={isDisabled || isSaving}
-        aria-label="スキ！"
+        aria-label={$t('common.action.like')}
       >
         {#if isSaving}
-          保存中...
+          <span class="loading loading-spinner loading-xs"></span>
         {:else}
           <Heart class="w-4 h-4" />
-          スキ！
+          {$t('common.action.like')}
         {/if}
       </button>
     </div>

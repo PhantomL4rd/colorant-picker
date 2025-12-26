@@ -2,16 +2,13 @@
 import { Heart, Shuffle } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
-import { translationsStore } from '$lib/stores/locale';
-import { translateDyeName } from '$lib/utils/i18n';
+import { t } from '$lib/translations';
 import type { Favorite } from '$lib/types';
 import PaletteCard from './PaletteCard.svelte';
 import ShareModal from './ShareModal.svelte';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
-
-const translations = $derived($translationsStore);
 
 interface Props {
   onSelectFavorite?: (favorite: Favorite) => void;
@@ -65,9 +62,9 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
   const sub = palette.sub.dye;
   const accent = palette.accent.dye;
   return [
-    { hex: primary.hex, name: translateDyeName(primary.id, primary.name, translations) },
-    { hex: sub.hex, name: translateDyeName(sub.id, sub.name, translations) },
-    { hex: accent.hex, name: translateDyeName(accent.id, accent.name, translations) },
+    { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
+    { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
+    { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
   ];
 }
 </script>
@@ -77,12 +74,12 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
       <Heart class="w-5 h-5 text-primary" />
-      <h1 class="text-xl font-bold">スキ！</h1>
+      <h1 class="text-xl font-bold">{$t('page.favorites.tabs.favorites')}</h1>
     </div>
 
     {#if favoriteCount > 0}
       <p class="text-base-content/60 text-sm">
-        {favoriteCount}件のスキ！があります
+        {favoriteCount} {$t('common.nav.favorites')}
       </p>
     {/if}
   </div>
@@ -100,17 +97,13 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
         </div>
 
         <h2 class="text-xl font-semibold mb-3 text-base-content/80">
-          まだスキ！がありません
+          {$t('page.favorites.empty.favorites')}
         </h2>
-
-        <p class="text-base-content/60 text-sm max-w-xs mx-auto">
-          ピッカーで気に入った配色を見つけたら、ハートボタンで保存してみよう
-        </p>
 
         <div class="mt-6">
           <a href="/" class="btn btn-primary btn-sm gap-2">
             <Shuffle class="w-4 h-4" />
-            配色を探しに行く
+            {$t('common.nav.picker')}
           </a>
         </div>
       </div>

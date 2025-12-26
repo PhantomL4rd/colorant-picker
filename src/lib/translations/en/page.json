@@ -1,0 +1,102 @@
+{
+  "home": {
+    "title": "Colorant Picker",
+    "heading": "Pick your colors",
+    "selectPrompt": "Pick a colorant below to start!",
+    "preview": "Preview",
+    "patternSection": "Color Pattern",
+    "dyeList": "Colorant List",
+    "ratioTip": {
+      "title": "Tips for great dyeing!",
+      "heading": "Color Ratio Guide",
+      "main": "The star of your outfit (chest, legs)",
+      "sub": "Complements the main (hands, feet)",
+      "accent": "A pop of personality!"
+    },
+    "dyeGrid": {
+      "empty": "No colorants match",
+      "emptyHint": "Try changing the filter",
+      "showMore": "Show more ({count} remaining)"
+    }
+  },
+  "favorites": {
+    "title": "Favorites | Colorant Picker",
+    "heading": "Your Favorites",
+    "tabs": {
+      "favorites": "Favorites",
+      "history": "History"
+    },
+    "empty": {
+      "favorites": "No favorites yet. Tap the heart on color combinations you like!",
+      "history": "No history yet. Start picking colors!"
+    }
+  },
+  "showcase": {
+    "title": "Picks | Colorant Picker",
+    "heading": "Today's Picks",
+    "empty": "No recommendations available yet.",
+    "error": "Failed to load recommendations."
+  },
+  "customColor": {
+    "title": "Custom Colors",
+    "yourColors": "Your Colors",
+    "add": "Add Custom Color",
+    "edit": "Edit Custom Color",
+    "newColor": "Add New Color",
+    "emptyTitle": "No custom colors yet",
+    "emptyDescription": "Add your hair, skin, or eye color with \"Add New Color\" button",
+    "name": "Color Name",
+    "namePlaceholder": "e.g. My Hair Color",
+    "preview": "Preview",
+    "rgb": "RGB",
+    "rgbPlaceholder": "255, 255, 255",
+    "save": "Save",
+    "update": "Update",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "deleteConfirm": "Delete \"{name}\"?",
+    "selectColor": "Select this color",
+    "validation": {
+      "nameRequired": "Color name is required",
+      "rgbInvalid": "Please enter a valid RGB value (e.g., 255, 128, 0)",
+      "rgbRange": "RGB values must be between 0-255",
+      "duplicateName": "A color with this name already exists"
+    },
+    "saveFailed": "Failed to save"
+  },
+  "share": {
+    "title": "Share Palette",
+    "shareTextLabel": "Share Text",
+    "copyUrl": "Copy URL",
+    "copied": "Copied!",
+    "copying": "Copying...",
+    "copyFailed": "Failed to copy. Please copy manually.",
+    "shareText": "Main: {main}\nSub: {sub} / Accent: {accent}\nPattern: {pattern}\n\n#ColorantPicker #FF14 #FFXIV\n{url}"
+  },
+  "coachMark": {
+    "step1": {
+      "title": "Step 1/3",
+      "message": "Choose a color pattern"
+    },
+    "step2": {
+      "title": "Step 2/3",
+      "message": "Pick a colorant"
+    },
+    "step3": {
+      "title": "Step 3/3",
+      "message": "Try Random or Picks if unsure!"
+    },
+    "close": "Close",
+    "next": "Next",
+    "done": "Done",
+    "closeGuide": "Close guide"
+  },
+  "palette": {
+    "unknownDate": "Unknown date",
+    "deleteFailed": "Failed to delete",
+    "delete": "Delete",
+    "confirmDelete": "Confirm delete",
+    "cancelDelete": "Cancel delete",
+    "noSelection": "No combination selected"
+  }
+}

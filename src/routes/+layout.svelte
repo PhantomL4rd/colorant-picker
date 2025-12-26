@@ -1,24 +1,15 @@
 <script lang="ts">
 import '../app.css';
-import { onMount } from 'svelte';
 import { HelpCircle, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
 import CoachMark from '$lib/components/CoachMark.svelte';
 import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
 import TabNavigation from '$lib/components/TabNavigation.svelte';
-import { initLocale } from '$lib/stores/locale';
+import { t } from '$lib/translations';
 
 const { children } = $props();
 
-const siteName = 'カララントピッカー';
-const siteDescription = 'FF14のカララント（染料）から3色の組み合わせを提案するツールです。';
-
 // コーチマーク表示状態
 let isCoachMarkOpen = $state(false);
-
-// 言語初期化
-onMount(() => {
-  initLocale();
-});
 
 function openCoachMark() {
   isCoachMarkOpen = true;
@@ -30,8 +21,8 @@ function closeCoachMark() {
 </script>
 
 <svelte:head>
-  <title>{siteName}</title>
-  <meta name="description" content={siteDescription} />
+  <title>{$t('common.app.name')}</title>
+  <meta name="description" content={$t('common.app.description')} />
 </svelte:head>
 
 <div class="min-h-dvh bg-base-100">
@@ -49,7 +40,7 @@ function closeCoachMark() {
       <div class="flex-1">
         <h1 class="text-xl font-bold flex items-center gap-2">
           <SwatchBook class="w-6 h-6" />
-          {siteName}
+          {$t('common.app.name')}
         </h1>
       </div>
       <div class="flex-none flex items-center gap-1">
@@ -61,7 +52,7 @@ function closeCoachMark() {
           type="button"
           class="btn btn-ghost btn-circle"
           onclick={openCoachMark}
-          aria-label="使い方を見る"
+          aria-label={$t('common.aria.help')}
         >
           <HelpCircle class="w-6 h-6" />
         </button>
@@ -84,7 +75,7 @@ function closeCoachMark() {
                 class="flex items-center gap-2"
               >
                 <MessageSquare class="w-5 h-5" />
-                要望・感想
+                {$t('common.feedback.label')}
               </a>
             </li>
             <li>

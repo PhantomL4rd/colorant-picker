@@ -2,6 +2,7 @@
 import { CircleUser, Plus } from '@lucide/svelte';
 import { customColorsStore } from '$lib/stores/customColors';
 import { selectPrimaryDye } from '$lib/stores/selection';
+import { t } from '$lib/translations';
 import { createCustomDye } from '$lib/utils/customColorUtils';
 import CustomColorForm from './CustomColorForm.svelte';
 import CustomColorItem from './CustomColorItem.svelte';
@@ -42,7 +43,7 @@ function handleColorSelect(color: any) {
     <div class="flex items-center justify-between">
       <h3 class="text-lg font-medium flex items-center gap-2">
         <CircleUser size={20} />
-        あなたの色
+        {$t('page.customColor.yourColors')}
       </h3>
       <button
         type="button"
@@ -50,14 +51,14 @@ function handleColorSelect(color: any) {
         class="btn btn-sm btn-primary gap-2"
       >
         <Plus size={16} />
-        新しい色を追加
+        {$t('page.customColor.newColor')}
       </button>
     </div>
 
     {#if customColors.length === 0}
       <div class="text-center py-8 text-gray-500">
-        <p class="mb-2">まだあなたの色が登録されていません</p>
-        <p class="text-sm">「新しい色を追加」ボタンからあなたの髪色や肌色、目の色を登録してみましょう</p>
+        <p class="mb-2">{$t('page.customColor.emptyTitle')}</p>
+        <p class="text-sm">{$t('page.customColor.emptyDescription')}</p>
       </div>
     {:else}
       <div class="grid gap-3">

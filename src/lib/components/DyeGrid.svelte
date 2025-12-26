@@ -1,5 +1,6 @@
 <script lang="ts">
 import { ChevronDown } from 'lucide-svelte';
+import { t } from '$lib/translations';
 import type { DyeProps } from '$lib/types';
 import DyeCard from './DyeCard.svelte';
 
@@ -43,8 +44,8 @@ function loadMore() {
       <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-base-300/50 mb-4">
         <span class="text-2xl">🎨</span>
       </div>
-      <p class="text-base-content/50 text-sm">該当するカララントがありません</p>
-      <p class="text-base-content/40 text-xs mt-1">フィルターを変更してみてください</p>
+      <p class="text-base-content/50 text-sm">{$t('page.home.dyeGrid.empty')}</p>
+      <p class="text-base-content/40 text-xs mt-1">{$t('page.home.dyeGrid.emptyHint')}</p>
     </div>
   {:else}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -66,7 +67,7 @@ function loadMore() {
           onclick={loadMore}
         >
           <ChevronDown class="w-4 h-4" />
-          もっと見る（残り{remainingCount}色）
+          {$t('page.home.dyeGrid.showMore').replace('{count}', String(remainingCount))}
         </button>
       </div>
     {/if}

@@ -42,6 +42,7 @@
     "@lucide/svelte": "^0.562.0",
     "culori": "^4.0.2",
     "lucide-svelte": "^0.562.0",
-    "lz-string": "^1.5.0"
+    "lz-string": "^1.5.0",
+    "sveltekit-i18n": "^2.4.2"
   }
 }

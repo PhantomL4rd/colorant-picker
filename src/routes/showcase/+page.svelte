@@ -8,15 +8,12 @@ import ShareModal from '$lib/components/ShareModal.svelte';
 import { Palette } from '$lib/models/Palette';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
-import { translationsStore } from '$lib/stores/locale';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
-import { translateDyeName } from '$lib/utils/i18n';
+import { t } from '$lib/translations';
 import type { DyeProps, Favorite, HarmonyPattern, ShowcaseData, ShowcasePalette } from '$lib/types';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
-
-const translations = $derived($translationsStore);
 
 let isLoading = $state(true);
 let error = $state<string | null>(null);
@@ -43,7 +40,7 @@ async function fetchShowcase(): Promise<void> {
     error = null;
   } catch (err) {
     console.error('Error fetching showcase:', err);
-    error = 'データの取得に失敗しました';
+    error = $t('page.showcase.error');
   }
 }
 
@@ -53,7 +50,7 @@ onMount(async () => {
     await fetchShowcase();
   } catch (err) {
     console.error('初期化エラー:', err);
-    error = '初期化に失敗しました';
+    error = $t('common.state.error');
   } finally {
     isLoading = false;
   }
@@ -125,9 +122,9 @@ function getPreviewColors(showcasePalette: ShowcasePalette): PreviewColors | nul
   const sub = palette.sub.dye;
   const accent = palette.accent.dye;
   return [
-    { hex: primary.hex, name: translateDyeName(primary.id, primary.name, translations) },
-    { hex: sub.hex, name: translateDyeName(sub.id, sub.name, translations) },
-    { hex: accent.hex, name: translateDyeName(accent.id, accent.name, translations) },
+    { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
+    { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
+    { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
   ];
 }
 
@@ -164,7 +161,7 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
 </script>
 
 <svelte:head>
-  <title>おすすめ | カララントピッカー</title>
+  <title>{$t('page.showcase.title')}</title>
 </svelte:head>
 
 <div class="container mx-auto px-4 pb-20 pt-4">
@@ -172,12 +169,12 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
       <Sparkles class="w-5 h-5 text-primary" />
-      <h1 class="text-xl font-bold">おすすめ</h1>
+      <h1 class="text-xl font-bold">{$t('page.showcase.heading')}</h1>
     </div>
 
     {#if palettes.length > 0}
       <p class="text-base-content/60 text-sm">
-        みんなのスキ！パレット
+        {$t('common.nav.showcase')}
       </p>
     {/if}
   </div>
@@ -197,7 +194,7 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
         </div>
         <button class="btn btn-primary btn-sm" onclick={handleRetry}>
           <RefreshCw class="w-4 h-4" />
-          再読み込み
+          {$t('common.action.restore')}
         </button>
       </div>
     </div>
@@ -209,11 +206,8 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
           <Sparkles class="w-20 h-20 mx-auto mb-4" />
         </div>
         <h2 class="text-xl font-semibold mb-4 text-base-content/70">
-          おすすめパレットを準備中です
+          {$t('page.showcase.empty')}
         </h2>
-        <div class="text-base-content/60 space-y-2">
-          <p>素敵な組み合わせをお楽しみに！</p>
-        </div>
       </div>
     </div>
   {:else}

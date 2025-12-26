@@ -1,0 +1,53 @@
+{
+  "app": {
+    "name": "カララントピッカー",
+    "description": "FF14のカララントから3色の組み合わせを提案するツール"
+  },
+  "role": {
+    "main": "メイン",
+    "sub": "サブ",
+    "accent": "アクセント"
+  },
+  "action": {
+    "random": "ランダム",
+    "share": "シェア",
+    "restore": "復元",
+    "addToFavorites": "お気に入りに追加",
+    "removeFromFavorites": "お気に入りから削除",
+    "copied": "コピーしました！",
+    "copy": "コピー",
+    "close": "閉じる",
+    "clear": "クリア",
+    "like": "スキ！",
+    "liked": "スキ！しました",
+    "alreadyLiked": "スキ！済み",
+    "likeError": "スキ！の保存に失敗しました"
+  },
+  "state": {
+    "loading": "カララントデータを読み込み中...",
+    "empty": "データがありません",
+    "error": "エラーが発生しました",
+    "needMoreColors": "3色以上のカララントが必要です"
+  },
+  "filter": {
+    "excludeMetallic": "メタリック系を除外"
+  },
+  "nav": {
+    "picker": "ピッカー",
+    "favorites": "スキ！",
+    "history": "履歴",
+    "showcase": "おすすめ"
+  },
+  "aria": {
+    "selectColor": "この色を選択して新しい組み合わせを提案",
+    "selectCombination": "この組み合わせを選択",
+    "languageSwitch": "言語を切り替え",
+    "help": "使い方を見る",
+    "openMenu": "メニューを開く",
+    "closeMenu": "メニューを閉じる"
+  },
+  "feedback": {
+    "label": "要望・感想",
+    "placeholder": "ご意見・ご要望をお聞かせください"
+  }
+}

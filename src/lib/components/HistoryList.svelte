@@ -3,16 +3,13 @@ import { Clock, Shuffle } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { historyStore, restoreFromHistory } from '$lib/stores/history';
-import { translationsStore } from '$lib/stores/locale';
-import { translateDyeName } from '$lib/utils/i18n';
+import { t } from '$lib/translations';
 import type { Favorite, HistoryEntry } from '$lib/types';
 import PaletteCard from './PaletteCard.svelte';
 import ShareModal from './ShareModal.svelte';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
-
-const translations = $derived($translationsStore);
 
 interface Props {
   onSelectHistory?: (entry: HistoryEntry) => void;
@@ -72,9 +69,9 @@ function getPreviewColors(entry: HistoryEntry): PreviewColors {
   const sub = palette.sub.dye;
   const accent = palette.accent.dye;
   return [
-    { hex: primary.hex, name: translateDyeName(primary.id, primary.name, translations) },
-    { hex: sub.hex, name: translateDyeName(sub.id, sub.name, translations) },
-    { hex: accent.hex, name: translateDyeName(accent.id, accent.name, translations) },
+    { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
+    { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
+    { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
   ];
 }
 
@@ -99,12 +96,12 @@ function handleAddToFavorites(entry: HistoryEntry) {
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
       <Clock class="w-5 h-5 text-primary" />
-      <h1 class="text-xl font-bold">履歴</h1>
+      <h1 class="text-xl font-bold">{$t('page.favorites.tabs.history')}</h1>
     </div>
 
     {#if historyCount > 0}
       <p class="text-base-content/60 text-sm">
-        最新{historyCount}件の組み合わせ履歴
+        {historyCount} {$t('common.nav.history')}
       </p>
     {/if}
   </div>
@@ -118,16 +115,12 @@ function handleAddToFavorites(entry: HistoryEntry) {
           <Clock class="w-20 h-20 mx-auto mb-4" />
         </div>
         <h2 class="text-xl font-semibold mb-4 text-base-content/70">
-          まだ履歴がありません
+          {$t('page.favorites.empty.history')}
         </h2>
-        <div class="text-base-content/60 space-y-2">
-          <p>カララントピッカーで色を選択すると、</p>
-          <p>組み合わせが自動的に記録されます。</p>
-        </div>
         <div class="mt-6">
           <a href="/" class="btn btn-primary btn-sm gap-2">
             <Shuffle class="w-4 h-4" />
-            配色を探しに行く
+            {$t('common.nav.picker')}
           </a>
         </div>
       </div>

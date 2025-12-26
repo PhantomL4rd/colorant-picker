@@ -6,6 +6,7 @@ import {
   saveCustomColor,
   updateCustomColor,
 } from '$lib/stores/customColors';
+import { t } from '$lib/translations';
 import type { RGBColor255 } from '$lib/types';
 import { rgbToRgb255 } from '$lib/utils/colorConversion';
 import {
@@ -83,14 +84,14 @@ async function handleSubmit() {
 
     // RGB値バリデーション
     if (!validateRgbInput(rgbInputs)) {
-      errors.rgb = 'RGB値は0-255の範囲で入力してください';
+      errors.rgb = $t('page.customColor.validation.rgbRange');
       return;
     }
 
     // 名前重複チェック
     const isDuplicate = isNameDuplicate(name.trim(), editColorId || undefined);
     if (isDuplicate) {
-      errors.name = 'この名前は既に使用されています';
+      errors.name = $t('page.customColor.validation.duplicateName');
       return;
     }
 
@@ -109,7 +110,7 @@ async function handleSubmit() {
 
     onClose();
   } catch (error) {
-    errors.submit = error instanceof Error ? error.message : '保存に失敗しました';
+    errors.submit = error instanceof Error ? error.message : $t('page.customColor.saveFailed');
   } finally {
     isSubmitting = false;
   }
@@ -123,7 +124,7 @@ function handleCancel() {
 <div class="card bg-base-200 p-4">
   <div class="flex items-center justify-between mb-4">
     <h4 class="text-lg font-medium">
-      {editColorId ? '色を編集' : '新しい色を追加'}
+      {editColorId ? $t('page.customColor.edit') : $t('page.customColor.add')}
     </h4>
     <button
       type="button"
@@ -138,13 +139,13 @@ function handleCancel() {
     <!-- 名前入力 -->
     <div class="form-control">
       <label class="label" for="color-name">
-        <span class="label-text">名前</span>
+        <span class="label-text">{$t('page.customColor.name')}</span>
       </label>
       <input
         id="color-name"
         type="text"
         bind:value={name}
-        placeholder="例: 私の髪色"
+        placeholder={$t('page.customColor.namePlaceholder')}
         class="input input-bordered {errors.name ? 'input-error' : ''}"
         maxlength="50"
         required
@@ -159,7 +160,7 @@ function handleCancel() {
     <!-- RGB値入力 -->
     <div class="form-control">
       <span class="label">
-        <span class="label-text">RGB値</span>
+        <span class="label-text">{$t('page.customColor.rgb')}</span>
       </span>
       <div class="flex gap-3">
         <div class="flex-1">
@@ -215,7 +216,7 @@ function handleCancel() {
     <!-- プレビュー -->
     <div class="form-control">
       <span class="label">
-        <span class="label-text">プレビュー</span>
+        <span class="label-text">{$t('page.customColor.preview')}</span>
       </span>
       <div class="flex items-center gap-3">
         <div
@@ -242,7 +243,7 @@ function handleCancel() {
         class="btn btn-ghost"
         disabled={isSubmitting}
       >
-        キャンセル
+        {$t('page.customColor.cancel')}
       </button>
       <button
         type="submit"
@@ -254,7 +255,7 @@ function handleCancel() {
         {:else}
           <Save size={16} />
         {/if}
-        {editColorId ? '更新' : '保存'}
+        {editColorId ? $t('page.customColor.update') : $t('page.customColor.save')}
       </button>
     </div>
   </form>

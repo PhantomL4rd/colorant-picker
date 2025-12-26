@@ -1,6 +1,7 @@
 <script lang="ts">
 import { ChevronRight, X } from 'lucide-svelte';
 import { onMount, tick } from 'svelte';
+import { t } from '$lib/translations';
 
 interface Props {
   isOpen: boolean;
@@ -8,8 +9,8 @@ interface Props {
 }
 
 interface CoachMarkStep {
-  title: string;
-  message: string;
+  titleKey: string;
+  messageKey: string;
   targetSelectors: string[];
 }
 
@@ -20,21 +21,21 @@ const SPOTLIGHT_PADDING = 6;
 const SCROLL_DELAY_MS = 300;
 const FOCUS_DELAY_MS = 100;
 
-// ステップ定義
-const STEPS: CoachMarkStep[] = [
+// ステップ定義（翻訳キー）
+const STEP_CONFIGS: CoachMarkStep[] = [
   {
-    title: 'ステップ 1/3',
-    message: '配色パターンを選ぼう',
+    titleKey: 'page.coachMark.step1.title',
+    messageKey: 'page.coachMark.step1.message',
     targetSelectors: ['[data-coach="pattern-selector"]'],
   },
   {
-    title: 'ステップ 2/3',
-    message: 'カララントを選ぼう',
+    titleKey: 'page.coachMark.step2.title',
+    messageKey: 'page.coachMark.step2.message',
     targetSelectors: ['[data-coach="dye-grid"]'],
   },
   {
-    title: 'ステップ 3/3',
-    message: '迷ったらランダムやおすすめを使おう',
+    titleKey: 'page.coachMark.step3.title',
+    messageKey: 'page.coachMark.step3.message',
     targetSelectors: ['[data-coach="random-button"]', '[data-coach="showcase-tab"]'],
   },
 ];
@@ -47,8 +48,8 @@ let nextButtonRef: HTMLButtonElement | null = $state(null);
 let previousFocusElement: HTMLElement | null = null;
 
 // 派生状態
-const currentStep = $derived(STEPS[currentStepIndex]);
-const isLastStep = $derived(currentStepIndex === STEPS.length - 1);
+const currentStep = $derived(STEP_CONFIGS[currentStepIndex]);
+const isLastStep = $derived(currentStepIndex === STEP_CONFIGS.length - 1);
 const paddedRects = $derived.by(() =>
   spotlightRects.map((rect) => ({
     x: rect.left - SPOTLIGHT_PADDING,
@@ -192,23 +193,23 @@ $effect(() => {
     <!-- ツールチップ -->
     <div class="coach-tooltip bg-primary text-primary-content">
       <header class="flex items-start justify-between gap-2 mb-2">
-        <h2 id="coach-title" class="text-sm font-bold">{currentStep.title}</h2>
+        <h2 id="coach-title" class="text-sm font-bold">{$t(currentStep.titleKey)}</h2>
         <button
           bind:this={closeButtonRef}
           type="button"
           class="btn btn-ghost btn-xs btn-circle text-primary-content hover:bg-primary-focus"
           onclick={handleClose}
-          aria-label="ガイドを閉じる"
+          aria-label={$t('page.coachMark.closeGuide')}
         >
           <X class="w-4 h-4" />
         </button>
       </header>
 
-      <p id="coach-message" class="text-sm mb-4">{currentStep.message}</p>
+      <p id="coach-message" class="text-sm mb-4">{$t(currentStep.messageKey)}</p>
 
       <footer class="flex justify-end gap-2">
         <button type="button" class="btn btn-ghost btn-sm text-primary-content" onclick={handleClose}>
-          閉じる
+          {$t('page.coachMark.close')}
         </button>
         <button
           bind:this={nextButtonRef}
@@ -217,9 +218,9 @@ $effect(() => {
           onclick={handleNext}
         >
           {#if isLastStep}
-            完了
+            {$t('page.coachMark.done')}
           {:else}
-            次へ
+            {$t('page.coachMark.next')}
             <ChevronRight class="w-4 h-4" />
           {/if}
         </button>

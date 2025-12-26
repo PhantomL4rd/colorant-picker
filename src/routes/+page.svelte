@@ -19,6 +19,7 @@ import {
   toggleExcludeMetallic,
 } from '$lib/stores/filter';
 import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
+import { t } from '$lib/translations';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { generateSuggestedDyes } from '$lib/utils/colorHarmony';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
@@ -159,7 +160,7 @@ function handleClearAll() {
 {#if isLoading}
   <div class="flex justify-center items-center h-64">
     <span class="loading loading-spinner loading-lg"></span>
-    <span class="ml-2">カララントデータを読み込み中...</span>
+    <span class="ml-2">{$t('common.state.loading')}</span>
   </div>
 {:else}
   <div class="space-y-8">
@@ -186,7 +187,7 @@ function handleClearAll() {
             <div class="flex justify-between items-center mb-2 md:mb-4">
               <h2 class="card-title text-lg flex items-center gap-1">
                 <Eye class="w-5 h-5" />
-                プレビュー
+                {$t('page.home.preview')}
               </h2>
               <div class="flex gap-2">
                 <AddToFavoritesButton disabled={!selectedDye || !suggestedDyes} />
@@ -206,7 +207,7 @@ function handleClearAll() {
           <div class="card-body p-3 md:p-6">
             <h2 class="card-title text-lg flex items-center gap-1 text-base-content/40 mb-4">
               <Eye class="w-5 h-5" />
-              プレビュー
+              {$t('page.home.preview')}
             </h2>
 
             <!-- プレースホルダー色（実際のカララント組み合わせ） -->
@@ -218,21 +219,21 @@ function handleClearAll() {
                       class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
                       style="background-color: {placeholderColors?.[0] ?? '#E63946'};"
                     ></div>
-                    <span class="text-xs text-base-content/50">メイン</span>
+                    <span class="text-xs text-base-content/50">{$t('common.role.main')}</span>
                   </div>
                   <div class="text-center">
                     <div
                       class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
                       style="background-color: {placeholderColors?.[1] ?? '#457B9D'};"
                     ></div>
-                    <span class="text-xs text-base-content/50">サブ</span>
+                    <span class="text-xs text-base-content/50">{$t('common.role.sub')}</span>
                   </div>
                   <div class="text-center">
                     <div
                       class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
                       style="background-color: {placeholderColors?.[2] ?? '#F4A261'};"
                     ></div>
-                    <span class="text-xs text-base-content/50">アクセント</span>
+                    <span class="text-xs text-base-content/50">{$t('common.role.accent')}</span>
                   </div>
                 </div>
               </div>
@@ -242,7 +243,7 @@ function handleClearAll() {
             <div class="text-center mt-4">
               <p class="text-sm text-base-content/60">
                 <Blend class="inline-block w-4 h-4 mr-1 align-text-bottom" />
-                下のカララント一覧から色を選んでみよう！
+                {$t('page.home.selectPrompt')}
               </p>
             </div>
           </div>
@@ -286,7 +287,7 @@ function handleClearAll() {
             <!-- 通常のカララント一覧表示 -->
             <h2 class="card-title text-lg mb-4 flex items-center gap-1">
               <PaintBucket class="w-5 h-5" />
-              カララント一覧
+              {$t('page.home.dyeList')}
             </h2>
             <div class="max-h-[600px] overflow-y-auto">
               <DyeGrid 

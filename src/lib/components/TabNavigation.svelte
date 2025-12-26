@@ -2,6 +2,7 @@
 import { Heart, Sparkles, SwatchBook } from 'lucide-svelte';
 import { resolve } from '$app/paths';
 import { page } from '$app/state';
+import { t } from '$lib/translations';
 
 const currentPath = $derived(page.url.pathname);
 
@@ -31,11 +32,11 @@ const isFavorites = $derived(
           class:text-primary-content={isHome}
           class:text-base-content={!isHome}
           class:hover:bg-base-300={!isHome}
-          aria-label="カララントピッカー"
+          aria-label={$t('common.app.name')}
           data-coach="home-tab"
         >
           <SwatchBook class="w-6 h-6 mb-1" />
-          <span class="text-xs font-medium">ピッカー</span>
+          <span class="text-xs font-medium">{$t('common.nav.picker')}</span>
         </a>
 
         <!-- おすすめタブ -->
@@ -46,11 +47,11 @@ const isFavorites = $derived(
           class:text-primary-content={isShowcase}
           class:text-base-content={!isShowcase}
           class:hover:bg-base-300={!isShowcase}
-          aria-label="おすすめ"
+          aria-label={$t('common.nav.showcase')}
           data-coach="showcase-tab"
         >
           <Sparkles class="w-6 h-6 mb-1" />
-          <span class="text-xs font-medium">おすすめ</span>
+          <span class="text-xs font-medium">{$t('common.nav.showcase')}</span>
         </a>
 
         <!-- スキ！タブ -->
@@ -61,10 +62,10 @@ const isFavorites = $derived(
           class:text-primary-content={isFavorites}
           class:text-base-content={!isFavorites}
           class:hover:bg-base-300={!isFavorites}
-          aria-label="スキ！"
+          aria-label={$t('common.nav.favorites')}
         >
           <Heart class="w-6 h-6 mb-1" />
-          <span class="text-xs font-medium">スキ！</span>
+          <span class="text-xs font-medium">{$t('common.nav.favorites')}</span>
         </a>
       </div>
     </div>

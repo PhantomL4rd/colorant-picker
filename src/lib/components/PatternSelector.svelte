@@ -1,6 +1,7 @@
 <script lang="ts">
 import { Palette } from '@lucide/svelte';
 import { PATTERN_VISUALS, type PatternVisual } from '$lib/constants/patterns';
+import { t } from '$lib/translations';
 import type { HarmonyPattern } from '$lib/types';
 import PatternCard from './PatternCard.svelte';
 
@@ -44,7 +45,7 @@ function handlePatternSelect(pattern: HarmonyPattern) {
 <div class="form-control w-full">
   <h2 class="card-title text-lg mb-4 flex items-center gap-1">
     <Palette class="w-5 h-5" />
-    配色パターン
+    {$t('page.home.patternSection')}
   </h2>
 
   <!-- パターンカードカルーセル -->
@@ -80,7 +81,7 @@ function handlePatternSelect(pattern: HarmonyPattern) {
         checked={excludeMetallic}
         onchange={onExcludeMetallicChange}
       />
-      <span class="label-text">メタリック系を除外</span>
+      <span class="label-text">{$t('common.filter.excludeMetallic')}</span>
     </label>
   </div>
 </div>
