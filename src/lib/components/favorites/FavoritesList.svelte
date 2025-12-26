@@ -4,8 +4,8 @@ import { Palette } from '$lib/models/Palette';
 import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
 import { t } from '$lib/translations';
 import type { Favorite } from '$lib/types';
-import PaletteCard from './PaletteCard.svelte';
-import ShareModal from './ShareModal.svelte';
+import PaletteCard from '../palette/PaletteCard.svelte';
+import ShareModal from '../share/ShareModal.svelte';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];

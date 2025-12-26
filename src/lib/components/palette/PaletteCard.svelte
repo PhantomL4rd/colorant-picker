@@ -2,9 +2,9 @@
 import { Calendar, Heart, Trash2, X } from '@lucide/svelte';
 import { t } from '$lib/translations';
 import type { Favorite, HarmonyPattern } from '$lib/types';
-import HeartBurst, { type HeartBurstApi } from './HeartBurst.svelte';
+import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 import PaletteColorPreview from './PaletteColorPreview.svelte';
-import ShareButton from './ShareButton.svelte';
+import ShareButton from '../share/ShareButton.svelte';
 
 type PreviewColor = { hex: string; name: string };
 

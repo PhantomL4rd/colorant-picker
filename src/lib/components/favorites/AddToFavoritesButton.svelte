@@ -4,7 +4,7 @@ import { Palette } from '$lib/models/Palette';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
 import { t } from '$lib/translations';
-import HeartBurst, { type HeartBurstApi } from './HeartBurst.svelte';
+import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 
 interface Props {
   disabled?: boolean;

@@ -4,8 +4,8 @@ import { HelpCircle, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import CoachMark from '$lib/components/CoachMark.svelte';
-import LanguageSwitcher from '$lib/components/LanguageSwitcher.svelte';
-import TabNavigation from '$lib/components/TabNavigation.svelte';
+import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
+import TabNavigation from '$lib/components/ui/TabNavigation.svelte';
 import { t } from '$lib/translations';
 
 const { children } = $props();

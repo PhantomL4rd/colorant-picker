@@ -3,8 +3,8 @@ import { Clock, Heart } from 'lucide-svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
-import FavoritesList from '$lib/components/FavoritesList.svelte';
-import HistoryList from '$lib/components/HistoryList.svelte';
+import FavoritesList from '$lib/components/favorites/FavoritesList.svelte';
+import HistoryList from '$lib/components/favorites/HistoryList.svelte';
 import { loadDyes } from '$lib/stores/dyes';
 import { t } from '$lib/translations';
 

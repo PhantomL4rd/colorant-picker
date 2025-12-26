@@ -76,20 +76,20 @@
   "coachMark": {
     "step1": {
       "title": "ステップ 1/3",
-      "message": "配色パターンを選ぼう"
+      "message": "配色パターンをえらぼう"
     },
     "step2": {
       "title": "ステップ 2/3",
-      "message": "カララントを選ぼう"
+      "message": "カララントをえらぼう"
     },
     "step3": {
       "title": "ステップ 3/3",
-      "message": "迷ったらランダムやおすすめを使おう"
+      "message": "迷ったらランダムやおすすめをつかおう"
     },
-    "close": "閉じる",
+    "close": "とじる",
     "next": "次へ",
     "done": "完了",
-    "closeGuide": "ガイドを閉じる"
+    "closeGuide": "ガイドをとじる"
   },
   "palette": {
     "unknownDate": "日時不明",

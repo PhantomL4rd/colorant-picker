@@ -1,14 +1,14 @@
 <script lang="ts">
 import { Blend, Eye, PaintBucket } from 'lucide-svelte';
 import { onMount } from 'svelte';
-import AddToFavoritesButton from '$lib/components/AddToFavoritesButton.svelte';
-import CategoryFilter from '$lib/components/CategoryFilter.svelte';
-import CombinationPreview from '$lib/components/CombinationPreview.svelte';
-import CustomColorManager from '$lib/components/CustomColorManager.svelte';
-import DyeGrid from '$lib/components/DyeGrid.svelte';
-import PatternSelector from '$lib/components/PatternSelector.svelte';
+import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
+import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
+import CombinationPreview from '$lib/components/share/CombinationPreview.svelte';
+import CustomColorManager from '$lib/components/custom/CustomColorManager.svelte';
+import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
+import PatternSelector from '$lib/components/palette/PatternSelector.svelte';
 import RandomPickButton from '$lib/components/RandomPickButton.svelte';
-import ShareButton from '$lib/components/ShareButton.svelte';
+import ShareButton from '$lib/components/share/ShareButton.svelte';
 import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import {
