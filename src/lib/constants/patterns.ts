@@ -1,3 +1,4 @@
+import { Palette } from '$lib/models/Palette';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 
@@ -211,9 +212,10 @@ export const PATTERN_VISUALS: PatternVisual[] = [
 
 /**
  * 実際のカララントを使ってパターンのサンプル色を生成
+ * Paletteクラスの色差判定ロジックを使用して、実際の表示順序と一致させる
  * @param baseDye 基準となるカララント
  * @param allDyes 全カララント
- * @returns パターンごとのサンプル色マップ
+ * @returns パターンごとのサンプル色マップ [main, sub, accent]
  */
 export function generatePatternSamplesFromDyes(
   baseDye: DyeProps,
@@ -231,8 +233,10 @@ export function generatePatternSamplesFromDyes(
   ];
 
   for (const pattern of patterns) {
-    const [sub, accent] = generateSuggestedDyes(baseDye, pattern, allDyes);
-    samples.set(pattern, [baseDye.hex, sub.hex, accent.hex]);
+    const suggested = generateSuggestedDyes(baseDye, pattern, allDyes);
+    // Paletteクラスを使って色差ベースで正しい順序を取得
+    const palette = new Palette(baseDye, suggested, pattern);
+    samples.set(pattern, [palette.main.dye.hex, palette.sub.dye.hex, palette.accent.dye.hex]);
   }
 
   return samples;

@@ -21,6 +21,7 @@ import {
 } from '$lib/stores/filter';
 import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
 import { t } from '$lib/translations';
+import { Palette } from '$lib/models/Palette';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
@@ -70,8 +71,10 @@ onMount(async () => {
         dynamicPatternVisuals = generatePatternVisualsWithDyes(representativeDye, dyes);
 
         // プレースホルダー用のサンプル色を生成（triadicパターンを使用）
-        const [sub, accent] = generateSuggestedDyes(representativeDye, 'triadic', dyes);
-        placeholderColors = [representativeDye.hex, sub.hex, accent.hex];
+        // Paletteクラスを使って色差ベースで正しい順序を取得
+        const suggested = generateSuggestedDyes(representativeDye, 'triadic', dyes);
+        const palette = new Palette(representativeDye, suggested, 'triadic');
+        placeholderColors = [palette.main.dye.hex, palette.sub.dye.hex, palette.accent.dye.hex];
       }
     }
 
