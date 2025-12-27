@@ -22,13 +22,11 @@
  *
  * ## 元データ
  * - 参照元: http://www.kariginu.jp/kikata/kasane-irome.htm
- * - GIF画像から色抽出（右上=表、左下=裏）
- * - ImageMagickで抽出: magick image.gif -format '%[pixel:p{45,5}]' info:
+ * - 元のRGB値: docs/kasane-colors-mapping.csv に保存済み
  *
  * ## 使い方
- * 1. ImageMagickをインストール: brew install imagemagick
- * 2. 元画像を配置: /Users/hikaru/Downloads/かさね色目_files/
- * 3. 実行: node scripts/mark-hidden.mjs
+ * 1. static/data/dyes.json に新カララントを追加
+ * 2. node scripts/mark-hidden.mjs を実行
  *
  * ## 今後の更新
  * FF14でカララントが追加されたら、このスクリプトを再実行することで
@@ -38,64 +36,114 @@
 import { differenceEuclidean } from 'culori/fn';
 import { parse } from 'culori';
 import fs from 'fs';
-import { execSync } from 'child_process';
 
-const IMAGES_DIR = '/Users/hikaru/Downloads/かさね色目_files';
+const CSV_PATH = './docs/kasane-colors-mapping.csv';
 const THRESHOLD = 0.07; // OKLab deltaE閾値（これを超えると非表示）
 
 const deltaE = differenceEuclidean('oklab');
 const dyes = JSON.parse(fs.readFileSync('./static/data/dyes.json', 'utf-8')).dyes;
 const kasane = JSON.parse(fs.readFileSync('./static/data/kasane.json', 'utf-8'));
+
+// メタリック染料を除外（Pearl Whiteは氷用に別途許可）
 const nonMetallicDyes = dyes.filter(d => !d.tags || !d.tags.includes('metallic'));
+const dyesWithPearlWhite = dyes.filter(d => {
+  if (!d.tags || !d.tags.includes('metallic')) return true;
+  return d.name === 'Pearl White';
+});
 
-function extractColors(filepath) {
-  const result = execSync('magick "' + filepath + '" -format "%[pixel:p{45,5}]\\n%[pixel:p{5,45}]" info:', { encoding: 'utf-8' });
-  const [omote, ura] = result.trim().split('\n');
-  return { omote, ura };
+// CSVから元のRGB値を読み込む
+function loadOriginalColors() {
+  const csv = fs.readFileSync(CSV_PATH, 'utf-8');
+  const lines = csv.trim().split('\n');
+  const colorMap = {};
+
+  // ヘッダーをスキップ
+  for (let i = 1; i < lines.length; i++) {
+    // rgb()の中にカンマがあるので正規表現でパース
+    // 形式: 色名,rgb(r,g,b),表カララント,...,rgb(r,g,b),裏カララント,...
+    const match = lines[i].match(/^([^,]+),(rgb\(\d+,\d+,\d+\)),[^,]+,[^,]+,[^,]+,(rgb\(\d+,\d+,\d+\))/);
+    if (!match) {
+      console.error(`CSV行パースエラー: ${lines[i].substring(0, 50)}...`);
+      continue;
+    }
+    const id = match[1];
+    const omoteRgb = match[2];
+    const uraRgb = match[3];
+    colorMap[id] = { omoteRgb, uraRgb };
+  }
+
+  return colorMap;
 }
 
-function parseRgba(str) {
-  const m = str.match(/srgba?\((\d+),(\d+),(\d+)/);
+// rgb(r,g,b) 形式をパース
+function parseRgb(str) {
+  const m = str.match(/rgb\((\d+),(\d+),(\d+)\)/);
   if (!m) return null;
-  return parse('rgb(' + m[1] + ',' + m[2] + ',' + m[3] + ')');
+  return parse(`rgb(${m[1]}, ${m[2]}, ${m[3]})`);
 }
 
-function findClosest(targetColor) {
+// 最も近いカララントを探して最小deltaEを返す
+function findMinDeltaE(targetColor, allowPearlWhite = false) {
+  const candidates = allowPearlWhite ? dyesWithPearlWhite : nonMetallicDyes;
   let min = Infinity;
-  for (const d of nonMetallicDyes) {
-    const c = parse('rgb(' + d.rgb.r + ',' + d.rgb.g + ',' + d.rgb.b + ')');
+
+  for (const d of candidates) {
+    const c = parse(`rgb(${d.rgb.r}, ${d.rgb.g}, ${d.rgb.b})`);
     const delta = deltaE(targetColor, c);
     if (delta < min) min = delta;
   }
+
   return min;
 }
 
-// 各エントリのdeltaEを計算
+// メイン処理
+const originalColors = loadOriginalColors();
 const deltaMap = {};
-const files = fs.readdirSync(IMAGES_DIR).filter(f => f.startsWith('iro-') && f.endsWith('.gif'));
 
-for (const f of files) {
-  const id = f.replace('iro-', '').replace('.gif', '');
-  const colors = extractColors(IMAGES_DIR + '/' + f);
-  const omoteColor = parseRgba(colors.omote);
-  const uraColor = parseRgba(colors.ura);
-  const omoteDelta = findClosest(omoteColor);
-  const uraDelta = findClosest(uraColor);
+for (const [id, colors] of Object.entries(originalColors)) {
+  const omoteColor = parseRgb(colors.omoteRgb);
+  const uraColor = parseRgb(colors.uraRgb);
+
+  if (!omoteColor || !uraColor) {
+    console.error(`パースエラー: ${id}`);
+    continue;
+  }
+
+  // 氷(kori)の場合のみPearl Whiteを許可
+  const allowPearlWhite = id === 'kori';
+
+  const omoteDelta = findMinDeltaE(omoteColor, allowPearlWhite);
+  const uraDelta = findMinDeltaE(uraColor, allowPearlWhite);
+
+  // 表裏のうち大きい方を採用
   deltaMap[id] = Math.max(omoteDelta, uraDelta);
 }
 
 // kasane.jsonを更新
 let hiddenCount = 0;
+let unhiddenCount = 0;
+
 for (const item of kasane.kasane) {
   const maxDelta = deltaMap[item.id];
+
   if (maxDelta && maxDelta > THRESHOLD) {
+    if (!item.hidden) {
+      unhiddenCount--; // カウント調整用（新規非表示）
+    }
     item.hidden = true;
     hiddenCount++;
-    console.log('hidden: ' + item.id + ' (' + item.name + ') deltaE=' + maxDelta.toFixed(4));
+    console.log(`hidden: ${item.id} (${item.name}) deltaE=${maxDelta.toFixed(4)}`);
   } else if (item.hidden) {
+    // 閾値以下になったので復活
     delete item.hidden;
+    unhiddenCount++;
+    console.log(`unhidden: ${item.id} (${item.name}) deltaE=${maxDelta?.toFixed(4) || 'N/A'}`);
   }
 }
 
 fs.writeFileSync('./static/data/kasane.json', JSON.stringify(kasane, null, 2) + '\n');
-console.log('\n' + hiddenCount + '件を非表示にしました');
+
+console.log(`\n${hiddenCount}件を非表示`);
+if (unhiddenCount > 0) {
+  console.log(`${unhiddenCount}件が復活！`);
+}
