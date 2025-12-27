@@ -212,3 +212,23 @@ export interface ShowcaseData {
   palettes: ShowcasePalette[];
   updatedAt: string | null;
 }
+
+// ===== 襲色目関連 =====
+
+// 季節の識別子
+export type KasaneSeason = 'spring' | 'summer' | 'autumn' | 'winter' | 'misc';
+
+// 襲色目エントリ
+export interface KasaneIrome {
+  id: string; // ローマ字表記（例: "ume", "sakura"）
+  name: string; // 日本語名（例: "梅"）
+  reading: string; // 読み仮名（例: "うめ"）
+  season: KasaneSeason; // 所属季節
+  omote: string; // 表カララントID（例: "dye_093"）
+  ura: string; // 裏カララントID（例: "dye_015"）
+}
+
+// kasane.jsonのルート型
+export interface KasaneData {
+  kasane: KasaneIrome[];
+}

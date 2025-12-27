@@ -1,6 +1,6 @@
 <script lang="ts">
 import '../app.css';
-import { HelpCircle, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
+import { CircleHelp, Layers, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import CoachMark from '$lib/components/CoachMark.svelte';
@@ -57,7 +57,7 @@ function closeCoachMark() {
           onclick={openCoachMark}
           aria-label={$t('common.aria.help')}
         >
-          <HelpCircle class="w-6 h-6" />
+          <CircleHelp class="w-6 h-6" />
         </button>
 
         <!-- メニュー -->
@@ -70,6 +70,15 @@ function closeCoachMark() {
             tabindex="0"
             class="dropdown-content menu bg-base-200 text-base-content rounded-box z-10 w-52 p-2 shadow mt-2"
           >
+            <li>
+              <a href={resolve('/kasane')} class="flex items-center gap-2">
+                <Layers class="w-5 h-5" />
+                {$t('common.nav.kasane')}
+              </a>
+            </li>
+            <li class="menu-title pt-2">
+              <span class="text-xs text-base-content/50">{$t('common.nav.links')}</span>
+            </li>
             <li>
               <a
                 href="https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5639802/"

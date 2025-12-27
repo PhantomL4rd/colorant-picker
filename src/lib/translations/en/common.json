@@ -36,7 +36,9 @@
     "picker": "Harmony",
     "favorites": "Favorites",
     "history": "History",
-    "showcase": "Featured"
+    "showcase": "Featured",
+    "kasane": "Kasane-irome",
+    "links": "External Links"
   },
   "aria": {
     "selectColor": "Select this color for new suggestions",

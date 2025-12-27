@@ -98,5 +98,25 @@
     "confirmDelete": "Confirm delete",
     "cancelDelete": "Cancel delete",
     "noSelection": "No combination selected"
+  },
+  "kasane": {
+    "title": "Kasane-irome | Dye Harmony",
+    "heading": "Kasane-irome",
+    "description": "A traditional Heian period color technique. Different colors on the 'outer' and 'inner' sides of a single garment create a translucent seasonal effect.\nColors are approximated from available FFXIV dyes.",
+    "season": {
+      "spring": "Spring",
+      "summer": "Summer",
+      "autumn": "Autumn",
+      "winter": "Winter",
+      "misc": "Miscellaneous"
+    },
+    "label": {
+      "omote": "Outer",
+      "ura": "Inner"
+    },
+    "credit": {
+      "reference": "Reference",
+      "source": "Yūsoku Kasane-irome"
+    }
   }
 }

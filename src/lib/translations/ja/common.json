@@ -36,7 +36,9 @@
     "picker": "ピッカー",
     "favorites": "スキ！",
     "history": "履歴",
-    "showcase": "おすすめ"
+    "showcase": "おすすめ",
+    "kasane": "襲色目",
+    "links": "外部リンク"
   },
   "aria": {
     "selectColor": "この色を選択して新しい組み合わせを提案",

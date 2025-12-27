@@ -98,5 +98,25 @@
     "confirmDelete": "削除を確認",
     "cancelDelete": "削除をキャンセル",
     "noSelection": "組み合わせが選択されていません"
+  },
+  "kasane": {
+    "title": "襲色目 | カララントピッカー",
+    "heading": "襲色目",
+    "description": "平安時代の装束に見られる伝統的な配色技法のひとつ。一枚の衣の「表」と「裏」に異なる色を用い、透けて見える色合いで季節感を表現します。\nFF14のカララントから近似色を抽出しています。",
+    "season": {
+      "spring": "春",
+      "summer": "夏",
+      "autumn": "秋",
+      "winter": "冬",
+      "misc": "雑・四季通用"
+    },
+    "label": {
+      "omote": "表",
+      "ura": "裏"
+    },
+    "credit": {
+      "reference": "参照元",
+      "source": "有職の「かさね色目」"
+    }
   }
 }
