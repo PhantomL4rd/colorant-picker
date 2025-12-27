@@ -26,7 +26,7 @@
     },
     {
       "id": "tsubomiume",
-      "name": "蕾梅",
+      "name": "つぼみ梅",
       "reading": "つぼみうめ",
       "season": "spring",
       "omote": "dye_014",
@@ -147,7 +147,7 @@
     {
       "id": "benitsutsuji",
       "name": "紅躑躅",
-      "reading": "べにつつじ",
+      "reading": "くれないつつじ",
       "season": "spring",
       "omote": "dye_015",
       "ura": "dye_014"
@@ -162,7 +162,7 @@
     },
     {
       "id": "mochitsutsuji",
-      "name": "餅躑躅",
+      "name": "羊躑躅",
       "reading": "もちつつじ",
       "season": "spring",
       "omote": "dye_087",
@@ -218,7 +218,7 @@
     },
     {
       "id": "kaede",
-      "name": "楓",
+      "name": "鶏冠木",
       "reading": "かえで",
       "season": "summer",
       "omote": "dye_056",
@@ -226,7 +226,7 @@
     },
     {
       "id": "wakakaede",
-      "name": "若楓",
+      "name": "若鶏冠木",
       "reading": "わかかえで",
       "season": "summer",
       "omote": "dye_055",
@@ -274,8 +274,8 @@
     },
     {
       "id": "aouchi",
-      "name": "青楝",
-      "reading": "あおうち",
+      "name": "棟",
+      "reading": "おうち",
       "season": "summer",
       "omote": "dye_102",
       "ura": "dye_056"
@@ -425,9 +425,9 @@
       "ura": "dye_040"
     },
     {
-      "id": "hazemomiji",
+      "id": "hajimomiji",
       "name": "櫨紅葉",
-      "reading": "はぜもみじ",
+      "reading": "はじもみじ",
       "season": "autumn",
       "omote": "dye_015",
       "ura": "dye_043"
@@ -481,9 +481,9 @@
       "ura": "dye_052"
     },
     {
-      "id": "hanada",
-      "name": "縹",
-      "reading": "はなだ",
+      "id": "asagao",
+      "name": "槿",
+      "reading": "あさがお",
       "season": "autumn",
       "omote": "dye_067",
       "ura": "dye_067"
@@ -513,9 +513,9 @@
       "ura": "dye_056"
     },
     {
-      "id": "suougiku",
+      "id": "suounokiku",
       "name": "蘇芳菊",
-      "reading": "すおうぎく",
+      "reading": "すおうのきく",
       "season": "autumn",
       "omote": "dye_093",
       "ura": "dye_011"
@@ -537,9 +537,9 @@
       "ura": "dye_056"
     },
     {
-      "id": "benigiku",
+      "id": "kurenaigiku",
       "name": "紅菊",
-      "reading": "べにぎく",
+      "reading": "くれないぎく",
       "season": "autumn",
       "omote": "dye_014",
       "ura": "dye_056"
@@ -554,7 +554,7 @@
     },
     {
       "id": "tsubomigiku",
-      "name": "蕾菊",
+      "name": "つぼみ菊",
       "reading": "つぼみぎく",
       "season": "autumn",
       "omote": "dye_014",
@@ -586,7 +586,7 @@
     },
     {
       "id": "mushiao",
-      "name": "蒸色",
+      "name": "虫青",
       "reading": "むしあお",
       "season": "winter",
       "omote": "dye_051",
@@ -666,7 +666,7 @@
     },
     {
       "id": "nigairo",
-      "name": "似色",
+      "name": "苦色",
       "reading": "にがいろ",
       "season": "misc",
       "omote": "dye_039",
@@ -695,6 +695,14 @@
       "season": "misc",
       "omote": "dye_078",
       "ura": "dye_052"
+    },
+    {
+      "id": "hanada",
+      "name": "花田",
+      "reading": "はなだ",
+      "season": "misc",
+      "omote": "dye_067",
+      "ura": "dye_067"
     },
     {
       "id": "imayouiro",

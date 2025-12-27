@@ -2,12 +2,13 @@
 akairo,rgb(201,48,39),Carmine Red,dye_116,0.0422,rgb(128,95,151),Violet Purple,dye_122,0.0686
 akakuchiba,rgb(243,149,86),Millioncorn Yellow,dye_041,0.0489,rgb(252,254,74),Canary Yellow,dye_046,0.0268
 aoi,rgb(127,176,67),Apple Green,dye_055,0.0524,rgb(165,76,120),Plum Purple,dye_091,0.0845
+asagao,rgb(69,118,163),Seafog Blue,dye_067,0.0518,rgb(69,118,163),Seafog Blue,dye_067,0.0518
 aokarakami,rgb(252,254,88),Canary Yellow,dye_046,0.0199,rgb(80,122,35),Cactuar Green,dye_056,0.0475
 aomomiji,rgb(82,122,36),Moss Green,dye_051,0.0451,rgb(246,201,90),Honey Yellow,dye_040,0.0275
 aouchi,rgb(198,167,203),Pastel Purple,dye_102,0.0375,rgb(80,122,35),Cactuar Green,dye_056,0.0475
 aoyamabuki,rgb(77,119,27),Moss Green,dye_051,0.0517,rgb(252,254,74),Canary Yellow,dye_046,0.0268
 aoyanagi,rgb(74,117,27),Moss Green,dye_051,0.0549,rgb(127,164,72),Meadow Green,dye_052,0.0478
-benigiku,rgb(234,28,55),Ruby Red,dye_017,0.0302,rgb(80,122,35),Cactuar Green,dye_056,0.0475
+kurenaigiku,rgb(234,28,55),Ruby Red,dye_017,0.0302,rgb(80,122,35),Cactuar Green,dye_056,0.0475
 benitsutsuji,rgb(156,7,8),Blood Red,dye_015,0.0630,rgb(247,84,97),Bright Orange,dye_118,0.0661
 botan,rgb(199,62,72),Carmine Red,dye_116,0.0611,rgb(249,251,238),Pure White,dye_093,0.0129
 ebizome,rgb(156,7,8),Blood Red,dye_015,0.0630,rgb(69,118,161),Seafog Blue,dye_067,0.0514
@@ -21,7 +22,7 @@ hanasusuki,rgb(249,251,239),Pure White,dye_093,0.0118,rgb(69,118,161),Seafog Blu
 hanatachubana,rgb(246,203,97),Cream Yellow,dye_043,0.0286,rgb(80,122,35),Cactuar Green,dye_056,0.0475
 hanayamabuki,rgb(247,84,97),Bright Orange,dye_118,0.0661,rgb(252,254,74),Canary Yellow,dye_046,0.0268
 hatsumomiji,rgb(86,150,43),Cactuar Green,dye_056,0.0701,rgb(117,193,68),Apple Green,dye_055,0.0733
-hazemomiji,rgb(156,7,8),Blood Red,dye_015,0.0630,rgb(252,254,74),Canary Yellow,dye_046,0.0268
+hajimomiji,rgb(156,7,8),Blood Red,dye_015,0.0630,rgb(252,254,74),Canary Yellow,dye_046,0.0268
 hisoku,rgb(58,50,124),Royal Blue,dye_078,0.0480,rgb(127,164,72),Meadow Green,dye_052,0.0478
 hiwadairo,rgb(156,7,8),Blood Red,dye_015,0.0630,rgb(128,95,151),Violet Purple,dye_122,0.0686
 imayouiro,rgb(211,88,123),Coral Pink,dye_014,0.0694,rgb(175,52,84),Blood Red,dye_015,0.0876
@@ -70,7 +71,7 @@ shirotsutsuji,rgb(249,251,239),Pure White,dye_093,0.0118,rgb(118,35,106),Regal P
 shisoku,rgb(118,35,106),Regal Purple,dye_092,0.0654,rgb(234,28,55),Ruby Red,dye_017,0.0302
 soubi,rgb(236,44,70),Ruby Red,dye_017,0.0478,rgb(118,35,106),Regal Purple,dye_092,0.0654
 sumire,rgb(118,35,106),Regal Purple,dye_092,0.0654,rgb(165,76,120),Plum Purple,dye_091,0.0845
-suougiku,rgb(249,251,239),Pure White,dye_093,0.0118,rgb(115,7,8),Dalamud Red,dye_011,0.0280
+suounokiku,rgb(249,251,239),Pure White,dye_093,0.0118,rgb(115,7,8),Dalamud Red,dye_011,0.0280
 suoukou,rgb(156,7,8),Blood Red,dye_015,0.0630,rgb(251,255,73),Canary Yellow,dye_046,0.0294
 syoubu,rgb(89,129,47),Cactuar Green,dye_056,0.0266,rgb(211,88,123),Coral Pink,dye_014,0.0694
 tokusa,rgb(86,150,42),Cactuar Green,dye_056,0.0706,rgb(249,251,238),Pure White,dye_093,0.0129

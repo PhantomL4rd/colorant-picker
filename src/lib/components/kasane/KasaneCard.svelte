@@ -1,5 +1,7 @@
 <script lang="ts">
-  import { t } from '$lib/translations';
+  import { BookOpenText } from 'lucide-svelte';
+  import { t, locale, type Locale } from '$lib/translations';
+  import { getLodestoneUrl } from '$lib/utils/i18n';
   import type { DyeProps } from '$lib/types';
 
   interface Props {
@@ -11,12 +13,19 @@
 
   const { name, reading, omoteDye, uraDye }: Props = $props();
 
+  const currentLocale = $derived($locale as Locale);
+
   const omoteHex = $derived(omoteDye?.hex ?? '#808080');
   const uraHex = $derived(uraDye?.hex ?? '#808080');
   const omoteName = $derived(
     omoteDye ? $t(`dye.names.${omoteDye.id}`) || omoteDye.name : 'Unknown'
   );
   const uraName = $derived(uraDye ? $t(`dye.names.${uraDye.id}`) || uraDye.name : 'Unknown');
+
+  function getDyeLodestoneUrl(dye: DyeProps | null): string | undefined {
+    if (!dye?.lodestone) return undefined;
+    return getLodestoneUrl(dye.lodestone, currentLocale);
+  }
 </script>
 
 <div
@@ -37,7 +46,19 @@
           title={omoteName}
         ></div>
         <div class="text-xs mt-1 text-base-content/60 truncate" title={omoteName}>
-          {omoteName}
+          {#if getDyeLodestoneUrl(omoteDye)}
+            <a
+              href={getDyeLodestoneUrl(omoteDye)}
+              class="hover:text-primary transition-colors inline-flex items-center justify-center gap-0.5"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <BookOpenText class="w-3 h-3 flex-shrink-0" />
+              <span class="truncate">{omoteName}</span>
+            </a>
+          {:else}
+            {omoteName}
+          {/if}
         </div>
       </div>
 
@@ -48,7 +69,19 @@
           title={uraName}
         ></div>
         <div class="text-xs mt-1 text-base-content/60 truncate" title={uraName}>
-          {uraName}
+          {#if getDyeLodestoneUrl(uraDye)}
+            <a
+              href={getDyeLodestoneUrl(uraDye)}
+              class="hover:text-primary transition-colors inline-flex items-center justify-center gap-0.5"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <BookOpenText class="w-3 h-3 flex-shrink-0" />
+              <span class="truncate">{uraName}</span>
+            </a>
+          {:else}
+            {uraName}
+          {/if}
         </div>
       </div>
     </div>
