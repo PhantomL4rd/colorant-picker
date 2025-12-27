@@ -12,7 +12,7 @@ export interface DyeProps {
   hsv: Hsv; // culori Hsv (s,v: 0-1範囲, mode: 'hsv')
   hex: string;
   oklab: Oklab; // culori Oklab (mode: 'oklab')
-  tags?: string[];
+  tags?: DyeTag[];
   lodestone?: string;
 }
 
@@ -39,6 +39,12 @@ export interface DyeWithRole {
   role: ColorRole;
   percent: number; // 0-100の整数
 }
+
+// カララントのタグ（内部キー・英語）
+// - metallic: メタリック染料
+// - vivid: ビビッド系染料
+// - custom: ユーザー定義カスタムカラー
+export type DyeTag = 'metallic' | 'vivid' | 'custom';
 
 // カララントカテゴリ（内部キー・英語）
 export type DyeCategory =
@@ -93,7 +99,7 @@ export interface RawDyeData {
   name: string;
   category: DyeCategory;
   rgb: RGBColor255; // JSONは0-255範囲
-  tags?: string[];
+  tags?: DyeTag[];
   lodestone?: string;
 }
 
@@ -132,7 +138,7 @@ export interface StoredDye {
   name: string;
   category: DyeCategory;
   rgb: RGBColor255; // LocalStorage保存は0-255範囲
-  tags?: string[];
+  tags?: DyeTag[];
 }
 
 export interface StoredCustomColor {

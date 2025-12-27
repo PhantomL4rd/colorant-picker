@@ -1,6 +1,7 @@
 import type {
   DyeCategory,
   DyeProps,
+  DyeTag,
   Hsv,
   Oklab,
   RawDyeData,
@@ -21,7 +22,7 @@ export class Dye implements DyeProps {
   readonly name: string;
   readonly category: DyeCategory;
   readonly rgb: Rgb; // culori Rgb (0-1範囲)
-  readonly tags?: string[];
+  readonly tags?: DyeTag[];
   readonly lodestone?: string;
 
   constructor(data: RawDyeData) {

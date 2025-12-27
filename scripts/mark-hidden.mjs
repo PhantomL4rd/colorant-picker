@@ -1,24 +1,26 @@
 /**
- * かさね色目（襲色目）の色差計算・非表示フラグ設定スクリプト
+ * かさね色目（襲色目）の色差計算・カララント更新・非表示フラグ設定スクリプト
  *
  * ## 概要
- * 平安時代の伝統的配色「かさね色目」をFF14カララントで近似する際、
- * 色差（deltaE）が大きすぎるエントリにhiddenフラグを設定する。
+ * 平安時代の伝統的配色「かさね色目」をFF14カララントで近似する。
+ * - 各伝統色の元RGB値から、除外タグなしの染料で最も近いものを探す
+ * - kasane.jsonのomote/uraを更新
+ * - 色差（deltaE）が大きすぎるエントリにhiddenフラグを設定
  *
  * ## 色差計算
  * - culoriライブラリのOKLab色空間で色差を計算
  * - OKLabは知覚的に均一な色空間で、人間の色の見え方に近い
- * - RGB Euclidean距離は使用しない（知覚と一致しないため）
  *
  * ## 閾値の決定（THRESHOLD = 0.07）
- * - 0.05: 61件除外（厳しすぎる、ほとんど消える）
- * - 0.06: 55件除外（厳選だが寂しい）
- * - 0.07: 26件除外（バランス良い、70件残る）★採用
- * - 0.08: 6件除外（緩すぎる）
+ * - 0.05: 厳しすぎる
+ * - 0.06: 厳選だが寂しい
+ * - 0.07: バランス良い ★採用
+ * - 0.08: 緩すぎる
  *
- * ## メタリック染料の扱い
- * - 基本的にメタリック染料は除外（質感が異なるため）
- * - 例外: 氷(kori)の表のみPearl White (dye_114)を手動設定
+ * ## 除外対象タグ
+ * - metallic: 質感が異なるため
+ * - expensive: 高価な染料は伝統配色に向かない
+ * - vivid: ビビッド系は伝統的な色合いとマッチしない
  *
  * ## 元データ
  * - 参照元: http://www.kariginu.jp/kikata/kasane-irome.htm
@@ -27,10 +29,6 @@
  * ## 使い方
  * 1. static/data/dyes.json に新カララントを追加
  * 2. node scripts/mark-hidden.mjs を実行
- *
- * ## 今後の更新
- * FF14でカララントが追加されたら、このスクリプトを再実行することで
- * 非表示エントリを減らせる可能性がある。
  */
 
 import { differenceEuclidean } from 'culori/fn';
@@ -38,18 +36,17 @@ import { parse } from 'culori';
 import fs from 'fs';
 
 const CSV_PATH = './docs/kasane-colors-mapping.csv';
-const THRESHOLD = 0.07; // OKLab deltaE閾値（これを超えると非表示）
+const THRESHOLD = Infinity; // 閾値なし（全件表示）
 
 const deltaE = differenceEuclidean('oklab');
 const dyes = JSON.parse(fs.readFileSync('./static/data/dyes.json', 'utf-8')).dyes;
 const kasane = JSON.parse(fs.readFileSync('./static/data/kasane.json', 'utf-8'));
 
-// メタリック染料を除外（Pearl Whiteは氷用に別途許可）
-const nonMetallicDyes = dyes.filter(d => !d.tags || !d.tags.includes('metallic'));
-const dyesWithPearlWhite = dyes.filter(d => {
-  if (!d.tags || !d.tags.includes('metallic')) return true;
-  return d.name === 'Pearl White';
-});
+// 除外対象のタグ
+const EXCLUDED_TAGS = ['metallic', 'vivid'];
+
+// 除外タグを持つ染料を除外
+const nonExcludedDyes = dyes.filter(d => !d.tags || !d.tags.some(tag => EXCLUDED_TAGS.includes(tag)));
 
 // CSVから元のRGB値を読み込む
 function loadOriginalColors() {
@@ -82,68 +79,79 @@ function parseRgb(str) {
   return parse(`rgb(${m[1]}, ${m[2]}, ${m[3]})`);
 }
 
-// 最も近いカララントを探して最小deltaEを返す
-function findMinDeltaE(targetColor, allowPearlWhite = false) {
-  const candidates = allowPearlWhite ? dyesWithPearlWhite : nonMetallicDyes;
-  let min = Infinity;
+// 最も近いカララントを探す（IDとdeltaEを返す）
+function findClosestDye(targetColor) {
+  let minDelta = Infinity;
+  let closestDye = null;
 
-  for (const d of candidates) {
+  for (const d of nonExcludedDyes) {
     const c = parse(`rgb(${d.rgb.r}, ${d.rgb.g}, ${d.rgb.b})`);
     const delta = deltaE(targetColor, c);
-    if (delta < min) min = delta;
+    if (delta < minDelta) {
+      minDelta = delta;
+      closestDye = d;
+    }
   }
 
-  return min;
+  return { dye: closestDye, delta: minDelta };
 }
 
 // メイン処理
 const originalColors = loadOriginalColors();
-const deltaMap = {};
+let hiddenCount = 0;
+let updatedCount = 0;
 
-for (const [id, colors] of Object.entries(originalColors)) {
+for (const item of kasane.kasane) {
+  const colors = originalColors[item.id];
+  if (!colors) {
+    console.error(`元データなし: ${item.id}`);
+    continue;
+  }
+
   const omoteColor = parseRgb(colors.omoteRgb);
   const uraColor = parseRgb(colors.uraRgb);
 
   if (!omoteColor || !uraColor) {
-    console.error(`パースエラー: ${id}`);
+    console.error(`パースエラー: ${item.id}`);
     continue;
   }
 
-  // 氷(kori)の場合のみPearl Whiteを許可
-  const allowPearlWhite = id === 'kori';
+  const omoteResult = findClosestDye(omoteColor);
+  const uraResult = findClosestDye(uraColor);
 
-  const omoteDelta = findMinDeltaE(omoteColor, allowPearlWhite);
-  const uraDelta = findMinDeltaE(uraColor, allowPearlWhite);
+  // カララントIDを更新
+  const oldOmote = item.omote;
+  const oldUra = item.ura;
+  item.omote = omoteResult.dye.id;
+  item.ura = uraResult.dye.id;
 
-  // 表裏のうち大きい方を採用
-  deltaMap[id] = Math.max(omoteDelta, uraDelta);
-}
-
-// kasane.jsonを更新
-let hiddenCount = 0;
-let unhiddenCount = 0;
-
-for (const item of kasane.kasane) {
-  const maxDelta = deltaMap[item.id];
-
-  if (maxDelta && maxDelta > THRESHOLD) {
-    if (!item.hidden) {
-      unhiddenCount--; // カウント調整用（新規非表示）
+  if (oldOmote !== item.omote || oldUra !== item.ura) {
+    updatedCount++;
+    console.log(`updated: ${item.id} (${item.name})`);
+    if (oldOmote !== item.omote) {
+      console.log(`  omote: ${oldOmote} → ${item.omote} (${omoteResult.dye.name})`);
     }
-    item.hidden = true;
-    hiddenCount++;
-    console.log(`hidden: ${item.id} (${item.name}) deltaE=${maxDelta.toFixed(4)}`);
+    if (oldUra !== item.ura) {
+      console.log(`  ura: ${oldUra} → ${item.ura} (${uraResult.dye.name})`);
+    }
+  }
+
+  // 表裏のうち大きい方の色差で非表示判定
+  const maxDelta = Math.max(omoteResult.delta, uraResult.delta);
+
+  if (maxDelta > THRESHOLD) {
+    if (!item.hidden) {
+      item.hidden = true;
+      hiddenCount++;
+      console.log(`hidden: ${item.id} (${item.name}) deltaE=${maxDelta.toFixed(4)}`);
+    }
   } else if (item.hidden) {
-    // 閾値以下になったので復活
     delete item.hidden;
-    unhiddenCount++;
-    console.log(`unhidden: ${item.id} (${item.name}) deltaE=${maxDelta?.toFixed(4) || 'N/A'}`);
+    console.log(`unhidden: ${item.id} (${item.name}) deltaE=${maxDelta.toFixed(4)}`);
   }
 }
 
 fs.writeFileSync('./static/data/kasane.json', JSON.stringify(kasane, null, 2) + '\n');
 
-console.log(`\n${hiddenCount}件を非表示`);
-if (unhiddenCount > 0) {
-  console.log(`${unhiddenCount}件が復活！`);
-}
+console.log(`\n${updatedCount}件のカララントを更新`);
+console.log(`${hiddenCount}件を非表示`);
