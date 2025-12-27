@@ -31,9 +31,6 @@
 
     <div class="grid grid-cols-2 gap-2">
       <div class="text-center">
-        <div class="text-xs mb-1 text-base-content/80">
-          <span class="font-medium">{$t('page.kasane.label.omote')}</span>
-        </div>
         <div
           class="w-full h-12 rounded-lg border-2 border-base-300"
           style="background-color: {omoteHex};"
@@ -45,9 +42,6 @@
       </div>
 
       <div class="text-center">
-        <div class="text-xs mb-1 text-base-content/80">
-          <span class="font-medium">{$t('page.kasane.label.ura')}</span>
-        </div>
         <div
           class="w-full h-12 rounded-lg border-2 border-base-300"
           style="background-color: {uraHex};"

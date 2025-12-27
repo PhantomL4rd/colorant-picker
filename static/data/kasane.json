@@ -13,7 +13,7 @@
       "name": "梅重",
       "reading": "うめがさね",
       "season": "spring",
-      "omote": "dye_015",
+      "omote": "dye_116",
       "ura": "dye_014"
     },
     {
@@ -38,7 +38,8 @@
       "reading": "こうばいにおい",
       "season": "spring",
       "omote": "dye_014",
-      "ura": "dye_090"
+      "ura": "dye_090",
+      "hidden": true
     },
     {
       "id": "wakakusa",
@@ -46,15 +47,17 @@
       "reading": "わかくさ",
       "season": "spring",
       "omote": "dye_055",
-      "ura": "dye_058"
+      "ura": "dye_058",
+      "hidden": true
     },
     {
       "id": "moegi",
       "name": "萌黄",
       "reading": "もえぎ",
       "season": "spring",
-      "omote": "dye_063",
-      "ura": "dye_119"
+      "omote": "dye_056",
+      "ura": "dye_119",
+      "hidden": true
     },
     {
       "id": "yanagi",
@@ -69,7 +72,7 @@
       "name": "黄柳",
       "reading": "きやなぎ",
       "season": "spring",
-      "omote": "dye_040",
+      "omote": "dye_043",
       "ura": "dye_052"
     },
     {
@@ -101,23 +104,25 @@
       "name": "桜萌黄",
       "reading": "さくらもえぎ",
       "season": "spring",
-      "omote": "dye_063",
-      "ura": "dye_122"
+      "omote": "dye_056",
+      "ura": "dye_122",
+      "hidden": true
     },
     {
       "id": "sumire",
       "name": "菫",
       "reading": "すみれ",
       "season": "spring",
-      "omote": "dye_015",
-      "ura": "dye_009"
+      "omote": "dye_092",
+      "ura": "dye_091",
+      "hidden": true
     },
     {
       "id": "tsubosumire",
       "name": "壺菫",
       "reading": "つぼすみれ",
       "season": "spring",
-      "omote": "dye_015",
+      "omote": "dye_092",
       "ura": "dye_052"
     },
     {
@@ -126,14 +131,15 @@
       "reading": "もも",
       "season": "spring",
       "omote": "dye_118",
-      "ura": "dye_063"
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "sawarabi",
       "name": "早蕨",
       "reading": "さわらび",
       "season": "spring",
-      "omote": "dye_015",
+      "omote": "dye_092",
       "ura": "dye_056"
     },
     {
@@ -142,7 +148,8 @@
       "reading": "つつじ",
       "season": "spring",
       "omote": "dye_015",
-      "ura": "dye_063"
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "benitsutsuji",
@@ -158,7 +165,7 @@
       "reading": "しろつつじ",
       "season": "spring",
       "omote": "dye_093",
-      "ura": "dye_015"
+      "ura": "dye_092"
     },
     {
       "id": "mochitsutsuji",
@@ -174,15 +181,16 @@
       "reading": "はなやまぶき",
       "season": "spring",
       "omote": "dye_118",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "urayamabuki",
       "name": "裏山吹",
       "reading": "うらやまぶき",
       "season": "spring",
-      "omote": "dye_040",
-      "ura": "dye_063"
+      "omote": "dye_046",
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "aoyamabuki",
@@ -190,7 +198,7 @@
       "reading": "あおやまぶき",
       "season": "spring",
       "omote": "dye_051",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "fuji",
@@ -198,7 +206,8 @@
       "reading": "ふじ",
       "season": "spring",
       "omote": "dye_087",
-      "ura": "dye_063"
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "botan",
@@ -238,7 +247,8 @@
       "reading": "かきつばた",
       "season": "summer",
       "omote": "dye_084",
-      "ura": "dye_063"
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "syoubu",
@@ -254,7 +264,8 @@
       "reading": "わかしょうぶ",
       "season": "summer",
       "omote": "dye_118",
-      "ura": "dye_056"
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "aoi",
@@ -262,7 +273,8 @@
       "reading": "あおい",
       "season": "summer",
       "omote": "dye_055",
-      "ura": "dye_009"
+      "ura": "dye_091",
+      "hidden": true
     },
     {
       "id": "hanatachubana",
@@ -286,7 +298,8 @@
       "reading": "よもぎ",
       "season": "summer",
       "omote": "dye_055",
-      "ura": "dye_058"
+      "ura": "dye_058",
+      "hidden": true
     },
     {
       "id": "yuri",
@@ -302,7 +315,7 @@
       "reading": "なえいろ",
       "season": "summer",
       "omote": "dye_055",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "wakanae",
@@ -318,7 +331,7 @@
       "reading": "そうび",
       "season": "summer",
       "omote": "dye_017",
-      "ura": "dye_015"
+      "ura": "dye_092"
     },
     {
       "id": "nadeshiko",
@@ -326,7 +339,8 @@
       "reading": "なでしこ",
       "season": "summer",
       "omote": "dye_014",
-      "ura": "dye_063"
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "seminoha",
@@ -341,7 +355,7 @@
       "name": "青唐紙",
       "reading": "あおからかみ",
       "season": "summer",
-      "omote": "dye_040",
+      "omote": "dye_046",
       "ura": "dye_056"
     },
     {
@@ -365,15 +379,16 @@
       "name": "萩",
       "reading": "はぎ",
       "season": "autumn",
-      "omote": "dye_009",
-      "ura": "dye_056"
+      "omote": "dye_091",
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "hagigasane",
       "name": "萩重",
       "reading": "はぎがさね",
       "season": "autumn",
-      "omote": "dye_015",
+      "omote": "dye_092",
       "ura": "dye_122"
     },
     {
@@ -405,16 +420,18 @@
       "name": "初紅葉",
       "reading": "はつもみじ",
       "season": "autumn",
-      "omote": "dye_063",
-      "ura": "dye_055"
+      "omote": "dye_056",
+      "ura": "dye_055",
+      "hidden": true
     },
     {
       "id": "kimomiji",
       "name": "黄紅葉",
       "reading": "きもみじ",
       "season": "autumn",
-      "omote": "dye_063",
-      "ura": "dye_040"
+      "omote": "dye_056",
+      "ura": "dye_046",
+      "hidden": true
     },
     {
       "id": "aomomiji",
@@ -430,7 +447,7 @@
       "reading": "はぜもみじ",
       "season": "autumn",
       "omote": "dye_015",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "kuchiba",
@@ -446,7 +463,7 @@
       "reading": "あかくちば",
       "season": "autumn",
       "omote": "dye_041",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "koguri",
@@ -478,7 +495,8 @@
       "reading": "まゆみ",
       "season": "autumn",
       "omote": "dye_015",
-      "ura": "dye_063"
+      "ura": "dye_052",
+      "hidden": true
     },
     {
       "id": "hanada",
@@ -494,7 +512,8 @@
       "reading": "しのぶ",
       "season": "autumn",
       "omote": "dye_055",
-      "ura": "dye_015"
+      "ura": "dye_015",
+      "hidden": true
     },
     {
       "id": "haji",
@@ -502,7 +521,7 @@
       "reading": "はじ",
       "season": "autumn",
       "omote": "dye_040",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "kiku",
@@ -526,14 +545,14 @@
       "reading": "くがつぎく",
       "season": "autumn",
       "omote": "dye_093",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "kigiku",
       "name": "黄菊",
       "reading": "きぎく",
       "season": "autumn",
-      "omote": "dye_040",
+      "omote": "dye_046",
       "ura": "dye_056"
     },
     {
@@ -549,8 +568,9 @@
       "name": "移菊",
       "reading": "うつろいぎく",
       "season": "autumn",
-      "omote": "dye_009",
-      "ura": "dye_056"
+      "omote": "dye_091",
+      "ura": "dye_056",
+      "hidden": true
     },
     {
       "id": "tsubomigiku",
@@ -558,14 +578,14 @@
       "reading": "つぼみぎく",
       "season": "autumn",
       "omote": "dye_017",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "nokorigiku",
       "name": "残菊",
       "reading": "のこりぎく",
       "season": "autumn",
-      "omote": "dye_040",
+      "omote": "dye_046",
       "ura": "dye_093"
     },
     {
@@ -590,14 +610,15 @@
       "reading": "むしあお",
       "season": "winter",
       "omote": "dye_051",
-      "ura": "dye_084"
+      "ura": "dye_084",
+      "hidden": true
     },
     {
       "id": "kareiro",
       "name": "枯色",
       "reading": "かれいろ",
       "season": "winter",
-      "omote": "dye_040",
+      "omote": "dye_046",
       "ura": "dye_056"
     },
     {
@@ -646,14 +667,15 @@
       "reading": "まつがさね",
       "season": "misc",
       "omote": "dye_051",
-      "ura": "dye_015"
+      "ura": "dye_092",
+      "hidden": true
     },
     {
       "id": "shisoku",
-      "name": "紫苑",
+      "name": "脂燭",
       "reading": "しそく",
       "season": "misc",
-      "omote": "dye_015",
+      "omote": "dye_092",
       "ura": "dye_017"
     },
     {
@@ -670,7 +692,8 @@
       "reading": "にがいろ",
       "season": "misc",
       "omote": "dye_039",
-      "ura": "dye_084"
+      "ura": "dye_084",
+      "hidden": true
     },
     {
       "id": "kurumi",
@@ -686,7 +709,7 @@
       "reading": "すおうこう",
       "season": "misc",
       "omote": "dye_015",
-      "ura": "dye_040"
+      "ura": "dye_046"
     },
     {
       "id": "hisoku",
@@ -702,7 +725,8 @@
       "reading": "いまよういろ",
       "season": "misc",
       "omote": "dye_014",
-      "ura": "dye_015"
+      "ura": "dye_015",
+      "hidden": true
     },
     {
       "id": "akairo",
@@ -733,16 +757,18 @@
       "name": "海松色",
       "reading": "みるいろ",
       "season": "misc",
-      "omote": "dye_063",
-      "ura": "dye_067"
+      "omote": "dye_056",
+      "ura": "dye_067",
+      "hidden": true
     },
     {
       "id": "tokusa",
       "name": "木賊",
       "reading": "とくさ",
       "season": "misc",
-      "omote": "dye_063",
-      "ura": "dye_093"
+      "omote": "dye_056",
+      "ura": "dye_093",
+      "hidden": true
     },
     {
       "id": "kurotokusa",

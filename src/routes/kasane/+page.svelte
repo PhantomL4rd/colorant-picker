@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { ExternalLink, Layers } from 'lucide-svelte';
   import { t } from '$lib/translations';
   import { dyeStore, loadDyes } from '$lib/stores/dyes';
   import SeasonSection from '$lib/components/kasane/SeasonSection.svelte';
@@ -36,7 +37,8 @@
       const res = await fetch(`${basePath}data/kasane.json`);
       if (!res.ok) throw new Error('Failed to load kasane data');
       const data: KasaneData = await res.json();
-      kasaneData = data.kasane;
+      // hidden: true のエントリを除外（色差が大きいため非表示）
+      kasaneData = data.kasane.filter((k) => !k.hidden);
     } catch (e) {
       error = e instanceof Error ? e.message : 'Unknown error';
     } finally {
@@ -51,8 +53,11 @@
 
 <div class="container mx-auto px-4 py-6 max-w-6xl">
   <header class="mb-6">
-    <h1 class="text-2xl font-bold mb-2">{$t('page.kasane.heading')}</h1>
-    <p class="text-base-content/70 whitespace-pre-line">{$t('page.kasane.description')}</p>
+    <h1 class="text-xl font-bold mb-2 flex items-center gap-2">
+      <Layers class="w-6 h-6" />
+      {$t('page.kasane.heading')}
+    </h1>
+    <p class="text-sm text-base-content/80 whitespace-pre-line">{$t('page.kasane.description')}</p>
   </header>
 
   {#if isLoading}
@@ -76,16 +81,17 @@
       {/each}
     </div>
 
-    <footer class="mt-8 pt-4 border-t border-base-300 text-sm text-base-content/60">
-      <p>
+    <footer class="mt-8 p-4 text-xs">
+      <p class="text-base-content">
         {$t('page.kasane.credit.reference')}:
         <a
           href="http://www.kariginu.jp/kikata/kasane-irome.htm"
           target="_blank"
           rel="noopener noreferrer"
-          class="link link-primary"
+          class="link inline-flex items-center gap-1"
         >
           {$t('page.kasane.credit.source')}
+          <ExternalLink class="w-3 h-3" />
         </a>
       </p>
     </footer>

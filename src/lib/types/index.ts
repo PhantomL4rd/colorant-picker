@@ -226,6 +226,7 @@ export interface KasaneIrome {
   season: KasaneSeason; // 所属季節
   omote: string; // 表カララントID（例: "dye_093"）
   ura: string; // 裏カララントID（例: "dye_015"）
+  hidden?: boolean; // 色差が大きいため非表示
 }
 
 // kasane.jsonのルート型
