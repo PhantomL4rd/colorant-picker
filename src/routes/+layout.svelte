@@ -112,7 +112,12 @@ function closeCoachMark() {
       {@render children?.()}
     </main>
   </div>
-  
+
+  <!-- 著作権表示 -->
+  <footer class="text-center text-xs text-base-content/50 py-4">
+    © SQUARE ENIX
+  </footer>
+
   <!-- フッター固定タブナビゲーション -->
   <TabNavigation />
 
