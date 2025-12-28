@@ -219,12 +219,12 @@ export interface ShowcaseData {
   updatedAt: string | null;
 }
 
-// ===== 襲色目関連 =====
+// ===== かさね色目関連 =====
 
 // 季節の識別子
 export type KasaneSeason = 'spring' | 'summer' | 'autumn' | 'winter' | 'misc';
 
-// 襲色目エントリ
+// かさね色目エントリ
 export interface KasaneIrome {
   id: string; // ローマ字表記（例: "ume", "sakura"）
   name: string; // 日本語名（例: "梅"）

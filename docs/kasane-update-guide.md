@@ -1,6 +1,6 @@
-# 襲色目（かさね色目）更新ガイド
+# かさね色目 更新ガイド
 
-FF14で新しいカララントが追加されたときに、襲色目の非表示エントリを再計算する手順です。
+FF14で新しいカララントが追加されたときに、かさね色目の非表示エントリを再計算する手順です。
 
 ## 前提条件
 
@@ -64,7 +64,7 @@ http://localhost:5173/kasane で表示を確認。
 
 ```bash
 git add static/data/dyes.json static/data/kasane.json
-git commit -m "feat: 新カララント追加＆襲色目再計算"
+git commit -m "feat: 新カララント追加＆かさね色目再計算"
 ```
 
 ## 補足情報
@@ -86,7 +86,7 @@ git commit -m "feat: 新カララント追加＆襲色目再計算"
 
 - `scripts/mark-hidden.mjs` - 非表示フラグ設定スクリプト
 - `docs/kasane-colors-mapping.csv` - 伝統色の元RGB値（これがマスターデータ）
-- `static/data/kasane.json` - 襲色目データ
+- `static/data/kasane.json` - かさね色目データ
 - `static/data/dyes.json` - カララントデータ
 
 ### 元データについて
