@@ -62,7 +62,7 @@ function closeCoachMark() {
 
         <!-- メニュー -->
         <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost">
+          <div tabindex="0" role="button" class="btn btn-ghost" aria-label={$t('common.aria.openMenu')}>
             <Menu class="w-6 h-6" />
           </div>
           <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
