@@ -19,11 +19,16 @@
 </script>
 
 <div class="collapse collapse-arrow bg-base-200 mb-2">
-  <input type="checkbox" checked={isExpanded} onchange={onToggle} />
-  <div class="collapse-title font-bold text-lg">
+  <input
+    type="checkbox"
+    checked={isExpanded}
+    onchange={onToggle}
+    aria-label={$t(`page.kasane.season.${season}`)}
+  />
+  <h2 class="collapse-title font-bold text-lg">
     {$t(`page.kasane.season.${season}`)}
     <span class="text-sm font-normal text-base-content/60 ml-2">({items.length})</span>
-  </div>
+  </h2>
   <div class="collapse-content">
     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-2">
       {#each items as item (item.id)}
