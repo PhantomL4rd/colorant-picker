@@ -41,9 +41,11 @@ function closeCoachMark() {
   <header class="navbar bg-primary text-primary-content mb-8">
     <div class="container mx-auto flex items-center">
       <div class="flex-1">
-        <h1 class="text-xl font-bold flex items-center gap-2">
-          <SwatchBook class="w-6 h-6" />
-          {$t('common.app.name')}
+        <h1 class="text-xl font-bold">
+          <a href={resolve('/')} class="flex items-center gap-2 hover:opacity-80 transition-opacity">
+            <SwatchBook class="w-6 h-6" />
+            {$t('common.app.name')}
+          </a>
         </h1>
       </div>
       <div class="flex-none flex items-center gap-1">
