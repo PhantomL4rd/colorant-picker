@@ -92,17 +92,6 @@ function closeCoachMark() {
                 {$t('common.feedback.label')}
               </a>
             </li>
-            <li>
-              <a
-                href="https://fortune.pl4rd.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2"
-              >
-                <Moon class="w-5 h-5" />
-                シャーレアン式占星術
-              </a>
-            </li>
           </ul>
         </div>
       </div>
