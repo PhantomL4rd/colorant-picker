@@ -22,17 +22,22 @@ let iscopying = $state(false);
 // シェア用データの計算
 const shareUrl = $derived(favorite ? generateShareUrl(favorite) : '');
 
+// 染料名を翻訳
+function getDyeName(dye: { id: string; name: string }): string {
+  return $t(`dye.names.${dye.id}`) || dye.name;
+}
+
 // シェアテキストを翻訳テンプレートから生成
 const shareText = $derived.by(() => {
   if (!favorite || !shareUrl) return '';
   const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
   const patternName = $t(`pattern.${favorite.pattern}.name`);
 
-  // テンプレートから置換
+  // テンプレートから置換（翻訳された染料名を使用）
   return $t('page.share.shareText')
-    .replace('{main}', favorite.primaryDye.name)
-    .replace('{sub}', palette.sub.dye.name)
-    .replace('{accent}', palette.accent.dye.name)
+    .replace('{main}', getDyeName(favorite.primaryDye))
+    .replace('{sub}', getDyeName(palette.sub.dye))
+    .replace('{accent}', getDyeName(palette.accent.dye))
     .replace('{pattern}', patternName)
     .replace('{url}', shareUrl);
 });
@@ -116,9 +121,9 @@ function handleKeydown(event: KeyboardEvent) {
                 <div
                   class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
                   style="background-color: {primaryDye.hex};"
-                  title={primaryDye.name}
+                  title={getDyeName(primaryDye)}
                 ></div>
-                <div class="text-xs mt-1 text-balance">{primaryDye.name}</div>
+                <div class="text-xs mt-1 text-balance">{getDyeName(primaryDye)}</div>
               </div>
             {/if}
 
@@ -128,9 +133,9 @@ function handleKeydown(event: KeyboardEvent) {
                 <div
                   class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
                   style="background-color: {suggestedDye1.hex};"
-                  title={suggestedDye1.name}
+                  title={getDyeName(suggestedDye1)}
                 ></div>
-                <div class="text-xs mt-1 text-balance">{suggestedDye1.name}</div>
+                <div class="text-xs mt-1 text-balance">{getDyeName(suggestedDye1)}</div>
               </div>
             {/if}
 
@@ -140,9 +145,9 @@ function handleKeydown(event: KeyboardEvent) {
                 <div
                   class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
                   style="background-color: {suggestedDye2.hex};"
-                  title={suggestedDye2.name}
+                  title={getDyeName(suggestedDye2)}
                 ></div>
-                <div class="text-xs mt-1 text-balance">{suggestedDye2.name}</div>
+                <div class="text-xs mt-1 text-balance">{getDyeName(suggestedDye2)}</div>
               </div>
             {/if}
           </div>
