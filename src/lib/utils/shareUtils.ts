@@ -30,7 +30,12 @@ const BASE_URL_FOR_SHARE = 'https://colorant-picker.pl4rd.com/share';
 
 // 検証ヘルパー関数
 function isValidRgbValue(value: unknown): value is number {
-  return typeof value === 'number' && Number.isInteger(value) && value >= RGB_BOUNDS.MIN && value <= RGB_BOUNDS.MAX;
+  return (
+    typeof value === 'number' &&
+    Number.isInteger(value) &&
+    value >= RGB_BOUNDS.MIN &&
+    value <= RGB_BOUNDS.MAX
+  );
 }
 
 function isValidString(value: unknown, maxLength: number): value is string {

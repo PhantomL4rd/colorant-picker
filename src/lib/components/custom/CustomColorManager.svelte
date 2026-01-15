@@ -4,6 +4,7 @@ import { customColorsStore } from '$lib/stores/customColors';
 import { selectPrimaryDye } from '$lib/stores/selection';
 import { t } from '$lib/translations';
 import { createCustomDye } from '$lib/utils/color/customColorUtils';
+import { Button } from '$lib/components/ui/button';
 import CustomColorForm from './CustomColorForm.svelte';
 import CustomColorItem from './CustomColorItem.svelte';
 
@@ -42,17 +43,17 @@ function handleColorSelect(color: any) {
   {:else}
     <div class="flex items-center justify-between">
       <h3 class="text-lg font-medium flex items-center gap-2">
-        <CircleUser size={20} />
+        <CircleUser class="size-5" />
         {$t('page.customColor.yourColors')}
       </h3>
-      <button
-        type="button"
+      <Button
+        size="sm"
+        class="gap-2"
         onclick={handleAddNew}
-        class="btn btn-sm btn-primary gap-2"
       >
-        <Plus size={16} />
+        <Plus class="size-4" />
         {$t('page.customColor.newColor')}
-      </button>
+      </Button>
     </div>
 
     {#if customColors.length === 0}

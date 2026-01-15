@@ -1,11 +1,14 @@
 <script lang="ts">
-import { Check, Copy, X } from '@lucide/svelte';
+import { Check, Copy, Loader2, X } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { FEEDBACK_DURATION } from '$lib/constants/timing';
 import { t } from '$lib/translations';
 import type { Favorite } from '$lib/types';
 import { copyToClipboard, generateShareUrl } from '$lib/utils/shareUtils';
-import CombinationPreview from './CombinationPreview.svelte';
+import * as Dialog from '$lib/components/ui/dialog';
+import { Button } from '$lib/components/ui/button';
+import { Label } from '$lib/components/ui/label';
+import { Textarea } from '$lib/components/ui/textarea';
 
 interface Props {
   isOpen: boolean;
@@ -73,141 +76,98 @@ async function handleCopy() {
     iscopying = false;
   }
 }
-
-// モーダル外クリック時の処理
-function handleBackdropClick(event: MouseEvent) {
-  if (event.target === event.currentTarget) {
-    onClose();
-  }
-}
-
-// Escapeキーでモーダルを閉じる
-function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
-    onClose();
-  }
-}
 </script>
 
 <!-- モーダル -->
-{#if isOpen && favorite}
-  <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-  <dialog
-    class="modal modal-open"
-    onkeydown={handleKeydown}
-    aria-labelledby="share-modal-title"
-    aria-describedby="share-modal-description"
-  >
-    <div class="modal-box w-11/12 max-w-2xl">
-        <!-- ヘッダー -->
-        <div class="flex items-center justify-between mb-6">
-          <h3 id="share-modal-title" class="text-lg font-bold">{$t('page.share.title')}</h3>
-          <button
-            type="button"
-            class="btn btn-sm btn-ghost"
-            onclick={onClose}
-            aria-label={$t('common.action.close')}
-          >
-            <X class="w-4 h-4" />
-          </button>
-        </div>
+<Dialog.Root open={isOpen && !!favorite} onOpenChange={(open) => !open && onClose()}>
+  <Dialog.Content class="sm:max-w-2xl">
+    <Dialog.Header>
+      <Dialog.Title>{$t('page.share.title')}</Dialog.Title>
+    </Dialog.Header>
 
-        <!-- パレットプレビュー -->
-        <div class="mb-6">
-          <div class="grid grid-cols-3 gap-4">
-            <!-- 主色 -->
-            {#if primaryDye}
-              <div class="text-center">
-                <div
-                  class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
-                  style="background-color: {primaryDye.hex};"
-                  title={getDyeName(primaryDye)}
-                ></div>
-                <div class="text-xs mt-1 text-balance">{getDyeName(primaryDye)}</div>
-              </div>
-            {/if}
-
-            <!-- 提案色1 -->
-            {#if suggestedDye1}
-              <div class="text-center">
-                <div
-                  class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
-                  style="background-color: {suggestedDye1.hex};"
-                  title={getDyeName(suggestedDye1)}
-                ></div>
-                <div class="text-xs mt-1 text-balance">{getDyeName(suggestedDye1)}</div>
-              </div>
-            {/if}
-
-            <!-- 提案色2 -->
-            {#if suggestedDye2}
-              <div class="text-center">
-                <div
-                  class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300"
-                  style="background-color: {suggestedDye2.hex};"
-                  title={getDyeName(suggestedDye2)}
-                ></div>
-                <div class="text-xs mt-1 text-balance">{getDyeName(suggestedDye2)}</div>
-              </div>
-            {/if}
+    <!-- パレットプレビュー -->
+    <div class="mb-6">
+      <div class="grid grid-cols-3 gap-4">
+        <!-- 主色 -->
+        {#if primaryDye}
+          <div class="text-center min-w-0">
+            <div
+              class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
+              style="background-color: {primaryDye.hex};"
+              title={getDyeName(primaryDye)}
+            ></div>
+            <div class="text-xs mt-1 text-balance truncate">{getDyeName(primaryDye)}</div>
           </div>
-        </div>
+        {/if}
 
-        <!-- シェア用テキスト -->
-        <div class="mb-6">
-          <label for="share-text" class="label">
-            <span class="label-text font-medium">{$t('page.share.shareTextLabel')}</span>
-          </label>
-          
-          <textarea
-            id="share-text"
-            class="textarea textarea-bordered w-full h-32 resize-none text-base-content"
-            readonly
-            value={shareText}
-            onclick={(e) => {
-              const target = e.target as HTMLTextAreaElement;
-              target?.select();
-            }}
-          ></textarea>
-          
-          {#if copyError}
-            <div class="label">
-              <span class="label-text-alt text-error">{copyError}</span>
-            </div>
-          {/if}
-        </div>
+        <!-- 提案色1 -->
+        {#if suggestedDye1}
+          <div class="text-center min-w-0">
+            <div
+              class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
+              style="background-color: {suggestedDye1.hex};"
+              title={getDyeName(suggestedDye1)}
+            ></div>
+            <div class="text-xs mt-1 text-balance truncate">{getDyeName(suggestedDye1)}</div>
+          </div>
+        {/if}
 
-        <!-- ボタン群 -->
-        <div class="flex justify-end gap-3">
-          <button
-            type="button"
-            class="btn btn-soft"
-            onclick={onClose}
-          >
-            {$t('common.action.close')}
-          </button>
-          <button
-            type="button"
-            class="btn btn-primary gap-2"
-            onclick={handleCopy}
-            disabled={iscopying || !shareText}
-            class:btn-success={copySuccess}
-          >
-            {#if copySuccess}
-              <Check class="w-4 h-4" />
-              {$t('page.share.copied')}
-            {:else if iscopying}
-              <span class="loading loading-spinner loading-xs"></span>
-              {$t('page.share.copying')}
-            {:else}
-              <Copy class="w-4 h-4" />
-              {$t('common.action.copy')}
-            {/if}
-          </button>
-        </div>
+        <!-- 提案色2 -->
+        {#if suggestedDye2}
+          <div class="text-center min-w-0">
+            <div
+              class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
+              style="background-color: {suggestedDye2.hex};"
+              title={getDyeName(suggestedDye2)}
+            ></div>
+            <div class="text-xs mt-1 text-balance truncate">{getDyeName(suggestedDye2)}</div>
+          </div>
+        {/if}
+      </div>
     </div>
-    <!-- svelte-ignore a11y_click_events_have_key_events -->
-    <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div class="modal-backdrop" onclick={onClose}></div>
-  </dialog>
-{/if}
+
+    <!-- シェア用テキスト -->
+    <div class="mb-6 space-y-2 min-w-0">
+      <Label for="share-text" class="font-medium">{$t('page.share.shareTextLabel')}</Label>
+
+      <Textarea
+        id="share-text"
+        class="h-32 resize-none min-w-0 break-all"
+        readonly
+        value={shareText}
+        onclick={(e) => {
+          const target = e.target as HTMLTextAreaElement;
+          target?.select();
+        }}
+      />
+
+      {#if copyError}
+        <p class="text-xs text-destructive">{copyError}</p>
+      {/if}
+    </div>
+
+    <!-- ボタン群 -->
+    <Dialog.Footer>
+      <Button variant="outline" onclick={onClose}>
+        {$t('common.action.close')}
+      </Button>
+      <Button
+        onclick={handleCopy}
+        disabled={iscopying || !shareText}
+        variant={copySuccess ? 'default' : 'default'}
+        class={copySuccess ? 'bg-green-500 hover:bg-green-600' : ''}
+      >
+        {#if copySuccess}
+          <Check class="size-4 mr-2" />
+          {$t('page.share.copied')}
+        {:else if iscopying}
+          <Loader2 class="size-4 mr-2 animate-spin" />
+          {$t('page.share.copying')}
+        {:else}
+          <Copy class="size-4 mr-2" />
+          {$t('common.action.copy')}
+        {/if}
+      </Button>
+    </Dialog.Footer>
+  </Dialog.Content>
+</Dialog.Root>

@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Blend, Eye, PaintBucket } from 'lucide-svelte';
+import { Blend, Eye, Loader2, PaintBucket } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
 import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
@@ -9,6 +9,7 @@ import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
 import PatternSelector from '$lib/components/palette/PatternSelector.svelte';
 import RandomPickButton from '$lib/components/RandomPickButton.svelte';
 import ShareButton from '$lib/components/share/ShareButton.svelte';
+import * as Card from '$lib/components/ui/card';
 import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
 import { SCROLL_TIMING } from '$lib/constants/timing';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
@@ -163,34 +164,36 @@ function handleClearAll() {
 
 {#if isLoading}
   <div class="flex justify-center items-center h-64">
-    <span class="loading loading-spinner loading-lg"></span>
+    <Loader2 class="size-8 animate-spin" />
     <span class="ml-2">{$t('common.state.loading')}</span>
   </div>
 {:else}
   <div class="space-y-8">
     <!-- 配色パターン選択 -->
-    <div bind:this={patternSelectorElement} class="card bg-base-200 shadow-md" data-coach="pattern-selector">
-      <div class="card-body">
-        <PatternSelector
-          bind:this={patternSelectorComponent}
-          {selectedPattern}
-          onPatternChange={handlePatternChange}
-          {excludeMetallic}
-          onExcludeMetallicChange={handleExcludeMetallicChange}
-          patternVisuals={dynamicPatternVisuals}
-        />
-      </div>
+    <div bind:this={patternSelectorElement} data-coach="pattern-selector">
+      <Card.Root>
+        <Card.Content class="pt-6">
+          <PatternSelector
+            bind:this={patternSelectorComponent}
+            {selectedPattern}
+            onPatternChange={handlePatternChange}
+            {excludeMetallic}
+            onExcludeMetallicChange={handleExcludeMetallicChange}
+            patternVisuals={dynamicPatternVisuals}
+          />
+        </Card.Content>
+      </Card.Root>
     </div>
 
     <!-- プレビュー -->
     <div aria-live="polite" class="relative z-10">
       {#if selectedDye && suggestedDyes}
         <!-- 組み合わせプレビュー -->
-        <div class="card bg-base-200 shadow-md">
-          <div class="card-body p-3 md:p-6">
+        <Card.Root>
+          <Card.Content class="p-3 md:p-6">
             <div class="flex justify-between items-center mb-2 md:mb-4">
-              <h2 class="card-title text-lg flex items-center gap-1">
-                <Eye class="w-5 h-5" />
+              <h2 class="text-lg font-semibold flex items-center gap-1">
+                <Eye class="size-5" />
                 {$t('page.home.preview')}
               </h2>
               <div class="flex gap-2">
@@ -203,85 +206,87 @@ function handleClearAll() {
               suggestedDyes={suggestedDyes}
               pattern={selectedPattern}
             />
-          </div>
-        </div>
+          </Card.Content>
+        </Card.Root>
       {:else}
         <!-- 未選択時のプレースホルダー -->
-        <div class="card bg-base-200 shadow-md">
-          <div class="card-body p-3 md:p-6">
-            <h2 class="card-title text-lg flex items-center gap-1 text-base-content/40 mb-4">
-              <Eye class="w-5 h-5" />
+        <Card.Root>
+          <Card.Content class="p-3 md:p-6">
+            <h2 class="text-lg font-semibold flex items-center gap-1 text-muted-foreground mb-4">
+              <Eye class="size-5" />
               {$t('page.home.preview')}
             </h2>
 
             <!-- プレースホルダー色（実際のカララント組み合わせ） -->
-            <div class="card bg-base-100 shadow-lg opacity-50">
-              <div class="card-body">
+            <Card.Root class="opacity-50">
+              <Card.Content class="pt-6">
                 <div class="grid grid-cols-3 gap-2 md:gap-4">
                   <div class="text-center">
                     <div
-                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
+                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-border mb-1 md:mb-2"
                       style="background-color: {placeholderColors?.[0] ?? '#E63946'};"
                     ></div>
-                    <span class="text-xs text-base-content/50">{$t('common.role.main')}</span>
+                    <span class="text-xs text-muted-foreground">{$t('common.role.main')}</span>
                   </div>
                   <div class="text-center">
                     <div
-                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
+                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-border mb-1 md:mb-2"
                       style="background-color: {placeholderColors?.[1] ?? '#457B9D'};"
                     ></div>
-                    <span class="text-xs text-base-content/50">{$t('common.role.sub')}</span>
+                    <span class="text-xs text-muted-foreground">{$t('common.role.sub')}</span>
                   </div>
                   <div class="text-center">
                     <div
-                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-base-300 mb-1 md:mb-2"
+                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-border mb-1 md:mb-2"
                       style="background-color: {placeholderColors?.[2] ?? '#F4A261'};"
                     ></div>
-                    <span class="text-xs text-base-content/50">{$t('common.role.accent')}</span>
+                    <span class="text-xs text-muted-foreground">{$t('common.role.accent')}</span>
                   </div>
                 </div>
-              </div>
-            </div>
+              </Card.Content>
+            </Card.Root>
 
             <!-- ガイドメッセージ -->
             <div class="text-center mt-4">
-              <p class="text-sm text-base-content/60">
-                <Blend class="inline-block w-4 h-4 mr-1 align-text-bottom" />
+              <p class="text-sm text-muted-foreground">
+                <Blend class="inline-block size-4 mr-1 align-text-bottom" />
                 {$t('page.home.selectPrompt')}
               </p>
             </div>
-          </div>
-        </div>
+          </Card.Content>
+        </Card.Root>
       {/if}
     </div>
 
     <!-- ランダム -->
-    <div class="card bg-base-200 shadow-md" data-coach="random-button">
-      <div class="card-body">
-        <RandomPickButton
-          dyes={filteredDyesList}
-          onRandomPick={handleRandomPick}
-        />
-      </div>
+    <div data-coach="random-button">
+      <Card.Root>
+        <Card.Content class="pt-6">
+          <RandomPickButton
+            dyes={filteredDyesList}
+            onRandomPick={handleRandomPick}
+          />
+        </Card.Content>
+      </Card.Root>
     </div>
 
     <!-- カテゴリフィルター -->
-    <div class="card bg-base-200 shadow-md">
-      <div class="card-body">
-        <CategoryFilter 
+    <Card.Root>
+      <Card.Content class="pt-6">
+        <CategoryFilter
           selectedCategory={selectedCategory}
           onToggleCategory={handleToggleCategory}
           onClearCategories={handleClearAll}
           onSelectCustomColors={handleSelectCustomColors}
           isCustomColorsSelected={showCustomColors}
         />
-      </div>
-    </div>
-    
+      </Card.Content>
+    </Card.Root>
+
     <!-- カララント一覧またはカスタムカラー管理 -->
     <div data-coach="dye-grid">
-      <div class="card bg-base-200 shadow-md">
-        <div class="card-body">
+      <Card.Root>
+        <Card.Content class="pt-6">
           {#if showCustomColors}
             <!-- カスタムカラー管理表示 -->
             <div class="max-h-[600px] overflow-y-auto">
@@ -289,20 +294,20 @@ function handleClearAll() {
             </div>
           {:else}
             <!-- 通常のカララント一覧表示 -->
-            <h2 class="card-title text-lg mb-4 flex items-center gap-1">
-              <PaintBucket class="w-5 h-5" />
+            <h2 class="text-lg font-semibold mb-4 flex items-center gap-1">
+              <PaintBucket class="size-5" />
               {$t('page.home.dyeList')}
             </h2>
             <div class="max-h-[600px] overflow-y-auto">
-              <DyeGrid 
+              <DyeGrid
                 dyes={filteredDyesList}
                 {selectedDye}
                 onDyeSelect={handleDyeSelect}
               />
             </div>
           {/if}
-        </div>
-      </div>
+        </Card.Content>
+      </Card.Root>
     </div>
   </div>
 {/if}

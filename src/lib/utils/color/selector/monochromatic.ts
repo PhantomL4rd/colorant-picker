@@ -88,7 +88,10 @@ export function selectMonochromaticDyes(
     const sorted = filtered.sort((a, b) => a.score - b.score);
 
     // 候補色をその L の値域でクラスタ分割し、各クラスタから均等に選定する
-    const bins: Candidate[][] = Array.from({ length: MONOCHROMATIC_CONFIG.LIGHTNESS_BINS }, () => []);
+    const bins: Candidate[][] = Array.from(
+      { length: MONOCHROMATIC_CONFIG.LIGHTNESS_BINS },
+      () => []
+    );
     const Ls = sorted.map((x) => x.oklch.l);
     Ls.push(base.l); // 基準色の L も考慮する
     const Lmin = Math.min(...Ls);
@@ -96,8 +99,12 @@ export function selectMonochromaticDyes(
     const step = (Lmax - Lmin) / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS || 1;
 
     for (const c of sorted) {
-      const bin = Math.min(MONOCHROMATIC_CONFIG.LIGHTNESS_BINS - 1, Math.floor((c.oklch.l - Lmin) / step));
-      if (bins[bin].length < Math.ceil(numResults / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS)) bins[bin].push(c);
+      const bin = Math.min(
+        MONOCHROMATIC_CONFIG.LIGHTNESS_BINS - 1,
+        Math.floor((c.oklch.l - Lmin) / step)
+      );
+      if (bins[bin].length < Math.ceil(numResults / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS))
+        bins[bin].push(c);
     }
 
     // 基準色の属するクラスタを除外（numResults >= 3 の場合は要調整）

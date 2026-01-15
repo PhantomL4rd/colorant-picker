@@ -3,6 +3,8 @@ import { Palette } from '@lucide/svelte';
 import { PATTERN_VISUALS, type PatternVisual } from '$lib/constants/patterns';
 import { t } from '$lib/translations';
 import type { HarmonyPattern } from '$lib/types';
+import { Checkbox } from '$lib/components/ui/checkbox';
+import { Label } from '$lib/components/ui/label';
 import PatternCard from './PatternCard.svelte';
 
 interface Props {
@@ -42,9 +44,9 @@ function handlePatternSelect(pattern: HarmonyPattern) {
 }
 </script>
 
-<div class="form-control w-full">
-  <h2 class="card-title text-lg mb-4 flex items-center gap-1">
-    <Palette class="w-5 h-5" />
+<div class="w-full">
+  <h2 class="text-lg font-semibold mb-4 flex items-center gap-1">
+    <Palette class="size-5" />
     {$t('page.home.patternSection')}
   </h2>
 
@@ -68,20 +70,19 @@ function handlePatternSelect(pattern: HarmonyPattern) {
 
     <!-- 右端フェード効果（スクロールヒント）- モバイルのみ -->
     <div
-      class="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-base-200 to-transparent pointer-events-none md:hidden"
+      class="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-card to-transparent pointer-events-none md:hidden"
     ></div>
   </div>
 
   <!-- メタリック除外チェックボックス -->
-  <div class="form-control mt-1">
-    <label class="cursor-pointer label justify-start gap-2">
-      <input
-        type="checkbox"
-        class="checkbox checkbox-sm"
-        checked={excludeMetallic}
-        onchange={onExcludeMetallicChange}
-      />
-      <span class="label-text">{$t('common.filter.excludeMetallic')}</span>
-    </label>
+  <div class="flex items-center space-x-2 mt-3">
+    <Checkbox
+      id="exclude-metallic"
+      checked={excludeMetallic}
+      onCheckedChange={onExcludeMetallicChange}
+    />
+    <Label for="exclude-metallic" class="text-sm cursor-pointer">
+      {$t('common.filter.excludeMetallic')}
+    </Label>
   </div>
 </div>

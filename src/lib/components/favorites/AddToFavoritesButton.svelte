@@ -1,10 +1,12 @@
 <script lang="ts">
-import { Heart } from 'lucide-svelte';
+import { Heart, Loader2 } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { FEEDBACK_DURATION, TOAST_TIMING } from '$lib/constants/timing';
 import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { selectionStore } from '$lib/stores/selection';
 import { t } from '$lib/translations';
+import { Button } from '$lib/components/ui/button';
+import * as Tooltip from '$lib/components/ui/tooltip';
 import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 
 interface Props {
@@ -17,6 +19,10 @@ const { disabled = false }: Props = $props();
 let isSaving = $state(false);
 let justSaved = $state(false);
 let saveError = $state('');
+
+// トースト表示状態
+let showSuccessToast = $state(false);
+let toastFading = $state(false);
 
 // ハートバースト
 let heartBurst: HeartBurstApi;
@@ -83,31 +89,17 @@ function handleSave() {
   }
 }
 
-// 成功トーストを表示
+// 成功トーストを表示（Svelte状態管理ベース）
 function showToast() {
-  const toast = document.createElement('div');
-  toast.className = 'toast toast-top toast-end z-50 animate-slide-in-right';
-  toast.innerHTML = `
-    <div class="alert alert-success gap-2">
-      <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="currentColor">
-        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
-      </svg>
-      <span>${$t('common.action.liked')}</span>
-    </div>
-  `;
-
-  document.body.appendChild(toast);
+  showSuccessToast = true;
+  toastFading = false;
 
   setTimeout(() => {
-    if (document.body.contains(toast)) {
-      toast.style.opacity = '0';
-      toast.style.transition = `opacity ${TOAST_TIMING.FADE_DURATION}ms ease-out`;
-      setTimeout(() => {
-        if (document.body.contains(toast)) {
-          document.body.removeChild(toast);
-        }
-      }, TOAST_TIMING.FADE_DURATION);
-    }
+    toastFading = true;
+    setTimeout(() => {
+      showSuccessToast = false;
+      toastFading = false;
+    }, TOAST_TIMING.FADE_DURATION);
   }, TOAST_TIMING.DISPLAY_DURATION);
 }
 </script>
@@ -118,40 +110,66 @@ function showToast() {
 
   {#if justSaved}
     <!-- アニメーション中 -->
-    <button
-      class="btn btn-ghost btn-sm text-red-500 cursor-default"
+    <Button
+      variant="ghost"
+      size="sm"
+      class="text-red-500 cursor-default"
       disabled
       aria-label={$t('common.action.like')}
     >
-      <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
+      <Heart class="size-4 animate-heart-flip" fill="currentColor" />
       {$t('common.action.like')}
-    </button>
+    </Button>
   {:else if isAlreadyFavorited}
-    <button
-      class="btn btn-ghost btn-sm text-success cursor-default"
+    <Button
+      variant="ghost"
+      size="sm"
+      class="text-green-500 cursor-default"
       disabled
       aria-label={$t('common.action.alreadyLiked')}
     >
-      <Heart class="w-4 h-4 fill-current" />
+      <Heart class="size-4 fill-current" />
       {$t('common.action.alreadyLiked')}
-    </button>
+    </Button>
   {:else}
-    <div class="tooltip tooltip-top tooltip-accent" class:tooltip-open={favorites.length === 0} data-tip={$t('common.action.like')}>
-      <button
-        class="btn btn-primary btn-sm gap-1"
-        class:btn-disabled={isDisabled}
-        class:loading={isSaving}
-        onclick={openModal}
-        disabled={isDisabled || isSaving}
-        aria-label={$t('common.action.like')}
-      >
-        {#if isSaving}
-          <span class="loading loading-spinner loading-xs"></span>
-        {:else}
-          <Heart class="w-4 h-4" />
-          {$t('common.action.like')}
-        {/if}
-      </button>
-    </div>
+    <Tooltip.Root open={favorites.length === 0 ? true : undefined}>
+      <Tooltip.Trigger>
+        {#snippet child({ props })}
+          <Button
+            {...props}
+            size="sm"
+            class="gap-1"
+            onclick={openModal}
+            disabled={isDisabled || isSaving}
+            aria-label={$t('common.action.like')}
+          >
+            {#if isSaving}
+              <Loader2 class="size-4 animate-spin" />
+            {:else}
+              <Heart class="size-4" />
+              {$t('common.action.like')}
+            {/if}
+          </Button>
+        {/snippet}
+      </Tooltip.Trigger>
+      <Tooltip.Content>
+        <p>{$t('common.action.like')}</p>
+      </Tooltip.Content>
+    </Tooltip.Root>
   {/if}
 </div>
+
+<!-- 成功トースト -->
+{#if showSuccessToast}
+  <div
+    class="fixed top-4 right-4 z-50 animate-slide-in-right"
+    class:opacity-0={toastFading}
+    class:transition-opacity={toastFading}
+    class:duration-300={toastFading}
+  >
+    <div class="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800 shadow-lg dark:border-green-800 dark:bg-green-950 dark:text-green-200">
+      <Heart class="size-5 fill-current" />
+      <span>{$t('common.action.liked')}</span>
+    </div>
+  </div>
+{/if}

@@ -2,6 +2,7 @@
 import { Share } from '@lucide/svelte';
 import { selectionStore } from '$lib/stores/selection';
 import type { Favorite } from '$lib/types';
+import { Button } from '$lib/components/ui/button';
 import ShareModal from './ShareModal.svelte';
 
 interface Props {
@@ -61,25 +62,27 @@ function closeShareModal() {
 
 {#if favorite}
   <!-- FavoriteItem用（従来の動作） -->
-  <button
-    type="button"
-    class="btn btn-ghost btn-sm btn-circle"
+  <Button
+    variant="ghost"
+    size="icon"
+    class="size-8"
     onclick={handleShare}
     aria-label="パレットをシェア"
   >
-    <Share class="w-4 h-4" />
-  </button>
+    <Share class="size-4" />
+  </Button>
 {:else}
   <!-- プレビュー用（新規） -->
-  <button
-    class="btn btn-ghost btn-sm btn-circle"
-    class:btn-disabled={isDisabled}
+  <Button
+    variant="ghost"
+    size="icon"
+    class="size-8"
     onclick={handleShare}
     disabled={isDisabled}
     aria-label="パレットをシェア"
   >
-    <Share class="w-4 h-4" />
-  </button>
+    <Share class="size-4" />
+  </Button>
 
   <!-- ShareModal -->
   <ShareModal

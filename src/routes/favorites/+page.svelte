@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Clock, Heart } from 'lucide-svelte';
+import { Clock, Heart, Loader2 } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
@@ -58,19 +58,19 @@ function handleSelectHistory() {
 
 <!-- サブタブナビゲーション -->
 <div class="flex justify-center mb-4 px-4">
-  <div class="inline-flex bg-base-200 rounded-xl p-1 shadow-md">
+  <div class="inline-flex bg-muted rounded-xl p-1 shadow-md">
     <button
-      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'favorites' ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/60 hover:text-base-content hover:bg-base-300'}"
+      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'favorites' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}"
       onclick={() => setTab('favorites')}
     >
-      <Heart class="w-5 h-5" />
+      <Heart class="size-5" />
       {$t('page.favorites.tabs.favorites')}
     </button>
     <button
-      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'history' ? 'bg-primary text-primary-content shadow-sm' : 'text-base-content/60 hover:text-base-content hover:bg-base-300'}"
+      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'history' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}"
       onclick={() => setTab('history')}
     >
-      <Clock class="w-5 h-5" />
+      <Clock class="size-5" />
       {$t('page.favorites.tabs.history')}
     </button>
   </div>
@@ -78,7 +78,7 @@ function handleSelectHistory() {
 
 {#if isLoading}
   <div class="flex justify-center items-center min-h-[400px]">
-    <span class="loading loading-spinner loading-lg"></span>
+    <Loader2 class="size-8 animate-spin text-primary" />
   </div>
 {:else if activeTab === 'favorites'}
   <FavoritesList onSelectFavorite={handleSelectFavorite} />

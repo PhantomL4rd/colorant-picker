@@ -9,27 +9,47 @@ import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/col
 import { deltaEOklab, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
-const { TRIADIC_OFFSET_1, TRIADIC_OFFSET_2, COMPLEMENTARY, SPLIT_COMPLEMENTARY_ADJUSTMENT, ANALOGOUS_RANGE, SIMILAR_RANGE, CONTRAST_OFFSET } = HARMONY_ANGLES;
+const {
+  TRIADIC_OFFSET_1,
+  TRIADIC_OFFSET_2,
+  COMPLEMENTARY,
+  SPLIT_COMPLEMENTARY_ADJUSTMENT,
+  ANALOGOUS_RANGE,
+  SIMILAR_RANGE,
+  CONTRAST_OFFSET,
+} = HARMONY_ANGLES;
 
 // トライアド（三色配色）- 色相環で120度ずつ離れた色
 export function calculateTriadic(baseHue: number): [number, number] {
-  return [(baseHue + TRIADIC_OFFSET_1) % HUE_CIRCLE_MAX, (baseHue + TRIADIC_OFFSET_2) % HUE_CIRCLE_MAX];
+  return [
+    (baseHue + TRIADIC_OFFSET_1) % HUE_CIRCLE_MAX,
+    (baseHue + TRIADIC_OFFSET_2) % HUE_CIRCLE_MAX,
+  ];
 }
 
 // スプリット・コンプリメンタリー - 補色の両隣の色
 export function calculateSplitComplementary(baseHue: number): [number, number] {
   const complement = (baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX;
-  return [(complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX];
+  return [
+    (complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX,
+    (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX,
+  ];
 }
 
 // アナログ（類似色）- 色相環で隣接する色
 export function calculateAnalogous(baseHue: number): [number, number] {
-  return [(baseHue - ANALOGOUS_RANGE + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (baseHue + ANALOGOUS_RANGE) % HUE_CIRCLE_MAX];
+  return [
+    (baseHue - ANALOGOUS_RANGE + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX,
+    (baseHue + ANALOGOUS_RANGE) % HUE_CIRCLE_MAX,
+  ];
 }
 
 // 類似色 - 近い色相での組み合わせ
 export function calculateSimilar(baseHue: number): [number, number] {
-  return [(baseHue - SIMILAR_RANGE + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (baseHue + SIMILAR_RANGE) % HUE_CIRCLE_MAX];
+  return [
+    (baseHue - SIMILAR_RANGE + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX,
+    (baseHue + SIMILAR_RANGE) % HUE_CIRCLE_MAX,
+  ];
 }
 
 // コントラスト - 補色関係を含む組み合わせ
@@ -40,7 +60,10 @@ export function calculateContrast(baseHue: number): [number, number] {
 // クラッシュ - 補色±30°（挑戦的な配色）
 export function calculateClash(baseHue: number): [number, number] {
   const complement = (baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX;
-  return [(complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX, (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX];
+  return [
+    (complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX,
+    (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX,
+  ];
 }
 
 // 最も近い色相の染料を見つける
@@ -171,15 +194,17 @@ export function generateSuggestedDyes(
 
     // 3. 明度を逆方向に調整
     // Base色が明るい（L > threshold）なら暗く、暗いなら明るく
-    const adjustedL = baseOklch.l > CLASH_CONFIG.LIGHTNESS_THRESHOLD
-      ? CLASH_CONFIG.TARGET_LIGHTNESS_DARK
-      : CLASH_CONFIG.TARGET_LIGHTNESS_LIGHT;
+    const adjustedL =
+      baseOklch.l > CLASH_CONFIG.LIGHTNESS_THRESHOLD
+        ? CLASH_CONFIG.TARGET_LIGHTNESS_DARK
+        : CLASH_CONFIG.TARGET_LIGHTNESS_LIGHT;
 
     // 4. 彩度を逆方向に調整
     // Base色の彩度が高い（C > threshold）なら低く、低いなら高く
-    const adjustedC = baseOklch.c > CLASH_CONFIG.CHROMA_THRESHOLD
-      ? CLASH_CONFIG.TARGET_CHROMA_LOW
-      : CLASH_CONFIG.TARGET_CHROMA_HIGH;
+    const adjustedC =
+      baseOklch.c > CLASH_CONFIG.CHROMA_THRESHOLD
+        ? CLASH_CONFIG.TARGET_CHROMA_LOW
+        : CLASH_CONFIG.TARGET_CHROMA_HIGH;
 
     // 5. 調整されたOklchから3色目のターゲット色を作成
     const thirdColorOklch: Oklch = { mode: 'oklch', l: adjustedL, c: adjustedC, h: complementHue };

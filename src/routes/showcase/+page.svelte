@@ -1,5 +1,5 @@
 <script lang="ts">
-import { RefreshCw, Sparkles } from '@lucide/svelte';
+import { Loader2, RefreshCw, Sparkles } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
@@ -11,6 +11,9 @@ import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
 import { t } from '$lib/translations';
 import type { DyeProps, Favorite, HarmonyPattern, ShowcaseData, ShowcasePalette } from '$lib/types';
+import * as Card from '$lib/components/ui/card';
+import * as Alert from '$lib/components/ui/alert';
+import { Button } from '$lib/components/ui/button';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
@@ -168,7 +171,7 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
   <!-- ヘッダー -->
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <Sparkles class="w-5 h-5 text-primary" />
+      <Sparkles class="size-5 text-primary" />
       <h1 class="text-xl font-bold">{$t('page.showcase.heading')}</h1>
     </div>
   </div>
@@ -177,33 +180,33 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
   {#if isLoading}
     <!-- ローディング -->
     <div class="flex justify-center items-center min-h-[400px]">
-      <span class="loading loading-spinner loading-lg"></span>
+      <Loader2 class="size-8 animate-spin text-primary" />
     </div>
   {:else if error}
     <!-- エラー表示 -->
-    <div class="card bg-base-200 shadow-md">
-      <div class="card-body text-center py-16">
-        <div class="alert alert-error mb-4">
-          <span>{error}</span>
-        </div>
-        <button class="btn btn-primary btn-sm" onclick={handleRetry}>
-          <RefreshCw class="w-4 h-4" />
+    <Card.Root class="bg-muted shadow-md">
+      <Card.Content class="text-center py-16">
+        <Alert.Root variant="destructive" class="mb-4">
+          <Alert.Description>{error}</Alert.Description>
+        </Alert.Root>
+        <Button size="sm" onclick={handleRetry} class="gap-2">
+          <RefreshCw class="size-4" />
           {$t('common.action.restore')}
-        </button>
-      </div>
-    </div>
+        </Button>
+      </Card.Content>
+    </Card.Root>
   {:else if palettes.length === 0}
     <!-- 空の状態 -->
-    <div class="card bg-base-200 shadow-md">
-      <div class="card-body text-center py-16">
-        <div class="text-base-content/40 mb-6">
-          <Sparkles class="w-20 h-20 mx-auto mb-4" />
+    <Card.Root class="bg-muted shadow-md">
+      <Card.Content class="text-center py-16">
+        <div class="text-muted-foreground mb-6">
+          <Sparkles class="size-20 mx-auto mb-4" />
         </div>
-        <h2 class="text-xl font-semibold mb-4 text-base-content/70">
+        <h2 class="text-xl font-semibold mb-4 text-muted-foreground">
           {$t('page.showcase.empty')}
         </h2>
-      </div>
-    </div>
+      </Card.Content>
+    </Card.Root>
   {:else}
     <!-- パレット一覧 -->
     <div class="space-y-4">

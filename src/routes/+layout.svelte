@@ -1,8 +1,13 @@
 <script lang="ts">
 import '../app.css';
-import { CircleHelp, Layers, Menu, MessageSquare, Moon, SwatchBook, TriangleAlert } from 'lucide-svelte';
+import { CircleHelp, Layers, Menu, MessageSquare, SwatchBook, TriangleAlert } from '@lucide/svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
+import { ModeWatcher } from 'mode-watcher';
+import { Button } from '$lib/components/ui/button';
+import * as Alert from '$lib/components/ui/alert';
+import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+import * as Tooltip from '$lib/components/ui/tooltip';
 import CoachMark from '$lib/components/CoachMark.svelte';
 import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
 import TabNavigation from '$lib/components/ui/TabNavigation.svelte';
@@ -28,72 +33,75 @@ function closeCoachMark() {
   <title>{$t('common.app.name')}</title>
 </svelte:head>
 
-<div class="min-h-dvh bg-base-100">
+<ModeWatcher />
+<Tooltip.Provider delayDuration={200}>
+
+<div class="min-h-dvh bg-background">
   <!-- 移転告知バナー（不要になったらこのブロックごと削除） -->
-  <div class="alert alert-warning rounded-none">
-    <TriangleAlert class="w-5 h-5" />
-    <span>
-      <a href="https://colorant-picker.pl4rd.com" class="link font-bold">https://colorant-picker.pl4rd.com</a>へ移転しました（ブックマークを更新してください）
-    </span>
-  </div>
+  <Alert.Root variant="default" class="rounded-none border-x-0 border-t-0 bg-yellow-50 dark:bg-yellow-900/20">
+    <TriangleAlert class="size-5" />
+    <Alert.Description class="block">
+      <a href="https://colorant-picker.pl4rd.com" class="font-bold underline">https://colorant-picker.pl4rd.com</a>へ移転しました（ブックマークを更新してください）
+    </Alert.Description>
+  </Alert.Root>
 
   <!-- ヘッダー -->
-  <header class="navbar bg-primary text-primary-content mb-8">
-    <div class="container mx-auto flex items-center">
+  <header class="bg-primary text-primary-foreground mb-8">
+    <div class="container mx-auto flex items-center h-14 px-4">
       <div class="flex-1">
         <h1 class="text-xl font-bold">
           <a href={resolve('/')} class="flex items-center gap-2 hover:opacity-80 transition-opacity">
-            <SwatchBook class="w-6 h-6" />
+            <SwatchBook class="size-6" />
             {$t('common.app.name')}
           </a>
         </h1>
       </div>
-      <div class="flex-none flex items-center gap-1">
+      <div class="flex items-center gap-1">
         <!-- 言語切替 -->
         <LanguageSwitcher />
 
         <!-- ヘルプボタン -->
-        <button
-          type="button"
-          class="btn btn-ghost btn-circle"
+        <Button
+          variant="ghost"
+          size="icon"
           onclick={openCoachMark}
           aria-label={$t('common.aria.help')}
+          class="text-primary-foreground hover:bg-primary-foreground/10"
         >
-          <CircleHelp class="w-6 h-6" />
-        </button>
+          <CircleHelp class="size-6" />
+        </Button>
 
         <!-- メニュー -->
-        <div class="dropdown dropdown-end">
-          <div tabindex="0" role="button" class="btn btn-ghost" aria-label={$t('common.aria.openMenu')}>
-            <Menu class="w-6 h-6" />
-          </div>
-          <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-          <ul
-            tabindex="0"
-            class="dropdown-content menu bg-base-200 text-base-content rounded-box z-10 w-52 p-2 shadow mt-2"
-          >
-            <li>
-              <a href={resolve('/kasane')} class="flex items-center gap-2">
-                <Layers class="w-5 h-5" />
-                {$t('common.nav.kasane')}
-              </a>
-            </li>
-            <li class="menu-title pt-2">
-              <span class="text-xs text-base-content/50">{$t('common.nav.links')}</span>
-            </li>
-            <li>
-              <a
-                href="https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5639802/"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="flex items-center gap-2"
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            {#snippet child({ props })}
+              <Button
+                {...props}
+                variant="ghost"
+                size="icon"
+                aria-label={$t('common.aria.openMenu')}
+                class="text-primary-foreground hover:bg-primary-foreground/10"
               >
-                <MessageSquare class="w-5 h-5" />
-                {$t('common.feedback.label')}
-              </a>
-            </li>
-          </ul>
-        </div>
+                <Menu class="size-6" />
+              </Button>
+            {/snippet}
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content align="end" class="w-52">
+            <DropdownMenu.Item onSelect={() => goto(resolve('/kasane'))} class="flex items-center gap-2">
+              <Layers class="size-5" />
+              {$t('common.nav.kasane')}
+            </DropdownMenu.Item>
+            <DropdownMenu.Separator />
+            <DropdownMenu.Label class="text-xs text-muted-foreground">{$t('common.nav.links')}</DropdownMenu.Label>
+            <DropdownMenu.Item
+              onSelect={() => window.open('https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5639802/', '_blank')}
+              class="flex items-center gap-2"
+            >
+              <MessageSquare class="size-5" />
+              {$t('common.feedback.label')}
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
       </div>
     </div>
   </header>
@@ -105,7 +113,7 @@ function closeCoachMark() {
   </div>
 
   <!-- 著作権表示 -->
-  <footer class="text-center text-xs text-base-content/50 py-4">
+  <footer class="text-center text-xs text-muted-foreground py-4">
     © SQUARE ENIX
   </footer>
 
@@ -115,3 +123,4 @@ function closeCoachMark() {
   <!-- コーチマーク -->
   <CoachMark isOpen={isCoachMarkOpen} onClose={closeCoachMark} />
 </div>
+</Tooltip.Provider>

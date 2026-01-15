@@ -1,7 +1,8 @@
 <script lang="ts">
-import { Star } from 'lucide-svelte';
+import { Star } from '@lucide/svelte';
 import type { PatternVisual } from '$lib/constants/patterns';
 import { t } from '$lib/translations';
+import { Badge } from '$lib/components/ui/badge';
 
 interface Props {
   visual: PatternVisual;
@@ -23,8 +24,8 @@ const patternTags = $derived(patternTagsRaw ? patternTagsRaw.split(',') : []);
   type="button"
   class="pattern-card flex flex-col items-center p-3 rounded-xl border-2 transition-all duration-200 ease-out min-w-[100px]
     {isSelected
-      ? 'border-accent bg-accent/10 shadow-md scale-105'
-      : 'border-base-300 bg-base-100 hover:border-accent/50 hover:shadow-md'}"
+      ? 'border-primary bg-primary/10 shadow-md scale-105'
+      : 'border-border bg-card hover:border-primary/50 hover:shadow-md'}"
   style="--delay: {animationDelay}ms;"
   onclick={onSelect}
   aria-pressed={isSelected}
@@ -34,7 +35,7 @@ const patternTags = $derived(patternTagsRaw ? patternTagsRaw.split(',') : []);
   <div class="flex gap-1 mb-2">
     {#each visual.sampleColors as color}
       <div
-        class="w-6 h-6 rounded border border-base-300 shadow-sm"
+        class="size-6 rounded border border-border shadow-sm"
         style="background-color: {color};"
       ></div>
     {/each}
@@ -44,20 +45,20 @@ const patternTags = $derived(patternTagsRaw ? patternTagsRaw.split(',') : []);
   <div class="flex items-center gap-1">
     <span class="text-sm font-medium">{patternName}</span>
     {#if visual.isPopular}
-      <Star class="w-3 h-3 text-warning fill-warning" />
+      <Star class="size-3 text-yellow-500 fill-yellow-500" />
     {/if}
   </div>
 
   <!-- 印象タグ（常に表示） -->
   <div class="flex gap-1 mt-1 flex-wrap justify-center">
     {#each patternTags as tag}
-      <span class="badge badge-primary badge-xs">#{tag}</span>
+      <Badge variant="default" class="text-[10px] px-1.5 py-0">#{tag}</Badge>
     {/each}
   </div>
 
   <!-- 説明文（選択時のみ表示） -->
   {#if isSelected}
-    <span class="text-xs text-base-content/70 mt-2 text-center leading-tight">
+    <span class="text-xs text-muted-foreground mt-2 text-center leading-tight">
       {patternDescription}
     </span>
   {/if}

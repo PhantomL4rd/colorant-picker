@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Heart, Sparkles, SwatchBook } from 'lucide-svelte';
+import { Heart, Sparkles, SwatchBook } from '@lucide/svelte';
 import { resolve } from '$app/paths';
 import { page } from '$app/state';
 import { t } from '$lib/translations';
@@ -19,7 +19,7 @@ const isFavorites = $derived(
 </script>
 
 <!-- フッター固定タブナビゲーション -->
-<div class="fixed bottom-0 left-0 right-0 z-50 bg-base-200 border-t border-base-300">
+<div class="fixed bottom-0 left-0 right-0 z-50 bg-muted border-t border-border">
   <div class="container mx-auto px-4">
     <div class="flex justify-center items-center h-16">
       <!-- タブボタン群 -->
@@ -27,44 +27,32 @@ const isFavorites = $derived(
         <!-- カララントピッカータブ -->
         <a
           href={homePath}
-          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={isHome}
-          class:text-primary-content={isHome}
-          class:text-base-content={!isHome}
-          class:hover:bg-base-300={!isHome}
+          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px] {isHome ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-accent'}"
           aria-label={$t('common.app.name')}
           data-coach="home-tab"
         >
-          <SwatchBook class="w-6 h-6 mb-1" />
+          <SwatchBook class="size-6 mb-1" />
           <span class="text-xs font-medium">{$t('common.nav.picker')}</span>
         </a>
 
         <!-- おすすめタブ -->
         <a
           href={showcasePath}
-          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={isShowcase}
-          class:text-primary-content={isShowcase}
-          class:text-base-content={!isShowcase}
-          class:hover:bg-base-300={!isShowcase}
+          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px] {isShowcase ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-accent'}"
           aria-label={$t('common.nav.showcase')}
           data-coach="showcase-tab"
         >
-          <Sparkles class="w-6 h-6 mb-1" />
+          <Sparkles class="size-6 mb-1" />
           <span class="text-xs font-medium">{$t('common.nav.showcase')}</span>
         </a>
 
         <!-- スキ！タブ -->
         <a
           href={favoritesPath}
-          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px]"
-          class:bg-primary={isFavorites}
-          class:text-primary-content={isFavorites}
-          class:text-base-content={!isFavorites}
-          class:hover:bg-base-300={!isFavorites}
+          class="flex flex-col items-center justify-center p-2 rounded-lg transition-colors duration-200 min-w-[80px] {isFavorites ? 'bg-primary text-primary-foreground' : 'text-foreground hover:bg-accent'}"
           aria-label={$t('common.nav.favorites')}
         >
-          <Heart class="w-6 h-6 mb-1" />
+          <Heart class="size-6 mb-1" />
           <span class="text-xs font-medium">{$t('common.nav.favorites')}</span>
         </a>
       </div>
@@ -90,7 +78,7 @@ const isFavorites = $derived(
 
   /* フォーカス時のアウトライン */
   a:focus-visible {
-    outline: 2px solid hsl(var(--p));
+    outline: 2px solid hsl(var(--primary));
     outline-offset: 2px;
   }
 </style>

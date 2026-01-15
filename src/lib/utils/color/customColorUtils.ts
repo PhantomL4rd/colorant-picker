@@ -63,7 +63,10 @@ export function validateCustomColorName(name: string): { valid: boolean; error?:
   }
 
   if (trimmed.length > ID_LIMITS.MAX_COLOR_NAME_LENGTH) {
-    return { valid: false, error: `名前は${ID_LIMITS.MAX_COLOR_NAME_LENGTH}文字以内で入力してください` };
+    return {
+      valid: false,
+      error: `名前は${ID_LIMITS.MAX_COLOR_NAME_LENGTH}文字以内で入力してください`,
+    };
   }
 
   return { valid: true };

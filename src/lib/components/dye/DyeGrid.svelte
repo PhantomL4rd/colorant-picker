@@ -1,7 +1,8 @@
 <script lang="ts">
-import { ChevronDown } from 'lucide-svelte';
+import { ChevronDown } from '@lucide/svelte';
 import { t } from '$lib/translations';
 import type { DyeProps } from '$lib/types';
+import { Button } from '$lib/components/ui/button';
 import DyeCard from './DyeCard.svelte';
 
 interface Props {
@@ -41,11 +42,11 @@ function loadMore() {
 <div class="w-full">
   {#if dyes.length === 0}
     <div class="text-center py-12 animate-fade-in-up">
-      <div class="inline-flex items-center justify-center w-16 h-16 rounded-full bg-base-300/50 mb-4">
+      <div class="inline-flex items-center justify-center size-16 rounded-full bg-muted mb-4">
         <span class="text-2xl">🎨</span>
       </div>
-      <p class="text-base-content/50 text-sm">{$t('page.home.dyeGrid.empty')}</p>
-      <p class="text-base-content/40 text-xs mt-1">{$t('page.home.dyeGrid.emptyHint')}</p>
+      <p class="text-muted-foreground text-sm">{$t('page.home.dyeGrid.empty')}</p>
+      <p class="text-muted-foreground/60 text-xs mt-1">{$t('page.home.dyeGrid.emptyHint')}</p>
     </div>
   {:else}
     <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4">
@@ -61,14 +62,15 @@ function loadMore() {
 
     {#if hasMore}
       <div class="flex justify-center mt-6">
-        <button
-          type="button"
-          class="btn btn-outline btn-sm gap-2"
+        <Button
+          variant="outline"
+          size="sm"
+          class="gap-2"
           onclick={loadMore}
         >
-          <ChevronDown class="w-4 h-4" />
+          <ChevronDown class="size-4" />
           {$t('page.home.dyeGrid.showMore').replace('{count}', String(remainingCount))}
-        </button>
+        </Button>
       </div>
     {/if}
   {/if}

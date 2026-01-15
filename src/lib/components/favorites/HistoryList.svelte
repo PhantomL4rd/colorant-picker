@@ -5,6 +5,8 @@ import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
 import { historyStore, restoreFromHistory } from '$lib/stores/history';
 import { t } from '$lib/translations';
 import type { Favorite, HistoryEntry } from '$lib/types';
+import * as Card from '$lib/components/ui/card';
+import { Button } from '$lib/components/ui/button';
 import PaletteCard from '../palette/PaletteCard.svelte';
 import ShareModal from '../share/ShareModal.svelte';
 
@@ -95,12 +97,12 @@ function handleAddToFavorites(entry: HistoryEntry) {
   <!-- ヘッダー -->
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <Clock class="w-5 h-5 text-primary" />
+      <Clock class="size-5 text-primary" />
       <h1 class="text-xl font-bold">{$t('page.favorites.tabs.history')}</h1>
     </div>
 
     {#if historyCount > 0}
-      <p class="text-base-content/60 text-sm">
+      <p class="text-muted-foreground text-sm">
         {historyCount} {$t('common.nav.history')}
       </p>
     {/if}
@@ -109,22 +111,22 @@ function handleAddToFavorites(entry: HistoryEntry) {
   <!-- コンテンツ -->
   {#if sortedHistory.length === 0}
     <!-- 空状態 -->
-    <div class="card bg-base-200 shadow-md">
-      <div class="card-body text-center py-16">
-        <div class="text-base-content/40 mb-6">
-          <Clock class="w-20 h-20 mx-auto mb-4" />
+    <Card.Root class="bg-muted shadow-md">
+      <Card.Content class="text-center py-16">
+        <div class="text-muted-foreground/40 mb-6">
+          <Clock class="size-20 mx-auto mb-4" />
         </div>
-        <h2 class="text-xl font-semibold mb-4 text-base-content/70">
+        <h2 class="text-xl font-semibold mb-4 text-muted-foreground">
           {$t('page.favorites.empty.history')}
         </h2>
         <div class="mt-6">
-          <a href="/" class="btn btn-primary btn-sm gap-2">
-            <Shuffle class="w-4 h-4" />
+          <Button href="/" size="sm" class="gap-2">
+            <Shuffle class="size-4" />
             {$t('common.nav.picker')}
-          </a>
+          </Button>
         </div>
-      </div>
-    </div>
+      </Card.Content>
+    </Card.Root>
   {:else}
     <!-- 履歴一覧 -->
     <div class="space-y-4">

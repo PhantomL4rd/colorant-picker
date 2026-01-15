@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Save, X } from '@lucide/svelte';
+import { Loader2, Save, X } from '@lucide/svelte';
 import {
   customColorsStore,
   isNameDuplicate,
@@ -14,6 +14,11 @@ import {
   validateCustomColorName,
   validateRgbInput,
 } from '$lib/utils/color/customColorUtils';
+import * as Card from '$lib/components/ui/card';
+import { Button } from '$lib/components/ui/button';
+import { Input } from '$lib/components/ui/input';
+import { Label } from '$lib/components/ui/label';
+import * as Alert from '$lib/components/ui/alert';
 
 interface Props {
   editColorId?: string | null;
@@ -121,142 +126,128 @@ function handleCancel() {
 }
 </script>
 
-<div class="card bg-base-200 p-4">
-  <div class="flex items-center justify-between mb-4">
-    <h4 class="text-lg font-medium">
-      {editColorId ? $t('page.customColor.edit') : $t('page.customColor.add')}
-    </h4>
-    <button
-      type="button"
-      onclick={handleCancel}
-      class="btn btn-sm btn-ghost"
-    >
-      <X size={16} />
-    </button>
-  </div>
-
-  <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-4">
-    <!-- 名前入力 -->
-    <div class="form-control">
-      <label class="label" for="color-name">
-        <span class="label-text">{$t('page.customColor.name')}</span>
-      </label>
-      <input
-        id="color-name"
-        type="text"
-        bind:value={name}
-        placeholder={$t('page.customColor.namePlaceholder')}
-        class="input input-bordered {errors.name ? 'input-error' : ''}"
-        maxlength="50"
-        required
-      />
-      {#if errors.name}
-        <div class="label">
-          <span class="label-text-alt text-error">{errors.name}</span>
-        </div>
-      {/if}
-    </div>
-
-    <!-- RGB値入力 -->
-    <div class="form-control">
-      <span class="label">
-        <span class="label-text">{$t('page.customColor.rgb')}</span>
-      </span>
-      <div class="flex gap-3">
-        <div class="flex-1">
-          <label class="label py-1" for="rgb-input-r">
-            <span class="label-text-alt">R</span>
-          </label>
-          <input
-            id="rgb-input-r"
-            type="number"
-            min="0"
-            max="255"
-            value={rgbInputs.r}
-            onchange={(e) => handleRgbChange('r', e.currentTarget.value)}
-            class="input input-bordered input-sm w-full"
-          />
-        </div>
-        <div class="flex-1">
-          <label class="label py-1" for="rgb-input-g">
-            <span class="label-text-alt">G</span>
-          </label>
-          <input
-            id="rgb-input-g"
-            type="number"
-            min="0"
-            max="255"
-            value={rgbInputs.g}
-            onchange={(e) => handleRgbChange('g', e.currentTarget.value)}
-            class="input input-bordered input-sm w-full"
-          />
-        </div>
-        <div class="flex-1">
-          <label class="label py-1" for="rgb-input-b">
-            <span class="label-text-alt">B</span>
-          </label>
-          <input
-            id="rgb-input-b"
-            type="number"
-            min="0"
-            max="255"
-            value={rgbInputs.b}
-            onchange={(e) => handleRgbChange('b', e.currentTarget.value)}
-            class="input input-bordered input-sm w-full"
-          />
-        </div>
-      </div>
-      {#if errors.rgb}
-        <div class="label">
-          <span class="label-text-alt text-error">{errors.rgb}</span>
-        </div>
-      {/if}
-    </div>
-
-    <!-- プレビュー -->
-    <div class="form-control">
-      <span class="label">
-        <span class="label-text">{$t('page.customColor.preview')}</span>
-      </span>
-      <div class="flex items-center gap-3">
-        <div
-          class="w-12 h-12 rounded-lg border-2 border-base-300"
-          style="background-color: {previewColor}"
-        ></div>
-        <div class="text-sm text-gray-600">
-          RGB({rgbDisplay})
-        </div>
-      </div>
-    </div>
-
-    {#if errors.submit}
-      <div class="alert alert-error">
-        <span>{errors.submit}</span>
-      </div>
-    {/if}
-
-    <!-- 操作ボタン -->
-    <div class="flex gap-3 justify-end">
-      <button
-        type="button"
+<Card.Root class="bg-muted">
+  <Card.Content class="p-4">
+    <div class="flex items-center justify-between mb-4">
+      <h4 class="text-lg font-medium">
+        {editColorId ? $t('page.customColor.edit') : $t('page.customColor.add')}
+      </h4>
+      <Button
+        variant="ghost"
+        size="sm"
         onclick={handleCancel}
-        class="btn btn-ghost"
-        disabled={isSubmitting}
       >
-        {$t('page.customColor.cancel')}
-      </button>
-      <button
-        type="submit"
-        class="btn btn-primary gap-2"
-        disabled={isSubmitting}
-      >
-        {#if isSubmitting}
-          <span class="loading loading-spinner loading-xs"></span>
-        {:else}
-          <Save size={16} />
-        {/if}
-        {editColorId ? $t('page.customColor.update') : $t('page.customColor.save')}
-      </button>
+        <X class="size-4" />
+      </Button>
     </div>
-  </form>
-</div>
+
+    <form onsubmit={(e) => { e.preventDefault(); handleSubmit(); }} class="space-y-4">
+      <!-- 名前入力 -->
+      <div class="space-y-2">
+        <Label for="color-name">{$t('page.customColor.name')}</Label>
+        <Input
+          id="color-name"
+          type="text"
+          bind:value={name}
+          placeholder={$t('page.customColor.namePlaceholder')}
+          class={errors.name ? 'border-destructive' : ''}
+          maxlength={50}
+          required
+        />
+        {#if errors.name}
+          <p class="text-xs text-destructive">{errors.name}</p>
+        {/if}
+      </div>
+
+      <!-- RGB値入力 -->
+      <div class="space-y-2">
+        <Label>{$t('page.customColor.rgb')}</Label>
+        <div class="flex gap-3">
+          <div class="flex-1 space-y-1">
+            <Label for="rgb-input-r" class="text-xs text-muted-foreground">R</Label>
+            <Input
+              id="rgb-input-r"
+              type="number"
+              min={0}
+              max={255}
+              value={rgbInputs.r}
+              onchange={(e) => handleRgbChange('r', e.currentTarget.value)}
+              class="h-8"
+            />
+          </div>
+          <div class="flex-1 space-y-1">
+            <Label for="rgb-input-g" class="text-xs text-muted-foreground">G</Label>
+            <Input
+              id="rgb-input-g"
+              type="number"
+              min={0}
+              max={255}
+              value={rgbInputs.g}
+              onchange={(e) => handleRgbChange('g', e.currentTarget.value)}
+              class="h-8"
+            />
+          </div>
+          <div class="flex-1 space-y-1">
+            <Label for="rgb-input-b" class="text-xs text-muted-foreground">B</Label>
+            <Input
+              id="rgb-input-b"
+              type="number"
+              min={0}
+              max={255}
+              value={rgbInputs.b}
+              onchange={(e) => handleRgbChange('b', e.currentTarget.value)}
+              class="h-8"
+            />
+          </div>
+        </div>
+        {#if errors.rgb}
+          <p class="text-xs text-destructive">{errors.rgb}</p>
+        {/if}
+      </div>
+
+      <!-- プレビュー -->
+      <div class="space-y-2">
+        <Label>{$t('page.customColor.preview')}</Label>
+        <div class="flex items-center gap-3">
+          <div
+            class="size-12 rounded-lg border-2 border-border"
+            style="background-color: {previewColor}"
+          ></div>
+          <div class="text-sm text-muted-foreground">
+            RGB({rgbDisplay})
+          </div>
+        </div>
+      </div>
+
+      {#if errors.submit}
+        <Alert.Root variant="destructive">
+          <Alert.Description>{errors.submit}</Alert.Description>
+        </Alert.Root>
+      {/if}
+
+      <!-- 操作ボタン -->
+      <div class="flex gap-3 justify-end">
+        <Button
+          variant="ghost"
+          type="button"
+          onclick={handleCancel}
+          disabled={isSubmitting}
+        >
+          {$t('page.customColor.cancel')}
+        </Button>
+        <Button
+          type="submit"
+          class="gap-2"
+          disabled={isSubmitting}
+        >
+          {#if isSubmitting}
+            <Loader2 class="size-4 animate-spin" />
+          {:else}
+            <Save class="size-4" />
+          {/if}
+          {editColorId ? $t('page.customColor.update') : $t('page.customColor.save')}
+        </Button>
+      </div>
+    </form>
+  </Card.Content>
+</Card.Root>

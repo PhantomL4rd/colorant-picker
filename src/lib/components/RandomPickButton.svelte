@@ -2,6 +2,7 @@
 import { Shuffle } from '@lucide/svelte';
 import { t } from '$lib/translations';
 import type { DyeProps } from '$lib/types';
+import { Button } from '$lib/components/ui/button';
 
 interface Props {
   dyes: DyeProps[];
@@ -22,18 +23,19 @@ function handleRandomPick() {
 }
 </script>
 
-<button
-  class="btn btn-secondary btn-block"
+<Button
+  variant="secondary"
+  class="w-full gap-2"
   onclick={handleRandomPick}
   disabled={disabled || dyes.length < 3}
   aria-label={$t('common.action.random')}
 >
-  <Shuffle class="h-5 w-5" />
+  <Shuffle class="size-5" />
   {$t('common.action.random')}
-</button>
+</Button>
 
 {#if dyes.length < 3}
-  <div class="text-xs text-error text-center mt-1">
+  <div class="text-xs text-destructive text-center mt-1">
     {$t('common.state.needMoreColors')}
   </div>
 {/if}

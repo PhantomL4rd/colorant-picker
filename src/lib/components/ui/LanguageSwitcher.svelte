@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Globe } from 'lucide-svelte';
+import { Globe } from '@lucide/svelte';
 import {
   locale,
   setLocale,
@@ -8,37 +8,32 @@ import {
   t,
   type Locale,
 } from '$lib/translations';
+import { Button } from '$lib/components/ui/button';
+import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
 const currentLocale = $derived($locale as Locale);
 
 async function handleLocaleChange(newLocale: Locale) {
   await setLocale(newLocale);
-  // ドロップダウンを閉じる
-  (document.activeElement as HTMLElement)?.blur();
 }
 </script>
 
-<div class="dropdown dropdown-end">
-  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-  <div tabindex="0" role="button" class="btn btn-ghost btn-circle" aria-label={$t('common.aria.languageSwitch')}>
-    <Globe class="w-5 h-5" />
-  </div>
-  <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
-  <ul
-    tabindex="0"
-    class="dropdown-content menu bg-base-200 text-base-content rounded-box z-10 w-36 p-2 shadow mt-2"
-  >
+<DropdownMenu.Root>
+  <DropdownMenu.Trigger>
+    {#snippet child({ props })}
+      <Button {...props} variant="ghost" size="icon" aria-label={$t('common.aria.languageSwitch')}>
+        <Globe class="size-5" />
+      </Button>
+    {/snippet}
+  </DropdownMenu.Trigger>
+  <DropdownMenu.Content class="w-36">
     {#each SUPPORTED_LOCALES as loc}
-      <li>
-        <button
-          type="button"
-          class="flex items-center gap-2"
-          class:active={currentLocale === loc}
-          onclick={() => handleLocaleChange(loc)}
-        >
-          {LOCALE_NAMES[loc]}
-        </button>
-      </li>
+      <DropdownMenu.Item
+        class={currentLocale === loc ? 'bg-accent' : ''}
+        onSelect={() => handleLocaleChange(loc)}
+      >
+        {LOCALE_NAMES[loc]}
+      </DropdownMenu.Item>
     {/each}
-  </ul>
-</div>
+  </DropdownMenu.Content>
+</DropdownMenu.Root>

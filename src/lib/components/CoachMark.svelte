@@ -1,5 +1,5 @@
 <script lang="ts">
-import { ChevronRight, X } from 'lucide-svelte';
+import { ChevronRight, X } from '@lucide/svelte';
 import { onMount, tick } from 'svelte';
 import { t } from '$lib/translations';
 
@@ -191,37 +191,41 @@ $effect(() => {
     onclick={handleOverlayClick}
   >
     <!-- ツールチップ -->
-    <div class="coach-tooltip bg-primary text-primary-content">
+    <div class="coach-tooltip bg-primary text-primary-foreground">
       <header class="flex items-start justify-between gap-2 mb-2">
         <h2 id="coach-title" class="text-sm font-bold">{$t(currentStep.titleKey)}</h2>
         <button
           bind:this={closeButtonRef}
           type="button"
-          class="btn btn-ghost btn-xs btn-circle text-primary-content hover:bg-primary-focus"
+          class="size-6 inline-flex items-center justify-center rounded-md text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
           onclick={handleClose}
           aria-label={$t('page.coachMark.closeGuide')}
         >
-          <X class="w-4 h-4" />
+          <X class="size-4" />
         </button>
       </header>
 
       <p id="coach-message" class="text-sm mb-4">{$t(currentStep.messageKey)}</p>
 
       <footer class="flex justify-end gap-2">
-        <button type="button" class="btn btn-ghost btn-sm text-primary-content" onclick={handleClose}>
+        <button
+          type="button"
+          class="h-9 px-3 rounded-md text-sm font-medium text-primary-foreground hover:bg-primary-foreground/10 transition-colors"
+          onclick={handleClose}
+        >
           {$t('page.coachMark.close')}
         </button>
         <button
           bind:this={nextButtonRef}
           type="button"
-          class="btn btn-secondary btn-sm gap-1"
+          class="h-9 px-3 rounded-md text-sm font-medium bg-secondary text-secondary-foreground hover:bg-secondary/80 transition-colors inline-flex items-center gap-1"
           onclick={handleNext}
         >
           {#if isLastStep}
             {$t('page.coachMark.done')}
           {:else}
             {$t('page.coachMark.next')}
-            <ChevronRight class="w-4 h-4" />
+            <ChevronRight class="size-4" />
           {/if}
         </button>
       </footer>

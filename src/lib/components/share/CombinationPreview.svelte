@@ -1,10 +1,13 @@
 <script lang="ts">
-import { BookOpenText, Info } from 'lucide-svelte';
+import { BookOpenText, Info } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { selectPrimaryDye } from '$lib/stores/selection';
 import { t, locale, type Locale } from '$lib/translations';
 import { getLodestoneUrl } from '$lib/utils/i18n';
 import type { DyeProps, HarmonyPattern, ColorRole } from '$lib/types';
+import * as Card from '$lib/components/ui/card';
+import { Button } from '$lib/components/ui/button';
+import * as Tooltip from '$lib/components/ui/tooltip';
 
 interface Props {
   selectedDye: DyeProps | null;
@@ -48,8 +51,8 @@ function textColor(dye: DyeProps): string {
 }
 </script>
 
-<div class="card bg-base-100 shadow-lg">
-  <div class="card-body">
+<Card.Root class="shadow-lg">
+  <Card.Content class="p-6">
     {#if selectedDye && suggestedDyes}
       <div class="space-y-1 animate-fade-in-up">
         <!-- 3色のプレビュー -->
@@ -57,7 +60,7 @@ function textColor(dye: DyeProps): string {
           <!-- 基本カララント -->
           <div class="text-center min-w-0 color-swatch" style="--delay: 0ms;">
             <div
-              class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 flex items-center justify-center transition-all duration-300"
+              class="w-full h-16 md:h-18 rounded-lg border-2 border-border mb-1 md:mb-2 flex items-center justify-center transition-all duration-300"
               style="background-color: {selectedDye.hex};"
             >
               {#if showRatio && palette}
@@ -78,7 +81,7 @@ function textColor(dye: DyeProps): string {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <BookOpenText class="w-3 h-3 flex-shrink-0" />
+                  <BookOpenText class="size-3 flex-shrink-0" />
                   <span>{getDyeName(selectedDye)}</span>
                 </a>
               {:else}
@@ -92,7 +95,7 @@ function textColor(dye: DyeProps): string {
             <div class="text-center min-w-0 color-swatch" style="--delay: 50ms;">
               <button
                 type="button"
-                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 transition-all duration-200 cursor-pointer flex items-center justify-center hover:border-primary hover:scale-105 hover:shadow-md active:scale-95"
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-border mb-1 md:mb-2 transition-all duration-200 cursor-pointer flex items-center justify-center hover:border-primary hover:scale-105 hover:shadow-md active:scale-95"
                 style="background-color: {palette.sub.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.sub.dye)}
                 title={$t('common.aria.selectColor')}
@@ -116,7 +119,7 @@ function textColor(dye: DyeProps): string {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <BookOpenText class="w-3 h-3 flex-shrink-0" />
+                    <BookOpenText class="size-3 flex-shrink-0" />
                     <span>{getDyeName(palette.sub.dye)}</span>
                   </a>
                 {:else}
@@ -129,7 +132,7 @@ function textColor(dye: DyeProps): string {
             <div class="text-center min-w-0 color-swatch" style="--delay: 100ms;">
               <button
                 type="button"
-                class="w-full h-16 md:h-18 rounded-lg border-2 border-base-300 mb-1 md:mb-2 transition-all duration-200 cursor-pointer flex items-center justify-center hover:border-primary hover:scale-105 hover:shadow-md active:scale-95"
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-border mb-1 md:mb-2 transition-all duration-200 cursor-pointer flex items-center justify-center hover:border-primary hover:scale-105 hover:shadow-md active:scale-95"
                 style="background-color: {palette.accent.dye.hex};"
                 onclick={() => handleSuggestedDyeClick(palette.accent.dye)}
                 title={$t('common.aria.selectColor')}
@@ -153,7 +156,7 @@ function textColor(dye: DyeProps): string {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <BookOpenText class="w-3 h-3 flex-shrink-0" />
+                    <BookOpenText class="size-3 flex-shrink-0" />
                     <span>{getDyeName(palette.accent.dye)}</span>
                   </a>
                 {:else}
@@ -167,12 +170,16 @@ function textColor(dye: DyeProps): string {
         <!-- 黄金比の説明ツールチップ -->
         {#if showRatio && palette}
           <div class="flex justify-center relative z-10">
-            <div class="tooltip tooltip-bottom tooltip-info">
-              <button type="button" class="btn btn-ghost btn-xs gap-1 text-info">
-                <Info class="w-3 h-3" />
-                <span class="text-xs">{$t('page.home.ratioTip.title')}</span>
-              </button>
-              <div class="tooltip-content text-start p-3 max-w-sm">
+            <Tooltip.Root>
+              <Tooltip.Trigger>
+                {#snippet child({ props })}
+                  <Button {...props} variant="ghost" size="sm" class="gap-1 text-blue-500 hover:text-blue-600">
+                    <Info class="size-3" />
+                    <span class="text-xs">{$t('page.home.ratioTip.title')}</span>
+                  </Button>
+                {/snippet}
+              </Tooltip.Trigger>
+              <Tooltip.Content class="max-w-sm text-left">
                 <p class="font-semibold mb-1">{$t('page.home.ratioTip.heading')}</p>
                 <p>
                   <span class="font-medium">{$t('common.role.main')}</span>:
@@ -186,18 +193,18 @@ function textColor(dye: DyeProps): string {
                   <span class="font-medium">{$t('common.role.accent')}</span>:
                   {$t('page.home.ratioTip.accent')}
                 </p>
-              </div>
-            </div>
+              </Tooltip.Content>
+            </Tooltip.Root>
           </div>
         {/if}
       </div>
     {:else}
-      <div class="text-center py-8 text-base-content/50">
+      <div class="text-center py-8 text-muted-foreground">
         {$t('page.home.selectPrompt')}
       </div>
     {/if}
-  </div>
-</div>
+  </Card.Content>
+</Card.Root>
 
 <style>
   /* 色スウォッチのスタッガーアニメーション */

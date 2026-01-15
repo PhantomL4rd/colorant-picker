@@ -4,6 +4,8 @@ import { Palette } from '$lib/models/Palette';
 import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
 import { t } from '$lib/translations';
 import type { Favorite } from '$lib/types';
+import * as Card from '$lib/components/ui/card';
+import { Button } from '$lib/components/ui/button';
 import PaletteCard from '../palette/PaletteCard.svelte';
 import ShareModal from '../share/ShareModal.svelte';
 
@@ -73,12 +75,12 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
   <!-- ヘッダー -->
   <div class="mb-6">
     <div class="flex items-center gap-3 mb-2">
-      <Heart class="w-5 h-5 text-primary" />
+      <Heart class="size-5 text-primary" />
       <h1 class="text-xl font-bold">{$t('page.favorites.tabs.favorites')}</h1>
     </div>
 
     {#if favoriteCount > 0}
-      <p class="text-base-content/60 text-sm">
+      <p class="text-muted-foreground text-sm">
         {favoriteCount} {$t('common.nav.favorites')}
       </p>
     {/if}
@@ -87,27 +89,27 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
   <!-- コンテンツ -->
   {#if sortedFavorites.length === 0}
     <!-- 空状態 -->
-    <div class="card bg-base-200 shadow-md animate-fade-in-up">
-      <div class="card-body text-center py-12">
+    <Card.Root class="animate-fade-in-up">
+      <Card.Content class="text-center py-12">
         <!-- ハートアイコン（アニメーション付き） -->
         <div class="mb-6">
-          <div class="inline-flex items-center justify-center w-24 h-24 rounded-full bg-primary/10 animate-pulse-slow">
-            <Heart class="w-12 h-12 text-primary/60" />
+          <div class="inline-flex items-center justify-center size-24 rounded-full bg-primary/10 animate-pulse-slow">
+            <Heart class="size-12 text-primary/60" />
           </div>
         </div>
 
-        <h2 class="text-xl font-semibold mb-3 text-base-content/80">
+        <h2 class="text-xl font-semibold mb-3 text-muted-foreground">
           {$t('page.favorites.empty.favorites')}
         </h2>
 
         <div class="mt-6">
-          <a href="/" class="btn btn-primary btn-sm gap-2">
-            <Shuffle class="w-4 h-4" />
+          <Button href="/" size="sm" class="gap-2">
+            <Shuffle class="size-4" />
             {$t('common.nav.picker')}
-          </a>
+          </Button>
         </div>
-      </div>
-    </div>
+      </Card.Content>
+    </Card.Root>
   {:else}
     <!-- お気に入り一覧 -->
     <div class="space-y-4">
@@ -128,7 +130,7 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
 </div>
 
 <!-- ShareModal -->
-<ShareModal 
+<ShareModal
   isOpen={shareModalOpen}
   favorite={selectedFavoriteForShare}
   onClose={closeShareModal}

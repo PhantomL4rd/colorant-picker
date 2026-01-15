@@ -1,6 +1,7 @@
 <script lang="ts">
 import type { DyeProps } from '$lib/types';
 import { t } from '$lib/translations';
+import * as Card from '$lib/components/ui/card';
 
 interface Props {
   dye: DyeProps;
@@ -25,8 +26,8 @@ function handleClick() {
 }
 </script>
 
-<div
-  class="card bg-base-100 shadow-md cursor-pointer min-w-0
+<Card.Root
+  class="cursor-pointer min-w-0
     transition-all duration-200 ease-out
     hover:shadow-lg hover:scale-[1.02]
     active:scale-95
@@ -35,25 +36,25 @@ function handleClick() {
   style="animation-delay: {animationDelay}ms;"
   onclick={handleClick}
   role="button"
-  tabindex="0"
+  tabindex={0}
   onkeydown={(e) => e.key === 'Enter' && handleClick()}
   aria-label={displayName}
   aria-pressed={isSelected}
 >
-  <div class="card-body p-4 min-w-0">
+  <Card.Content class="p-4 min-w-0">
     <!-- カラーサンプル -->
     <div
-      class="w-full h-16 rounded-lg border-2 border-base-300 mb-3 shadow-sm transition-all duration-200
+      class="w-full h-16 rounded-lg border-2 border-border mb-3 shadow-sm transition-all duration-200
         {isClicking ? 'tap-pulse' : ''}"
       style="background-color: {dye.hex}; --tap-color: {dye.hex};"
     ></div>
 
     <!-- カララント名 -->
-    <h3 class="card-title text-sm font-medium text-center justify-center text-balance">
+    <h3 class="text-sm font-medium text-center text-balance">
       {displayName}
     </h3>
-  </div>
-</div>
+  </Card.Content>
+</Card.Root>
 
 <style>
   /* タップ時のパルスエフェクト */

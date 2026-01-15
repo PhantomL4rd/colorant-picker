@@ -4,6 +4,8 @@ import { deleteCustomColor } from '$lib/stores/customColors';
 import type { CustomColor } from '$lib/types';
 import { rgbToRgb255 } from '$lib/utils/color/colorConversion';
 import { formatRgbDisplay } from '$lib/utils/color/customColorUtils';
+import * as Card from '$lib/components/ui/card';
+import { Button } from '$lib/components/ui/button';
 
 interface Props {
   color: CustomColor;
@@ -25,14 +27,14 @@ function handleDelete() {
 }
 </script>
 
-<div class="card bg-base-100 border border-base-300 hover:shadow-md transition-shadow">
-  <div class="card-body p-4">
+<Card.Root class="border border-border hover:shadow-md transition-shadow">
+  <Card.Content class="p-4">
     <div class="flex items-center gap-3">
       <!-- 色プレビュー -->
       <button
         type="button"
         onclick={onSelect}
-        class="w-12 h-12 rounded-lg border-2 border-base-300 hover:border-primary transition-colors cursor-pointer"
+        class="size-12 rounded-lg border-2 border-border hover:border-primary transition-colors cursor-pointer"
         style="background-color: {colorStyle}"
         title="この色を選択"
         aria-label="{color.name}の色を選択"
@@ -46,29 +48,30 @@ function handleDelete() {
           class="text-left hover:text-primary transition-colors cursor-pointer block w-full"
         >
           <div class="font-medium text-base text-balance">{color.name}</div>
-          <div class="text-sm text-gray-500">RGB({rgbDisplay})</div>
+          <div class="text-sm text-muted-foreground">RGB({rgbDisplay})</div>
         </button>
       </div>
 
       <!-- アクションボタン -->
       <div class="flex gap-1">
-        <button
-          type="button"
+        <Button
+          variant="ghost"
+          size="sm"
           onclick={onEdit}
-          class="btn btn-ghost btn-sm"
-          title="編集"
+          aria-label="編集"
         >
-          <Pencil size={16} />
-        </button>
-        <button
-          type="button"
+          <Pencil class="size-4" />
+        </Button>
+        <Button
+          variant="ghost"
+          size="sm"
+          class="text-destructive hover:bg-destructive/10"
           onclick={handleDelete}
-          class="btn btn-ghost btn-sm text-error hover:bg-error/10"
-          title="削除"
+          aria-label="削除"
         >
-          <Trash2 size={16} />
-        </button>
+          <Trash2 class="size-4" />
+        </Button>
       </div>
     </div>
-  </div>
-</div>
+  </Card.Content>
+</Card.Root>

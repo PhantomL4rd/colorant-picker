@@ -1,8 +1,12 @@
 <script lang="ts">
-import { Calendar, Heart, Trash2, X } from '@lucide/svelte';
+import { Calendar, Heart, Loader2, Trash2, X } from '@lucide/svelte';
 import { FEEDBACK_DURATION } from '$lib/constants/timing';
 import { t } from '$lib/translations';
 import type { Favorite, HarmonyPattern } from '$lib/types';
+import * as Card from '$lib/components/ui/card';
+import * as Alert from '$lib/components/ui/alert';
+import { Button } from '$lib/components/ui/button';
+import { Badge } from '$lib/components/ui/badge';
 import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 import PaletteColorPreview from './PaletteColorPreview.svelte';
 import ShareButton from '../share/ShareButton.svelte';
@@ -114,14 +118,14 @@ function cancelDelete() {
 }
 </script>
 
-<div class="card bg-base-100 shadow-md border border-base-300 transition-shadow hover:shadow-lg">
-  <div class="card-body p-4">
+<Card.Root class="transition-shadow hover:shadow-lg">
+  <Card.Content class="p-4">
     <!-- ヘッダー部分：日時と操作ボタン -->
     <div class="flex justify-between items-center mb-4">
       <div class="flex-1 min-w-0">
         {#if createdAt}
-          <div class="flex items-center gap-1 text-xs text-base-content/60">
-            <Calendar class="w-4 h-4" />
+          <div class="flex items-center gap-1 text-xs text-muted-foreground">
+            <Calendar class="size-4" />
             {formatDate(createdAt)}
           </div>
         {/if}
@@ -135,34 +139,40 @@ function cancelDelete() {
             <HeartBurst bind:this={heartBurst} />
 
             {#if showFeedback}
-              <button
-                class="btn btn-ghost btn-sm btn-circle text-red-500"
+              <Button
+                variant="ghost"
+                size="icon"
+                class="size-8 text-red-500"
                 disabled
                 aria-label={$t('common.action.like')}
               >
-                <Heart class="w-4 h-4 animate-heart-flip" fill="currentColor" />
-              </button>
+                <Heart class="size-4 animate-heart-flip" fill="currentColor" />
+              </Button>
             {:else if isFavorited}
-              <button
-                class="btn btn-ghost btn-sm btn-circle text-success"
+              <Button
+                variant="ghost"
+                size="icon"
+                class="size-8 text-green-500"
                 disabled
                 aria-label={$t('common.action.alreadyLiked')}
               >
-                <Heart class="w-4 h-4 fill-current" />
-              </button>
+                <Heart class="size-4 fill-current" />
+              </Button>
             {:else}
-              <button
-                class="btn btn-ghost btn-sm btn-circle"
+              <Button
+                variant="ghost"
+                size="icon"
+                class="size-8"
                 onclick={handleFavorite}
                 disabled={isAddingToFavorites}
                 aria-label={$t('common.action.like')}
               >
                 {#if isAddingToFavorites}
-                  <span class="loading loading-spinner loading-sm"></span>
+                  <Loader2 class="size-4 animate-spin" />
                 {:else}
-                  <Heart class="w-4 h-4" />
+                  <Heart class="size-4" />
                 {/if}
-              </button>
+              </Button>
             {/if}
           </div>
         {/if}
@@ -173,9 +183,9 @@ function cancelDelete() {
 
     <!-- エラーメッセージ -->
     {#if error}
-      <div class="alert alert-error alert-sm mb-4">
-        <span class="text-xs">{error}</span>
-      </div>
+      <Alert.Root variant="destructive" class="mb-4 py-2">
+        <Alert.Description class="text-xs">{error}</Alert.Description>
+      </Alert.Root>
     {/if}
 
     <!-- カラープレビュー（クリックで選択） -->
@@ -185,35 +195,39 @@ function cancelDelete() {
 
     <!-- フッター：パターンと削除ボタン -->
     <div class="flex justify-center items-center mt-2 relative">
-      <span class="badge badge-outline badge-sm">{$t(`pattern.${pattern}.name`)}</span>
+      <Badge variant="outline">{$t(`pattern.${pattern}.name`)}</Badge>
 
       {#if showDeleteButton}
         <!-- 削除ボタン -->
         <div class="absolute right-0">
           {#if isDeleting}
             <div class="flex gap-1">
-              <button class="btn btn-error btn-xs" onclick={handleDelete} aria-label={$t('page.palette.confirmDelete')}>
+              <Button variant="destructive" size="sm" class="h-6 text-xs" onclick={handleDelete} aria-label={$t('page.palette.confirmDelete')}>
                 {$t('page.palette.delete')}
-              </button>
-              <button
-                class="btn btn-ghost btn-xs"
+              </Button>
+              <Button
+                variant="ghost"
+                size="icon"
+                class="size-6"
                 onclick={cancelDelete}
                 aria-label={$t('page.palette.cancelDelete')}
               >
-                <X class="w-3 h-3" />
-              </button>
+                <X class="size-3" />
+              </Button>
             </div>
           {:else}
-            <button
-              class="btn btn-ghost btn-xs btn-circle"
+            <Button
+              variant="ghost"
+              size="icon"
+              class="size-6"
               onclick={handleDelete}
               aria-label={$t('page.palette.delete')}
             >
-              <Trash2 class="w-3 h-3 text-error" />
-            </button>
+              <Trash2 class="size-3 text-destructive" />
+            </Button>
           {/if}
         </div>
       {/if}
     </div>
-  </div>
-</div>
+  </Card.Content>
+</Card.Root>
