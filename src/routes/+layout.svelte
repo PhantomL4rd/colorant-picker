@@ -5,7 +5,6 @@ import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
 import { Button } from '$lib/components/ui/button';
-import * as Alert from '$lib/components/ui/alert';
 import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 import * as Tooltip from '$lib/components/ui/tooltip';
 import CoachMark from '$lib/components/CoachMark.svelte';
@@ -38,12 +37,17 @@ function closeCoachMark() {
 
 <div class="min-h-dvh bg-background">
   <!-- 移転告知バナー（不要になったらこのブロックごと削除） -->
-  <Alert.Root variant="default" class="rounded-none border-x-0 border-t-0 bg-yellow-50 dark:bg-yellow-900/20">
-    <TriangleAlert class="size-5" />
-    <Alert.Description class="block">
-      <a href="https://colorant-picker.pl4rd.com" class="font-bold underline">https://colorant-picker.pl4rd.com</a>へ移転しました（ブックマークを更新してください）
-    </Alert.Description>
-  </Alert.Root>
+  <div class="bg-yellow-100 border-b border-yellow-200 dark:bg-yellow-100 dark:border-yellow-200">
+    <div class="mx-auto max-w-4xl px-4 py-2">
+      <a
+        href="https://colorant-picker.pl4rd.com"
+        class="flex items-center justify-center gap-2 text-sm text-yellow-800 hover:underline"
+      >
+        <TriangleAlert class="size-4" />
+        <span><span class="font-bold">https://colorant-picker.pl4rd.com</span> へ移転しました（ブックマークを更新してください）</span>
+      </a>
+    </div>
+  </div>
 
   <!-- ヘッダー -->
   <header class="bg-primary text-primary-foreground mb-8">
