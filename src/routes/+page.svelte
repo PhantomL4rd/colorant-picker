@@ -162,6 +162,10 @@ function handleClearAll() {
 }
 </script>
 
+<svelte:head>
+  <title>{$t('page.home.title')}</title>
+</svelte:head>
+
 {#if isLoading}
   <div class="flex justify-center items-center h-64">
     <Loader2 class="size-8 animate-spin" />
