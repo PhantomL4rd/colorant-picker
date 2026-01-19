@@ -1,15 +1,14 @@
 <script lang="ts">
 import '../app.css';
-import { CircleHelp, Layers, Menu, MessageSquare, SwatchBook, TriangleAlert } from '@lucide/svelte';
+import { CircleHelp, SwatchBook, TriangleAlert } from '@lucide/svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
 import { Button } from '$lib/components/ui/button';
-import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 import * as Tooltip from '$lib/components/ui/tooltip';
 import CoachMark from '$lib/components/CoachMark.svelte';
 import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
-import TabNavigation from '$lib/components/ui/TabNavigation.svelte';
+import SideDrawer from '$lib/components/ui/SideDrawer.svelte';
 import { t } from '$lib/translations';
 
 const { children } = $props();
@@ -75,37 +74,8 @@ function closeCoachMark() {
           <CircleHelp class="size-6" />
         </Button>
 
-        <!-- メニュー -->
-        <DropdownMenu.Root>
-          <DropdownMenu.Trigger>
-            {#snippet child({ props })}
-              <Button
-                {...props}
-                variant="ghost"
-                size="icon"
-                aria-label={$t('common.aria.openMenu')}
-                class="text-primary-foreground hover:bg-primary-foreground/10"
-              >
-                <Menu class="size-6" />
-              </Button>
-            {/snippet}
-          </DropdownMenu.Trigger>
-          <DropdownMenu.Content align="end" class="w-52">
-            <DropdownMenu.Item onSelect={() => goto(resolve('/kasane'))} class="flex items-center gap-2">
-              <Layers class="size-5" />
-              {$t('common.nav.kasane')}
-            </DropdownMenu.Item>
-            <DropdownMenu.Separator />
-            <DropdownMenu.Label class="text-xs text-muted-foreground">{$t('common.nav.links')}</DropdownMenu.Label>
-            <DropdownMenu.Item
-              onSelect={() => window.open('https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5639802/', '_blank')}
-              class="flex items-center gap-2"
-            >
-              <MessageSquare class="size-5" />
-              {$t('common.feedback.label')}
-            </DropdownMenu.Item>
-          </DropdownMenu.Content>
-        </DropdownMenu.Root>
+        <!-- メニュー（サイドドロワー） -->
+        <SideDrawer />
       </div>
     </div>
   </header>
@@ -121,8 +91,6 @@ function closeCoachMark() {
     © SQUARE ENIX
   </footer>
 
-  <!-- フッター固定タブナビゲーション -->
-  <TabNavigation />
 
   <!-- コーチマーク -->
   <CoachMark isOpen={isCoachMarkOpen} onClose={closeCoachMark} />

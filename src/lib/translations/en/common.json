@@ -38,7 +38,8 @@
     "history": "History",
     "showcase": "Featured",
     "kasane": "Kasane-irome",
-    "links": "External Links"
+    "links": "External Links",
+    "menu": "Menu"
   },
   "aria": {
     "selectColor": "Select this color for new suggestions",
@@ -51,5 +52,8 @@
   "feedback": {
     "label": "Feedback",
     "placeholder": "Your feedback or feature request"
+  },
+  "externalLinks": {
+    "mirapriInsight": "Mirapri Insight"
   }
 }

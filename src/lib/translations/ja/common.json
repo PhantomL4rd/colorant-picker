@@ -38,7 +38,8 @@
     "history": "履歴",
     "showcase": "おすすめ",
     "kasane": "かさね色目",
-    "links": "外部リンク"
+    "links": "外部リンク",
+    "menu": "メニュー"
   },
   "aria": {
     "selectColor": "この色を選択して新しい組み合わせを提案",
@@ -51,5 +52,8 @@
   "feedback": {
     "label": "要望・感想",
     "placeholder": "ご意見・ご要望をお聞かせください"
+  },
+  "externalLinks": {
+    "mirapriInsight": "ミラプリインサイト"
   }
 }
