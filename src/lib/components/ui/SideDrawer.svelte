@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Heart, Layers, Menu, MessageSquare, Sparkles, TrendingUp, X } from '@lucide/svelte';
+import { Heart, Layers, Menu, MessageCircle, Sparkles, TrendingUp, X } from '@lucide/svelte';
 import { resolve } from '$app/paths';
 import { page } from '$app/state';
 import { t } from '$lib/translations';
@@ -136,7 +136,7 @@ function handleBackdropClick() {
       onclick={close}
       class="flex items-center gap-3 rounded-md px-3 py-3 text-sm hover:bg-accent transition-colors"
     >
-      <MessageSquare class="size-5" />
+      <MessageCircle class="size-5" />
       {$t('common.feedback.label')}
     </a>
   </nav>
