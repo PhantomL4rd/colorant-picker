@@ -196,7 +196,7 @@ function handleClearAll() {
         <Card.Root>
           <Card.Content class="p-3 md:p-6">
             <div class="flex justify-between items-center mb-2 md:mb-4">
-              <h2 class="text-lg font-semibold flex items-center gap-1">
+              <h2 class="text-lg font-semibold flex items-center gap-1 text-balance">
                 <Eye class="size-5" />
                 {$t('page.home.preview')}
               </h2>
@@ -216,7 +216,7 @@ function handleClearAll() {
         <!-- 未選択時のプレースホルダー -->
         <Card.Root>
           <Card.Content class="p-3 md:p-6">
-            <h2 class="text-lg font-semibold flex items-center gap-1 text-muted-foreground mb-4">
+            <h2 class="text-lg font-semibold flex items-center gap-1 text-muted-foreground mb-4 text-balance">
               <Eye class="size-5" />
               {$t('page.home.preview')}
             </h2>
@@ -298,7 +298,7 @@ function handleClearAll() {
             </div>
           {:else}
             <!-- 通常のカララント一覧表示 -->
-            <h2 class="text-lg font-semibold mb-4 flex items-center gap-1">
+            <h2 class="text-lg font-semibold mb-4 flex items-center gap-1 text-balance">
               <PaintBucket class="size-5" />
               {$t('page.home.dyeList')}
             </h2>

@@ -45,7 +45,7 @@ function handlePatternSelect(pattern: HarmonyPattern) {
 </script>
 
 <div class="w-full">
-  <h2 class="text-lg font-semibold mb-4 flex items-center gap-1">
+  <h2 class="text-lg font-semibold mb-4 flex items-center gap-1 text-balance">
     <Palette class="size-5" />
     {$t('page.home.patternSection')}
   </h2>
@@ -68,10 +68,6 @@ function handlePatternSelect(pattern: HarmonyPattern) {
       {/each}
     </div>
 
-    <!-- 右端フェード効果（スクロールヒント）- モバイルのみ -->
-    <div
-      class="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-card to-transparent pointer-events-none md:hidden"
-    ></div>
   </div>
 
   <!-- メタリック除外チェックボックス -->

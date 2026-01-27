@@ -237,20 +237,12 @@ $effect(() => {
   .coach-overlay {
     position: fixed;
     inset: 0;
-    z-index: 1000;
-  }
-
-  .coach-spotlight {
-    position: fixed;
-    inset: 0;
-    width: 100vw;
-    height: 100vh;
-    pointer-events: none;
+    @apply z-50;
   }
 
   .coach-tooltip {
     position: fixed;
-    z-index: 1001;
+    @apply z-50;
     border-radius: 12px;
     padding: 1rem;
     max-width: 320px;

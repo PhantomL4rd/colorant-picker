@@ -126,7 +126,7 @@
 }
 
 .animate-bounce-subtle {
-  animation: bounce-subtle 0.3s ease-out;
+  animation: bounce-subtle 0.2s ease-out;
 }
 
 /* フェードイン + 上昇アニメーション（段階的表示用） */
@@ -142,7 +142,7 @@
 }
 
 .animate-fade-in-up {
-  animation: fade-in-up 0.3s ease-out forwards;
+  animation: fade-in-up 0.2s ease-out forwards;
 }
 
 /* パルスリングアニメーション（選択状態） */
@@ -271,7 +271,7 @@
 }
 
 .animate-slide-in-right {
-  animation: slide-in-right 0.3s ease-out forwards;
+  animation: slide-in-right 0.2s ease-out forwards;
 }
 
 /* ===== Reduced Motion Support ===== */

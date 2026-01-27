@@ -67,7 +67,7 @@ const patternTags = $derived(patternTagsRaw ? patternTagsRaw.split(',') : []);
 <style>
   /* 段階的フェードイン */
   .pattern-card {
-    animation: card-appear 0.4s ease-out forwards;
+    animation: card-appear 0.2s ease-out forwards;
     animation-delay: var(--delay, 0ms);
     opacity: 0;
   }

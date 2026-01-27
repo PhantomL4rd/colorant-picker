@@ -59,7 +59,7 @@ function handleClick() {
 <style>
   /* タップ時のパルスエフェクト */
   .tap-pulse {
-    animation: color-pulse 0.3s ease-out;
+    animation: color-pulse 0.2s ease-out;
   }
 
   @keyframes color-pulse {

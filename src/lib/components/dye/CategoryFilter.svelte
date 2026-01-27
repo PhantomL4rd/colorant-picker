@@ -88,9 +88,5 @@ function handleCustomColorsClick() {
       {/if}
     </div>
 
-    <!-- 右端フェード効果（スクロールヒント）- モバイルのみ -->
-    <div
-      class="absolute right-0 top-0 bottom-2 w-8 bg-gradient-to-l from-muted to-transparent pointer-events-none md:hidden"
-    ></div>
   </div>
 </div>
