@@ -1,6 +1,6 @@
 <script lang="ts">
 import '../app.css';
-import { CircleHelp, SwatchBook, TriangleAlert } from '@lucide/svelte';
+import { CircleHelp, Info, SwatchBook } from '@lucide/svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
@@ -35,15 +35,17 @@ function closeCoachMark() {
 <Tooltip.Provider delayDuration={200}>
 
 <div class="min-h-dvh bg-background">
-  <!-- 移転告知バナー（不要になったらこのブロックごと削除） -->
-  <div class="bg-yellow-100 border-b border-yellow-200 dark:bg-yellow-100 dark:border-yellow-200">
+  <!-- ミラプリインサイト告知バナー -->
+  <div class="bg-sky-50 border-b border-sky-200 dark:bg-sky-950 dark:border-sky-800">
     <div class="mx-auto max-w-4xl px-4 py-2">
       <a
-        href="https://colorant-picker.pl4rd.com"
-        class="flex items-center justify-center gap-2 text-sm text-yellow-800 hover:underline"
+        href="https://mirapri-insight.pl4rd.com/"
+        target="_blank"
+        rel="noopener noreferrer"
+        class="flex items-center justify-center gap-2 text-sm text-sky-700 dark:text-sky-300 hover:underline"
       >
-        <TriangleAlert class="size-4" />
-        <span><span class="font-bold">https://colorant-picker.pl4rd.com</span> へ移転しました（ブックマークを更新してください）</span>
+        <Info class="size-4 shrink-0" />
+        <span>{$t('common.banner.mirapriInsight')}</span>
       </a>
     </div>
   </div>
