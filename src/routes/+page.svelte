@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Blend, Eye, Loader2, PaintBucket } from '@lucide/svelte';
-import { onMount } from 'svelte';
+import { onMount, tick } from 'svelte';
 import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
 import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
 import CombinationPreview from '$lib/components/share/CombinationPreview.svelte';
@@ -57,9 +57,10 @@ onMount(async () => {
     await loadDyes();
 
     const dyes = $dyeStore;
+    let restored = false;
     if (dyes.length > 0) {
       // URL復元処理
-      restorePaletteFromUrl(dyes);
+      restored = restorePaletteFromUrl(dyes);
 
       // パターンサンプル用の代表色を選択（赤系の「Dalamud Red」など鮮やかな色）
       const representativeDye =
@@ -80,6 +81,15 @@ onMount(async () => {
     }
 
     isLoading = false;
+
+    // URL復元時: isLoading=false後にDOMが描画されるのを待ってスクロール
+    if (restored) {
+      await tick();
+      setTimeout(() => {
+        // 選ばれたパターンカードをカルーセル内で中央に表示
+        patternSelectorComponent?.scrollToPattern($selectionStore.pattern);
+      }, SCROLL_TIMING.SCROLL_DELAY);
+    }
   } catch (error) {
     console.error('カララントデータの読み込みに失敗しました:', error);
     isLoading = false;

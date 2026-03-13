@@ -24,6 +24,7 @@ import {
   toHsv,
   toOklab,
 } from '$lib/utils/color/colorConversion';
+import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 import { ID_LIMITS, RGB_BOUNDS, SHARE_LIMITS } from '$lib/constants/validation';
 
 const BASE_URL_FOR_SHARE = 'https://colorant-picker.pl4rd.com/share';
@@ -288,37 +289,74 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
 
     // 通常のパレットを確認
     const data = decodePaletteFromUrl(window.location.href);
-    if (!data) {
-      return false;
-    }
+    if (data) {
+      // 染料IDから実際のDyeオブジェクトを検索
+      const primaryDye = dyes.find((dye) => dye.id === data.p);
+      const secondaryDye1 = dyes.find((dye) => dye.id === data.s[0]);
+      const secondaryDye2 = dyes.find((dye) => dye.id === data.s[1]);
 
-    // 染料IDから実際のDyeオブジェクトを検索
-    const primaryDye = dyes.find((dye) => dye.id === data.p);
-    const secondaryDye1 = dyes.find((dye) => dye.id === data.s[0]);
-    const secondaryDye2 = dyes.find((dye) => dye.id === data.s[1]);
+      if (!primaryDye || !secondaryDye1 || !secondaryDye2) {
+        console.warn('Some dyes not found:', {
+          primary: data.p,
+          secondary: data.s,
+          found: { primaryDye, secondaryDye1, secondaryDye2 },
+        });
+        return false;
+      }
 
-    if (!primaryDye || !secondaryDye1 || !secondaryDye2) {
-      console.warn('Some dyes not found:', {
-        primary: data.p,
-        secondary: data.s,
-        found: { primaryDye, secondaryDye1, secondaryDye2 },
+      // イベントを発火してパレットを復元
+      emitRestorePalette({
+        primaryDye,
+        suggestedDyes: [secondaryDye1, secondaryDye2],
+        pattern: data.pt,
       });
-      return false;
+
+      // URLパラメータをクリーンアップ
+      const url = new URL(window.location.href);
+      url.searchParams.delete('palette');
+      window.history.replaceState({}, '', url.toString());
+
+      return true;
     }
 
-    // イベントを発火してパレットを復元
-    emitRestorePalette({
-      primaryDye,
-      suggestedDyes: [secondaryDye1, secondaryDye2],
-      pattern: data.pt,
-    });
+    // 外部アプリ連携: ?dye=dye_002 パラメータ
+    const dyeParam = new URL(window.location.href).searchParams.get('dye');
+    if (dyeParam) {
+      if (dyeParam.length > ID_LIMITS.MAX_DYE_ID_LENGTH) return false;
 
-    // URLパラメータをクリーンアップ
-    const url = new URL(window.location.href);
-    url.searchParams.delete('palette');
-    window.history.replaceState({}, '', url.toString());
+      const targetDye = dyes.find((d) => d.id === dyeParam);
+      if (!targetDye) {
+        console.warn('Dye not found for param:', dyeParam);
+        return false;
+      }
 
-    return true;
+      const patterns: HarmonyPattern[] = [
+        'triadic',
+        'split-complementary',
+        'analogous',
+        'monochromatic',
+        'similar',
+        'contrast',
+        'clash',
+      ];
+      const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+      const suggested = generateSuggestedDyes(targetDye, randomPattern, dyes);
+
+      emitRestorePalette({
+        primaryDye: targetDye,
+        suggestedDyes: suggested,
+        pattern: randomPattern,
+      });
+
+      // URLパラメータをクリーンアップ
+      const url = new URL(window.location.href);
+      url.searchParams.delete('dye');
+      window.history.replaceState({}, '', url.toString());
+
+      return true;
+    }
+
+    return false;
   } catch (error) {
     console.error('Failed to restore palette from URL:', error);
     return false;
