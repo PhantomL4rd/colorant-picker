@@ -247,9 +247,7 @@ $effect(() => {
     padding: 1rem;
     max-width: 320px;
     width: calc(100vw - 2rem);
-    box-shadow:
-      0 10px 25px -5px rgba(0, 0, 0, 0.25),
-      0 8px 10px -6px rgba(0, 0, 0, 0.1);
+    @apply shadow-xl;
 
     /* デスクトップ: 画面中央上部 */
     left: 50%;
