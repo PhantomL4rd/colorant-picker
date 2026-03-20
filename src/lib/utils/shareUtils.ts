@@ -5,6 +5,7 @@
  */
 
 import LZString from 'lz-string';
+import { Palette } from '$lib/models/Palette';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
 import type {
   CustomColorShare,
@@ -64,8 +65,14 @@ interface SharePaletteData {
 
 /**
  * お気に入りからシェア用URLを生成（カスタムカラー対応）
+ * suggestedDyesはPaletteで役割順（サブ→アクセント）にソートしてからエンコードする。
+ * これによりWorker側でソート不要になる。
  */
 export function generateShareUrl(favorite: Favorite): string {
+  // Paletteで役割順にソート
+  const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+  const sortedSuggested = [palette.sub.dye, palette.accent.dye];
+
   // カスタムカラーか通常のカララントか判定
   const isCustom = favorite.primaryDye.tags?.includes('custom');
 
@@ -79,7 +86,7 @@ export function generateShareUrl(favorite: Favorite): string {
 
     const extendedData: ExtendedSharePaletteData = {
       p: customColorShare,
-      s: [favorite.suggestedDyes[0].id, favorite.suggestedDyes[1].id],
+      s: [sortedSuggested[0].id, sortedSuggested[1].id],
       pt: favorite.pattern,
     };
 
@@ -95,7 +102,7 @@ export function generateShareUrl(favorite: Favorite): string {
     // 通常のカララントの場合は既存の形式
     const data: SharePaletteData = {
       p: favorite.primaryDye.id,
-      s: [favorite.suggestedDyes[0].id, favorite.suggestedDyes[1].id],
+      s: [sortedSuggested[0].id, sortedSuggested[1].id],
       pt: favorite.pattern,
     };
 

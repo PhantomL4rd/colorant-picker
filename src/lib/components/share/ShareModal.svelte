@@ -1,5 +1,5 @@
 <script lang="ts">
-import { Check, Copy, Loader2, X } from '@lucide/svelte';
+import { Check, Copy, Loader2 } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { FEEDBACK_DURATION } from '$lib/constants/timing';
 import { t } from '$lib/translations';
@@ -30,10 +30,15 @@ function getDyeName(dye: { id: string; name: string }): string {
   return $t(`dye.names.${dye.id}`) || dye.name;
 }
 
+// Paletteを使って役割順（メイン/サブ/アクセント）でアクセス
+const palette = $derived.by(() => {
+  if (!favorite) return null;
+  return new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+});
+
 // シェアテキストを翻訳テンプレートから生成
 const shareText = $derived.by(() => {
-  if (!favorite || !shareUrl) return '';
-  const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+  if (!favorite || !shareUrl || !palette) return '';
   const patternName = $t(`pattern.${favorite.pattern}.name`);
 
   // テンプレートから置換（翻訳された染料名を使用）
@@ -44,12 +49,6 @@ const shareText = $derived.by(() => {
     .replace('{pattern}', patternName)
     .replace('{url}', shareUrl);
 });
-
-// 個別のderived変数でアクセス（関数構文なし）
-const primaryDye = $derived(favorite?.primaryDye || null);
-const suggestedDyes = $derived(favorite?.suggestedDyes || []);
-const suggestedDye1 = $derived(suggestedDyes[0] || null);
-const suggestedDye2 = $derived(suggestedDyes[1] || null);
 
 // コピー機能
 async function handleCopy() {
@@ -85,46 +84,23 @@ async function handleCopy() {
       <Dialog.Title>{$t('page.share.title')}</Dialog.Title>
     </Dialog.Header>
 
-    <!-- パレットプレビュー -->
-    <div class="mb-6">
-      <div class="grid grid-cols-3 gap-4">
-        <!-- 主色 -->
-        {#if primaryDye}
-          <div class="text-center min-w-0">
-            <div
-              class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
-              style="background-color: {primaryDye.hex};"
-              title={getDyeName(primaryDye)}
-            ></div>
-            <div class="text-xs mt-1 text-balance truncate">{getDyeName(primaryDye)}</div>
-          </div>
-        {/if}
-
-        <!-- 提案色1 -->
-        {#if suggestedDye1}
-          <div class="text-center min-w-0">
-            <div
-              class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
-              style="background-color: {suggestedDye1.hex};"
-              title={getDyeName(suggestedDye1)}
-            ></div>
-            <div class="text-xs mt-1 text-balance truncate">{getDyeName(suggestedDye1)}</div>
-          </div>
-        {/if}
-
-        <!-- 提案色2 -->
-        {#if suggestedDye2}
-          <div class="text-center min-w-0">
-            <div
-              class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
-              style="background-color: {suggestedDye2.hex};"
-              title={getDyeName(suggestedDye2)}
-            ></div>
-            <div class="text-xs mt-1 text-balance truncate">{getDyeName(suggestedDye2)}</div>
-          </div>
-        {/if}
+    <!-- パレットプレビュー（役割順: メイン → サブ → アクセント） -->
+    {#if palette}
+      <div class="mb-6">
+        <div class="grid grid-cols-3 gap-4">
+          {#each palette.ratio as { dye }}
+            <div class="text-center min-w-0">
+              <div
+                class="w-full h-16 md:h-18 rounded-lg border-2 border-border"
+                style="background-color: {dye.hex};"
+                title={getDyeName(dye)}
+              ></div>
+              <div class="text-xs mt-1 text-balance truncate">{getDyeName(dye)}</div>
+            </div>
+          {/each}
+        </div>
       </div>
-    </div>
+    {/if}
 
     <!-- シェア用テキスト -->
     <div class="mb-6 space-y-2 min-w-0">
