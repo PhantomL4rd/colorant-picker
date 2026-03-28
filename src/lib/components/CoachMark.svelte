@@ -234,6 +234,8 @@ $effect(() => {
 {/if}
 
 <style>
+  @reference "tailwindcss";
+
   .coach-overlay {
     position: fixed;
     inset: 0;
