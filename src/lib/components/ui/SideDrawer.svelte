@@ -1,5 +1,14 @@
 <script lang="ts">
-import { Heart, Layers, Menu, MessageCircle, Sparkles, TrendingUp, X } from '@lucide/svelte';
+import {
+  Heart,
+  LayoutGrid,
+  Layers,
+  Menu,
+  MessageCircle,
+  Sparkles,
+  TrendingUp,
+  X,
+} from '@lucide/svelte';
 import { resolve } from '$app/paths';
 import { page } from '$app/state';
 import { t } from '$lib/translations';
@@ -126,6 +135,18 @@ function handleBackdropClick() {
     >
       <TrendingUp class="size-5" />
       {$t('common.externalLinks.mirapriInsight')}
+    </a>
+
+    <!-- 4seasons -->
+    <a
+      href="https://4seasons.pl4rd.com/"
+      target="_blank"
+      rel="noopener noreferrer"
+      onclick={close}
+      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm hover:bg-accent transition-colors"
+    >
+      <LayoutGrid class="size-5" />
+      {$t('common.externalLinks.fourSeasons')}
     </a>
 
     <!-- 要望・感想 -->
