@@ -1,6 +1,6 @@
 <script lang="ts">
 import '../app.css';
-import { CircleHelp, Info, SwatchBook } from '@lucide/svelte';
+import { CircleQuestionMark, Info, SwatchBook } from '@lucide/svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
@@ -73,7 +73,7 @@ function closeCoachMark() {
           aria-label={$t('common.aria.help')}
           class="text-primary-foreground hover:bg-primary-foreground/10"
         >
-          <CircleHelp class="size-6" />
+          <CircleQuestionMark class="size-6" />
         </Button>
 
         <!-- メニュー（サイドドロワー） -->
