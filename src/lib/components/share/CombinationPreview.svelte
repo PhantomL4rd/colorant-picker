@@ -173,7 +173,7 @@ function textColor(dye: DyeProps): string {
             <Tooltip.Root>
               <Tooltip.Trigger>
                 {#snippet child({ props })}
-                  <Button {...props} variant="ghost" size="sm" class="gap-1 text-blue-500 hover:text-blue-600">
+                  <Button {...props} variant="ghost" size="sm" class="gap-1 text-tip hover:text-tip/80">
                     <Info class="size-3" />
                     <span class="text-xs">{$t('page.home.ratioTip.title')}</span>
                   </Button>

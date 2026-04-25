@@ -131,7 +131,7 @@ async function handleCopy() {
         onclick={handleCopy}
         disabled={iscopying || !shareText}
         variant={copySuccess ? 'default' : 'default'}
-        class={copySuccess ? 'bg-green-500 hover:bg-green-600' : ''}
+        class={copySuccess ? 'bg-liked hover:bg-liked/90' : ''}
       >
         {#if copySuccess}
           <Check class="size-4 mr-2" />

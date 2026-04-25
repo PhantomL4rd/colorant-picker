@@ -142,7 +142,7 @@ function cancelDelete() {
               <Button
                 variant="ghost"
                 size="icon"
-                class="size-8 text-red-500"
+                class="size-8 text-heart"
                 disabled
                 aria-label={$t('common.action.like')}
               >
@@ -152,7 +152,7 @@ function cancelDelete() {
               <Button
                 variant="ghost"
                 size="icon"
-                class="size-8 text-green-500"
+                class="size-8 text-liked"
                 disabled
                 aria-label={$t('common.action.alreadyLiked')}
               >

@@ -45,7 +45,7 @@ const patternTags = $derived(patternTagsRaw ? patternTagsRaw.split(',') : []);
   <div class="flex items-center gap-1">
     <span class="text-sm font-medium">{patternName}</span>
     {#if visual.isPopular}
-      <Star class="size-3 text-yellow-500 fill-yellow-500" />
+      <Star class="size-3 text-popular fill-popular" />
     {/if}
   </div>
 

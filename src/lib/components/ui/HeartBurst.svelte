@@ -33,7 +33,7 @@ export function trigger() {
 
 {#each burstHearts as heart (heart.id)}
   <span
-    class="absolute left-1/2 top-1/2 text-red-500 text-sm animate-heart-burst"
+    class="absolute left-1/2 top-1/2 text-heart text-sm animate-heart-burst"
     style="--burst-x: {heart.x}px; --burst-y: {heart.y}px;"
     aria-hidden="true"
   >♥</span>

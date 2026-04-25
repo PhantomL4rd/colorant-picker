@@ -36,13 +36,13 @@ function closeCoachMark() {
 
 <div class="min-h-dvh bg-background">
   <!-- ミラプリインサイト告知バナー -->
-  <div class="bg-sky-50 border-b border-sky-200 dark:bg-sky-950 dark:border-sky-800">
+  <div class="bg-banner/10 border-b border-banner/30">
     <div class="mx-auto max-w-4xl px-4 py-2">
       <a
         href="https://mirapri-insight.pl4rd.com/"
         target="_blank"
         rel="noopener noreferrer"
-        class="flex items-center justify-center gap-2 text-sm text-sky-700 dark:text-sky-300 hover:underline"
+        class="flex items-center justify-center gap-2 text-sm text-banner hover:underline"
       >
         <Info class="size-4 shrink-0" />
         <span>{$t('common.banner.mirapriInsight')}</span>

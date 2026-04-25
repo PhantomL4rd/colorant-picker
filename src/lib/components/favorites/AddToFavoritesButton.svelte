@@ -113,7 +113,7 @@ function showToast() {
     <Button
       variant="ghost"
       size="sm"
-      class="text-red-500 cursor-default"
+      class="text-heart cursor-default"
       disabled
       aria-label={$t('common.action.like')}
     >
@@ -124,7 +124,7 @@ function showToast() {
     <Button
       variant="ghost"
       size="sm"
-      class="text-green-500 cursor-default"
+      class="text-liked cursor-default"
       disabled
       aria-label={$t('common.action.alreadyLiked')}
     >
@@ -167,7 +167,7 @@ function showToast() {
     class:transition-opacity={toastFading}
     class:duration-300={toastFading}
   >
-    <div class="flex items-center gap-2 rounded-lg border border-green-200 bg-green-50 px-4 py-3 text-green-800 shadow-lg dark:border-green-800 dark:bg-green-950 dark:text-green-200">
+    <div class="flex items-center gap-2 rounded-lg border border-liked/30 bg-liked/10 px-4 py-3 text-liked shadow-lg">
       <Heart class="size-5 fill-current" />
       <span>{$t('common.action.liked')}</span>
     </div>
