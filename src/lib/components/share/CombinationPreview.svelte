@@ -170,7 +170,7 @@ function textColor(dye: DyeProps): string {
         <!-- 黄金比の説明ツールチップ -->
         {#if showRatio && palette}
           <div class="flex justify-center relative z-10">
-            <Tooltip.Root>
+            <Tooltip.Root disableCloseOnTriggerClick>
               <Tooltip.Trigger>
                 {#snippet child({ props })}
                   <Button {...props} variant="ghost" size="sm" class="gap-1 text-tip hover:text-tip/80">
