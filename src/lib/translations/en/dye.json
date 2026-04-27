@@ -9,6 +9,12 @@
     "purple": "Purple",
     "rare": "Special"
   },
+  "source": {
+    "normal": { "label": "Standard", "full": "Standard Spectrum Dye" },
+    "additional1": { "label": "Wide #1", "full": "Wide Spectrum #1 Dye" },
+    "additional2": { "label": "Wide #2", "full": "Wide Spectrum #2 Dye" },
+    "paid": { "label": "Individual", "full": "Individual dye not bundled into the 3 consolidated colorants" }
+  },
   "names": {
     "dye_002": "Snow White",
     "dye_003": "Ash Grey",

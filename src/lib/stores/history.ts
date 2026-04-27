@@ -142,7 +142,7 @@ export function restoreFromHistory(entry: HistoryEntry): void {
     if (entry.primaryDye.tags?.includes('custom')) {
       primaryDye = {
         ...entry.primaryDye,
-        source: 'custom',
+        origin: 'custom',
       } as ExtendedDye;
     } else {
       primaryDye = entry.primaryDye;

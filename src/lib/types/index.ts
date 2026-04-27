@@ -13,6 +13,7 @@ export interface DyeProps {
   hex: string;
   oklab: Oklab; // culori Oklab (mode: 'oklab')
   tags?: DyeTag[];
+  source?: DyeSource;
   lodestone?: string;
 }
 
@@ -45,6 +46,13 @@ export interface DyeWithRole {
 // - vivid: ビビッド系染料
 // - custom: ユーザー定義カスタムカラー
 export type DyeTag = 'metallic' | 'vivid' | 'custom';
+
+// カララント入手元（FF14のカララント統合仕様）
+// - normal: ノーマルカラー（基本染料）
+// - additional1: アディショナルカラー1
+// - additional2: アディショナルカラー2
+// - paid: 課金（オンラインストア販売・統合対象外）
+export type DyeSource = 'normal' | 'additional1' | 'additional2' | 'paid';
 
 // カララントカテゴリ（内部キー・英語）
 export type DyeCategory =
@@ -100,6 +108,7 @@ export interface RawDyeData {
   category: DyeCategory;
   rgb: RGBColor255; // JSONは0-255範囲
   tags?: DyeTag[];
+  source?: DyeSource;
   lodestone?: string;
 }
 
@@ -139,6 +148,7 @@ export interface StoredDye {
   category: DyeCategory;
   rgb: RGBColor255; // LocalStorage保存は0-255範囲
   tags?: DyeTag[];
+  source?: DyeSource;
 }
 
 export interface StoredCustomColor {
@@ -179,10 +189,12 @@ export interface CustomColor {
 }
 
 // 拡張されたDye（カスタムカラー対応）
-export type DyeSource = 'game' | 'custom';
+// - game: 既存のゲーム染料データ
+// - custom: ユーザー定義カスタムカラー
+export type DyeOrigin = 'game' | 'custom';
 
 export interface ExtendedDye extends DyeProps {
-  source: DyeSource;
+  origin: DyeOrigin;
   customColor?: CustomColor;
 }
 

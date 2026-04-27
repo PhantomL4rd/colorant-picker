@@ -30,7 +30,7 @@ export function customColorToDye(customColor: CustomColor): DyeProps {
 export function createCustomDye(customColor: CustomColor): ExtendedDye {
   return {
     ...customColorToDye(customColor),
-    source: 'custom',
+    origin: 'custom',
     customColor,
   };
 }
@@ -109,8 +109,8 @@ export function formatRgbDisplay(rgb: RGBColor255): string {
  */
 export function isCustomDye(
   dye: DyeProps | ExtendedDye
-): dye is ExtendedDye & { source: 'custom' } {
-  return (dye as ExtendedDye).source === 'custom';
+): dye is ExtendedDye & { origin: 'custom' } {
+  return (dye as ExtendedDye).origin === 'custom';
 }
 
 /**

@@ -1,6 +1,7 @@
 import type {
   DyeCategory,
   DyeProps,
+  DyeSource,
   DyeTag,
   Hsv,
   Oklab,
@@ -23,6 +24,7 @@ export class Dye implements DyeProps {
   readonly category: DyeCategory;
   readonly rgb: Rgb; // culori Rgb (0-1範囲)
   readonly tags?: DyeTag[];
+  readonly source?: DyeSource;
   readonly lodestone?: string;
 
   constructor(data: RawDyeData) {
@@ -37,6 +39,7 @@ export class Dye implements DyeProps {
       b: data.rgb.b / 255,
     };
     this.tags = data.tags;
+    this.source = data.source;
     this.lodestone = data.lodestone;
   }
 
@@ -77,6 +80,7 @@ export class Dye implements DyeProps {
       category: this.category,
       rgb: this.rgb255, // 0-255範囲で保存
       tags: this.tags,
+      source: this.source,
     };
   }
 }

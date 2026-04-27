@@ -111,7 +111,7 @@ export function restoreFavorite(favorite: Favorite): void {
     if (favorite.primaryDye.tags?.includes('custom')) {
       primaryDye = {
         ...favorite.primaryDye,
-        source: 'custom',
+        origin: 'custom',
       } as ExtendedDye;
     } else {
       primaryDye = favorite.primaryDye;

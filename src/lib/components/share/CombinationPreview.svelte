@@ -1,13 +1,13 @@
 <script lang="ts">
-import { BookOpenText, Info } from '@lucide/svelte';
+import { Info } from '@lucide/svelte';
 import { Palette } from '$lib/models/Palette';
 import { selectPrimaryDye } from '$lib/stores/selection';
-import { t, locale, type Locale } from '$lib/translations';
-import { getLodestoneUrl } from '$lib/utils/i18n';
+import { t } from '$lib/translations';
 import type { DyeProps, HarmonyPattern, ColorRole } from '$lib/types';
 import * as Card from '$lib/components/ui/card';
 import { Button } from '$lib/components/ui/button';
 import * as Tooltip from '$lib/components/ui/tooltip';
+import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
 
 interface Props {
   selectedDye: DyeProps | null;
@@ -18,8 +18,6 @@ interface Props {
 
 const { selectedDye, suggestedDyes, pattern, showRatio = true }: Props = $props();
 
-const currentLocale = $derived($locale as Locale);
-
 // 染料名を翻訳
 function getDyeName(dye: DyeProps): string {
   return $t(`dye.names.${dye.id}`) || dye.name;
@@ -28,12 +26,6 @@ function getDyeName(dye: DyeProps): string {
 // 役割名を翻訳
 function getRoleName(role: ColorRole): string {
   return $t(`common.role.${role}`);
-}
-
-// Lodestone URLをローカライズ
-function getDyeLodestoneUrl(dye: DyeProps): string | undefined {
-  if (!dye.lodestone) return undefined;
-  return getLodestoneUrl(dye.lodestone, currentLocale);
 }
 
 // 3色が揃っている場合のみパレットを生成
@@ -73,20 +65,9 @@ function textColor(dye: DyeProps): string {
                 </div>
               {/if}
             </div>
-            <h4 class="font-medium text-xs text-balance">
-              {#if getDyeLodestoneUrl(selectedDye)}
-                <a
-                  href={getDyeLodestoneUrl(selectedDye)}
-                  class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  <BookOpenText class="size-3 flex-shrink-0" />
-                  <span>{getDyeName(selectedDye)}</span>
-                </a>
-              {:else}
-                {getDyeName(selectedDye)}
-              {/if}
+            <h4 class="font-medium text-xs text-balance inline-flex items-center justify-center gap-1 flex-wrap">
+              <span>{getDyeName(selectedDye)}</span>
+              <DyeSourceBadge source={selectedDye.source} />
             </h4>
           </div>
 
@@ -111,20 +92,9 @@ function textColor(dye: DyeProps): string {
                   </div>
                 {/if}
               </button>
-              <h4 class="font-medium text-xs text-balance">
-                {#if getDyeLodestoneUrl(palette.sub.dye)}
-                  <a
-                    href={getDyeLodestoneUrl(palette.sub.dye)}
-                    class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <BookOpenText class="size-3 flex-shrink-0" />
-                    <span>{getDyeName(palette.sub.dye)}</span>
-                  </a>
-                {:else}
-                  {getDyeName(palette.sub.dye)}
-                {/if}
+              <h4 class="font-medium text-xs text-balance inline-flex items-center justify-center gap-1 flex-wrap">
+                <span>{getDyeName(palette.sub.dye)}</span>
+                <DyeSourceBadge source={palette.sub.dye.source} />
               </h4>
             </div>
 
@@ -148,20 +118,9 @@ function textColor(dye: DyeProps): string {
                   </div>
                 {/if}
               </button>
-              <h4 class="font-medium text-xs text-balance">
-                {#if getDyeLodestoneUrl(palette.accent.dye)}
-                  <a
-                    href={getDyeLodestoneUrl(palette.accent.dye)}
-                    class="hover:text-primary transition-colors inline-flex items-center justify-center gap-1"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    <BookOpenText class="size-3 flex-shrink-0" />
-                    <span>{getDyeName(palette.accent.dye)}</span>
-                  </a>
-                {:else}
-                  {getDyeName(palette.accent.dye)}
-                {/if}
+              <h4 class="font-medium text-xs text-balance inline-flex items-center justify-center gap-1 flex-wrap">
+                <span>{getDyeName(palette.accent.dye)}</span>
+                <DyeSourceBadge source={palette.accent.dye.source} />
               </h4>
             </div>
           {/if}

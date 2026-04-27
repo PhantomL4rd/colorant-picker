@@ -266,7 +266,7 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
           hex: rgbToHex(rgb),
           oklab: toOklab(rgb) as Oklab,
           tags: ['custom'],
-          source: 'custom',
+          origin: 'custom',
         };
 
         // 提案色を取得
