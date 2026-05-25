@@ -1,8 +1,9 @@
 <script lang="ts">
 import {
   Heart,
-  LayoutGrid,
+  Info,
   Layers,
+  LayoutGrid,
   Menu,
   MessageCircle,
   Sparkles,
@@ -19,12 +20,14 @@ const currentPath = $derived(page.url.pathname);
 const showcasePath = resolve('/showcase');
 const favoritesPath = resolve('/favorites');
 const kasanePath = resolve('/kasane');
+const aboutPath = resolve('/about');
 
 const isShowcase = $derived(currentPath === showcasePath);
 const isFavorites = $derived(
   currentPath === favoritesPath || currentPath.startsWith(`${favoritesPath}/`)
 );
 const isKasane = $derived(currentPath === kasanePath);
+const isAbout = $derived(currentPath === aboutPath);
 
 function open() {
   isOpen = true;
@@ -121,6 +124,16 @@ function handleBackdropClick() {
     >
       <Layers class="size-5" />
       {$t('common.nav.kasane')}
+    </a>
+
+    <!-- このサイトについて -->
+    <a
+      href={aboutPath}
+      onclick={close}
+      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isAbout ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}"
+    >
+      <Info class="size-5" />
+      {$t('common.nav.about')}
     </a>
 
     <p class="px-3 py-2 text-xs text-muted-foreground mt-2 border-t border-border pt-2">{$t('common.nav.links')}</p>

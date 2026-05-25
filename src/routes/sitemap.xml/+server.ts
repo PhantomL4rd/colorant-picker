@@ -5,6 +5,7 @@ const pages = [
   { path: '/kasane', priority: 0.9, changefreq: 'weekly' },
   { path: '/favorites', priority: 0.7, changefreq: 'monthly' },
   { path: '/showcase', priority: 0.8, changefreq: 'daily' },
+  { path: '/about', priority: 0.6, changefreq: 'monthly' },
 ];
 
 export const prerender = true;

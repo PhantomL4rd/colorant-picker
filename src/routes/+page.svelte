@@ -177,27 +177,15 @@ function handleClearAll() {
   <link rel="canonical" href="https://colorant-picker.pl4rd.com/" />
   {@html `<script type="application/ld+json">${JSON.stringify({
     '@context': 'https://schema.org',
-    '@graph': [
-      {
-        '@type': 'WebApplication',
-        '@id': 'https://colorant-picker.pl4rd.com/#app',
-        name: 'カララントピッカー',
-        url: 'https://colorant-picker.pl4rd.com/',
-        description: $t('page.home.about.p1'),
-        applicationCategory: 'LifestyleApplication',
-        operatingSystem: 'Any',
-        offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
-        inLanguage: ['ja', 'en'],
-      },
-      {
-        '@type': 'FAQPage',
-        mainEntity: [1, 2, 3, 4, 5].map((i) => ({
-          '@type': 'Question',
-          name: $t(`page.home.faq.q${i}`),
-          acceptedAnswer: { '@type': 'Answer', text: $t(`page.home.faq.a${i}`) },
-        })),
-      },
-    ],
+    '@type': 'WebApplication',
+    '@id': 'https://colorant-picker.pl4rd.com/#app',
+    name: 'カララントピッカー',
+    url: 'https://colorant-picker.pl4rd.com/',
+    description: $t('page.home.about.p1'),
+    applicationCategory: 'LifestyleApplication',
+    operatingSystem: 'Any',
+    offers: { '@type': 'Offer', price: '0', priceCurrency: 'JPY' },
+    inLanguage: ['ja', 'en'],
   })}</script>`}
 </svelte:head>
 
@@ -349,35 +337,5 @@ function handleClearAll() {
       </Card.Root>
     </div>
 
-    <!-- SEO/説明セクション（手触り維持のためページ最下部に配置） -->
-    <section class="mt-16 space-y-10 text-sm leading-relaxed text-foreground">
-      <div>
-        <h2 class="mb-3 text-xl font-bold">{$t('page.home.about.title')}</h2>
-        <p class="mb-3 text-muted-foreground text-pretty">{$t('page.home.about.p1')}</p>
-        <p class="text-muted-foreground text-pretty">{$t('page.home.about.p2')}</p>
-      </div>
-
-      <div>
-        <h2 class="mb-3 text-xl font-bold">{$t('page.home.usage.title')}</h2>
-        <ol class="list-inside list-decimal space-y-2 text-muted-foreground">
-          <li>{$t('page.home.usage.step1')}</li>
-          <li>{$t('page.home.usage.step2')}</li>
-          <li>{$t('page.home.usage.step3')}</li>
-          <li>{$t('page.home.usage.step4')}</li>
-        </ol>
-      </div>
-
-      <div>
-        <h2 class="mb-3 text-xl font-bold">{$t('page.home.faq.title')}</h2>
-        <div class="space-y-2">
-          {#each [1, 2, 3, 4, 5] as i (i)}
-            <details class="rounded-lg border border-border bg-card p-4">
-              <summary class="cursor-pointer font-semibold">{$t(`page.home.faq.q${i}`)}</summary>
-              <p class="mt-2 text-muted-foreground">{$t(`page.home.faq.a${i}`)}</p>
-            </details>
-          {/each}
-        </div>
-      </div>
-    </section>
   </div>
 {/if}
