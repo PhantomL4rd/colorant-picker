@@ -1,7 +1,6 @@
 <script lang="ts">
 import { ChevronDown, Loader2, PaintBucket } from '@lucide/svelte';
 import { onMount } from 'svelte';
-import CustomColorManager from '$lib/components/custom/CustomColorManager.svelte';
 import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
 import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
 import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
@@ -26,7 +25,6 @@ import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
 
 let isLoading = $state(true);
-let showCustomColors = $state(false);
 let dyesPanelOpen = $state(false);
 
 // PaletteHero に戻すスクロール先
@@ -94,12 +92,10 @@ function handleDyeSelect(dye: DyeProps): void {
 }
 
 function handleToggleCategory(category: string): void {
-  showCustomColors = false;
   toggleCategory(category as Parameters<typeof toggleCategory>[0]);
 }
 
 function handleClearAll(): void {
-  showCustomColors = false;
   resetFilters();
 }
 
@@ -116,11 +112,6 @@ function handleExcludeMetallicChange(): void {
   if (selectedDye) {
     selectPrimaryDye(selectedDye);
   }
-}
-
-function handleSelectCustomColors(): void {
-  showCustomColors = true;
-  resetFilters();
 }
 </script>
 
@@ -173,8 +164,6 @@ function handleSelectCustomColors(): void {
             selectedCategory={selectedCategory}
             onToggleCategory={handleToggleCategory}
             onClearCategories={handleClearAll}
-            onSelectCustomColors={handleSelectCustomColors}
-            isCustomColorsSelected={showCustomColors}
           />
         </div>
 
@@ -183,23 +172,17 @@ function handleSelectCustomColors(): void {
         </div>
 
         <div class="p-4 rounded-2xl border border-border bg-card">
-          {#if showCustomColors}
-            <div class="max-h-[600px] overflow-y-auto">
-              <CustomColorManager />
-            </div>
-          {:else}
-            <h2 class="text-lg font-semibold mb-4 flex items-center gap-1 text-balance">
-              <PaintBucket class="size-5" />
-              {$t('page.home.dyeList')}
-            </h2>
-            <div class="max-h-[600px] overflow-y-auto">
-              <DyeGrid
-                dyes={filteredDyesList}
-                {selectedDye}
-                onDyeSelect={handleDyeSelect}
-              />
-            </div>
-          {/if}
+          <h2 class="text-lg font-semibold mb-4 flex items-center gap-1 text-balance">
+            <PaintBucket class="size-5" />
+            {$t('page.home.dyeList')}
+          </h2>
+          <div class="max-h-[600px] overflow-y-auto">
+            <DyeGrid
+              dyes={filteredDyesList}
+              {selectedDye}
+              onDyeSelect={handleDyeSelect}
+            />
+          </div>
         </div>
       </Collapsible.Content>
     </Collapsible.Root>

@@ -1,9 +1,8 @@
 // パレット投稿サービス
-// お気に入り追加時にサーバーへ投稿（カスタムカラー除く）
+// お気に入り追加時にサーバーへ投稿
 
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { getOrCreateClientId } from './clientId';
-import { isCustomDye } from '../color/customColorUtils';
 
 interface SubmitPaletteInput {
   primaryDye: DyeProps;
@@ -12,27 +11,10 @@ interface SubmitPaletteInput {
 }
 
 /**
- * パレットに含まれる染料がカスタムカラーを含むかチェック
- */
-export function containsCustomColor(input: SubmitPaletteInput): boolean {
-  return (
-    isCustomDye(input.primaryDye) ||
-    isCustomDye(input.suggestedDyes[0]) ||
-    isCustomDye(input.suggestedDyes[1])
-  );
-}
-
-/**
  * パレットをサーバーに投稿
- * カスタムカラーを含む場合は投稿しない
  * 失敗してもエラーを投げず、サイレントにログを記録
  */
 export async function submitPalette(input: SubmitPaletteInput): Promise<void> {
-  // カスタムカラーを含む場合は投稿しない
-  if (containsCustomColor(input)) {
-    return;
-  }
-
   try {
     const clientId = getOrCreateClientId();
 

@@ -1,16 +1,15 @@
 import { get, writable } from 'svelte/store';
 import type { Dye } from '$lib/models/Dye';
-import type { CustomColor, DyeProps, ExtendedDye, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { PATTERN_ORDER } from '$lib/constants/patterns';
 import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
-import { createCustomDye, isCustomDye } from '$lib/utils/color/customColorUtils';
 import { dyeStore } from './dyes';
 import { filterStore } from './filter';
 import { paletteEventBus } from './paletteEvents';
 
 // 選択状態ストア
 export const selectionStore = writable<{
-  primaryDye: DyeProps | ExtendedDye | null;
+  primaryDye: DyeProps | null;
   suggestedDyes: [DyeProps, DyeProps] | null;
   pattern: HarmonyPattern;
   harmonySeed: number;
@@ -30,31 +29,14 @@ function getDyesForSuggestion(): Dye[] {
     : allDyes;
 }
 
-// 主色（ExtendedDyeを含む）をDyeProps互換に変換（色調和計算用）
-function toHarmonyDye(dye: DyeProps | ExtendedDye): DyeProps {
-  if (isCustomDye(dye)) {
-    return {
-      id: dye.id,
-      name: dye.name,
-      category: dye.category,
-      hsv: dye.hsv,
-      rgb: dye.rgb,
-      hex: dye.hex,
-      oklab: dye.oklab,
-      tags: dye.tags,
-    };
-  }
-  return dye;
-}
-
-// 基本カララント（またはカスタムカラー）を選択
-export function selectPrimaryDye(dye: DyeProps | ExtendedDye): void {
+// 基本カララントを選択
+export function selectPrimaryDye(dye: DyeProps): void {
   selectionStore.update((state) => {
     const dyesForSuggestion = getDyesForSuggestion();
     const newSeed = Date.now();
     const suggested =
       dyesForSuggestion.length > 0
-        ? generateSuggestedDyes(toHarmonyDye(dye), state.pattern, dyesForSuggestion, newSeed)
+        ? generateSuggestedDyes(dye, state.pattern, dyesForSuggestion, newSeed)
         : null;
 
     return {
@@ -77,12 +59,7 @@ export function updatePattern(pattern: HarmonyPattern): void {
       newSeed = Date.now();
       suggested =
         dyesForSuggestion.length > 0
-          ? generateSuggestedDyes(
-              toHarmonyDye(state.primaryDye),
-              pattern,
-              dyesForSuggestion,
-              newSeed
-            )
+          ? generateSuggestedDyes(state.primaryDye, pattern, dyesForSuggestion, newSeed)
           : null;
     }
 
@@ -104,12 +81,7 @@ export function regenerateSuggestions(): void {
     const newSeed = Date.now();
     const suggested =
       dyesForSuggestion.length > 0
-        ? generateSuggestedDyes(
-            toHarmonyDye(state.primaryDye),
-            state.pattern,
-            dyesForSuggestion,
-            newSeed
-          )
+        ? generateSuggestedDyes(state.primaryDye, state.pattern, dyesForSuggestion, newSeed)
         : null;
 
     return {
@@ -132,7 +104,7 @@ export function clearSelection(): void {
 
 // 主色と提案色を直接設定（シェア復元用）
 export function setPaletteDirectly(
-  primaryDye: DyeProps | ExtendedDye,
+  primaryDye: DyeProps,
   suggestedDyes: [DyeProps, DyeProps],
   pattern: HarmonyPattern
 ): void {
@@ -170,9 +142,4 @@ if (typeof window !== 'undefined') {
   paletteEventBus.on('restore-palette', (event) => {
     setPaletteDirectly(event.data.primaryDye, event.data.suggestedDyes, event.data.pattern);
   });
-}
-
-// カスタムカラーを選択（便利関数）
-export function selectCustomColor(customColor: CustomColor): void {
-  selectPrimaryDye(createCustomDye(customColor));
 }

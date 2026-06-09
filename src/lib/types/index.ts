@@ -44,8 +44,7 @@ export interface DyeWithRole {
 // カララントのタグ（内部キー・英語）
 // - metallic: メタリック染料
 // - vivid: ビビッド系染料
-// - custom: ユーザー定義カスタムカラー
-export type DyeTag = 'metallic' | 'vivid' | 'custom';
+export type DyeTag = 'metallic' | 'vivid';
 
 // カララント入手元（FF14のカララント統合仕様）
 // - normal: ノーマルカラー（基本染料）
@@ -153,14 +152,6 @@ export interface StoredDye {
   source?: DyeSource;
 }
 
-export interface StoredCustomColor {
-  id: string;
-  name: string;
-  rgb: RGBColor255; // LocalStorage保存は0-255範囲
-  createdAt: Date;
-  updatedAt: Date;
-}
-
 // 保存用パレットエントリ基底型
 export interface StoredPaletteEntry {
   id: string;
@@ -178,44 +169,6 @@ export interface StoredHistoryEntry extends StoredPaletteEntry {
 // 保存用お気に入り
 export interface StoredFavorite extends StoredPaletteEntry {
   // 追加プロパティなし
-}
-
-// カスタムカラー（内部はculori型）
-export interface CustomColor {
-  id: string;
-  name: string;
-  rgb: Rgb; // culori Rgb (0-1範囲)
-  hsv: Hsv; // culori Hsv (s,v: 0-1範囲)
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-// 拡張されたDye（カスタムカラー対応）
-// - game: 既存のゲーム染料データ
-// - custom: ユーザー定義カスタムカラー
-export type DyeOrigin = 'game' | 'custom';
-
-export interface ExtendedDye extends DyeProps {
-  origin: DyeOrigin;
-  customColor?: CustomColor;
-}
-
-// カスタムカラー対応シェアデータ（共有用は0-255範囲）
-export interface CustomColorShare {
-  type: 'custom';
-  name: string;
-  rgb: RGBColor255; // 共有URLは0-255範囲
-}
-
-export interface ExtendedSharePaletteData {
-  p: string | CustomColorShare;
-  s: [string, string];
-  pt: HarmonyPattern;
-}
-
-// カスタムカラー対応お気に入り
-export interface ExtendedFavorite extends Omit<Favorite, 'primaryDye'> {
-  primaryDye: DyeProps | CustomColor;
 }
 
 // おすすめパレット（サーバーから取得）
