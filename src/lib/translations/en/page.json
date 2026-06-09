@@ -122,7 +122,26 @@
     "delete": "Delete",
     "confirmDelete": "Confirm delete",
     "cancelDelete": "Cancel delete",
-    "noSelection": "No combination selected"
+    "noSelection": "No combination selected",
+    "action": {
+      "shuffle": "Shuffle",
+      "shuffleHint": "Press Space to shuffle",
+      "pattern": "Pattern",
+      "browseDyes": "Browse dyes"
+    },
+    "axisExplorer": {
+      "close": "Close",
+      "axis": {
+        "lightness": "Brightness",
+        "chroma": "Vividness",
+        "hue": "Hue"
+      },
+      "title": {
+        "lightness": "Same hue, different brightness",
+        "chroma": "Same brightness, different vividness",
+        "hue": "Same brightness, different hue"
+      }
+    }
   },
   "kasane": {
     "title": "Kasane-irome | Dye Harmony",

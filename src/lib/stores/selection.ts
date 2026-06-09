@@ -1,6 +1,7 @@
 import { get, writable } from 'svelte/store';
 import type { Dye } from '$lib/models/Dye';
 import type { CustomColor, DyeProps, ExtendedDye, HarmonyPattern } from '$lib/types';
+import { PATTERN_ORDER } from '$lib/constants/patterns';
 import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 import { createCustomDye, isCustomDye } from '$lib/utils/color/customColorUtils';
 import { dyeStore } from './dyes';
@@ -29,35 +30,32 @@ function getDyesForSuggestion(): Dye[] {
     : allDyes;
 }
 
+// 主色（ExtendedDyeを含む）をDyeProps互換に変換（色調和計算用）
+function toHarmonyDye(dye: DyeProps | ExtendedDye): DyeProps {
+  if (isCustomDye(dye)) {
+    return {
+      id: dye.id,
+      name: dye.name,
+      category: dye.category,
+      hsv: dye.hsv,
+      rgb: dye.rgb,
+      hex: dye.hex,
+      oklab: dye.oklab,
+      tags: dye.tags,
+    };
+  }
+  return dye;
+}
+
 // 基本カララント（またはカスタムカラー）を選択
 export function selectPrimaryDye(dye: DyeProps | ExtendedDye): void {
   selectionStore.update((state) => {
-    // 提案生成用のdyesを取得
-    // カテゴリフィルターは適用せず、メタリック除外のみ適用
     const dyesForSuggestion = getDyesForSuggestion();
-
-    // 新しいシード値を生成（毎回異なる組み合わせ）
     const newSeed = Date.now();
-    let suggested: [DyeProps, DyeProps] | null = null;
-
-    if (dyesForSuggestion.length > 0) {
-      if (isCustomDye(dye)) {
-        // カスタムカラーの場合は通常のDyePropsとして扱って提案生成
-        const dyeForHarmony: DyeProps = {
-          id: dye.id,
-          name: dye.name,
-          category: dye.category,
-          hsv: dye.hsv,
-          rgb: dye.rgb,
-          hex: dye.hex,
-          oklab: dye.oklab,
-          tags: dye.tags,
-        };
-        suggested = generateSuggestedDyes(dyeForHarmony, state.pattern, dyesForSuggestion, newSeed);
-      } else {
-        suggested = generateSuggestedDyes(dye, state.pattern, dyesForSuggestion, newSeed);
-      }
-    }
+    const suggested =
+      dyesForSuggestion.length > 0
+        ? generateSuggestedDyes(toHarmonyDye(dye), state.pattern, dyesForSuggestion, newSeed)
+        : null;
 
     return {
       ...state,
@@ -74,18 +72,17 @@ export function updatePattern(pattern: HarmonyPattern): void {
     let suggested = state.suggestedDyes;
     let newSeed = state.harmonySeed;
 
-    // 基本カララントが選択されている場合、提案を再生成
     if (state.primaryDye) {
-      // 提案生成用のdyesを取得
-      // カテゴリフィルターは適用せず、メタリック除外のみ適用
       const dyesForSuggestion = getDyesForSuggestion();
-
-      // 新しいシード値を生成（配色パターン変更時も異なる組み合わせ）
       newSeed = Date.now();
-
       suggested =
         dyesForSuggestion.length > 0
-          ? generateSuggestedDyes(state.primaryDye, pattern, dyesForSuggestion, newSeed)
+          ? generateSuggestedDyes(
+              toHarmonyDye(state.primaryDye),
+              pattern,
+              dyesForSuggestion,
+              newSeed
+            )
           : null;
     }
 
@@ -103,16 +100,16 @@ export function regenerateSuggestions(): void {
   selectionStore.update((state) => {
     if (!state.primaryDye) return state;
 
-    // 提案生成用のdyesを取得
-    // カテゴリフィルターは適用せず、メタリック除外のみ適用
     const dyesForSuggestion = getDyesForSuggestion();
-
-    // 新しいシード値を生成
     const newSeed = Date.now();
-
     const suggested =
       dyesForSuggestion.length > 0
-        ? generateSuggestedDyes(state.primaryDye, state.pattern, dyesForSuggestion, newSeed)
+        ? generateSuggestedDyes(
+            toHarmonyDye(state.primaryDye),
+            state.pattern,
+            dyesForSuggestion,
+            newSeed
+          )
         : null;
 
     return {
@@ -147,6 +144,27 @@ export function setPaletteDirectly(
   });
 }
 
+// パレット全体をシャッフル: ランダムな主色 + ランダムな配色パターンで提案を再生成
+export function shufflePalette(): void {
+  selectionStore.update((state) => {
+    const dyesForSuggestion = getDyesForSuggestion();
+    if (dyesForSuggestion.length === 0) return state;
+
+    const newPrimary = dyesForSuggestion[Math.floor(Math.random() * dyesForSuggestion.length)];
+    const newPattern = PATTERN_ORDER[Math.floor(Math.random() * PATTERN_ORDER.length)];
+    const newSeed = Date.now();
+    const newSuggested = generateSuggestedDyes(newPrimary, newPattern, dyesForSuggestion, newSeed);
+
+    return {
+      ...state,
+      primaryDye: newPrimary,
+      suggestedDyes: newSuggested,
+      pattern: newPattern,
+      harmonySeed: newSeed,
+    };
+  });
+}
+
 // パレット復元イベントをリッスン
 if (typeof window !== 'undefined') {
   paletteEventBus.on('restore-palette', (event) => {
@@ -156,6 +174,5 @@ if (typeof window !== 'undefined') {
 
 // カスタムカラーを選択（便利関数）
 export function selectCustomColor(customColor: CustomColor): void {
-  // CustomColorをExtendedDyeに変換してから選択
   selectPrimaryDye(createCustomDye(customColor));
 }

@@ -122,7 +122,26 @@
     "delete": "削除",
     "confirmDelete": "削除を確認",
     "cancelDelete": "削除をキャンセル",
-    "noSelection": "組み合わせが選択されていません"
+    "noSelection": "組み合わせが選択されていません",
+    "action": {
+      "shuffle": "シャッフル",
+      "shuffleHint": "Spaceキーでもシャッフルできます",
+      "pattern": "配色パターン",
+      "browseDyes": "カララントを直接選ぶ"
+    },
+    "axisExplorer": {
+      "close": "閉じる",
+      "axis": {
+        "lightness": "明るさ",
+        "chroma": "鮮やかさ",
+        "hue": "色味"
+      },
+      "title": {
+        "lightness": "同じ色味で明るさちがい",
+        "chroma": "同じ明るさで鮮やかさちがい",
+        "hue": "同じ明るさで色味ちがい"
+      }
+    }
   },
   "kasane": {
     "title": "かさね色目 | カララントピッカー",

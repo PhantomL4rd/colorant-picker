@@ -90,6 +90,8 @@ export type HarmonyPattern =
   | 'monochromatic'
   | 'similar'
   | 'contrast'
+  | 'tint'
+  | 'shade'
   | 'clash';
 
 // フィルター設定

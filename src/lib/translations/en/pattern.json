@@ -19,6 +19,16 @@
     "description": "Three calm, unified colors",
     "tags": "calm,chic"
   },
+  "tint": {
+    "name": "Tint",
+    "description": "Three pale colors as if mixed with white",
+    "tags": "soft,pale"
+  },
+  "shade": {
+    "name": "Shade",
+    "description": "Three deep colors as if mixed with black",
+    "tags": "deep,chic"
+  },
   "similar": {
     "name": "Natural",
     "description": "Three easily blending similar colors",

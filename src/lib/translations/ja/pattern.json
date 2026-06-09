@@ -19,6 +19,16 @@
     "description": "統一感のある落ち着いた3色",
     "tags": "落ち着き,シック"
   },
+  "tint": {
+    "name": "ティント",
+    "description": "白を混ぜたような淡い3色",
+    "tags": "やわらか,ペールトーン"
+  },
+  "shade": {
+    "name": "シェード",
+    "description": "黒を混ぜたような深みのある3色",
+    "tags": "深み,シック"
+  },
   "similar": {
     "name": "ナチュラル",
     "description": "馴染みやすい近い色味の3色",
