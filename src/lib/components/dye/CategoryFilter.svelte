@@ -7,17 +7,9 @@ interface Props {
   selectedCategory: DyeCategory | null;
   onToggleCategory: (category: DyeCategory) => void;
   onClearCategories: () => void;
-  onSelectCustomColors?: () => void;
-  isCustomColorsSelected?: boolean;
 }
 
-const {
-  selectedCategory,
-  onToggleCategory,
-  onClearCategories,
-  onSelectCustomColors,
-  isCustomColorsSelected = false,
-}: Props = $props();
+const { selectedCategory, onToggleCategory, onClearCategories }: Props = $props();
 
 const categories: DyeCategory[] = [
   'white',
@@ -38,12 +30,6 @@ function getCategoryName(category: DyeCategory): string {
 function isSelected(category: DyeCategory): boolean {
   return selectedCategory === category;
 }
-
-function handleCustomColorsClick() {
-  if (onSelectCustomColors) {
-    onSelectCustomColors();
-  }
-}
 </script>
 
 <div class="w-full">
@@ -62,20 +48,7 @@ function handleCustomColorsClick() {
         </Button>
       {/each}
 
-      <!-- カスタムカラー選択ボタン -->
-      {#if onSelectCustomColors}
-        <Button
-          variant={isCustomColorsSelected ? 'secondary' : 'outline'}
-          size="sm"
-          class="flex-shrink-0 snap-start min-h-11"
-          onclick={handleCustomColorsClick}
-          aria-label={$t('page.customColor.yourColors')}
-        >
-          {$t('page.customColor.yourColors')}
-        </Button>
-      {/if}
-
-      {#if selectedCategory || isCustomColorsSelected}
+      {#if selectedCategory}
         <Button
           variant="outline"
           size="sm"

@@ -4,8 +4,7 @@
  */
 
 import { Dye } from '$lib/models/Dye';
-import type { DyeProps, ExtendedDye, Favorite, HarmonyPattern, StoredFavorite } from '$lib/types';
-import { isCustomDye } from '$lib/utils/color/customColorUtils';
+import type { DyeProps, Favorite, HarmonyPattern, StoredFavorite } from '$lib/types';
 import { dyeToStorable } from '$lib/utils/storage/dyeSerializer';
 import { submitPalette } from '$lib/utils/api/paletteSubmit';
 import { createPersistentStore } from '$lib/utils/storage/persistentStore';
@@ -44,6 +43,8 @@ const favoritesPersistence = createPersistentStore<Favorite, StoredFavorite>({
     createdAt: stored.createdAt,
   }),
   validate: (stored) => {
+    // 過去のカスタムカラー機能で保存されたエントリは除外
+    if (stored.primaryDye?.tags?.includes('custom' as never)) return false;
     return !!(
       stored.id &&
       stored.primaryDye &&
@@ -64,36 +65,21 @@ export function loadFavorites(): void {
   favoritesPersistence.load();
 }
 
-/** お気に入りを保存（カスタムカラー対応） */
+/** お気に入りを保存 */
 export function saveFavorite(input: {
-  primaryDye: DyeProps | ExtendedDye;
+  primaryDye: DyeProps;
   suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
 }): void {
-  // カスタムカラーの場合はDyeクラスインスタンスとして保存
-  let primaryDyeForStorage: DyeProps;
-  if (isCustomDye(input.primaryDye)) {
-    primaryDyeForStorage = new Dye({
-      id: input.primaryDye.id,
-      name: input.primaryDye.name,
-      category: input.primaryDye.category,
-      rgb: input.primaryDye.rgb,
-      tags: ['custom'],
-    });
-  } else {
-    primaryDyeForStorage = input.primaryDye;
-  }
-
-  // ファクトリのaddを使用（自動でIDとcreatedAtが付与される）
   favoritesPersistence.add({
-    primaryDye: primaryDyeForStorage,
+    primaryDye: input.primaryDye,
     suggestedDyes: input.suggestedDyes,
     pattern: input.pattern,
   });
 
   // バックグラウンドでサーバーにパレットを投稿
   submitPalette({
-    primaryDye: primaryDyeForStorage,
+    primaryDye: input.primaryDye,
     suggestedDyes: input.suggestedDyes,
     pattern: input.pattern,
   });
@@ -104,21 +90,11 @@ export function deleteFavorite(favoriteId: string): void {
   favoritesPersistence.remove(favoriteId);
 }
 
-/** お気に入りを復元（選択状態に設定、カスタムカラー対応） */
+/** お気に入りを復元（選択状態に設定） */
 export function restoreFavorite(favorite: Favorite): void {
   try {
-    let primaryDye: DyeProps | ExtendedDye;
-    if (favorite.primaryDye.tags?.includes('custom')) {
-      primaryDye = {
-        ...favorite.primaryDye,
-        origin: 'custom',
-      } as ExtendedDye;
-    } else {
-      primaryDye = favorite.primaryDye;
-    }
-
     emitRestorePalette({
-      primaryDye,
+      primaryDye: favorite.primaryDye,
       suggestedDyes: favorite.suggestedDyes,
       pattern: favorite.pattern,
     });

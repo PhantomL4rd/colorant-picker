@@ -3,12 +3,12 @@
  * ストア間の疎結合を実現するためのイベントシステム
  */
 
-import type { DyeProps, ExtendedDye, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '$lib/types';
 
 export type PaletteEventType = 'restore-palette';
 
 export interface RestorePaletteEvent {
-  primaryDye: DyeProps | ExtendedDye;
+  primaryDye: DyeProps;
   suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
 }

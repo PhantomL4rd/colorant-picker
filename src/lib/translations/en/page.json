@@ -62,33 +62,6 @@
     "empty": "No recommendations available yet.",
     "error": "Failed to load recommendations."
   },
-  "customColor": {
-    "title": "Custom Colors",
-    "yourColors": "Your Colors",
-    "add": "Add Custom Color",
-    "edit": "Edit Custom Color",
-    "newColor": "Add New Color",
-    "emptyTitle": "No custom colors yet",
-    "emptyDescription": "Add your hair, skin, or eye color with \"Add New Color\" button",
-    "name": "Color Name",
-    "namePlaceholder": "e.g. My Hair Color",
-    "preview": "Preview",
-    "rgb": "RGB",
-    "rgbPlaceholder": "255, 255, 255",
-    "save": "Save",
-    "update": "Update",
-    "cancel": "Cancel",
-    "delete": "Delete",
-    "deleteConfirm": "Delete \"{name}\"?",
-    "selectColor": "Select this color",
-    "validation": {
-      "nameRequired": "Color name is required",
-      "rgbInvalid": "Please enter a valid RGB value (e.g., 255, 128, 0)",
-      "rgbRange": "RGB values must be between 0-255",
-      "duplicateName": "A color with this name already exists"
-    },
-    "saveFailed": "Failed to save"
-  },
   "share": {
     "title": "Share Palette",
     "shareTextLabel": "Share Text",
@@ -122,7 +95,26 @@
     "delete": "Delete",
     "confirmDelete": "Confirm delete",
     "cancelDelete": "Cancel delete",
-    "noSelection": "No combination selected"
+    "noSelection": "No combination selected",
+    "action": {
+      "shuffle": "Shuffle",
+      "shuffleHint": "Press Space to shuffle",
+      "pattern": "Pattern",
+      "browseDyes": "Browse dyes"
+    },
+    "axisExplorer": {
+      "close": "Close",
+      "axis": {
+        "lightness": "Brightness",
+        "chroma": "Vividness",
+        "hue": "Hue"
+      },
+      "title": {
+        "lightness": "Same hue, different brightness",
+        "chroma": "Same brightness, different vividness",
+        "hue": "Same brightness, different hue"
+      }
+    }
   },
   "kasane": {
     "title": "Kasane-irome | Dye Harmony",

@@ -4,14 +4,7 @@
  */
 
 import { Dye } from '$lib/models/Dye';
-import type {
-  DyeProps,
-  ExtendedDye,
-  HarmonyPattern,
-  HistoryEntry,
-  StoredHistoryEntry,
-} from '$lib/types';
-import { isCustomDye } from '$lib/utils/color/customColorUtils';
+import type { DyeProps, HarmonyPattern, HistoryEntry, StoredHistoryEntry } from '$lib/types';
 import { dyeToStorable } from '$lib/utils/storage/dyeSerializer';
 import { createPersistentStore } from '$lib/utils/storage/persistentStore';
 import { emitRestorePalette } from './paletteEvents';
@@ -62,6 +55,8 @@ const historyPersistence = createPersistentStore<HistoryEntry, StoredHistoryEntr
     createdAt: stored.createdAt,
   }),
   validate: (stored) => {
+    // 過去のカスタムカラー機能で保存されたエントリは除外
+    if (stored.primaryDye?.tags?.includes('custom' as never)) return false;
     return !!(
       stored.id &&
       stored.primaryDye &&
@@ -84,26 +79,12 @@ export function loadHistory(): void {
 
 /** 履歴に追加（重複時は先頭に移動） */
 export function addToHistory(input: {
-  primaryDye: DyeProps | ExtendedDye;
+  primaryDye: DyeProps;
   suggestedDyes: [DyeProps, DyeProps];
   pattern: HarmonyPattern;
 }): void {
-  // カスタムカラーの場合はDyeクラスインスタンスを生成
-  let primaryDyeForStorage: DyeProps;
-  if (isCustomDye(input.primaryDye)) {
-    primaryDyeForStorage = new Dye({
-      id: input.primaryDye.id,
-      name: input.primaryDye.name,
-      category: input.primaryDye.category,
-      rgb: input.primaryDye.rgb,
-      tags: ['custom'],
-    });
-  } else {
-    primaryDyeForStorage = input.primaryDye;
-  }
-
   const entryData = {
-    primaryDye: primaryDyeForStorage,
+    primaryDye: input.primaryDye,
     suggestedDyes: input.suggestedDyes,
     pattern: input.pattern,
   };
@@ -138,18 +119,8 @@ export function addToHistory(input: {
 /** 履歴から復元 */
 export function restoreFromHistory(entry: HistoryEntry): void {
   try {
-    let primaryDye: DyeProps | ExtendedDye;
-    if (entry.primaryDye.tags?.includes('custom')) {
-      primaryDye = {
-        ...entry.primaryDye,
-        origin: 'custom',
-      } as ExtendedDye;
-    } else {
-      primaryDye = entry.primaryDye;
-    }
-
     emitRestorePalette({
-      primaryDye,
+      primaryDye: entry.primaryDye,
       suggestedDyes: entry.suggestedDyes,
       pattern: entry.pattern,
     });
@@ -162,7 +133,7 @@ export function restoreFromHistory(entry: HistoryEntry): void {
 // ===== 自動記録（selectionStore監視） =====
 
 let previousSelection: {
-  primaryDye: DyeProps | ExtendedDye | null;
+  primaryDye: DyeProps | null;
   suggestedDyes: [DyeProps, DyeProps] | null;
   pattern: HarmonyPattern;
 } | null = null;

@@ -62,33 +62,6 @@
     "empty": "まだおすすめがありません。",
     "error": "おすすめの読み込みに失敗しました。"
   },
-  "customColor": {
-    "title": "カスタムカラー",
-    "yourColors": "あなたの色",
-    "add": "カスタムカラーを追加",
-    "edit": "カスタムカラーを編集",
-    "newColor": "新しい色を追加",
-    "emptyTitle": "まだあなたの色が登録されていません",
-    "emptyDescription": "「新しい色を追加」ボタンからあなたの髪色や肌色、目の色を登録してみましょう",
-    "name": "名前",
-    "namePlaceholder": "例: 私の髪色",
-    "preview": "プレビュー",
-    "rgb": "RGB",
-    "rgbPlaceholder": "255, 255, 255",
-    "save": "保存",
-    "update": "更新",
-    "cancel": "キャンセル",
-    "delete": "削除",
-    "deleteConfirm": "「{name}」を削除しますか？",
-    "selectColor": "この色を選択",
-    "validation": {
-      "nameRequired": "色の名前は必須です",
-      "rgbInvalid": "正しいRGB値を入力してください（例: 255, 128, 0）",
-      "rgbRange": "RGB値は0-255の範囲で入力してください",
-      "duplicateName": "この名前の色は既に存在します"
-    },
-    "saveFailed": "保存に失敗しました"
-  },
   "share": {
     "title": "パレットをシェア",
     "shareTextLabel": "シェア用テキスト",
@@ -122,7 +95,26 @@
     "delete": "削除",
     "confirmDelete": "削除を確認",
     "cancelDelete": "削除をキャンセル",
-    "noSelection": "組み合わせが選択されていません"
+    "noSelection": "組み合わせが選択されていません",
+    "action": {
+      "shuffle": "シャッフル",
+      "shuffleHint": "Spaceキーでもシャッフルできます",
+      "pattern": "配色パターン",
+      "browseDyes": "カララントを直接選ぶ"
+    },
+    "axisExplorer": {
+      "close": "閉じる",
+      "axis": {
+        "lightness": "明るさ",
+        "chroma": "鮮やかさ",
+        "hue": "色味"
+      },
+      "title": {
+        "lightness": "同じ色味で明るさちがい",
+        "chroma": "同じ明るさで鮮やかさちがい",
+        "hue": "同じ明るさで色味ちがい"
+      }
+    }
   },
   "kasane": {
     "title": "かさね色目 | カララントピッカー",

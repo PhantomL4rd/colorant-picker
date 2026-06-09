@@ -169,6 +169,34 @@ export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[
   return selectedDye;
 }
 
+// ティント/シェード用のOKLCH明度オフセット
+// L+/-OFFSET_NEAR と L+/-OFFSET_FAR で 2段階の明度バリエーションを作る
+const TINT_SHADE_OFFSETS = { NEAR: 0.1, FAR: 0.18 } as const;
+const OKLCH_L_MIN = 0.01;
+const OKLCH_L_MAX = 0.99;
+
+/**
+ * ティント/シェード用のターゲット色2つをOKLCH明度操作で生成
+ * @param primaryDye 主色
+ * @param direction 'tint' で明色方向, 'shade' で暗色方向
+ */
+function generateTintShadeTargets(primaryDye: DyeProps, direction: 'tint' | 'shade'): Rgb[] {
+  const baseOklch = toOklch(primaryDye.rgb) as Oklch;
+  const sign = direction === 'tint' ? 1 : -1;
+  const offsets = [TINT_SHADE_OFFSETS.NEAR, TINT_SHADE_OFFSETS.FAR];
+
+  return offsets.map((offset) => {
+    const targetL = Math.max(OKLCH_L_MIN, Math.min(OKLCH_L_MAX, baseOklch.l + sign * offset));
+    const targetOklch: Oklch = {
+      mode: 'oklch',
+      l: targetL,
+      c: baseOklch.c,
+      h: baseOklch.h ?? 0,
+    };
+    return toRgb(targetOklch) as Rgb;
+  });
+}
+
 // 配色パターンに基づいて提案染料を生成
 export function generateSuggestedDyes(
   primaryDye: DyeProps,
@@ -180,6 +208,23 @@ export function generateSuggestedDyes(
     return selectMonochromaticDyes(primaryDye, allDyes, { diversifyByLightness: true }).map(
       (c) => c.dye
     ) as [DyeProps, DyeProps];
+  }
+
+  // ティント（淡色）/ シェード（暗色）: 主色の色相・彩度を保ち、明度を上下にずらした2色
+  if (pattern === 'tint' || pattern === 'shade') {
+    const availableDyes = allDyes.filter((d) => d.id !== primaryDye.id);
+    const targets = generateTintShadeTargets(primaryDye, pattern);
+    const nearestDyes = findNearestDyesInOklab(targets, availableDyes).map((c) => c.dye);
+
+    // 2色に満たない場合（候補不足など）はランダムで補完
+    while (nearestDyes.length < 2 && availableDyes.length > 0) {
+      const randomDye = availableDyes[Math.floor(Math.random() * availableDyes.length)];
+      if (!nearestDyes.some((d) => d.id === randomDye.id)) {
+        nearestDyes.push(randomDye);
+      }
+    }
+
+    return [nearestDyes[0], nearestDyes[1]] as [DyeProps, DyeProps];
   }
 
   // クラッシュパターンの場合は新しいロジックを使用

@@ -19,6 +19,8 @@ export const PATTERN_LABELS: Record<HarmonyPattern, string> = {
   'split-complementary': 'アクセント',
   analogous: 'グラデーション',
   monochromatic: '同系色',
+  tint: 'ティント',
+  shade: 'シェード',
   similar: 'ナチュラル',
   contrast: 'コントラスト',
   clash: 'クラッシュ',
@@ -30,6 +32,8 @@ export const PATTERN_DESCRIPTIONS: Record<HarmonyPattern, string> = {
   'split-complementary': 'メインカラーに映える個性的な3色',
   analogous: '自然につながる優しい3色',
   monochromatic: '統一感のある落ち着いた3色',
+  tint: '白を混ぜたような淡い3色',
+  shade: '黒を混ぜたような深みのある3色',
   similar: '馴染みやすい近い色味の3色',
   contrast: 'はっきりとした対比のある3色',
   clash: 'ガウガウ元気になる3色',
@@ -41,53 +45,37 @@ export const PATTERN_TAGS: Record<HarmonyPattern, string[]> = {
   'split-complementary': ['個性派', 'おしゃれ'],
   analogous: ['やさしい', 'ナチュラル'],
   monochromatic: ['落ち着き', 'シック'],
+  tint: ['やわらか', 'ペールトーン'],
+  shade: ['深み', 'シック'],
   similar: ['なじむ', 'ベーシック'],
   contrast: ['インパクト', 'メリハリ'],
   clash: ['元気', 'ポップ'],
 };
+
+// パターン表示順（UI全体で共有）
+// monochromatic / tint / shade は明度系として隣接配置。clash は最後。
+export const PATTERN_ORDER: HarmonyPattern[] = [
+  'triadic',
+  'split-complementary',
+  'analogous',
+  'monochromatic',
+  'tint',
+  'shade',
+  'similar',
+  'contrast',
+  'clash',
+];
 
 // パターンの配列（セレクトボックス用）
 export const PATTERN_OPTIONS: Array<{
   value: HarmonyPattern;
   label: string;
   description: string;
-}> = [
-  {
-    value: 'triadic',
-    label: PATTERN_LABELS.triadic,
-    description: PATTERN_DESCRIPTIONS.triadic,
-  },
-  {
-    value: 'split-complementary',
-    label: PATTERN_LABELS['split-complementary'],
-    description: PATTERN_DESCRIPTIONS['split-complementary'],
-  },
-  {
-    value: 'analogous',
-    label: PATTERN_LABELS.analogous,
-    description: PATTERN_DESCRIPTIONS.analogous,
-  },
-  {
-    value: 'monochromatic',
-    label: PATTERN_LABELS.monochromatic,
-    description: PATTERN_DESCRIPTIONS.monochromatic,
-  },
-  {
-    value: 'similar',
-    label: PATTERN_LABELS.similar,
-    description: PATTERN_DESCRIPTIONS.similar,
-  },
-  {
-    value: 'contrast',
-    label: PATTERN_LABELS.contrast,
-    description: PATTERN_DESCRIPTIONS.contrast,
-  },
-  {
-    value: 'clash',
-    label: PATTERN_LABELS.clash,
-    description: PATTERN_DESCRIPTIONS.clash,
-  },
-];
+}> = PATTERN_ORDER.map((value) => ({
+  value,
+  label: PATTERN_LABELS[value],
+  description: PATTERN_DESCRIPTIONS[value],
+}));
 
 // グループ化されたパターン配列
 export const GROUPED_PATTERN_OPTIONS = [
@@ -113,6 +101,16 @@ export const GROUPED_PATTERN_OPTIONS = [
         value: 'monochromatic',
         label: PATTERN_LABELS.monochromatic,
         description: PATTERN_DESCRIPTIONS.monochromatic,
+      },
+      {
+        value: 'tint',
+        label: PATTERN_LABELS.tint,
+        description: PATTERN_DESCRIPTIONS.tint,
+      },
+      {
+        value: 'shade',
+        label: PATTERN_LABELS.shade,
+        description: PATTERN_DESCRIPTIONS.shade,
       },
       {
         value: 'similar',
@@ -185,6 +183,22 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     colorWheelAngles: [0, 0, 0],
   },
   {
+    pattern: 'tint',
+    label: PATTERN_LABELS.tint,
+    description: PATTERN_DESCRIPTIONS.tint,
+    tags: PATTERN_TAGS.tint,
+    sampleColors: ['#9A7AA0', '#B4A0BB', '#CCC0D6'],
+    colorWheelAngles: [0, 0, 0],
+  },
+  {
+    pattern: 'shade',
+    label: PATTERN_LABELS.shade,
+    description: PATTERN_DESCRIPTIONS.shade,
+    tags: PATTERN_TAGS.shade,
+    sampleColors: ['#87677B', '#5E4358', '#382434'],
+    colorWheelAngles: [0, 0, 0],
+  },
+  {
     pattern: 'similar',
     label: PATTERN_LABELS.similar,
     description: PATTERN_DESCRIPTIONS.similar,
@@ -222,17 +236,8 @@ export function generatePatternSamplesFromDyes(
   allDyes: DyeProps[]
 ): Map<HarmonyPattern, [string, string, string]> {
   const samples = new Map<HarmonyPattern, [string, string, string]>();
-  const patterns: HarmonyPattern[] = [
-    'triadic',
-    'split-complementary',
-    'analogous',
-    'monochromatic',
-    'similar',
-    'contrast',
-    'clash',
-  ];
 
-  for (const pattern of patterns) {
+  for (const pattern of PATTERN_ORDER) {
     const suggested = generateSuggestedDyes(baseDye, pattern, allDyes);
     // Paletteクラスを使って色差ベースで正しい順序を取得
     const palette = new Palette(baseDye, suggested, pattern);

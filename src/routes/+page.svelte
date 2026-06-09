@@ -1,18 +1,11 @@
 <script lang="ts">
-import { Blend, Eye, Loader2, PaintBucket } from '@lucide/svelte';
-import { onMount, tick } from 'svelte';
-import CustomColorManager from '$lib/components/custom/CustomColorManager.svelte';
+import { ChevronDown, Loader2, PaintBucket } from '@lucide/svelte';
+import { onMount } from 'svelte';
 import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
 import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
-import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
-import PatternSelector from '$lib/components/palette/PatternSelector.svelte';
+import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
 import RandomPickButton from '$lib/components/RandomPickButton.svelte';
-import CombinationPreview from '$lib/components/share/CombinationPreview.svelte';
-import ShareButton from '$lib/components/share/ShareButton.svelte';
-import * as Card from '$lib/components/ui/card';
-import { generatePatternVisualsWithDyes, type PatternVisual } from '$lib/constants/patterns';
-import { SCROLL_TIMING } from '$lib/constants/timing';
-import { Palette } from '$lib/models/Palette';
+import * as Collapsible from '$lib/components/ui/collapsible';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import {
   filteredDyes,
@@ -21,154 +14,104 @@ import {
   toggleCategory,
   toggleExcludeMetallic,
 } from '$lib/stores/filter';
-import { selectionStore, selectPrimaryDye, updatePattern } from '$lib/stores/selection';
+import {
+  selectPrimaryDye,
+  selectionStore,
+  shufflePalette,
+  updatePattern,
+} from '$lib/stores/selection';
 import { t } from '$lib/translations';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
 
 let isLoading = $state(true);
+let dyesPanelOpen = $state(false);
 
-// カスタムカラー表示モード管理
-let showCustomColors = $state(false);
+// PaletteHero に戻すスクロール先
+let paletteHeroElement: HTMLElement | undefined = $state();
 
-// 配色パターン選択エリアへの参照（スクロール先）
-let patternSelectorElement: HTMLElement | undefined = $state();
+// 染料選択後にプレビュー（PaletteHero）まで戻るスクロール
+function scrollToPaletteHero(): void {
+  paletteHeroElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 
-// PatternSelectorコンポーネントの参照
-let patternSelectorComponent: ReturnType<typeof PatternSelector> | undefined = $state();
-
-// 動的に生成されたパターンビジュアル
-let dynamicPatternVisuals: PatternVisual[] | undefined = $state();
-
-// 未選択時のプレースホルダー用サンプル色
-let placeholderColors: [string, string, string] | undefined = $state();
-
-// ストアから状態を取得
-const selectedDye = $derived($selectionStore.primaryDye);
-const suggestedDyes = $derived($selectionStore.suggestedDyes);
-const selectedPattern = $derived($selectionStore.pattern);
 const filteredDyesList = $derived($filteredDyes);
 const selectedCategory = $derived($filterStore.categories);
 const excludeMetallic = $derived($filterStore.excludeMetallic);
+const selectedDye = $derived($selectionStore.primaryDye);
+
+// 軸探索・置換ピッカー用の染料プール（カテゴリは無視、メタリック除外のみ反映）
+const exploreDyes = $derived(
+  excludeMetallic ? $dyeStore.filter((d) => !d.tags?.includes('metallic')) : $dyeStore
+);
+
+const HARMONY_PATTERNS: HarmonyPattern[] = [
+  'triadic',
+  'split-complementary',
+  'analogous',
+  'monochromatic',
+  'tint',
+  'shade',
+  'similar',
+  'contrast',
+  'clash',
+];
+
+function pickInitialPalette(): void {
+  const dyes = $dyeStore;
+  if (dyes.length === 0) return;
+
+  const randomDye = dyes[Math.floor(Math.random() * dyes.length)];
+  const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
+
+  updatePattern(randomPattern);
+  selectPrimaryDye(randomDye);
+}
 
 onMount(async () => {
   try {
     await loadDyes();
 
     const dyes = $dyeStore;
-    let restored = false;
     if (dyes.length > 0) {
-      // URL復元処理
-      restored = restorePaletteFromUrl(dyes);
-
-      // パターンサンプル用の代表色を選択（赤系の「Dalamud Red」など鮮やかな色）
-      const representativeDye =
-        dyes.find((d) => d.name === 'Dalamud Red') ||
-        dyes.find((d) => d.category === 'red') ||
-        dyes[0];
-
-      if (representativeDye) {
-        // 実際のカララントでパターンビジュアルを生成
-        dynamicPatternVisuals = generatePatternVisualsWithDyes(representativeDye, dyes);
-
-        // プレースホルダー用のサンプル色を生成（triadicパターンを使用）
-        // Paletteクラスを使って色差ベースで正しい順序を取得
-        const suggested = generateSuggestedDyes(representativeDye, 'triadic', dyes);
-        const palette = new Palette(representativeDye, suggested, 'triadic');
-        placeholderColors = [palette.main.dye.hex, palette.sub.dye.hex, palette.accent.dye.hex];
+      const restored = restorePaletteFromUrl(dyes);
+      if (!restored) {
+        pickInitialPalette();
       }
-    }
-
-    isLoading = false;
-
-    // URL復元時: isLoading=false後にDOMが描画されるのを待ってスクロール
-    if (restored) {
-      await tick();
-      setTimeout(() => {
-        // 選ばれたパターンカードをカルーセル内で中央に表示
-        patternSelectorComponent?.scrollToPattern($selectionStore.pattern);
-      }, SCROLL_TIMING.SCROLL_DELAY);
     }
   } catch (error) {
     console.error('カララントデータの読み込みに失敗しました:', error);
+  } finally {
     isLoading = false;
   }
 });
 
-function handleDyeSelect(dye: DyeProps) {
+function handleDyeSelect(dye: DyeProps): void {
   selectPrimaryDye(dye);
-
-  // カラーが選択されたら配色パターン選択までスクロール
-  setTimeout(() => {
-    if (patternSelectorElement) {
-      patternSelectorElement.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start',
-        inline: 'nearest',
-      });
-    }
-  }, SCROLL_TIMING.SCROLL_DELAY);
+  scrollToPaletteHero();
 }
 
-function handlePatternChange(pattern: HarmonyPattern) {
-  updatePattern(pattern);
+function handleToggleCategory(category: string): void {
+  toggleCategory(category as Parameters<typeof toggleCategory>[0]);
 }
 
-function handleToggleCategory(category: string) {
-  showCustomColors = false; // カテゴリ選択時はカスタムカラーを非表示
-  toggleCategory(category as any);
-}
-
-function handleClearCategories() {
+function handleClearAll(): void {
   resetFilters();
 }
 
-function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]) {
+function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]): void {
   const [primary] = randomDyes;
-
-  // 配色パターンもランダムに選択
-  const patterns: HarmonyPattern[] = [
-    'triadic',
-    'split-complementary',
-    'analogous',
-    'monochromatic',
-    'similar',
-    'contrast',
-    'clash',
-  ];
-  const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
-
-  // 配色パターンを先に設定
+  const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
   updatePattern(randomPattern);
-
-  // その後、主色を選択（提案は自動生成される）
   selectPrimaryDye(primary);
-
-  // 選択されたパターンをスクロールして表示
-  setTimeout(() => {
-    patternSelectorComponent?.scrollToPattern(randomPattern);
-  }, SCROLL_TIMING.SCROLL_DELAY);
+  scrollToPaletteHero();
 }
 
-function handleExcludeMetallicChange() {
+function handleExcludeMetallicChange(): void {
   toggleExcludeMetallic();
-  // メタリック除外フィルターが変更されたら現在の色で新しい提案を生成
   if (selectedDye) {
     selectPrimaryDye(selectedDye);
   }
-}
-
-// カスタムカラー選択ハンドラー
-function handleSelectCustomColors() {
-  showCustomColors = true;
-  resetFilters(); // 通常カテゴリをクリア
-}
-
-// カテゴリまたはクリアボタンクリック時にカスタムカラーも非表示に
-function handleClearAll() {
-  showCustomColors = false;
-  handleClearCategories();
 }
 </script>
 
@@ -195,147 +138,66 @@ function handleClearAll() {
     <span class="ml-2">{$t('common.state.loading')}</span>
   </div>
 {:else}
-  <div class="space-y-8">
-    <!-- 配色パターン選択 -->
-    <div bind:this={patternSelectorElement} data-coach="pattern-selector">
-      <Card.Root>
-        <Card.Content class="pt-6">
-          <PatternSelector
-            bind:this={patternSelectorComponent}
-            {selectedPattern}
-            onPatternChange={handlePatternChange}
-            {excludeMetallic}
-            onExcludeMetallicChange={handleExcludeMetallicChange}
-            patternVisuals={dynamicPatternVisuals}
-          />
-        </Card.Content>
-      </Card.Root>
+  <div class="space-y-6">
+    <!-- 配色パレット（メイン体験） -->
+    <div bind:this={paletteHeroElement}>
+      <PaletteHero {exploreDyes} />
     </div>
 
-    <!-- プレビュー -->
-    <div aria-live="polite" class="relative z-10">
-      {#if selectedDye && suggestedDyes}
-        <!-- 組み合わせプレビュー -->
-        <Card.Root>
-          <Card.Content class="p-3 md:p-6">
-            <div class="flex justify-between items-center mb-2 md:mb-4">
-              <h2 class="text-lg font-semibold flex items-center gap-1 text-balance">
-                <Eye class="size-5" />
-                {$t('page.home.preview')}
-              </h2>
-              <div class="flex gap-2">
-                <AddToFavoritesButton disabled={!selectedDye || !suggestedDyes} />
-                <ShareButton disabled={!selectedDye || !suggestedDyes} />
-              </div>
-            </div>
-            <CombinationPreview
-              selectedDye={selectedDye}
-              suggestedDyes={suggestedDyes}
-              pattern={selectedPattern}
-            />
-          </Card.Content>
-        </Card.Root>
-      {:else}
-        <!-- 未選択時のプレースホルダー -->
-        <Card.Root>
-          <Card.Content class="p-3 md:p-6">
-            <h2 class="text-lg font-semibold flex items-center gap-1 text-muted-foreground mb-4 text-balance">
-              <Eye class="size-5" />
-              {$t('page.home.preview')}
-            </h2>
-
-            <!-- プレースホルダー色（実際のカララント組み合わせ） -->
-            <Card.Root class="opacity-50">
-              <Card.Content class="pt-6">
-                <div class="grid grid-cols-3 gap-2 md:gap-4">
-                  <div class="text-center">
-                    <div
-                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-border mb-1 md:mb-2"
-                      style="background-color: {placeholderColors?.[0] ?? '#E63946'};"
-                    ></div>
-                    <span class="text-xs text-muted-foreground">{$t('common.role.main')}</span>
-                  </div>
-                  <div class="text-center">
-                    <div
-                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-border mb-1 md:mb-2"
-                      style="background-color: {placeholderColors?.[1] ?? '#457B9D'};"
-                    ></div>
-                    <span class="text-xs text-muted-foreground">{$t('common.role.sub')}</span>
-                  </div>
-                  <div class="text-center">
-                    <div
-                      class="w-full h-16 md:h-18 rounded-lg border-2 border-dashed border-border mb-1 md:mb-2"
-                      style="background-color: {placeholderColors?.[2] ?? '#F4A261'};"
-                    ></div>
-                    <span class="text-xs text-muted-foreground">{$t('common.role.accent')}</span>
-                  </div>
-                </div>
-              </Card.Content>
-            </Card.Root>
-
-            <!-- ガイドメッセージ -->
-            <div class="text-center mt-4">
-              <p class="text-sm text-muted-foreground">
-                <Blend class="inline-block size-4 mr-1 align-text-bottom" />
-                {$t('page.home.selectPrompt')}
-              </p>
-            </div>
-          </Card.Content>
-        </Card.Root>
-      {/if}
-    </div>
-
-    <!-- ランダム -->
-    <div data-coach="random-button">
-      <Card.Root>
-        <Card.Content class="pt-6">
-          <RandomPickButton
-            dyes={filteredDyesList}
-            onRandomPick={handleRandomPick}
-          />
-        </Card.Content>
-      </Card.Root>
-    </div>
-
-    <!-- カテゴリフィルター -->
-    <Card.Root>
-      <Card.Content class="pt-6">
-        <CategoryFilter
-          selectedCategory={selectedCategory}
-          onToggleCategory={handleToggleCategory}
-          onClearCategories={handleClearAll}
-          onSelectCustomColors={handleSelectCustomColors}
-          isCustomColorsSelected={showCustomColors}
+    <!-- カララントを直接探す（折りたたみ） -->
+    <Collapsible.Root bind:open={dyesPanelOpen}>
+      <Collapsible.Trigger
+        class="w-full flex items-center justify-between gap-2 px-4 py-3 rounded-2xl border border-border bg-card hover:bg-accent transition-colors cursor-pointer"
+      >
+        <div class="flex items-center gap-2">
+          <PaintBucket class="size-5" />
+          <span class="font-semibold">{$t('page.palette.action.browseDyes')}</span>
+        </div>
+        <ChevronDown
+          class="size-5 transition-transform duration-200"
+          style={dyesPanelOpen ? 'transform: rotate(180deg);' : ''}
         />
-      </Card.Content>
-    </Card.Root>
+      </Collapsible.Trigger>
+      <Collapsible.Content class="pt-3 space-y-4">
+        <div class="p-4 rounded-2xl border border-border bg-card">
+          <CategoryFilter
+            selectedCategory={selectedCategory}
+            onToggleCategory={handleToggleCategory}
+            onClearCategories={handleClearAll}
+          />
+        </div>
 
-    <!-- カララント一覧またはカスタムカラー管理 -->
-    <div data-coach="dye-grid">
-      <Card.Root>
-        <Card.Content class="pt-6">
-          {#if showCustomColors}
-            <!-- カスタムカラー管理表示 -->
-            <div class="max-h-[600px] overflow-y-auto">
-              <CustomColorManager />
-            </div>
-          {:else}
-            <!-- 通常のカララント一覧表示 -->
-            <h2 class="text-lg font-semibold mb-4 flex items-center gap-1 text-balance">
-              <PaintBucket class="size-5" />
-              {$t('page.home.dyeList')}
-            </h2>
-            <div class="max-h-[600px] overflow-y-auto">
-              <DyeGrid
-                dyes={filteredDyesList}
-                {selectedDye}
-                onDyeSelect={handleDyeSelect}
-              />
-            </div>
-          {/if}
-        </Card.Content>
-      </Card.Root>
+        <div class="p-4 rounded-2xl border border-border bg-card">
+          <RandomPickButton dyes={filteredDyesList} onRandomPick={handleRandomPick} />
+        </div>
+
+        <div class="p-4 rounded-2xl border border-border bg-card">
+          <h2 class="text-lg font-semibold mb-4 flex items-center gap-1 text-balance">
+            <PaintBucket class="size-5" />
+            {$t('page.home.dyeList')}
+          </h2>
+          <div class="max-h-[600px] overflow-y-auto">
+            <DyeGrid
+              dyes={filteredDyesList}
+              {selectedDye}
+              onDyeSelect={handleDyeSelect}
+            />
+          </div>
+        </div>
+      </Collapsible.Content>
+    </Collapsible.Root>
+
+    <!-- メタリック除外スイッチ（パターン提案にも影響するためトップレベルに保持） -->
+    <div class="flex items-center justify-center text-xs">
+      <label class="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors">
+        <input
+          type="checkbox"
+          class="rounded border-border"
+          checked={excludeMetallic}
+          onchange={handleExcludeMetallicChange}
+        />
+        {$t('common.filter.excludeMetallic')}
+      </label>
     </div>
-
   </div>
 {/if}
