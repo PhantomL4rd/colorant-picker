@@ -9,6 +9,8 @@ import * as Tooltip from '$lib/components/ui/tooltip';
 import CoachMark from '$lib/components/CoachMark.svelte';
 import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
 import SideDrawer from '$lib/components/ui/SideDrawer.svelte';
+// 履歴の自動記録（selectionStore 監視）を全ページで起動するための副作用 import
+import '$lib/stores/history';
 import { t } from '$lib/translations';
 
 const { children } = $props();
