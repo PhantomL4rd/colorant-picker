@@ -3,8 +3,10 @@
  *
  * 1色を起点に、OKLCHの明度(L) / 彩度(C) / 色相(H) のいずれか1軸を動かして、
  * 各ステップで最も近いカララントを取り出す。
- * AxisExplorer UI で「同じ色味のまま明るい〜暗い」「同じ明るさで鮮やか〜くすませ」
- * 「同じ明るさで色味ちがい」を縦に並べて見せる用途。
+ * AxisExplorer UI で「明るさを変える」「鮮やかさを変える」「色味を変える」を縦に並べる用途。
+ *
+ * 他軸方向の差はしきい値で足切りする（同じ色味で明るさを変える、の "同じ色味" を担保するため）。
+ * しきい値内に候補がいない段はスキップされ、ラダーは規定段数より短くなることがある。
  *
  * 並び順は実際の染料の OKLCH 値ベース:
  * - lightness: 染料の L 昇順（暗 → 明）
@@ -12,8 +14,8 @@
  * - hue      : ベース色相からの最小角度差の昇順（近い色味 → 遠い色味）
  */
 
-import type { DyeProps, Oklab, Oklch, Rgb } from '$lib/types';
 import { HUE_CIRCLE_MAX } from '$lib/constants/color';
+import type { DyeProps, Oklab, Oklch, Rgb } from '$lib/types';
 import { deltaEOklab, toOklab, toOklch, toRgb } from './colorConversion';
 
 export type LadderAxis = 'lightness' | 'chroma' | 'hue';
@@ -26,6 +28,18 @@ const LIGHTNESS_MIN = 0.05;
 const LIGHTNESS_MAX = 0.95;
 const CHROMA_MIN = 0.0;
 const CHROMA_MAX = 0.35;
+
+// 軸ごとの「他軸方向の許容差」（OKLCH空間）
+// これを超える染料は候補から除外し、軸ラベルの意味（同じ色味で〜 など）に実態を合わせる
+const LIGHTNESS_AXIS_CHROMA_TOL = 0.08;
+const LIGHTNESS_AXIS_HUE_TOL_DEG = 25;
+const CHROMA_AXIS_LIGHTNESS_TOL = 0.12;
+const CHROMA_AXIS_HUE_TOL_DEG = 25;
+const HUE_AXIS_LIGHTNESS_TOL = 0.12;
+const HUE_AXIS_CHROMA_TOL = 0.08;
+
+// ベースの彩度がこれ以下なら無彩色寄りとみなし、色相方向の許容判定を省く
+const GRAY_CHROMA_THRESHOLD = 0.02;
 
 export interface LadderEntry {
   /** 並び順用のソートキー（軸ごとに意味が変わる、表示には使わない） */
@@ -57,6 +71,28 @@ function hueDistance(h1: number, h2: number): number {
   return Math.min(diff, HUE_CIRCLE_MAX - diff);
 }
 
+/** 軸ごとの「他軸方向の差が許容内か」判定 */
+function withinAxisTolerance(axis: LadderAxis, dyeOklch: Oklch, baseOklch: Oklch): boolean {
+  const baseH = baseOklch.h ?? 0;
+  const dyeH = dyeOklch.h ?? 0;
+  const baseIsGray = baseOklch.c <= GRAY_CHROMA_THRESHOLD;
+
+  if (axis === 'lightness') {
+    if (Math.abs(dyeOklch.c - baseOklch.c) > LIGHTNESS_AXIS_CHROMA_TOL) return false;
+    if (baseIsGray) return true;
+    return hueDistance(dyeH, baseH) <= LIGHTNESS_AXIS_HUE_TOL_DEG;
+  }
+  if (axis === 'chroma') {
+    if (Math.abs(dyeOklch.l - baseOklch.l) > CHROMA_AXIS_LIGHTNESS_TOL) return false;
+    if (baseIsGray) return true;
+    return hueDistance(dyeH, baseH) <= CHROMA_AXIS_HUE_TOL_DEG;
+  }
+  return (
+    Math.abs(dyeOklch.l - baseOklch.l) <= HUE_AXIS_LIGHTNESS_TOL &&
+    Math.abs(dyeOklch.c - baseOklch.c) <= HUE_AXIS_CHROMA_TOL
+  );
+}
+
 /**
  * 軸ごとのラダー生成。
  * - axis='lightness': 色相(H)と彩度(C)を baseDye のまま固定、L を 0.05..0.95 で等分
@@ -80,6 +116,13 @@ export function generateLadder(
 
   const baseOklch = toOklch(baseDye.rgb) as Oklch;
   const baseH = baseOklch.h ?? 0;
+
+  // 他軸方向の差が許容内の染料だけを候補に絞る（ベース染料は必ず含める）
+  const pool = allDyes.filter((dye) => {
+    if (dye.id === baseDye.id) return true;
+    const dyeOklch = toOklch(dye.rgb) as Oklch;
+    return withinAxisTolerance(axis, dyeOklch, baseOklch);
+  });
 
   const used = new Set<string>();
   const entries: LadderEntry[] = [];
@@ -108,7 +151,7 @@ export function generateLadder(
     };
     const targetRgb = toRgb(targetOklch) as Rgb;
 
-    const best = nearestDyeByOklab(targetRgb, allDyes, used);
+    const best = nearestDyeByOklab(targetRgb, pool, used);
     if (best) {
       // 採用された染料の実 OKLCH を計算してソートキーに使う
       const dyeOklch = toOklch(best.rgb) as Oklch;
