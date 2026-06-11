@@ -1,6 +1,7 @@
 <script lang="ts">
 import { ChevronDown, Loader2, PaintBucket } from '@lucide/svelte';
 import { onMount } from 'svelte';
+import { get } from 'svelte/store';
 import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
 import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
 import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
@@ -75,7 +76,9 @@ onMount(async () => {
     const dyes = $dyeStore;
     if (dyes.length > 0) {
       const restored = restorePaletteFromUrl(dyes);
-      if (!restored) {
+      // スキ！/履歴からの復元は paletteEventBus 経由で遷移前に selectionStore へ
+      // 反映済みのため、既に選択があるときはランダムピックで上書きしない
+      if (!restored && !get(selectionStore).primaryDye) {
         pickInitialPalette();
       }
     }
