@@ -170,7 +170,7 @@ function handlePatternSelect(pattern: HarmonyPattern): void {
     <!-- 3色帯（PaletteHero メイン） -->
     <!-- 黄金比 main:sub:accent の percent を flex-grow に流し込む -->
     <!-- 各スロットは最低幅/高さを確保して操作性を担保 -->
-    <div class="flex flex-col md:flex-row md:items-start gap-2 md:min-h-[320px]">
+    <div class="flex flex-col md:flex-row md:items-start gap-2 md:min-h-[clamp(400px,65vh,640px)]">
       {#each palette.ratio as { dye, role, percent } (role)}
         <div
           class="slot-wrap flex flex-col min-w-0 md:min-w-[140px]"

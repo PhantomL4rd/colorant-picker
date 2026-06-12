@@ -52,7 +52,7 @@ const dyeName = $derived(getDyeName(dye));
 
 {#if isMain}
   <div
-    class="group flex flex-col h-full min-h-[160px] md:min-h-[300px] rounded-2xl overflow-hidden transition-colors duration-200"
+    class="group flex flex-col h-full min-h-[160px] md:min-h-[clamp(400px,65vh,640px)] rounded-2xl overflow-hidden transition-colors duration-200"
     style="background-color: {dye.hex}; color: {labelColor};"
   >
     {@render body()}
@@ -104,7 +104,7 @@ const dyeName = $derived(getDyeName(dye));
   <!-- サブ・アクセント: 全体クリックでメインに昇格 -->
   <button
     type="button"
-    class="flex flex-col w-full h-full min-h-[160px] md:min-h-[300px] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer hover:brightness-110 focus-visible:ring-2 focus-visible:ring-ring text-left"
+    class="flex flex-col w-full h-full min-h-[160px] md:min-h-[clamp(400px,65vh,640px)] rounded-2xl overflow-hidden transition-all duration-200 cursor-pointer hover:brightness-110 focus-visible:ring-2 focus-visible:ring-ring text-left"
     style="background-color: {dye.hex}; color: {labelColor};"
     onclick={() => onPromote?.()}
     aria-label={$t('common.aria.selectColor')}
