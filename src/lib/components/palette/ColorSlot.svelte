@@ -1,6 +1,7 @@
 <script lang="ts">
-import { Droplet, Sun, SwatchBook } from '@lucide/svelte';
+import { CircleHelp, Droplet, Sun, SwatchBook } from '@lucide/svelte';
 import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
+import * as Popover from '$lib/components/ui/popover';
 import { t } from '$lib/translations';
 import type { ColorRole, DyeProps } from '$lib/types';
 import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
@@ -39,8 +40,45 @@ const dyeName = $derived(getDyeName(dye));
   <div
     class="flex justify-between items-start px-3 pt-3 text-[11px] font-semibold uppercase tracking-wider opacity-90"
   >
-    <span>{$t(`common.role.${role}`)}</span>
-    <span class="font-mono normal-case">{percent}%</span>
+    <span class="flex items-center gap-1">
+      <span>{$t(`common.role.${role}`)}</span>
+      {#if isMain}
+        <Popover.Root>
+          <Popover.Trigger
+            class="inline-flex items-center justify-center rounded-full opacity-80 hover:opacity-100 hover:bg-black/10 transition-opacity cursor-pointer focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-white/60"
+            style="color: {labelColor};"
+            aria-label={$t('page.home.ratioTip.title')}
+            title={$t('page.home.ratioTip.title')}
+          >
+            <CircleHelp class="size-3.5" />
+          </Popover.Trigger>
+          <Popover.Content
+            side="right"
+            class="max-w-[18rem] text-left text-sm normal-case tracking-normal font-normal"
+          >
+            <p class="font-semibold mb-2">{$t('page.home.ratioTip.heading')}</p>
+            <p class="mb-1">
+              <span class="font-medium">{$t('common.role.main')}</span>: {$t(
+                'page.home.ratioTip.main',
+              )}
+            </p>
+            <p class="mb-1">
+              <span class="font-medium">{$t('common.role.sub')}</span>: {$t(
+                'page.home.ratioTip.sub',
+              )}
+            </p>
+            <p>
+              <span class="font-medium">{$t('common.role.accent')}</span>: {$t(
+                'page.home.ratioTip.accent',
+              )}
+            </p>
+          </Popover.Content>
+        </Popover.Root>
+      {/if}
+    </span>
+    <span class="flex items-center gap-1">
+      <span class="font-mono normal-case">{percent}%</span>
+    </span>
   </div>
 
   <!-- 染料名 + 入手元バッジ -->
