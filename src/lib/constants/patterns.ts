@@ -53,16 +53,16 @@ export const PATTERN_TAGS: Record<HarmonyPattern, string[]> = {
 };
 
 // パターン表示順（UI全体で共有）
-// monochromatic / tint / shade は明度系として隣接配置。clash は最後。
+// tint / shade は明度系として contrast の後ろに配置。clash は最後。
 export const PATTERN_ORDER: HarmonyPattern[] = [
   'triadic',
   'split-complementary',
   'analogous',
   'monochromatic',
-  'tint',
-  'shade',
   'similar',
   'contrast',
+  'tint',
+  'shade',
   'clash',
 ];
 
@@ -103,16 +103,6 @@ export const GROUPED_PATTERN_OPTIONS = [
         description: PATTERN_DESCRIPTIONS.monochromatic,
       },
       {
-        value: 'tint',
-        label: PATTERN_LABELS.tint,
-        description: PATTERN_DESCRIPTIONS.tint,
-      },
-      {
-        value: 'shade',
-        label: PATTERN_LABELS.shade,
-        description: PATTERN_DESCRIPTIONS.shade,
-      },
-      {
         value: 'similar',
         label: PATTERN_LABELS.similar,
         description: PATTERN_DESCRIPTIONS.similar,
@@ -121,6 +111,16 @@ export const GROUPED_PATTERN_OPTIONS = [
         value: 'contrast',
         label: PATTERN_LABELS.contrast,
         description: PATTERN_DESCRIPTIONS.contrast,
+      },
+      {
+        value: 'tint',
+        label: PATTERN_LABELS.tint,
+        description: PATTERN_DESCRIPTIONS.tint,
+      },
+      {
+        value: 'shade',
+        label: PATTERN_LABELS.shade,
+        description: PATTERN_DESCRIPTIONS.shade,
       },
     ],
   },
@@ -183,22 +183,6 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     colorWheelAngles: [0, 0, 0],
   },
   {
-    pattern: 'tint',
-    label: PATTERN_LABELS.tint,
-    description: PATTERN_DESCRIPTIONS.tint,
-    tags: PATTERN_TAGS.tint,
-    sampleColors: ['#9A7AA0', '#B4A0BB', '#CCC0D6'],
-    colorWheelAngles: [0, 0, 0],
-  },
-  {
-    pattern: 'shade',
-    label: PATTERN_LABELS.shade,
-    description: PATTERN_DESCRIPTIONS.shade,
-    tags: PATTERN_TAGS.shade,
-    sampleColors: ['#87677B', '#5E4358', '#382434'],
-    colorWheelAngles: [0, 0, 0],
-  },
-  {
     pattern: 'similar',
     label: PATTERN_LABELS.similar,
     description: PATTERN_DESCRIPTIONS.similar,
@@ -213,6 +197,22 @@ export const PATTERN_VISUALS: PatternVisual[] = [
     tags: PATTERN_TAGS.contrast,
     sampleColors: ['#1D3557', '#E63946', '#F1FAEE'],
     colorWheelAngles: [0, 180, 90],
+  },
+  {
+    pattern: 'tint',
+    label: PATTERN_LABELS.tint,
+    description: PATTERN_DESCRIPTIONS.tint,
+    tags: PATTERN_TAGS.tint,
+    sampleColors: ['#9A7AA0', '#B4A0BB', '#CCC0D6'],
+    colorWheelAngles: [0, 0, 0],
+  },
+  {
+    pattern: 'shade',
+    label: PATTERN_LABELS.shade,
+    description: PATTERN_DESCRIPTIONS.shade,
+    tags: PATTERN_TAGS.shade,
+    sampleColors: ['#87677B', '#5E4358', '#382434'],
+    colorWheelAngles: [0, 0, 0],
   },
   {
     pattern: 'clash',
