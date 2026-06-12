@@ -52,13 +52,16 @@ const dyeName = $derived(getDyeName(dye));
 
 {#if isMain}
   <div
-    class="flex flex-col h-full min-h-[160px] md:min-h-[300px] rounded-2xl overflow-hidden transition-colors duration-200"
+    class="group flex flex-col h-full min-h-[160px] md:min-h-[300px] rounded-2xl overflow-hidden transition-colors duration-200"
     style="background-color: {dye.hex}; color: {labelColor};"
   >
     {@render body()}
 
-    <!-- メイン操作ボタン群: 明るさ / 鮮やかさ / 色味 -->
-    <div class="flex items-center justify-center gap-0.5 px-2 pb-3">
+    <!-- メイン操作ボタン群: 明るさ / 鮮やかさ / 色味
+         PC は hover/フォーカス時のみ表示、SP(タッチ) は常時表示 -->
+    <div
+      class="flex items-center justify-center gap-0.5 px-2 pb-3 transition-opacity duration-200 md:opacity-0 md:group-hover:opacity-100 md:group-focus-within:opacity-100"
+    >
       <button
         type="button"
         class="p-1.5 rounded-lg opacity-90 hover:opacity-100 hover:bg-black/10 transition-colors cursor-pointer"

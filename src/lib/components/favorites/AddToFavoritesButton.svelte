@@ -11,9 +11,14 @@ import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 
 interface Props {
   disabled?: boolean;
+  // アイコンのみ表示（SP 下部バー用）。false なら「スキ！」ラベル付き
+  icon?: boolean;
 }
 
-const { disabled = false }: Props = $props();
+const { disabled = false, icon = false }: Props = $props();
+
+// SP 下部バーのアイコンボタンは大きめのタップ領域に
+const iconSizeClass = 'size-10';
 
 // 保存状態
 let isSaving = $state(false);
@@ -109,27 +114,28 @@ function showToast() {
   <HeartBurst bind:this={heartBurst} />
 
   {#if justSaved}
-    <!-- アニメーション中 -->
+    <!-- アニメーション中：💕は text-heart=ローズ色 -->
     <Button
       variant="ghost"
-      size="sm"
-      class="text-heart cursor-default"
+      size={icon ? 'icon' : 'sm'}
+      class={icon ? `${iconSizeClass} text-heart cursor-default` : 'text-heart cursor-default'}
       disabled
       aria-label={$t('common.action.like')}
     >
-      <Heart class="size-4 animate-heart-flip" fill="currentColor" />
-      {$t('common.action.like')}
+      <Heart class="size-5 animate-heart-flip" fill="currentColor" />
+      {#if !icon}{$t('common.action.like')}{/if}
     </Button>
   {:else if isAlreadyFavorited}
+    <!-- 保存済み（永続）：text-liked=緑 -->
     <Button
       variant="ghost"
-      size="sm"
-      class="text-liked cursor-default"
+      size={icon ? 'icon' : 'sm'}
+      class={icon ? `${iconSizeClass} text-liked cursor-default` : 'text-liked cursor-default'}
       disabled
       aria-label={$t('common.action.alreadyLiked')}
     >
-      <Heart class="size-4 fill-current" />
-      {$t('common.action.alreadyLiked')}
+      <Heart class="size-5 fill-current" />
+      {#if !icon}{$t('common.action.alreadyLiked')}{/if}
     </Button>
   {:else}
     <Tooltip.Root open={favorites.length === 0 ? true : undefined}>
@@ -137,23 +143,24 @@ function showToast() {
         {#snippet child({ props })}
           <Button
             {...props}
-            size="sm"
-            class="gap-1"
+            variant="outline"
+            size={icon ? 'icon' : 'sm'}
+            class={icon ? `${iconSizeClass} text-heart` : 'gap-1'}
             onclick={openModal}
             disabled={isDisabled || isSaving}
             aria-label={$t('common.action.like')}
           >
             {#if isSaving}
-              <Loader2 class="size-4 animate-spin" />
+              <Loader2 class="size-5 animate-spin" />
             {:else}
-              <Heart class="size-4" />
-              {$t('common.action.like')}
+              <Heart class="size-5" />
+              {#if !icon}{$t('common.action.like')}{/if}
             {/if}
           </Button>
         {/snippet}
       </Tooltip.Trigger>
       <Tooltip.Content>
-        <p>{$t('common.action.like')}</p>
+        <p>{favorites.length === 0 ? $t('common.action.likeNudge') : $t('common.action.like')}</p>
       </Tooltip.Content>
     </Tooltip.Root>
   {/if}
@@ -167,7 +174,7 @@ function showToast() {
     class:transition-opacity={toastFading}
     class:duration-300={toastFading}
   >
-    <div class="flex items-center gap-2 rounded-lg border border-liked/30 bg-liked/10 px-4 py-3 text-liked shadow-lg">
+    <div class="flex items-center gap-2 rounded-lg border border-liked/30 bg-card/80 backdrop-blur-sm px-4 py-3 text-liked shadow-lg">
       <Heart class="size-5 fill-current" />
       <span>{$t('common.action.liked')}</span>
     </div>

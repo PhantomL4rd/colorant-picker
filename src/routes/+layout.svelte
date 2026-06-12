@@ -1,32 +1,16 @@
 <script lang="ts">
 import '../app.css';
-import { CircleQuestionMark, Info, SwatchBook } from '@lucide/svelte';
-import { goto } from '$app/navigation';
+import { Info, SwatchBook } from '@lucide/svelte';
 import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
-import { Button } from '$lib/components/ui/button';
 import * as Tooltip from '$lib/components/ui/tooltip';
-import CoachMark from '$lib/components/CoachMark.svelte';
 import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
 import SideDrawer from '$lib/components/ui/SideDrawer.svelte';
-// 履歴の自動記録（selectionStore 監視）を全ページで起動するための副作用 import
-import '$lib/stores/history';
+// undo/redo（selectionStore 監視）を全ページで起動するための副作用 import
+import '$lib/stores/paletteUndo';
 import { t } from '$lib/translations';
 
 const { children } = $props();
-
-// コーチマーク表示状態
-let isCoachMarkOpen = $state(false);
-
-function openCoachMark() {
-  // コーチマークはピッカータブで表示するため、ホームに遷移
-  goto(resolve('/'));
-  isCoachMarkOpen = true;
-}
-
-function closeCoachMark() {
-  isCoachMarkOpen = false;
-}
 </script>
 
 <svelte:head>
@@ -67,17 +51,6 @@ function closeCoachMark() {
         <!-- 言語切替 -->
         <LanguageSwitcher />
 
-        <!-- ヘルプボタン -->
-        <Button
-          variant="ghost"
-          size="icon"
-          onclick={openCoachMark}
-          aria-label={$t('common.aria.help')}
-          class="text-primary-foreground hover:bg-primary-foreground/10"
-        >
-          <CircleQuestionMark class="size-6" />
-        </Button>
-
         <!-- メニュー（サイドドロワー） -->
         <SideDrawer />
       </div>
@@ -94,9 +67,5 @@ function closeCoachMark() {
   <footer class="text-center text-xs text-muted-foreground py-4">
     © SQUARE ENIX
   </footer>
-
-
-  <!-- コーチマーク -->
-  <CoachMark isOpen={isCoachMarkOpen} onClose={closeCoachMark} />
 </div>
 </Tooltip.Provider>

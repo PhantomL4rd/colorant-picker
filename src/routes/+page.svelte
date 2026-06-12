@@ -141,10 +141,15 @@ function handleExcludeMetallicChange(): void {
     <span class="ml-2">{$t('common.state.loading')}</span>
   </div>
 {:else}
-  <div class="space-y-6">
+  <!-- SP では下部固定のスキ！バー分の余白を確保（デスクトップは不要） -->
+  <div class="space-y-6 pb-28 md:pb-0">
     <!-- 配色パレット（メイン体験） -->
     <div bind:this={paletteHeroElement}>
-      <PaletteHero {exploreDyes} />
+      <PaletteHero
+        {exploreDyes}
+        {excludeMetallic}
+        onToggleExcludeMetallic={handleExcludeMetallicChange}
+      />
     </div>
 
     <!-- カララントを直接探す（折りたたみ） -->
@@ -189,18 +194,5 @@ function handleExcludeMetallicChange(): void {
         </div>
       </Collapsible.Content>
     </Collapsible.Root>
-
-    <!-- メタリック除外スイッチ（パターン提案にも影響するためトップレベルに保持） -->
-    <div class="flex items-center justify-center text-xs">
-      <label class="flex items-center gap-2 cursor-pointer text-muted-foreground hover:text-foreground transition-colors">
-        <input
-          type="checkbox"
-          class="rounded border-border"
-          checked={excludeMetallic}
-          onchange={handleExcludeMetallicChange}
-        />
-        {$t('common.filter.excludeMetallic')}
-      </label>
-    </div>
   </div>
 {/if}

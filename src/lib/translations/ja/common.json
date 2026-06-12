@@ -18,7 +18,10 @@
     "copy": "コピー",
     "close": "閉じる",
     "clear": "クリア",
+    "undo": "元に戻す",
+    "redo": "やり直す",
     "like": "スキ！",
+    "likeNudge": "気に入った？「スキ！」で保存できるよ",
     "liked": "スキ！しました",
     "alreadyLiked": "スキ！済み",
     "likeError": "スキ！の保存に失敗しました"
@@ -35,7 +38,6 @@
   "nav": {
     "picker": "ピッカー",
     "favorites": "スキ！",
-    "history": "履歴",
     "showcase": "おすすめ",
     "kasane": "かさね色目",
     "about": "このサイトについて",
@@ -46,7 +48,6 @@
     "selectColor": "この色を選択して新しい組み合わせを提案",
     "selectCombination": "この組み合わせを選択",
     "languageSwitch": "言語を切り替え",
-    "help": "使い方を見る",
     "openMenu": "メニューを開く",
     "closeMenu": "メニューを閉じる"
   },

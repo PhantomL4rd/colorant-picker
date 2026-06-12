@@ -132,11 +132,6 @@ export interface PaletteEntry {
   createdAt: string;
 }
 
-// 履歴エントリ
-export interface HistoryEntry extends PaletteEntry {
-  // 追加プロパティなし
-}
-
 // お気に入り（基底型を継承）
 export interface Favorite extends PaletteEntry {
   // 追加プロパティなし
@@ -159,11 +154,6 @@ export interface StoredPaletteEntry {
   suggestedDyes: [StoredDye, StoredDye];
   pattern: HarmonyPattern;
   createdAt: string;
-}
-
-// 保存用履歴エントリ
-export interface StoredHistoryEntry extends StoredPaletteEntry {
-  // 追加プロパティなし
 }
 
 // 保存用お気に入り

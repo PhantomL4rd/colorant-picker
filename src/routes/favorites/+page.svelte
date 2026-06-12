@@ -1,25 +1,17 @@
 <script lang="ts">
-import { Clock, Heart, Loader2 } from '@lucide/svelte';
+import { Loader2 } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
 import FavoritesList from '$lib/components/favorites/FavoritesList.svelte';
-import HistoryList from '$lib/components/favorites/HistoryList.svelte';
 import { loadDyes } from '$lib/stores/dyes';
 import { t } from '$lib/translations';
 
 let isLoading = $state(true);
 
-// URLハッシュからタブを取得 (#history があれば履歴タブ)
-let activeTab = $state<'favorites' | 'history'>('favorites');
-
 onMount(async () => {
   try {
     await loadDyes();
-    // ハッシュから初期タブを設定
-    if (window.location.hash === '#history') {
-      activeTab = 'history';
-    }
     isLoading = false;
   } catch (error) {
     console.error('カララントデータの読み込みに失敗しました:', error);
@@ -27,27 +19,8 @@ onMount(async () => {
   }
 });
 
-// ハッシュ変更を監視
-$effect(() => {
-  const handleHashChange = () => {
-    activeTab = window.location.hash === '#history' ? 'history' : 'favorites';
-  };
-  window.addEventListener('hashchange', handleHashChange);
-  return () => window.removeEventListener('hashchange', handleHashChange);
-});
-
-function setTab(tab: 'favorites' | 'history') {
-  activeTab = tab;
-  window.location.hash = tab === 'history' ? '#history' : '';
-}
-
 function handleSelectFavorite() {
   // お気に入りが選択されたらピッカーページに遷移
-  goto(resolve('/'));
-}
-
-function handleSelectHistory() {
-  // 履歴が選択されたらピッカーページに遷移
   goto(resolve('/'));
 }
 </script>
@@ -56,32 +29,10 @@ function handleSelectHistory() {
   <title>{$t('page.favorites.title')}</title>
 </svelte:head>
 
-<!-- サブタブナビゲーション -->
-<div class="flex justify-center mb-4 px-4">
-  <div class="inline-flex bg-muted rounded-xl p-1 shadow-md">
-    <button
-      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'favorites' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}"
-      onclick={() => setTab('favorites')}
-    >
-      <Heart class="size-5" />
-      {$t('page.favorites.tabs.favorites')}
-    </button>
-    <button
-      class="flex items-center gap-2 px-6 py-3 rounded-lg font-medium transition-all duration-200 {activeTab === 'history' ? 'bg-primary text-primary-foreground shadow-sm' : 'text-muted-foreground hover:text-foreground hover:bg-accent'}"
-      onclick={() => setTab('history')}
-    >
-      <Clock class="size-5" />
-      {$t('page.favorites.tabs.history')}
-    </button>
-  </div>
-</div>
-
 {#if isLoading}
   <div class="flex justify-center items-center min-h-[400px]">
     <Loader2 class="size-8 animate-spin text-primary" />
   </div>
-{:else if activeTab === 'favorites'}
-  <FavoritesList onSelectFavorite={handleSelectFavorite} />
 {:else}
-  <HistoryList onSelectHistory={handleSelectHistory} />
+  <FavoritesList onSelectFavorite={handleSelectFavorite} />
 {/if}

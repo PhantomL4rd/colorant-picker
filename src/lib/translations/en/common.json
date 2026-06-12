@@ -18,7 +18,10 @@
     "copy": "Copy",
     "close": "Close",
     "clear": "Clear",
+    "undo": "Undo",
+    "redo": "Redo",
     "like": "Like!",
+    "likeNudge": "Like it? Tap “Like!” to save it",
     "liked": "Liked!",
     "alreadyLiked": "Liked",
     "likeError": "Failed to save favorite"
@@ -35,7 +38,6 @@
   "nav": {
     "picker": "Harmony",
     "favorites": "Favorites",
-    "history": "History",
     "showcase": "Featured",
     "kasane": "Kasane-irome",
     "about": "About this site",
@@ -46,7 +48,6 @@
     "selectColor": "Select this color for new suggestions",
     "selectCombination": "Select this combination",
     "languageSwitch": "Switch language",
-    "help": "View how to use",
     "openMenu": "Open menu",
     "closeMenu": "Close menu"
   },
