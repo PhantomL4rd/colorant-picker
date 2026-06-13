@@ -181,18 +181,39 @@ export interface ShowcaseData {
 // 季節の識別子
 export type KasaneSeason = 'spring' | 'summer' | 'autumn' | 'winter' | 'misc';
 
+// 表/裏の伝統色の組み合わせ（1つのかさねに複数の異説がある場合は variants に複数並ぶ）
+export interface KasaneVariant {
+  omoteColor: string; // TraditionalColor.id を参照（例: "白"）
+  uraColor: string; // TraditionalColor.id を参照（例: "蘇芳"）
+}
+
 // かさね色目エントリ
 export interface KasaneIrome {
   id: string; // ローマ字表記（例: "ume", "sakura"）
   name: string; // 日本語名（例: "梅"）
   reading: string; // 読み仮名（例: "うめ"）
   season: KasaneSeason; // 所属季節
-  omote: string; // 表カララントID（例: "dye_093"）
-  ura: string; // 裏カララントID（例: "dye_015"）
+  variants: KasaneVariant[]; // 表/裏の解釈。先頭が代表
   hidden?: boolean; // 色差が大きいため非表示
 }
 
 // kasane.jsonのルート型
 export interface KasaneData {
   kasane: KasaneIrome[];
+}
+
+// ===== 伝統色（かさね色目で参照される） =====
+
+export interface TraditionalColor {
+  id: string; // 日本語名（例: "白", "蘇芳"）
+  reading: string; // 読み仮名（例: "しろ"）
+  hex: string; // CSS hex（例: "#f9fbed"）
+  dyeId: string; // 最も近い既存カララントのID（例: "dye_093"）
+  lockDye?: boolean; // true なら自動洗い替えスクリプトの対象外（意図的な選択）
+  note: string; // 出所メモなど
+}
+
+// traditional-colors.jsonのルート型
+export interface TraditionalColorData {
+  colors: TraditionalColor[];
 }

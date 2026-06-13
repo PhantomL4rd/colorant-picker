@@ -111,6 +111,10 @@
       "omote": "Outer",
       "ura": "Inner"
     },
+    "variants": {
+      "button": "Variants",
+      "title": "Variants of {name}"
+    },
     "credit": {
       "reference": "Reference",
       "source": "Yūsoku Kasane-irome"

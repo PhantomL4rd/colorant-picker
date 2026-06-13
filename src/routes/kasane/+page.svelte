@@ -1,17 +1,27 @@
 <script lang="ts">
-import { onMount } from 'svelte';
 import { ExternalLink, Layers, Loader2 } from '@lucide/svelte';
-import { t } from '$lib/translations';
-import { dyeStore, loadDyes } from '$lib/stores/dyes';
+import { onMount } from 'svelte';
 import SeasonSection from '$lib/components/kasane/SeasonSection.svelte';
-import type { KasaneData, KasaneIrome, KasaneSeason } from '$lib/types';
 import * as Alert from '$lib/components/ui/alert';
+import { dyeStore, loadDyes } from '$lib/stores/dyes';
+import { t } from '$lib/translations';
+import type {
+  KasaneData,
+  KasaneIrome,
+  KasaneSeason,
+  TraditionalColor,
+  TraditionalColorData,
+} from '$lib/types';
+
 const SEASONS: KasaneSeason[] = ['spring', 'summer', 'autumn', 'winter', 'misc'];
 
 let kasaneData: KasaneIrome[] = $state([]);
+let traditionalColors: TraditionalColor[] = $state([]);
 let isLoading = $state(true);
 let error: string | null = $state(null);
 let expandedSeasons = $state<Set<KasaneSeason>>(new Set(['spring']));
+
+const colorById = $derived(new Map(traditionalColors.map((c) => [c.id, c])));
 
 const groupedBySeasons = $derived(
   SEASONS.map((season) => ({
@@ -35,11 +45,17 @@ onMount(async () => {
     await loadDyes();
 
     const basePath = import.meta.env.BASE_URL || '';
-    const res = await fetch(`${basePath}data/kasane.json`);
-    if (!res.ok) throw new Error('Failed to load kasane data');
-    const data: KasaneData = await res.json();
+    const [kasaneRes, colorsRes] = await Promise.all([
+      fetch(`${basePath}data/kasane.json`),
+      fetch(`${basePath}data/traditional-colors.json`),
+    ]);
+    if (!kasaneRes.ok) throw new Error('Failed to load kasane data');
+    if (!colorsRes.ok) throw new Error('Failed to load traditional colors data');
+    const data: KasaneData = await kasaneRes.json();
+    const colorsData: TraditionalColorData = await colorsRes.json();
     // hidden: true のエントリを除外（色差が大きいため非表示）
     kasaneData = data.kasane.filter((k) => !k.hidden);
+    traditionalColors = colorsData.colors;
   } catch (e) {
     error = e instanceof Error ? e.message : 'Unknown error';
   } finally {
@@ -76,25 +92,11 @@ onMount(async () => {
           {season}
           {items}
           dyes={$dyeStore}
+          {colorById}
           isExpanded={expandedSeasons.has(season)}
           onToggle={() => toggleSeason(season)}
         />
       {/each}
     </div>
-
-    <footer class="mt-8 p-4 text-xs">
-      <p class="text-foreground">
-        {$t('page.kasane.credit.reference')}:
-        <a
-          href="http://www.kariginu.jp/kikata/kasane-irome.htm"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="underline hover:text-primary inline-flex items-center gap-1"
-        >
-          {$t('page.kasane.credit.source')}
-          <ExternalLink class="size-3" />
-        </a>
-      </p>
-    </footer>
   {/if}
 </div>

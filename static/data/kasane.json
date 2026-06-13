@@ -5,760 +5,1240 @@
       "name": "梅",
       "reading": "うめ",
       "season": "spring",
-      "omote": "dye_093",
-      "ura": "dye_015"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "蘇芳"
+        }
+      ]
     },
     {
       "id": "umegasane",
       "name": "梅重",
       "reading": "うめがさね",
       "season": "spring",
-      "omote": "dye_015",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "濃紅",
+          "uraColor": "紅梅"
+        }
+      ]
     },
     {
       "id": "uraume",
       "name": "裏梅",
       "reading": "うらうめ",
       "season": "spring",
-      "omote": "dye_014",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "紅"
+        }
+      ]
     },
     {
       "id": "tsubomiume",
       "name": "つぼみ梅",
       "reading": "つぼみうめ",
       "season": "spring",
-      "omote": "dye_014",
-      "ura": "dye_011"
+      "variants": [
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "濃蘇芳"
+        }
+      ]
     },
     {
       "id": "koubainioi",
       "name": "紅梅匂",
       "reading": "こうばいにおい",
       "season": "spring",
-      "omote": "dye_014",
-      "ura": "dye_090"
+      "variants": [
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "薄紅梅"
+        }
+      ]
     },
     {
       "id": "wakakusa",
       "name": "若草",
       "reading": "わかくさ",
       "season": "spring",
-      "omote": "dye_055",
-      "ura": "dye_058"
+      "variants": [
+        {
+          "omoteColor": "淡青",
+          "uraColor": "濃青"
+        }
+      ]
     },
     {
       "id": "moegi",
       "name": "萌黄",
       "reading": "もえぎ",
       "season": "spring",
-      "omote": "dye_056",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "女郎花"
+        }
+      ]
     },
     {
       "id": "yanagi",
       "name": "柳",
       "reading": "やなぎ",
       "season": "spring",
-      "omote": "dye_093",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "淡青"
+        }
+      ]
     },
     {
       "id": "kiyanagi",
       "name": "黄柳",
       "reading": "きやなぎ",
       "season": "spring",
-      "omote": "dye_043",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "淡黄",
+          "uraColor": "淡青"
+        }
+      ]
     },
     {
       "id": "aoyanagi",
       "name": "青柳",
       "reading": "あおやなぎ",
       "season": "spring",
-      "omote": "dye_051",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "淡青"
+        }
+      ]
     },
     {
       "id": "sakura",
       "name": "桜",
       "reading": "さくら",
       "season": "spring",
-      "omote": "dye_093",
-      "ura": "dye_019"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "赤"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "二藍"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "葡萄"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "淡紅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "桜花"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "濃蘇芳"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "縹"
+        }
+      ]
     },
     {
       "id": "kabazakura",
       "name": "樺桜",
       "reading": "かばざくら",
       "season": "spring",
-      "omote": "dye_015",
-      "ura": "dye_019"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "赤"
+        }
+      ]
     },
     {
       "id": "sakuramoegi",
       "name": "桜萌黄",
       "reading": "さくらもえぎ",
       "season": "spring",
-      "omote": "dye_056",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "濃二藍"
+        }
+      ]
     },
     {
       "id": "sumire",
       "name": "菫",
       "reading": "すみれ",
       "season": "spring",
-      "omote": "dye_092",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "淡紫"
+        }
+      ]
     },
     {
       "id": "tsubosumire",
       "name": "壺菫",
       "reading": "つぼすみれ",
       "season": "spring",
-      "omote": "dye_092",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "淡青"
+        }
+      ]
     },
     {
       "id": "momo",
       "name": "桃",
       "reading": "もも",
       "season": "spring",
-      "omote": "dye_014",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "淡紅",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "sawarabi",
       "name": "早蕨",
       "reading": "さわらび",
       "season": "spring",
-      "omote": "dye_092",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "tsutsuji",
       "name": "躑躅",
       "reading": "つつじ",
       "season": "spring",
-      "omote": "dye_015",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "benitsutsuji",
       "name": "紅躑躅",
       "reading": "くれないつつじ",
       "season": "spring",
-      "omote": "dye_015",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "薄紅"
+        }
+      ]
     },
     {
       "id": "shirotsutsuji",
       "name": "白躑躅",
       "reading": "しろつつじ",
       "season": "spring",
-      "omote": "dye_093",
-      "ura": "dye_092"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "紫"
+        }
+      ]
     },
     {
       "id": "mochitsutsuji",
       "name": "羊躑躅",
       "reading": "もちつつじ",
       "season": "spring",
-      "omote": "dye_087",
-      "ura": "dye_011"
+      "variants": [
+        {
+          "omoteColor": "薄色",
+          "uraColor": "濃蘇芳"
+        }
+      ]
     },
     {
       "id": "hanayamabuki",
       "name": "花山吹",
       "reading": "はなやまぶき",
       "season": "spring",
-      "omote": "dye_014",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "浅紅",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "urayamabuki",
       "name": "裏山吹",
       "reading": "うらやまぶき",
       "season": "spring",
-      "omote": "dye_043",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "aoyamabuki",
       "name": "青山吹",
       "reading": "あおやまぶき",
       "season": "spring",
-      "omote": "dye_051",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "fuji",
       "name": "藤",
       "reading": "ふじ",
       "season": "spring",
-      "omote": "dye_087",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "薄色",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "botan",
       "name": "牡丹",
       "reading": "ぼたん",
       "season": "spring",
-      "omote": "dye_019",
-      "ura": "dye_093"
+      "variants": [
+        {
+          "omoteColor": "淡蘇芳",
+          "uraColor": "白"
+        }
+      ]
     },
     {
       "id": "unohana",
       "name": "卯花",
       "reading": "うのはな",
       "season": "summer",
-      "omote": "dye_093",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "kaede",
       "name": "鶏冠木",
       "reading": "かえで",
       "season": "summer",
-      "omote": "dye_056",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "wakakaede",
       "name": "若鶏冠木",
       "reading": "わかかえで",
       "season": "summer",
-      "omote": "dye_055",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "淡青",
+          "uraColor": "紅"
+        }
+      ]
     },
     {
       "id": "kakitsubata",
       "name": "杜若",
       "reading": "かきつばた",
       "season": "summer",
-      "omote": "dye_084",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "二藍",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "syoubu",
       "name": "菖蒲",
       "reading": "しょうぶ",
       "season": "summer",
-      "omote": "dye_056",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "紅梅"
+        }
+      ]
     },
     {
       "id": "wakasyoubu",
       "name": "若菖蒲",
       "reading": "わかしょうぶ",
       "season": "summer",
-      "omote": "dye_014",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "淡紅",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "aoi",
       "name": "葵",
       "reading": "あおい",
       "season": "summer",
-      "omote": "dye_055",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "薄青",
+          "uraColor": "薄紫"
+        }
+      ]
     },
     {
       "id": "hanatachubana",
       "name": "花橘",
       "reading": "はなたちばな",
       "season": "summer",
-      "omote": "dye_043",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "朽葉",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "aouchi",
       "name": "棟",
       "reading": "おうち",
       "season": "summer",
-      "omote": "dye_102",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "薄色",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "yomogi",
       "name": "蓬",
       "reading": "よもぎ",
       "season": "summer",
-      "omote": "dye_055",
-      "ura": "dye_058"
+      "variants": [
+        {
+          "omoteColor": "淡萌黄",
+          "uraColor": "濃萌黄"
+        }
+      ]
     },
     {
       "id": "yuri",
       "name": "百合",
       "reading": "ゆり",
       "season": "summer",
-      "omote": "dye_019",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "赤",
+          "uraColor": "朽葉"
+        }
+      ]
     },
     {
       "id": "naeiro",
       "name": "苗色",
       "reading": "なえいろ",
       "season": "summer",
-      "omote": "dye_055",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "淡青",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "wakanae",
       "name": "若苗",
       "reading": "わかなえ",
       "season": "summer",
-      "omote": "dye_055",
-      "ura": "dye_055"
+      "variants": [
+        {
+          "omoteColor": "淡木賊",
+          "uraColor": "淡木賊"
+        }
+      ]
     },
     {
       "id": "soubi",
       "name": "薔薇",
       "reading": "そうび",
       "season": "summer",
-      "omote": "dye_014",
-      "ura": "dye_092"
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "紫"
+        }
+      ]
     },
     {
       "id": "nadeshiko",
       "name": "撫子",
       "reading": "なでしこ",
       "season": "summer",
-      "omote": "dye_014",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "薄蘇芳",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "紅",
+          "uraColor": "淡紫"
+        },
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "紅梅"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "濃蘇芳"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "淡紫"
+        },
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "seminoha",
       "name": "蝉の羽",
       "reading": "せみのは",
       "season": "summer",
-      "omote": "dye_011",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "檜皮色",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "aokarakami",
       "name": "青唐紙",
       "reading": "あおからかみ",
       "season": "summer",
-      "omote": "dye_047",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "kikyou",
       "name": "桔梗",
       "reading": "ききょう",
       "season": "summer",
-      "omote": "dye_084",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "二藍",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "ominaeshi",
       "name": "女郎花",
       "reading": "おみなえし",
       "season": "autumn",
-      "omote": "dye_052",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "青×黄",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "hagi",
       "name": "萩",
       "reading": "はぎ",
       "season": "autumn",
-      "omote": "dye_091",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "薄紫",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "hagigasane",
       "name": "萩重",
       "reading": "はぎがさね",
       "season": "autumn",
-      "omote": "dye_092",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "hanasusuki",
       "name": "花薄",
       "reading": "はなすすき",
       "season": "autumn",
-      "omote": "dye_093",
-      "ura": "dye_067"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "縹"
+        }
+      ]
     },
     {
       "id": "shion",
       "name": "紫苑",
       "reading": "しおん",
       "season": "autumn",
-      "omote": "dye_087",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "薄色",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "momiji",
       "name": "紅葉",
       "reading": "もみじ",
       "season": "autumn",
-      "omote": "dye_019",
-      "ura": "dye_015"
+      "variants": [
+        {
+          "omoteColor": "赤",
+          "uraColor": "濃赤"
+        }
+      ]
     },
     {
       "id": "hatsumomiji",
       "name": "初紅葉",
       "reading": "はつもみじ",
       "season": "autumn",
-      "omote": "dye_056",
-      "ura": "dye_055"
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "薄萌黄"
+        }
+      ]
     },
     {
       "id": "kimomiji",
       "name": "黄紅葉",
       "reading": "きもみじ",
       "season": "autumn",
-      "omote": "dye_056",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "aomomiji",
       "name": "青紅葉",
       "reading": "あおもみじ",
       "season": "autumn",
-      "omote": "dye_051",
-      "ura": "dye_040"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "朽葉"
+        }
+      ]
     },
     {
       "id": "hajimomiji",
       "name": "櫨紅葉",
       "reading": "はじもみじ",
       "season": "autumn",
-      "omote": "dye_015",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "kuchiba",
       "name": "朽葉",
       "reading": "くちば",
       "season": "autumn",
-      "omote": "dye_019",
-      "ura": "dye_040"
+      "variants": [
+        {
+          "omoteColor": "濃紅",
+          "uraColor": "濃黄"
+        }
+      ]
     },
     {
       "id": "akakuchiba",
       "name": "赤朽葉",
       "reading": "あかくちば",
       "season": "autumn",
-      "omote": "dye_041",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "紅×黄",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "koguri",
       "name": "小栗色",
       "reading": "こぐりいろ",
       "season": "autumn",
-      "omote": "dye_098",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "秘色",
+          "uraColor": "淡青"
+        }
+      ]
     },
     {
       "id": "ochiguri",
       "name": "落栗色",
       "reading": "おちぐりいろ",
       "season": "autumn",
-      "omote": "dye_015",
-      "ura": "dye_039"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "香"
+        }
+      ]
     },
     {
       "id": "ogi",
       "name": "荻",
       "reading": "おぎ",
       "season": "autumn",
-      "omote": "dye_015",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "mayumi",
       "name": "檀",
       "reading": "まゆみ",
       "season": "autumn",
-      "omote": "dye_015",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "asagao",
       "name": "槿",
       "reading": "あさがお",
       "season": "autumn",
-      "omote": "dye_067",
-      "ura": "dye_067"
+      "variants": [
+        {
+          "omoteColor": "縹",
+          "uraColor": "縹"
+        }
+      ]
     },
     {
       "id": "shinobu",
       "name": "忍",
       "reading": "しのぶ",
       "season": "autumn",
-      "omote": "dye_055",
-      "ura": "dye_015"
+      "variants": [
+        {
+          "omoteColor": "淡萌黄",
+          "uraColor": "蘇芳"
+        }
+      ]
     },
     {
       "id": "haji",
       "name": "櫨",
       "reading": "はじ",
       "season": "autumn",
-      "omote": "dye_040",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "朽葉",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "kiku",
       "name": "菊",
       "reading": "きく",
       "season": "autumn",
-      "omote": "dye_093",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "suounokiku",
       "name": "蘇芳菊",
       "reading": "すおうのきく",
       "season": "autumn",
-      "omote": "dye_093",
-      "ura": "dye_011"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "濃蘇芳"
+        }
+      ]
     },
     {
       "id": "kugatsugiku",
       "name": "九月菊",
       "reading": "くがつぎく",
       "season": "autumn",
-      "omote": "dye_093",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "kigiku",
       "name": "黄菊",
       "reading": "きぎく",
       "season": "autumn",
-      "omote": "dye_047",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "kurenaigiku",
       "name": "紅菊",
       "reading": "くれないぎく",
       "season": "autumn",
-      "omote": "dye_014",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "utsuroigiku",
       "name": "移菊",
       "reading": "うつろいぎく",
       "season": "autumn",
-      "omote": "dye_091",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "薄紫",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紫"
+        }
+      ]
     },
     {
       "id": "tsubomigiku",
       "name": "つぼみ菊",
       "reading": "つぼみぎく",
       "season": "autumn",
-      "omote": "dye_014",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "nokorigiku",
       "name": "残菊",
       "reading": "のこりぎく",
       "season": "autumn",
-      "omote": "dye_043",
-      "ura": "dye_093"
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "uraColor": "白"
+        }
+      ]
     },
     {
       "id": "hagiku",
       "name": "葉菊",
       "reading": "はぎく",
       "season": "autumn",
-      "omote": "dye_093",
-      "ura": "dye_081"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "紺青"
+        }
+      ]
     },
     {
       "id": "rindou",
       "name": "竜胆",
       "reading": "りんどう",
       "season": "autumn",
-      "omote": "dye_015",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "淡蘇芳",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "黄",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "濃縹",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "萌黄"
+        }
+      ]
     },
     {
       "id": "mushiao",
       "name": "虫青",
       "reading": "むしあお",
       "season": "winter",
-      "omote": "dye_051",
-      "ura": "dye_084"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "kareiro",
       "name": "枯色",
       "reading": "かれいろ",
       "season": "winter",
-      "omote": "dye_047",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "koke",
       "name": "苔",
       "reading": "こけ",
       "season": "winter",
-      "omote": "dye_042",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "濃香",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "kori",
       "name": "氷",
       "reading": "こおり",
       "season": "winter",
-      "omote": "dye_114",
-      "ura": "dye_093"
+      "variants": [
+        {
+          "omoteColor": "白瑩",
+          "uraColor": "白"
+        }
+      ]
     },
     {
       "id": "korigasane",
       "name": "氷重",
       "reading": "こおりがさね",
       "season": "winter",
-      "omote": "dye_047",
-      "ura": "dye_093"
+      "variants": [
+        {
+          "omoteColor": "鳥ノ子",
+          "uraColor": "白"
+        }
+      ]
     },
     {
       "id": "yukinoshita",
       "name": "雪の下",
       "reading": "ゆきのした",
       "season": "winter",
-      "omote": "dye_093",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "紅梅"
+        }
+      ]
     },
     {
       "id": "tsubaki",
       "name": "椿",
       "reading": "つばき",
       "season": "winter",
-      "omote": "dye_015",
-      "ura": "dye_019"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "赤"
+        }
+      ]
     },
     {
       "id": "matsugasane",
       "name": "松重",
       "reading": "まつがさね",
       "season": "misc",
-      "omote": "dye_051",
-      "ura": "dye_092"
+      "variants": [
+        {
+          "omoteColor": "青",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "赤"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "赤"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "濃蘇芳"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "shisoku",
       "name": "脂燭",
       "reading": "しそく",
       "season": "misc",
-      "omote": "dye_092",
-      "ura": "dye_014"
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "紅"
+        }
+      ]
     },
     {
       "id": "kou",
       "name": "香",
       "reading": "こう",
       "season": "misc",
-      "omote": "dye_039",
-      "ura": "dye_039"
+      "variants": [
+        {
+          "omoteColor": "香色",
+          "uraColor": "香色"
+        }
+      ]
     },
     {
       "id": "nigairo",
       "name": "苦色",
       "reading": "にがいろ",
       "season": "misc",
-      "omote": "dye_039",
-      "ura": "dye_084"
+      "variants": [
+        {
+          "omoteColor": "香",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "kurumi",
       "name": "胡桃色",
       "reading": "くるみいろ",
       "season": "misc",
-      "omote": "dye_039",
-      "ura": "dye_056"
+      "variants": [
+        {
+          "omoteColor": "香",
+          "uraColor": "青"
+        }
+      ]
     },
     {
       "id": "suoukou",
       "name": "蘇芳香",
       "reading": "すおうこう",
       "season": "misc",
-      "omote": "dye_015",
-      "ura": "dye_043"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "黄"
+        }
+      ]
     },
     {
       "id": "hisoku",
       "name": "秘色",
       "reading": "ひそく",
       "season": "misc",
-      "omote": "dye_078",
-      "ura": "dye_052"
+      "variants": [
+        {
+          "omoteColor": "瑠璃色",
+          "uraColor": "淡青"
+        }
+      ]
     },
     {
       "id": "hanada",
       "name": "花田",
       "reading": "はなだ",
       "season": "misc",
-      "omote": "dye_067",
-      "ura": "dye_067"
+      "variants": [
+        {
+          "omoteColor": "縹",
+          "uraColor": "縹"
+        }
+      ]
     },
     {
       "id": "imayouiro",
       "name": "今様色",
       "reading": "いまよういろ",
       "season": "misc",
-      "omote": "dye_014",
-      "ura": "dye_015"
+      "variants": [
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "濃紅梅"
+        }
+      ]
     },
     {
       "id": "akairo",
       "name": "赤色",
       "reading": "あかいろ",
       "season": "misc",
-      "omote": "dye_019",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "赤",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "ebizome",
       "name": "葡萄染",
       "reading": "えびぞめ",
       "season": "misc",
-      "omote": "dye_015",
-      "ura": "dye_067"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "縹"
+        }
+      ]
     },
     {
       "id": "hiwadairo",
       "name": "檜皮色",
       "reading": "ひわだいろ",
       "season": "misc",
-      "omote": "dye_015",
-      "ura": "dye_091"
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "二藍"
+        }
+      ]
     },
     {
       "id": "miruiro",
       "name": "海松色",
       "reading": "みるいろ",
       "season": "misc",
-      "omote": "dye_056",
-      "ura": "dye_067"
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "縹"
+        }
+      ]
     },
     {
       "id": "tokusa",
       "name": "木賊",
       "reading": "とくさ",
       "season": "misc",
-      "omote": "dye_056",
-      "ura": "dye_093"
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "白"
+        }
+      ]
     },
     {
       "id": "kurotokusa",
       "name": "黒木賊",
       "reading": "くろとくさ",
       "season": "misc",
-      "omote": "dye_057",
-      "ura": "dye_093"
+      "variants": [
+        {
+          "omoteColor": "青黒味",
+          "uraColor": "白"
+        }
+      ]
     }
   ]
 }

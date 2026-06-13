@@ -111,6 +111,10 @@
       "omote": "表",
       "ura": "裏"
     },
+    "variants": {
+      "button": "異説",
+      "title": "{name}の異説"
+    },
     "credit": {
       "reference": "参照元",
       "source": "有職の「かさね色目」"
