@@ -38,7 +38,7 @@
  */
 
 import fs from 'node:fs';
-import { converter, parse } from 'culori';
+import { parse } from 'culori';
 import { differenceEuclidean } from 'culori/fn';
 import { Helmlab } from 'helmlab';
 
@@ -46,10 +46,6 @@ const TRADITIONAL_COLORS_PATH = './static/data/traditional-colors.json';
 const DYES_PATH = './static/data/dyes.json';
 const EXCLUDED_TAGS = ['metallic', 'vivid'];
 const DEFAULT_DELTA_THRESHOLD = 0.08;
-// 対象色が彩度を持つときに「明度だけ近いグレー寄り染料」が選ばれるのを防ぐ閾値。
-// primary（OKLab）の候補プール絞り込みにのみ使う。helmlab フォールバック側はガードなし。
-const CHROMATIC_TARGET_THRESHOLD = 0.06;
-const DEFAULT_CHROMA_RATIO_MIN = 0.4;
 
 function parseNumberArg(name, fallback) {
   const prefix = `--${name}=`;
@@ -62,10 +58,8 @@ function parseNumberArg(name, fallback) {
 
 const dryRun = process.argv.includes('--dry-run');
 const deltaThreshold = parseNumberArg('delta-threshold', DEFAULT_DELTA_THRESHOLD);
-const chromaRatioMin = parseNumberArg('chroma-ratio-min', DEFAULT_CHROMA_RATIO_MIN);
 
 const deltaE = differenceEuclidean('oklab');
-const toOklch = converter('oklch');
 const helmlab = new Helmlab();
 
 const dyes = JSON.parse(fs.readFileSync(DYES_PATH, 'utf-8')).dyes;
@@ -80,24 +74,15 @@ const candidateDyes = dyes
   .filter((d) => !d.tags || !d.tags.some((tag) => EXCLUDED_TAGS.includes(tag)))
   .map((d) => {
     const oklab = parse(`rgb(${d.rgb.r}, ${d.rgb.g}, ${d.rgb.b})`);
-    const oklch = toOklch(oklab);
     const helm = helmlab.fromHex(rgbToHex(d.rgb));
-    return { dye: d, oklab, hue: oklch.h, chroma: oklch.c, helm };
+    return { dye: d, oklab, helm };
   });
 const dyeById = new Map(dyes.map((d) => [d.id, d]));
 
-function eligibleDyes(targetChroma) {
-  if ((targetChroma ?? 0) < CHROMATIC_TARGET_THRESHOLD) return candidateDyes;
-  const minDyeChroma = targetChroma * chromaRatioMin;
-  const filtered = candidateDyes.filter((c) => (c.chroma ?? 0) >= minDyeChroma);
-  return filtered.length > 0 ? filtered : candidateDyes;
-}
-
-function findClosestByDeltaE(targetOklab, targetChroma) {
-  const pool = eligibleDyes(targetChroma);
+function findClosestByDeltaE(targetOklab) {
   let minDelta = Infinity;
   let closest = null;
-  for (const c of pool) {
+  for (const c of candidateDyes) {
     const delta = deltaE(targetOklab, c.oklab);
     if (delta < minDelta) {
       minDelta = delta;
@@ -123,8 +108,7 @@ function findClosestByHelmlab(targetHelm, targetOklab) {
 function resolveDye(hex) {
   const target = parse(hex);
   if (!target) throw new Error(`invalid hex: ${hex}`);
-  const targetLch = toOklch(target);
-  const primary = findClosestByDeltaE(target, targetLch.c);
+  const primary = findClosestByDeltaE(target);
 
   if (primary.delta <= deltaThreshold) {
     return { ...primary, fallback: false };
@@ -179,9 +163,7 @@ for (const color of traditionalData.colors) {
 }
 
 console.log(`伝統色: ${traditionalData.colors.length} 色 (うちロック: ${lockedSkipped} 色)`);
-console.log(
-  `設定: --delta-threshold=${deltaThreshold} --chroma-ratio-min=${chromaRatioMin} (helmlab fallback)`,
-);
+console.log(`設定: --delta-threshold=${deltaThreshold} (helmlab fallback)`);
 console.log(`helmlab フォールバック発動: ${fallbackUsed} 件`);
 console.log(`変更: ${changed} 件`);
 console.log('');

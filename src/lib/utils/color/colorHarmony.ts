@@ -118,44 +118,23 @@ export function findNearestDyes(
   return result;
 }
 
-// ターゲットが彩度を持つときに「明度だけ近いグレー寄り染料」が選ばれるのを防ぐための閾値。
-// ターゲット chroma がこの値以上なら、染料 chroma が target * CHROMA_RATIO_MIN 未満の染料を候補から除外する。
-// scripts/sync-traditional-color-dyes.mjs と同じ思想（係数値は揃えている）。
-const CHROMATIC_TARGET_THRESHOLD = 0.06;
-const CHROMA_RATIO_MIN = 0.4;
-
 // helmlab フォールバック: 主候補 (OKLab deltaE 最近傍) の delta がこの閾値を超えたら、
 // helmlab の知覚距離 (distanceFromLab) で全プールから最近傍を選び直す。
-// 旧 hue±45° / excess≤0.05 / min-target-chroma ガードは廃止し、helmlab に一任。
+// 旧 hue±45° / excess≤0.05 / chroma ガードは廃止し、helmlab に一任。
 // kasane の sync-traditional-color-dyes.mjs と同じ思想・同じ閾値。
 const HELM_FALLBACK_DELTA_THRESHOLD = 0.08;
-
-function oklabChroma(oklab: Oklab): number {
-  return Math.sqrt(oklab.a * oklab.a + oklab.b * oklab.b);
-}
 
 /**
  * Find the nearest dyes for each targets in a palette based on color difference in Oklab space.
  *
- * - chroma ガード: ターゲットが有彩色（chroma >= CHROMATIC_TARGET_THRESHOLD）の場合、
- *   著しく彩度が落ちた染料を候補から除外して「グレー寄り染料の混入で配色が濁る」のを防ぐ。
- *   primary（OKLab）経路のみに適用し、helmlab フォールバック経路では撤廃する。
- * - helmlab フォールバック: 主候補 deltaE が閾値超なら helmlab 知覚距離で再探索。
- *   「Rose Pink contrast で Cream Yellow が選ばれる」のような色相意図破綻を防ぐ。
+ * - primary: 全プールから OKLab deltaE 最近傍を選ぶ
+ * - helmlab フォールバック: 主候補 deltaE が閾値超なら helmlab 知覚距離で再探索
+ *   「Rose Pink contrast で Cream Yellow が選ばれる」のような色相意図破綻を防ぐ
  */
 export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): DyeCandidate[] {
   const perTarget = targets.map((target) => {
     const targetOklab = toOklab(target) as Oklab;
-    const targetChroma = oklabChroma(targetOklab);
-    const pool =
-      targetChroma >= CHROMATIC_TARGET_THRESHOLD
-        ? (() => {
-            const minDyeChroma = targetChroma * CHROMA_RATIO_MIN;
-            const filtered = palette.filter((dye) => oklabChroma(dye.oklab) >= minDyeChroma);
-            return filtered.length > 0 ? filtered : palette;
-          })()
-        : palette;
-    const candidates: DyeCandidate[] = pool
+    const candidates: DyeCandidate[] = palette
       .map((dye) => ({ dye, delta: deltaEOklab(targetOklab, dye.oklab) }))
       .sort((a, b) => a.delta - b.delta);
     return { target, targetOklab, candidates };
@@ -260,7 +239,7 @@ function generateTintShadeTargets(primaryDye: DyeProps, direction: 'tint' | 'sha
 /**
  * メタリックタグの提案 dye を、最も色味が近い非メタリック dye に置き換える。
  * - 非メタリックスロットには一切触れない（計算ロジックは常に同じ全染料プールで動く前提）
- * - 最近傍探索は `findNearestDyesInOklab` を再利用（chroma ガード等の挙動が共通になる）
+ * - 最近傍探索は `findNearestDyesInOklab` を再利用
  * - 主色 / もう一方の非メタリック提案と重複しないよう、候補プールから事前に除外
  */
 function swapMetallicSuggestions(

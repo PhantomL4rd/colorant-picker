@@ -48,28 +48,24 @@ node scripts/sync-traditional-color-dyes.mjs             # 本番実行（書き
 このスクリプトが行うこと：
 
 - `traditional-colors.json` の各伝統色について、`dyes.json` の中から OKLab deltaE で最も近いカララントを探す
-- **彩度フィルタ**: 対象色の OKLCH chroma が 0.06 以上のとき、染料 chroma が `target * --chroma-ratio-min`（デフォルト 0.4）未満のグレー寄り染料を候補から除外。「明度だけ一致するグレー」が選ばれるのを防ぐ
 - 第一候補の deltaE が `--delta-threshold`（デフォルト 0.08）を超えたら、
-  「色相距離が `--hue-tolerance`（デフォルト ±15°）以内のカララントの中で deltaE 最小」を選び直す（色相フォールバック）
-- 色相フォールバックの deltaE 増加分が `--fallback-max-excess`（デフォルト 0.05）を超えるなら、フォールバックを採用せず第一候補に戻す（色相範囲内にまともな候補がない場合の暴走防止）
+  helmlab の知覚距離（`distanceFromLab`）で全候補から最近傍を選び直す（helmlab フォールバック）
 - メタリック/ビビッド系のタグを持つカララントは除外
 - `lockDye: true` が付いたエントリ（意図的に特定のカララントを採用しているもの）はスキップ
 - `dyeId` を更新
 
-#### 色相フォールバックのチューニング
+#### フォールバック閾値の調整
 
 ```bash
-# 色相フォールバックを発動しやすくする（より積極的に色相を合わせる）
-node scripts/sync-traditional-color-dyes.mjs --hue-tolerance=10
+# helmlab フォールバックを発動しやすくする
+node scripts/sync-traditional-color-dyes.mjs --delta-threshold=0.06
 
-# 色差優先で従来挙動に近づける
-node scripts/sync-traditional-color-dyes.mjs --hue-tolerance=25 --delta-threshold=0.12
+# 色差優先で発動しにくくする
+node scripts/sync-traditional-color-dyes.mjs --delta-threshold=0.12
 ```
 
-例: `赤 (#c82a20)` は OKLab deltaE 最小では `Sunset Orange`（オレンジ）になってしまうが、
-色相フォールバックが発動して `Blood Red` に置き換わる。
-彩度が極端に低い（OKLCH chroma < 0.04）色相が不安定なエントリは色相フォールバックを適用せず、
-素直に最小 deltaE を採用する。
+例: `赤 (#ec001a)` は OKLab deltaE 最小では `Sunset Orange`（オレンジ）になってしまうが、
+helmlab フォールバックが発動して `Coral Pink` に置き換わる。
 
 ### 3. 結果を確認
 
@@ -77,14 +73,12 @@ node scripts/sync-traditional-color-dyes.mjs --hue-tolerance=25 --delta-threshol
 
 ```
 伝統色: 51 色 (うちロック: 1 色)
-設定: --delta-threshold=0.08 --hue-tolerance=15
-色相フォールバック発動: 3 件
-変更: 2 件
+設定: --delta-threshold=0.08 (helmlab fallback)
+helmlab フォールバック発動: 5 件
+変更: 1 件
 
-■ 赤 (#c82a20) [色相フォールバック]
-  dye_019 (Sunset Orange) → dye_015 (Blood Red)  deltaE=0.1074
-■ 縹 (#3f729f)
-  dye_067 (Seafog Blue) → dye_068 (Peacock Blue)  deltaE=0.0450
+■ 薄蘇芳 (#a25768)
+  dye_091 (Plum Purple) → dye_009 (Lilac Purple)  deltaE=0.0679
 
 書き込み完了: ./static/data/traditional-colors.json
 ```
