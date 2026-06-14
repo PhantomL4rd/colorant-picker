@@ -112,20 +112,45 @@ export function findNearestDyes(
 const CHROMATIC_TARGET_THRESHOLD = 0.06;
 const CHROMA_RATIO_MIN = 0.4;
 
+// 色相フォールバック: 主候補の deltaE が大きく、ターゲットが有彩色なら、
+// 色相が近い候補のうち「主候補との deltaE 差が許容範囲内」のものに切り替える。
+// scripts/sync-traditional-color-dyes.mjs の同名ロジックと思想を揃えているが、
+// 通常配色は伝統色再現より色相寛容なので HUE_TOLERANCE_DEG を広めに取っている。
+const HUE_FALLBACK_DELTA_THRESHOLD = 0.08;
+const HUE_FALLBACK_TOLERANCE_DEG = 30;
+const HUE_FALLBACK_MIN_TARGET_CHROMA = 0.04;
+const HUE_FALLBACK_MAX_EXCESS = 0.05;
+const ACHROMATIC_EPSILON = 1e-6;
+
 function oklabChroma(oklab: Oklab): number {
   return Math.sqrt(oklab.a * oklab.a + oklab.b * oklab.b);
+}
+
+function oklabHue(oklab: Oklab): number | undefined {
+  if (oklab.a * oklab.a + oklab.b * oklab.b < ACHROMATIC_EPSILON) return undefined;
+  return ((Math.atan2(oklab.b, oklab.a) * 180) / Math.PI + 360) % 360;
+}
+
+function hueDistance(a: number | undefined, b: number | undefined): number {
+  if (a == null || b == null) return Number.POSITIVE_INFINITY;
+  const d = Math.abs(a - b) % HUE_CIRCLE_MAX;
+  return d > HUE_CIRCLE_MAX / 2 ? HUE_CIRCLE_MAX - d : d;
 }
 
 /**
  * Find the nearest dyes for each targets in a palette based on color difference in Oklab space.
  *
- * ターゲットが有彩色（chroma >= CHROMATIC_TARGET_THRESHOLD）の場合、
- * 著しく彩度が落ちた染料を候補から除外して「グレー寄り染料の混入で配色が濁る」のを防ぐ。
+ * - chroma ガード: ターゲットが有彩色（chroma >= CHROMATIC_TARGET_THRESHOLD）の場合、
+ *   著しく彩度が落ちた染料を候補から除外して「グレー寄り染料の混入で配色が濁る」のを防ぐ。
+ * - 色相フォールバック: pick 時に「主候補の deltaE が大きく、ターゲットが有彩色」なら
+ *   色相が近い許容範囲内の代替候補へ切り替える。dedup で 2 番手以降に色相意図破綻が
+ *   起こるケース（例: Rose Pink contrast で Cream Yellow が選ばれる）を防ぐ。
  */
 export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): DyeCandidate[] {
-  const candidatesByTarget = targets.map((target) => {
+  const perTarget = targets.map((target) => {
     const targetOklab = toOklab(target) as Oklab;
     const targetChroma = oklabChroma(targetOklab);
+    const targetHue = oklabHue(targetOklab);
     const pool =
       targetChroma >= CHROMATIC_TARGET_THRESHOLD
         ? (() => {
@@ -134,21 +159,37 @@ export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): Dye
             return filtered.length > 0 ? filtered : palette;
           })()
         : palette;
-    const candidates: DyeCandidate[] = pool.map((dye) => ({
-      dye,
-      delta: deltaEOklab(targetOklab, dye.oklab),
-    }));
-    return candidates.sort((a, b) => a.delta - b.delta);
+    const candidates: DyeCandidate[] = pool
+      .map((dye) => ({ dye, delta: deltaEOklab(targetOklab, dye.oklab) }))
+      .sort((a, b) => a.delta - b.delta);
+    return { targetChroma, targetHue, candidates };
   });
 
   const results: DyeCandidate[] = [];
   const used = new Set<string>();
-  for (const candidates of candidatesByTarget) {
-    const candidate = candidates.find((c) => !used.has(c.dye.id));
-    if (candidate) {
-      results.push(candidate);
-      used.add(candidate.dye.id);
+  for (const { targetChroma, targetHue, candidates } of perTarget) {
+    const primary = candidates.find((c) => !used.has(c.dye.id));
+    if (!primary) continue;
+
+    let chosen = primary;
+    if (
+      targetChroma >= HUE_FALLBACK_MIN_TARGET_CHROMA &&
+      primary.delta > HUE_FALLBACK_DELTA_THRESHOLD
+    ) {
+      // candidates は delta 昇順なので、excess を超えた時点で打ち切れる。
+      // 主候補自身が in-hue ならそのまま採用されて即終了。
+      for (const c of candidates) {
+        if (used.has(c.dye.id)) continue;
+        if (c.delta - primary.delta > HUE_FALLBACK_MAX_EXCESS) break;
+        if (hueDistance(targetHue, oklabHue(c.dye.oklab)) <= HUE_FALLBACK_TOLERANCE_DEG) {
+          chosen = c;
+          break;
+        }
+      }
     }
+
+    results.push(chosen);
+    used.add(chosen.dye.id);
   }
 
   return results;
