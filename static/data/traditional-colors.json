@@ -24,9 +24,9 @@
     {
       "id": "黄",
       "reading": "き",
-      "hex": "#ffd900",
-      "dyeId": "dye_040",
-      "note": "出所: irocore/colordic 一致"
+      "hex": "#f5e56b",
+      "dyeId": "dye_043",
+      "note": "出所: 刈安色 (colordic) — 平安期の代表的な黄染。irocore の現代「黄色」#ffd900 は鮮烈すぎるため差し替え"
     },
     {
       "id": "紅",
@@ -159,7 +159,7 @@
       "id": "淡紫",
       "reading": "あわむらさき",
       "hex": "#874da1",
-      "dyeId": "dye_091",
+      "dyeId": "dye_084",
       "note": "出所: 重ねの色目辞典"
     },
     {
@@ -173,7 +173,7 @@
       "id": "淡黄",
       "reading": "あわき",
       "hex": "#e6ec2e",
-      "dyeId": "dye_047",
+      "dyeId": "dye_050",
       "note": "出所: 重ねの色目辞典"
     },
     {
@@ -201,7 +201,7 @@
       "id": "薄色",
       "reading": "うすいろ",
       "hex": "#a869be",
-      "dyeId": "dye_084",
+      "dyeId": "dye_090",
       "note": "出所: 重ねの色目辞典 (薄紫系)"
     },
     {
