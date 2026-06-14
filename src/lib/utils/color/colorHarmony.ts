@@ -257,6 +257,12 @@ const TINT_SHADE_PRIMARY_CHROMA_THRESHOLD = 0.02;
 const TINT_SHADE_HUE_TOL_DEG = 22;
 const TINT_SHADE_HUE_TIGHT_DEG = 15;
 const TINT_SHADE_MIN_DYE_CHROMA = 0.025;
+// 「色味のあるカララントの極端な tint は white、shade は black に寄っても自然」という直感を
+// 満たすため、無彩色（chroma < ACHROMATIC_CHROMA）の染料は明度が極端なものだけ pool に許す。
+// 中間明度の grey（Slate Grey 等）が低彩度主色のティント候補に紛れ込むのは引き続き防ぐ。
+const TINT_SHADE_ACHROMATIC_CHROMA = 0.025;
+const TINT_SHADE_LIGHT_ACHROMATIC_L = 0.85;
+const TINT_SHADE_DARK_ACHROMATIC_L = 0.3;
 
 /**
  * ティント/シェード用のターゲット色2つをOKLCH明度操作で生成
@@ -348,17 +354,22 @@ function computeSuggestedDyes(
     const primaryHue = oklabHue(primaryDye.oklab);
     const enforceHue =
       primaryChroma >= TINT_SHADE_PRIMARY_CHROMA_THRESHOLD && primaryHue !== undefined;
+    const isTint = pattern === 'tint';
     const availableDyes = allDyes.filter((d) => {
       if (d.id === primaryDye.id) return false;
       if (!enforceHue) return true;
       const dyeHue = oklabHue(d.oklab);
       const dyeChroma = oklabChroma(d.oklab);
       const hueGap = hueDistance(primaryHue, dyeHue);
-      if (hueGap > TINT_SHADE_HUE_TOL_DEG) return false;
-      // 主色とほぼ同 hue の染料は chroma を問わず採用（同系色の暗バリエーション救済）
       if (hueGap <= TINT_SHADE_HUE_TIGHT_DEG) return true;
-      // 中間レンジ（10〜22°）は無彩色寄りを排除
-      return dyeChroma >= TINT_SHADE_MIN_DYE_CHROMA;
+      if (hueGap <= TINT_SHADE_HUE_TOL_DEG && dyeChroma >= TINT_SHADE_MIN_DYE_CHROMA) return true;
+      // 無彩色寄りの染料は「ティントなら極端に明るい white 系」「シェードなら極端に暗い black 系」
+      // だけ pool に許す。中間明度の grey は引き続き除外して色味の喪失を防ぐ。
+      if (dyeChroma < TINT_SHADE_ACHROMATIC_CHROMA) {
+        if (isTint && d.oklab.l >= TINT_SHADE_LIGHT_ACHROMATIC_L) return true;
+        if (!isTint && d.oklab.l <= TINT_SHADE_DARK_ACHROMATIC_L) return true;
+      }
+      return false;
     });
     const targets = generateTintShadeTargets(primaryDye, pattern);
     const nearestDyes = findNearestDyesInOklab(targets, availableDyes).map((c) => c.dye);
