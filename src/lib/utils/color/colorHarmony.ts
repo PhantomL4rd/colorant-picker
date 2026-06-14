@@ -241,6 +241,23 @@ const TINT_SHADE_OFFSETS = { NEAR: 0.1, FAR: 0.18 } as const;
 const OKLCH_L_MIN = 0.01;
 const OKLCH_L_MAX = 0.99;
 
+// ティント/シェードは「主色の色相を保ったまま明度違いを並べる」ことが目的。
+// findNearestDyesInOklab の chroma ガードは target chroma >= CHROMATIC_TARGET_THRESHOLD (0.06)
+// のときだけ発動するため、主色が低彩度（例: Currant Purple, oklab chroma ≈ 0.028）の場合
+// 明度だけが近い無彩色（Slate Grey 等）や色相違いの染料（Gloom Purple のシェードで Midnight Blue
+// が出る等）が最近傍に選ばれて色味/色相が崩れる。主色が「色付き」と言える彩度を持っているときは、
+// 主色の色相から大きく外れた染料と、近接色相でない無彩色寄りの染料を候補から除外する。
+// 主色自体が grey 系のときはフィルタを掛けない（grey の tint/shade は同系統 grey が望ましい）。
+const TINT_SHADE_PRIMARY_CHROMA_THRESHOLD = 0.02;
+// hue が ±HUE_TOL_DEG を超えたら別色扱いで除外。
+// ±HUE_TIGHT_DEG 以内なら同系色とみなし chroma を問わず採用（Dark Purple のような
+// 「主色と同じ hue の暗バージョン」を shade 候補として確保するため）。
+// それ以外（HUE_TIGHT 〜 HUE_TOL の範囲）は chroma >= MIN_DYE_CHROMA を要求して
+// 無彩色寄りの染料を弾く。
+const TINT_SHADE_HUE_TOL_DEG = 22;
+const TINT_SHADE_HUE_TIGHT_DEG = 15;
+const TINT_SHADE_MIN_DYE_CHROMA = 0.025;
+
 /**
  * ティント/シェード用のターゲット色2つをOKLCH明度操作で生成
  * @param primaryDye 主色
@@ -327,7 +344,22 @@ function computeSuggestedDyes(
 
   // ティント（淡色）/ シェード（暗色）: 主色の色相・彩度を保ち、明度を上下にずらした2色
   if (pattern === 'tint' || pattern === 'shade') {
-    const availableDyes = allDyes.filter((d) => d.id !== primaryDye.id);
+    const primaryChroma = oklabChroma(primaryDye.oklab);
+    const primaryHue = oklabHue(primaryDye.oklab);
+    const enforceHue =
+      primaryChroma >= TINT_SHADE_PRIMARY_CHROMA_THRESHOLD && primaryHue !== undefined;
+    const availableDyes = allDyes.filter((d) => {
+      if (d.id === primaryDye.id) return false;
+      if (!enforceHue) return true;
+      const dyeHue = oklabHue(d.oklab);
+      const dyeChroma = oklabChroma(d.oklab);
+      const hueGap = hueDistance(primaryHue, dyeHue);
+      if (hueGap > TINT_SHADE_HUE_TOL_DEG) return false;
+      // 主色とほぼ同 hue の染料は chroma を問わず採用（同系色の暗バリエーション救済）
+      if (hueGap <= TINT_SHADE_HUE_TIGHT_DEG) return true;
+      // 中間レンジ（10〜22°）は無彩色寄りを排除
+      return dyeChroma >= TINT_SHADE_MIN_DYE_CHROMA;
+    });
     const targets = generateTintShadeTargets(primaryDye, pattern);
     const nearestDyes = findNearestDyesInOklab(targets, availableDyes).map((c) => c.dye);
 
