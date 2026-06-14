@@ -117,7 +117,10 @@ const CHROMA_RATIO_MIN = 0.4;
 // scripts/sync-traditional-color-dyes.mjs の同名ロジックと思想を揃えているが、
 // 通常配色は伝統色再現より色相寛容なので HUE_TOLERANCE_DEG を広めに取っている。
 const HUE_FALLBACK_DELTA_THRESHOLD = 0.08;
-const HUE_FALLBACK_TOLERANCE_DEG = 30;
+// 主候補の hue distance がこの値以下なら「in-hue」と判定し、フォールバックを発動しない。
+// 30°（analogous レンジ相当）だと「31° で 1° だけ外れた」borderline ケースで
+// 不必要にチロマ過剰な代替候補に置き換わる問題があるため、余裕を持って 45° に設定。
+const HUE_FALLBACK_TOLERANCE_DEG = 45;
 const HUE_FALLBACK_MIN_TARGET_CHROMA = 0.04;
 const HUE_FALLBACK_MAX_EXCESS = 0.05;
 const ACHROMATIC_EPSILON = 1e-6;
@@ -260,12 +263,61 @@ function generateTintShadeTargets(primaryDye: DyeProps, direction: 'tint' | 'sha
   });
 }
 
-// 配色パターンに基づいて提案染料を生成
+/**
+ * メタリックタグの提案 dye を、最も色味が近い非メタリック dye に置き換える。
+ * - 非メタリックスロットには一切触れない（計算ロジックは常に同じ全染料プールで動く前提）
+ * - 最近傍探索は `findNearestDyesInOklab` を再利用（chroma ガード等の挙動が共通になる）
+ * - 主色 / もう一方の非メタリック提案と重複しないよう、候補プールから事前に除外
+ */
+function swapMetallicSuggestions(
+  suggested: [DyeProps, DyeProps],
+  allDyes: DyeProps[],
+  primaryDyeId: string
+): [DyeProps, DyeProps] {
+  const isMetallic = (d: DyeProps): boolean => d.tags?.includes('metallic') ?? false;
+  if (!suggested.some(isMetallic)) return suggested;
+
+  const reserved = new Set<string>([primaryDyeId]);
+  for (const d of suggested) {
+    if (!isMetallic(d)) reserved.add(d.id);
+  }
+  const nonMetallicPool = allDyes.filter((d) => !isMetallic(d) && !reserved.has(d.id));
+
+  const metallicSlotIndices = suggested
+    .map((d, i) => (isMetallic(d) ? i : -1))
+    .filter((i) => i >= 0);
+  const targets = metallicSlotIndices.map((i) => suggested[i].rgb);
+  const replacements = findNearestDyesInOklab(targets, nonMetallicPool);
+
+  const result = [...suggested] as [DyeProps, DyeProps];
+  metallicSlotIndices.forEach((slotIdx, j) => {
+    if (replacements[j]) result[slotIdx] = replacements[j].dye;
+  });
+  return result;
+}
+
+/**
+ * 配色パターンに基づいて提案染料を生成
+ *
+ * 計算は常に全染料プール (`allDyes`) で行う。`excludeMetallic` が true のときのみ、
+ * 結果のうちメタリックタグを持つ dye だけを「同じ色味の非メタリック」に置き換える。
+ * これにより、メタリック除外のトグルで非メタリックスロットが意図せず変化することを防ぐ。
+ */
 export function generateSuggestedDyes(
   primaryDye: DyeProps,
   pattern: HarmonyPattern,
   allDyes: DyeProps[],
-  _seed?: number
+  _seed?: number,
+  excludeMetallic = false
+): [DyeProps, DyeProps] {
+  const computed = computeSuggestedDyes(primaryDye, pattern, allDyes);
+  return excludeMetallic ? swapMetallicSuggestions(computed, allDyes, primaryDye.id) : computed;
+}
+
+function computeSuggestedDyes(
+  primaryDye: DyeProps,
+  pattern: HarmonyPattern,
+  allDyes: DyeProps[]
 ): [DyeProps, DyeProps] {
   if (pattern === 'monochromatic') {
     return selectMonochromaticDyes(primaryDye, allDyes, { diversifyByLightness: true }).map(

@@ -20,8 +20,9 @@ export const selectionStore = writable<{
   harmonySeed: Date.now(),
 });
 
-// 提案生成用の染料リストを取得する共通関数
-function getDyesForSuggestion(): Dye[] {
+// ランダム主色ピック用の染料リスト（メタリック除外時はメタリックを抜く）。
+// 提案生成自体は常に全染料プールで行い、結果のメタリックだけが置換される（generateSuggestedDyes 側で処理）。
+function getDyesForRandomPick(): Dye[] {
   const allDyes = get(dyeStore);
   const currentFilter = get(filterStore);
   return currentFilter.excludeMetallic
@@ -32,11 +33,12 @@ function getDyesForSuggestion(): Dye[] {
 // 基本カララントを選択
 export function selectPrimaryDye(dye: DyeProps): void {
   selectionStore.update((state) => {
-    const dyesForSuggestion = getDyesForSuggestion();
+    const allDyes = get(dyeStore);
+    const excludeMetallic = get(filterStore).excludeMetallic;
     const newSeed = Date.now();
     const suggested =
-      dyesForSuggestion.length > 0
-        ? generateSuggestedDyes(dye, state.pattern, dyesForSuggestion, newSeed)
+      allDyes.length > 0
+        ? generateSuggestedDyes(dye, state.pattern, allDyes, newSeed, excludeMetallic)
         : null;
 
     return {
@@ -55,11 +57,12 @@ export function updatePattern(pattern: HarmonyPattern): void {
     let newSeed = state.harmonySeed;
 
     if (state.primaryDye) {
-      const dyesForSuggestion = getDyesForSuggestion();
+      const allDyes = get(dyeStore);
+      const excludeMetallic = get(filterStore).excludeMetallic;
       newSeed = Date.now();
       suggested =
-        dyesForSuggestion.length > 0
-          ? generateSuggestedDyes(state.primaryDye, pattern, dyesForSuggestion, newSeed)
+        allDyes.length > 0
+          ? generateSuggestedDyes(state.primaryDye, pattern, allDyes, newSeed, excludeMetallic)
           : null;
     }
 
@@ -77,11 +80,12 @@ export function regenerateSuggestions(): void {
   selectionStore.update((state) => {
     if (!state.primaryDye) return state;
 
-    const dyesForSuggestion = getDyesForSuggestion();
+    const allDyes = get(dyeStore);
+    const excludeMetallic = get(filterStore).excludeMetallic;
     const newSeed = Date.now();
     const suggested =
-      dyesForSuggestion.length > 0
-        ? generateSuggestedDyes(state.primaryDye, state.pattern, dyesForSuggestion, newSeed)
+      allDyes.length > 0
+        ? generateSuggestedDyes(state.primaryDye, state.pattern, allDyes, newSeed, excludeMetallic)
         : null;
 
     return {
@@ -119,13 +123,21 @@ export function setPaletteDirectly(
 // パレット全体をシャッフル: ランダムな主色 + ランダムな配色パターンで提案を再生成
 export function shufflePalette(): void {
   selectionStore.update((state) => {
-    const dyesForSuggestion = getDyesForSuggestion();
-    if (dyesForSuggestion.length === 0) return state;
+    const randomPickPool = getDyesForRandomPick();
+    if (randomPickPool.length === 0) return state;
 
-    const newPrimary = dyesForSuggestion[Math.floor(Math.random() * dyesForSuggestion.length)];
+    const allDyes = get(dyeStore);
+    const excludeMetallic = get(filterStore).excludeMetallic;
+    const newPrimary = randomPickPool[Math.floor(Math.random() * randomPickPool.length)];
     const newPattern = PATTERN_ORDER[Math.floor(Math.random() * PATTERN_ORDER.length)];
     const newSeed = Date.now();
-    const newSuggested = generateSuggestedDyes(newPrimary, newPattern, dyesForSuggestion, newSeed);
+    const newSuggested = generateSuggestedDyes(
+      newPrimary,
+      newPattern,
+      allDyes,
+      newSeed,
+      excludeMetallic
+    );
 
     return {
       ...state,
