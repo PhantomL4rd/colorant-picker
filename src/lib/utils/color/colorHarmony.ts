@@ -106,13 +106,35 @@ export function findNearestDyes(
   return result;
 }
 
+// ターゲットが彩度を持つときに「明度だけ近いグレー寄り染料」が選ばれるのを防ぐための閾値。
+// ターゲット chroma がこの値以上なら、染料 chroma が target * CHROMA_RATIO_MIN 未満の染料を候補から除外する。
+// scripts/sync-traditional-color-dyes.mjs と同じ思想（係数値は揃えている）。
+const CHROMATIC_TARGET_THRESHOLD = 0.06;
+const CHROMA_RATIO_MIN = 0.4;
+
+function oklabChroma(oklab: Oklab): number {
+  return Math.sqrt(oklab.a * oklab.a + oklab.b * oklab.b);
+}
+
 /**
  * Find the nearest dyes for each targets in a palette based on color difference in Oklab space.
+ *
+ * ターゲットが有彩色（chroma >= CHROMATIC_TARGET_THRESHOLD）の場合、
+ * 著しく彩度が落ちた染料を候補から除外して「グレー寄り染料の混入で配色が濁る」のを防ぐ。
  */
 export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): DyeCandidate[] {
   const candidatesByTarget = targets.map((target) => {
     const targetOklab = toOklab(target) as Oklab;
-    const candidates: DyeCandidate[] = palette.map((dye) => ({
+    const targetChroma = oklabChroma(targetOklab);
+    const pool =
+      targetChroma >= CHROMATIC_TARGET_THRESHOLD
+        ? (() => {
+            const minDyeChroma = targetChroma * CHROMA_RATIO_MIN;
+            const filtered = palette.filter((dye) => oklabChroma(dye.oklab) >= minDyeChroma);
+            return filtered.length > 0 ? filtered : palette;
+          })()
+        : palette;
+    const candidates: DyeCandidate[] = pool.map((dye) => ({
       dye,
       delta: deltaEOklab(targetOklab, dye.oklab),
     }));
