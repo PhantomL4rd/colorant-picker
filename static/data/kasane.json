@@ -633,6 +633,30 @@
       ]
     },
     {
+      "id": "tsukikusa",
+      "name": "月草",
+      "reading": "つきぐさ",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "縹",
+          "uraColor": "薄縹"
+        }
+      ]
+    },
+    {
+      "id": "kareno",
+      "name": "枯野",
+      "reading": "かれの",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "uraColor": "白"
+        }
+      ]
+    },
+    {
       "id": "shion",
       "name": "紫苑",
       "reading": "しおん",

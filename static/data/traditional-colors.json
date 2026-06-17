@@ -352,6 +352,13 @@
       "note": "出所: irocore/colordic 深縹"
     },
     {
+      "id": "薄縹",
+      "reading": "うすはなだ",
+      "hex": "#507ea4",
+      "dyeId": "dye_067",
+      "note": "出所: 有職故実系の淡縹値。Seafog Blue が最近接"
+    },
+    {
       "id": "葡萄",
       "reading": "えび",
       "hex": "#6e1e51",
