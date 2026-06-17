@@ -138,7 +138,7 @@ function showToast() {
       {#if !icon}{$t('common.action.alreadyLiked')}{/if}
     </Button>
   {:else}
-    <Tooltip.Root open={favorites.length === 0 ? true : undefined}>
+    <Tooltip.Root open={icon && favorites.length === 0 ? true : undefined}>
       <Tooltip.Trigger>
         {#snippet child({ props })}
           <Button
