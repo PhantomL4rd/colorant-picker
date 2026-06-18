@@ -9,6 +9,22 @@
         {
           "omoteColor": "白",
           "uraColor": "蘇芳"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紅花"
+        }
+      ]
+    },
+    {
+      "id": "hitoeume",
+      "name": "一重梅",
+      "reading": "ひとえうめ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "紅花"
         }
       ]
     },
@@ -37,9 +53,9 @@
       ]
     },
     {
-      "id": "tsubomiume",
-      "name": "つぼみ梅",
-      "reading": "つぼみうめ",
+      "id": "tsubomikoubai",
+      "name": "莟紅梅",
+      "reading": "つぼみこうばい",
       "season": "spring",
       "variants": [
         {
@@ -61,6 +77,26 @@
       ]
     },
     {
+      "id": "koubai",
+      "name": "紅梅",
+      "reading": "こうばい",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "蘇芳"
+        },
+        {
+          "omoteColor": "紅花",
+          "uraColor": "紅花"
+        }
+      ]
+    },
+    {
       "id": "wakakusa",
       "name": "若草",
       "reading": "わかくさ",
@@ -68,6 +104,10 @@
       "variants": [
         {
           "omoteColor": "淡青",
+          "uraColor": "濃青"
+        },
+        {
+          "omoteColor": "薄青",
           "uraColor": "濃青"
         }
       ]
@@ -93,6 +133,26 @@
         {
           "omoteColor": "白",
           "uraColor": "淡青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "薄青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "薄青"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "紫"
         }
       ]
     },
@@ -105,6 +165,14 @@
         {
           "omoteColor": "淡黄",
           "uraColor": "淡青"
+        },
+        {
+          "omoteColor": "薄黄",
+          "uraColor": "薄青"
+        },
+        {
+          "omoteColor": "薄黄",
+          "uraColor": "濃青"
         }
       ]
     },
@@ -117,6 +185,14 @@
         {
           "omoteColor": "青",
           "uraColor": "淡青"
+        },
+        {
+          "omoteColor": "濃青",
+          "uraColor": "濃青"
+        },
+        {
+          "omoteColor": "濃青",
+          "uraColor": "紫"
         }
       ]
     },
@@ -161,6 +237,22 @@
         {
           "omoteColor": "白",
           "uraColor": "縹"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "薄色"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "薄紅梅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "濃紫"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "赤花"
         }
       ]
     },
@@ -173,6 +265,18 @@
         {
           "omoteColor": "蘇芳",
           "uraColor": "赤"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "濃二藍"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "濃蘇芳"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "蘇芳"
         }
       ]
     },
@@ -185,6 +289,102 @@
         {
           "omoteColor": "萌黄",
           "uraColor": "濃二藍"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "赤"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "蘇芳"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "縹"
+        }
+      ]
+    },
+    {
+      "id": "ususakuramoegi",
+      "name": "薄桜萌黄",
+      "reading": "うすさくらもえぎ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "薄青",
+          "uraColor": "蘇芳"
+        }
+      ]
+    },
+    {
+      "id": "benizakura",
+      "name": "紅桜",
+      "reading": "べにざくら",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "紫"
+        }
+      ]
+    },
+    {
+      "id": "matsuzakura",
+      "name": "松桜",
+      "reading": "まつざくら",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "浅紫"
+        }
+      ]
+    },
+    {
+      "id": "murasakizakura",
+      "name": "紫桜",
+      "reading": "むらさきざくら",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "縹"
+        }
+      ]
+    },
+    {
+      "id": "usuhanazakura",
+      "name": "薄花桜",
+      "reading": "うすはなざくら",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "薄紅"
+        }
+      ]
+    },
+    {
+      "id": "shirozakura",
+      "name": "白桜",
+      "reading": "しろざくら",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "白"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "黄"
         }
       ]
     },
@@ -197,6 +397,10 @@
         {
           "omoteColor": "紫",
           "uraColor": "淡紫"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "薄紫"
         }
       ]
     },
@@ -209,6 +413,10 @@
         {
           "omoteColor": "紫",
           "uraColor": "淡青"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "薄青"
         }
       ]
     },
@@ -221,6 +429,30 @@
         {
           "omoteColor": "淡紅",
           "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紅"
+        }
+      ]
+    },
+    {
+      "id": "momohana",
+      "name": "桃花",
+      "reading": "ももはな",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "紅梅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "濃紅",
+          "uraColor": "紅梅"
         }
       ]
     },
@@ -245,6 +477,34 @@
         {
           "omoteColor": "蘇芳",
           "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "蘇芳"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "紅",
+          "uraColor": "青"
         }
       ]
     },
@@ -257,6 +517,10 @@
         {
           "omoteColor": "蘇芳",
           "uraColor": "薄紅"
+        },
+        {
+          "omoteColor": "紅",
+          "uraColor": "赤"
         }
       ]
     },
@@ -269,6 +533,10 @@
         {
           "omoteColor": "白",
           "uraColor": "紫"
+        },
+        {
+          "omoteColor": "紅梅",
+          "uraColor": "濃紫"
         }
       ]
     },
@@ -281,6 +549,34 @@
         {
           "omoteColor": "薄色",
           "uraColor": "濃蘇芳"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "青"
+        }
+      ]
+    },
+    {
+      "id": "iwatsutsuji",
+      "name": "岩躑躅",
+      "reading": "いわつつじ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "黄"
+        },
+        {
+          "omoteColor": "紅",
+          "uraColor": "薄紫"
         }
       ]
     },
@@ -293,6 +589,38 @@
         {
           "omoteColor": "浅紅",
           "uraColor": "黄"
+        },
+        {
+          "omoteColor": "黄",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "朽葉",
+          "uraColor": "黄"
+        },
+        {
+          "omoteColor": "薄朽葉",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "薄朽葉",
+          "uraColor": "黄"
+        },
+        {
+          "omoteColor": "黄",
+          "uraColor": "萌黄"
+        }
+      ]
+    },
+    {
+      "id": "hanabairo",
+      "name": "花葉色",
+      "reading": "はなばいろ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "香",
+          "uraColor": "青"
         }
       ]
     },
@@ -305,6 +633,22 @@
         {
           "omoteColor": "黄",
           "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "黄",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "黄朽葉",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "黄朽葉",
+          "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "黄朽葉",
+          "uraColor": "紅"
         }
       ]
     },
@@ -329,6 +673,30 @@
         {
           "omoteColor": "薄色",
           "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "浅紫",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "薄青"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "薄紫"
+        }
+      ]
+    },
+    {
+      "id": "shirofuji",
+      "name": "白藤",
+      "reading": "しらふじ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "浅紫",
+          "uraColor": "濃紫"
         }
       ]
     },
@@ -341,6 +709,22 @@
         {
           "omoteColor": "淡蘇芳",
           "uraColor": "白"
+        },
+        {
+          "omoteColor": "薄蘇芳",
+          "uraColor": "濃赤"
+        },
+        {
+          "omoteColor": "薄蘇芳",
+          "uraColor": "濃蘇芳"
+        },
+        {
+          "omoteColor": "薄蘇芳",
+          "uraColor": "白"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "薄紅梅"
         }
       ]
     },
@@ -353,6 +737,18 @@
         {
           "omoteColor": "白",
           "uraColor": "青"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "白"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "濃青"
         }
       ]
     },
@@ -377,6 +773,22 @@
         {
           "omoteColor": "淡青",
           "uraColor": "紅"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "薄萌黄",
+          "uraColor": "薄紅梅"
+        },
+        {
+          "omoteColor": "薄萌黄",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "薄青"
         }
       ]
     },
@@ -389,6 +801,14 @@
         {
           "omoteColor": "二藍",
           "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "二藍",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "薄紅梅"
         }
       ]
     },
@@ -401,6 +821,18 @@
         {
           "omoteColor": "青",
           "uraColor": "紅梅"
+        },
+        {
+          "omoteColor": "薄萌黄",
+          "uraColor": "紅梅"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "白"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "濃紅梅"
         }
       ]
     },
@@ -412,6 +844,42 @@
       "variants": [
         {
           "omoteColor": "淡紅",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "薄青"
+        },
+        {
+          "omoteColor": "薄紅",
+          "uraColor": "青"
+        }
+      ]
+    },
+    {
+      "id": "nesyoubu",
+      "name": "根菖蒲",
+      "reading": "ねしょうぶ",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "濃紅"
+        }
+      ]
+    },
+    {
+      "id": "yaresyoubu",
+      "name": "破菖蒲",
+      "reading": "やれしょうぶ",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "紅梅"
+        },
+        {
+          "omoteColor": "萌黄",
           "uraColor": "青"
         }
       ]
@@ -425,6 +893,30 @@
         {
           "omoteColor": "薄青",
           "uraColor": "薄紫"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "紫"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "浅紫"
+        }
+      ]
+    },
+    {
+      "id": "tachibana",
+      "name": "橘",
+      "reading": "たちばな",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "朽葉",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "濃朽葉",
+          "uraColor": "黄"
         }
       ]
     },
@@ -442,13 +934,21 @@
     },
     {
       "id": "aouchi",
-      "name": "棟",
+      "name": "楝",
       "reading": "おうち",
       "season": "summer",
       "variants": [
         {
           "omoteColor": "薄色",
           "uraColor": "青"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "薄色"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "薄青"
         }
       ]
     },
@@ -461,6 +961,18 @@
         {
           "omoteColor": "淡萌黄",
           "uraColor": "濃萌黄"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "薄萌黄",
+          "uraColor": "濃萌黄"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "青"
         }
       ]
     },
@@ -472,6 +984,14 @@
       "variants": [
         {
           "omoteColor": "赤",
+          "uraColor": "朽葉"
+        },
+        {
+          "omoteColor": "朽葉",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "紅",
           "uraColor": "朽葉"
         }
       ]
@@ -485,6 +1005,14 @@
         {
           "omoteColor": "淡青",
           "uraColor": "黄"
+        },
+        {
+          "omoteColor": "薄萌黄",
+          "uraColor": "薄萌黄"
+        },
+        {
+          "omoteColor": "薄青",
+          "uraColor": "黄"
         }
       ]
     },
@@ -497,6 +1025,10 @@
         {
           "omoteColor": "淡木賊",
           "uraColor": "淡木賊"
+        },
+        {
+          "omoteColor": "濃萌黄",
+          "uraColor": "濃萌黄"
         }
       ]
     },
@@ -545,6 +1077,58 @@
         {
           "omoteColor": "紅梅",
           "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "濃薄色",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "紅",
+          "uraColor": "薄紫"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "青"
+        }
+      ]
+    },
+    {
+      "id": "hananadeshiko",
+      "name": "花撫子",
+      "reading": "はななでしこ",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "紅"
+        }
+      ]
+    },
+    {
+      "id": "shironadeshiko",
+      "name": "白撫子",
+      "reading": "しろなでしこ",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "uraColor": "濃紅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "蘇芳"
+        }
+      ]
+    },
+    {
+      "id": "karanadeshiko",
+      "name": "唐撫子",
+      "reading": "からなでしこ",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "uraColor": "紅"
         }
       ]
     },
@@ -556,6 +1140,10 @@
       "variants": [
         {
           "omoteColor": "檜皮色",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "濃紫",
           "uraColor": "青"
         }
       ]
@@ -593,6 +1181,10 @@
         {
           "omoteColor": "青×黄",
           "uraColor": "青"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "萌黄"
         }
       ]
     },
@@ -605,6 +1197,34 @@
         {
           "omoteColor": "薄紫",
           "uraColor": "青"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "白"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "濃萌黄"
+        },
+        {
+          "omoteColor": "薄色",
+          "uraColor": "青"
+        },
+        {
+          "omoteColor": "蘇芳",
+          "uraColor": "黄"
+        },
+        {
+          "omoteColor": "紫",
+          "uraColor": "二藍"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "濃紫"
         }
       ]
     },
@@ -621,14 +1241,26 @@
       ]
     },
     {
-      "id": "hanasusuki",
-      "name": "花薄",
-      "reading": "はなすすき",
+      "id": "obana",
+      "name": "尾花",
+      "reading": "おばな",
       "season": "autumn",
       "variants": [
         {
           "omoteColor": "白",
           "uraColor": "縹"
+        }
+      ]
+    },
+    {
+      "id": "fujibakama",
+      "name": "藤袴",
+      "reading": "ふじばかま",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "紫",
+          "uraColor": "紫"
         }
       ]
     },
@@ -713,6 +1345,18 @@
         {
           "omoteColor": "青",
           "uraColor": "朽葉"
+        },
+        {
+          "omoteColor": "萌黄",
+          "uraColor": "黄"
+        },
+        {
+          "omoteColor": "青",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "濃青",
+          "uraColor": "青"
         }
       ]
     },
@@ -821,6 +1465,10 @@
         {
           "omoteColor": "淡萌黄",
           "uraColor": "蘇芳"
+        },
+        {
+          "omoteColor": "薄萌黄",
+          "uraColor": "青"
         }
       ]
     },
@@ -1009,6 +1657,10 @@
         {
           "omoteColor": "濃香",
           "uraColor": "二藍"
+        },
+        {
+          "omoteColor": "濃萌黄",
+          "uraColor": "濃萌黄"
         }
       ]
     },
@@ -1045,6 +1697,14 @@
         {
           "omoteColor": "白",
           "uraColor": "紅梅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "紅"
+        },
+        {
+          "omoteColor": "白",
+          "uraColor": "薄蘇芳"
         }
       ]
     },

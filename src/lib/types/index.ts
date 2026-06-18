@@ -185,6 +185,7 @@ export type KasaneSeason = 'spring' | 'summer' | 'autumn' | 'winter' | 'misc';
 export interface KasaneVariant {
   omoteColor: string; // TraditionalColor.id を参照（例: "白"）
   uraColor: string; // TraditionalColor.id を参照（例: "蘇芳"）
+  nakaColor?: string; // 3色（表/中/裏）専用。kasane-three.json でのみ使用
 }
 
 // かさね色目エントリ

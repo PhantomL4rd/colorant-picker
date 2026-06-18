@@ -1,0 +1,92 @@
+{
+  "kasane": [
+    {
+      "id": "hitoeume",
+      "name": "一重梅",
+      "reading": "ひとえうめ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "nakaColor": "紅花",
+          "uraColor": "蘇芳"
+        }
+      ]
+    },
+    {
+      "id": "sakuranosanmaigasane",
+      "name": "桜",
+      "reading": "さくら",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "白",
+          "nakaColor": "紫",
+          "uraColor": "赤"
+        },
+        {
+          "omoteColor": "白",
+          "nakaColor": "紫",
+          "uraColor": "二藍"
+        }
+      ]
+    },
+    {
+      "id": "momo",
+      "name": "桃",
+      "reading": "もも",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "薄紅",
+          "nakaColor": "白",
+          "uraColor": "萌黄"
+        }
+      ]
+    },
+    {
+      "id": "shirotsutsuji",
+      "name": "白躑躅",
+      "reading": "しろつつじ",
+      "season": "spring",
+      "variants": [
+        {
+          "omoteColor": "蘇芳",
+          "nakaColor": "白",
+          "uraColor": "萌黄"
+        }
+      ]
+    },
+    {
+      "id": "wakasyoubu",
+      "name": "若菖蒲",
+      "reading": "わかしょうぶ",
+      "season": "summer",
+      "variants": [
+        {
+          "omoteColor": "青",
+          "nakaColor": "濃青",
+          "uraColor": "薄青"
+        }
+      ]
+    },
+    {
+      "id": "ominaeshi",
+      "name": "女郎花",
+      "reading": "おみなえし",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "nakaColor": "薄黄",
+          "uraColor": "萌黄"
+        },
+        {
+          "omoteColor": "朽葉",
+          "nakaColor": "黄",
+          "uraColor": "萌黄"
+        }
+      ]
+    }
+  ]
+}

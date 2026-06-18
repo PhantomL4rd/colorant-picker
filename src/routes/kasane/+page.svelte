@@ -1,8 +1,10 @@
 <script lang="ts">
-import { ExternalLink, Layers, Loader2 } from '@lucide/svelte';
+import { ChevronDown, ExternalLink, Layers, Loader2 } from '@lucide/svelte';
 import { onMount } from 'svelte';
+import KasaneCard3 from '$lib/components/kasane/KasaneCard3.svelte';
 import SeasonSection from '$lib/components/kasane/SeasonSection.svelte';
 import * as Alert from '$lib/components/ui/alert';
+import * as Collapsible from '$lib/components/ui/collapsible';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import { t } from '$lib/translations';
 import type {
@@ -16,10 +18,12 @@ import type {
 const SEASONS: KasaneSeason[] = ['spring', 'summer', 'autumn', 'winter', 'misc'];
 
 let kasaneData: KasaneIrome[] = $state([]);
+let kasaneThree: KasaneIrome[] = $state([]);
 let traditionalColors: TraditionalColor[] = $state([]);
 let isLoading = $state(true);
 let error: string | null = $state(null);
 let expandedSeasons = $state<Set<KasaneSeason>>(new Set(['spring']));
+let isThreeExpanded = $state(false);
 
 const colorById = $derived(new Map(traditionalColors.map((c) => [c.id, c])));
 
@@ -45,8 +49,9 @@ onMount(async () => {
     await loadDyes();
 
     const basePath = import.meta.env.BASE_URL || '';
-    const [kasaneRes, colorsRes] = await Promise.all([
+    const [kasaneRes, threeRes, colorsRes] = await Promise.all([
       fetch(`${basePath}data/kasane.json`),
+      fetch(`${basePath}data/kasane-three.json`),
       fetch(`${basePath}data/traditional-colors.json`),
     ]);
     if (!kasaneRes.ok) throw new Error('Failed to load kasane data');
@@ -56,6 +61,11 @@ onMount(async () => {
     // hidden: true のエントリを除外（色差が大きいため非表示）
     kasaneData = data.kasane.filter((k) => !k.hidden);
     traditionalColors = colorsData.colors;
+    // 3色重ねは別ファイル。読み込み失敗は致命ではないので無視
+    if (threeRes.ok) {
+      const threeData: KasaneData = await threeRes.json();
+      kasaneThree = threeData.kasane.filter((k) => !k.hidden);
+    }
   } catch (e) {
     error = e instanceof Error ? e.message : 'Unknown error';
   } finally {
@@ -97,6 +107,34 @@ onMount(async () => {
           onToggle={() => toggleSeason(season)}
         />
       {/each}
+      {#if kasaneThree.length > 0}
+        <Collapsible.Root open={isThreeExpanded} onOpenChange={(v) => (isThreeExpanded = v)} class="mb-2">
+          <Collapsible.Trigger>
+            {#snippet child({ props })}
+              <button
+                {...props}
+                class="flex w-full items-center justify-between rounded-lg bg-muted px-4 py-3 hover:bg-muted/80 transition-colors cursor-pointer"
+              >
+                <h2 class="font-bold text-lg">
+                  三色重
+                  <span class="text-sm font-normal text-muted-foreground ml-2">({kasaneThree.length})</span>
+                </h2>
+                <ChevronDown class="size-4 transition-transform duration-200 {isThreeExpanded ? 'rotate-180' : ''}" />
+              </button>
+            {/snippet}
+          </Collapsible.Trigger>
+          <Collapsible.Content>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3 pt-2">
+              {#each kasaneThree as item (item.id)}
+                <KasaneCard3 {item} {colorById} dyes={$dyeStore} />
+              {/each}
+            </div>
+          </Collapsible.Content>
+        </Collapsible.Root>
+      {/if}
+      <p class="mt-8 text-center text-[10px] text-muted-foreground/60">
+        底本: 長崎盛輝『王朝のかさね色辞典』紫紅社 ほか
+      </p>
     </div>
   {/if}
 </div>

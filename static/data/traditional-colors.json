@@ -43,6 +43,13 @@
       "note": "出所: irocore/colordic 一致"
     },
     {
+      "id": "濃紫",
+      "reading": "こきむらさき",
+      "hex": "#4d384d",
+      "dyeId": "dye_080",
+      "note": "出所: irocore 深紫系 — 紫草の濃染め"
+    },
+    {
       "id": "香",
       "reading": "こう",
       "hex": "#efcd9a",
@@ -78,6 +85,20 @@
       "note": "出所: irocore/colordic 平均"
     },
     {
+      "id": "紅花",
+      "reading": "べにばな",
+      "hex": "#e95464",
+      "dyeId": "dye_014",
+      "note": "出所: 中紅花 (irocore/colordic) — 紅花染めの代表色"
+    },
+    {
+      "id": "赤花",
+      "reading": "あかばな",
+      "hex": "#d34c2c",
+      "dyeId": "dye_019",
+      "note": "出所: 赤蘇芳寄り (irocore #D34C2C) — 樺桜/桜の異説で使われる"
+    },
+    {
       "id": "二藍",
       "reading": "ふたあい",
       "hex": "#8c73a3",
@@ -97,6 +118,27 @@
       "hex": "#917347",
       "dyeId": "dye_026",
       "note": "出所: irocore/colordic 一致"
+    },
+    {
+      "id": "黄朽葉",
+      "reading": "きくちば",
+      "hex": "#d3a243",
+      "dyeId": "dye_041",
+      "note": "出所: colordic/irocore — 黄みが強い朽葉"
+    },
+    {
+      "id": "濃朽葉",
+      "reading": "こいくちば",
+      "hex": "#e07400",
+      "note": "出所: wa-iro.com — 黄みの強い深い橙、赤朽葉に近い",
+      "dyeId": "dye_029"
+    },
+    {
+      "id": "薄朽葉",
+      "reading": "うすくちば",
+      "hex": "#e8d3a2",
+      "dyeId": "dye_037",
+      "note": "出所: irocore/colordic 平均"
     },
     {
       "id": "檜皮色",
@@ -163,6 +205,13 @@
       "note": "出所: 重ねの色目辞典"
     },
     {
+      "id": "浅紫",
+      "reading": "あさむらさき",
+      "hex": "#c4a3bf",
+      "dyeId": "dye_087",
+      "note": "出所: irocore #C4A3BF — 淺紫(旧字)と同義"
+    },
+    {
       "id": "淡青",
       "reading": "あわあお",
       "hex": "#29905e",
@@ -175,6 +224,13 @@
       "hex": "#e6ec2e",
       "dyeId": "dye_050",
       "note": "出所: 重ねの色目辞典"
+    },
+    {
+      "id": "薄黄",
+      "reading": "うすき",
+      "hex": "#f6f193",
+      "dyeId": "dye_047",
+      "note": "出所: irocore/colordic 平均"
     },
     {
       "id": "淡蘇芳",
@@ -203,6 +259,13 @@
       "hex": "#a869be",
       "dyeId": "dye_090",
       "note": "出所: 重ねの色目辞典 (薄紫系)"
+    },
+    {
+      "id": "濃薄色",
+      "reading": "こきうすいろ",
+      "hex": "#795083",
+      "note": "薄色 #a869be と濃紫 #4d384d の OKLab 中間として算出",
+      "dyeId": "dye_091"
     },
     {
       "id": "薄紅",
