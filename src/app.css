@@ -35,6 +35,8 @@
   --color-liked: var(--liked);
   --color-tip: var(--tip);
   --color-banner: var(--banner);
+  --color-notice: var(--notice);
+  --color-notice-foreground: var(--notice-foreground);
   --color-popular: var(--popular);
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
@@ -62,11 +64,14 @@
   --ctp-blue: oklch(0.546 0.214 263); /* #1e66f5 */
   --ctp-sky: oklch(0.668 0.135 233); /* #04a5e5 */
   --ctp-yellow: oklch(0.706 0.137 71); /* #df8e1d */
+  --ctp-pink: oklch(0.731 0.166 348); /* #ea76cb */
 
   --heart: var(--ctp-red);
   --liked: var(--ctp-green);
   --tip: var(--ctp-blue);
   --banner: var(--ctp-sky);
+  --notice: var(--ctp-pink);
+  --notice-foreground: var(--ctp-base);
   --popular: var(--ctp-yellow);
   --background: var(--ctp-base);
   --foreground: var(--ctp-text);
@@ -118,11 +123,14 @@
   --ctp-blue: oklch(0.727 0.117 251); /* #8aadf4 */
   --ctp-sky: oklch(0.832 0.075 217); /* #91d7e3 */
   --ctp-yellow: oklch(0.875 0.067 87); /* #eed49f */
+  --ctp-pink: oklch(0.853 0.083 339); /* #f5bde6 */
 
   --heart: var(--ctp-red);
   --liked: var(--ctp-green);
   --tip: var(--ctp-blue);
   --banner: var(--ctp-sky);
+  --notice: var(--ctp-pink);
+  --notice-foreground: var(--ctp-base);
   --popular: var(--ctp-yellow);
   --background: var(--ctp-base);
   --foreground: var(--ctp-text);

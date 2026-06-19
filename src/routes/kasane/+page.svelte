@@ -17,12 +17,20 @@ import type {
 
 const SEASONS: KasaneSeason[] = ['spring', 'summer', 'autumn', 'winter', 'misc'];
 
+function currentSeason(): KasaneSeason {
+  const m = new Date().getMonth() + 1;
+  if (m >= 2 && m <= 4) return 'spring';
+  if (m >= 5 && m <= 8) return 'summer';
+  if (m >= 9 && m <= 11) return 'autumn';
+  return 'winter';
+}
+
 let kasaneData: KasaneIrome[] = $state([]);
 let kasaneThree: KasaneIrome[] = $state([]);
 let traditionalColors: TraditionalColor[] = $state([]);
 let isLoading = $state(true);
 let error: string | null = $state(null);
-let expandedSeasons = $state<Set<KasaneSeason>>(new Set(['spring']));
+let expandedSeasons = $state<Set<KasaneSeason>>(new Set([currentSeason()]));
 let isThreeExpanded = $state(false);
 
 const colorById = $derived(new Map(traditionalColors.map((c) => [c.id, c])));

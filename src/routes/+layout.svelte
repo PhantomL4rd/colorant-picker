@@ -1,6 +1,6 @@
 <script lang="ts">
 import '../app.css';
-import { Info, SwatchBook } from '@lucide/svelte';
+import { Sparkles, SwatchBook } from '@lucide/svelte';
 import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
 import * as Tooltip from '$lib/components/ui/tooltip';
@@ -21,17 +21,15 @@ const { children } = $props();
 <Tooltip.Provider delayDuration={200}>
 
 <div class="min-h-dvh bg-background">
-  <!-- ミラプリインサイト告知バナー -->
-  <div class="bg-banner/10 border-b border-banner/30">
+  <!-- かさね色目アップデート告知バナー -->
+  <div class="bg-notice border-b border-notice">
     <div class="mx-auto max-w-4xl px-4 py-2">
       <a
-        href="https://mirapri-insight.pl4rd.com/"
-        target="_blank"
-        rel="noopener noreferrer"
-        class="flex items-center justify-center gap-2 text-sm text-banner hover:underline"
+        href={resolve('/kasane')}
+        class="flex items-center justify-center gap-2 text-sm text-notice-foreground hover:underline"
       >
-        <Info class="size-4 shrink-0" />
-        <span>{$t('common.banner.mirapriInsight')}</span>
+        <Sparkles class="size-4 shrink-0" />
+        <span>{$t('common.banner.kasaneUpdate')}</span>
       </a>
     </div>
   </div>
