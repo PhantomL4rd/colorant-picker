@@ -58,13 +58,24 @@ onMount(async () => {
     if (!colorsRes.ok) throw new Error('Failed to load traditional colors data');
     const data: KasaneData = await kasaneRes.json();
     const colorsData: TraditionalColorData = await colorsRes.json();
-    // hidden: true のエントリを除外（色差が大きいため非表示）
-    kasaneData = data.kasane.filter((k) => !k.hidden);
     traditionalColors = colorsData.colors;
+    // 異説が同一カララントに帰着する場合は先頭以外を畳む（dyeId 同値で dedup）
+    const dyeOf = new Map(colorsData.colors.map((c) => [c.id, c.dyeId]));
+    const dedupByDye = (k: KasaneIrome): KasaneIrome => {
+      const seen = new Set<string>();
+      const variants = k.variants.filter((v) => {
+        const key = `${dyeOf.get(v.omoteColor)}|${dyeOf.get(v.nakaColor ?? '')}|${dyeOf.get(v.uraColor)}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return { ...k, variants };
+    };
+    kasaneData = data.kasane.filter((k) => !k.hidden).map(dedupByDye);
     // 3色重ねは別ファイル。読み込み失敗は致命ではないので無視
     if (threeRes.ok) {
       const threeData: KasaneData = await threeRes.json();
-      kasaneThree = threeData.kasane.filter((k) => !k.hidden);
+      kasaneThree = threeData.kasane.filter((k) => !k.hidden).map(dedupByDye);
     }
   } catch (e) {
     error = e instanceof Error ? e.message : 'Unknown error';

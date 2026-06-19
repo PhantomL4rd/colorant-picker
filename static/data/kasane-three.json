@@ -87,6 +87,58 @@
           "uraColor": "萌黄"
         }
       ]
+    },
+    {
+      "id": "utsuroigiku",
+      "name": "移菊",
+      "reading": "うつろいぎく",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "nakaColor": "紫",
+          "uraColor": "青"
+        }
+      ]
+    },
+    {
+      "id": "kuchiba",
+      "name": "朽葉",
+      "reading": "くちば",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "nakaColor": "黄",
+          "uraColor": "黄"
+        }
+      ]
+    },
+    {
+      "id": "akakuchiba",
+      "name": "赤朽葉",
+      "reading": "あかくちば",
+      "season": "autumn",
+      "variants": [
+        {
+          "omoteColor": "紅",
+          "nakaColor": "黄",
+          "uraColor": "黄"
+        }
+      ]
+    },
+    {
+      "id": "higaneao",
+      "name": "比金襖",
+      "reading": "ひがねあお",
+      "season": "misc",
+      "variants": [
+        {
+          "omoteColor": "黄",
+          "nakaColor": "青",
+          "uraColor": "二藍"
+        }
+      ]
     }
   ]
 }

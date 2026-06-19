@@ -8,6 +8,13 @@
       "note": "出所: irocore/colordic 平均"
     },
     {
+      "id": "黒",
+      "reading": "くろ",
+      "hex": "#2b2b2b",
+      "note": "出所: colordic.org #2b2b2b",
+      "dyeId": "dye_007"
+    },
+    {
       "id": "赤",
       "reading": "あか",
       "hex": "#ec001a",
@@ -287,6 +294,20 @@
       "hex": "#c4a3bf",
       "dyeId": "dye_087",
       "note": "出所: irocore/colordic 浅紫と同義"
+    },
+    {
+      "id": "薄香",
+      "reading": "うすこう",
+      "hex": "#f0cfa0",
+      "note": "出所: colordic.org #f0cfa0（香色のうすい変種、丁子染め）",
+      "dyeId": "dye_037"
+    },
+    {
+      "id": "山吹",
+      "reading": "やまぶき",
+      "hex": "#f8b500",
+      "note": "出所: colordic.org 山吹色 #f8b500",
+      "dyeId": "dye_040"
     },
     {
       "id": "薄青",
