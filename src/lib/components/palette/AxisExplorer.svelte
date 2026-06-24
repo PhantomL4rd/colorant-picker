@@ -57,7 +57,7 @@ function getDyeName(d: DyeProps): string {
 }
 
 function textColor(d: DyeProps): string {
-  return d.oklab.l > 0.6 ? '#0F172A' : '#FFFFFF';
+  return d.oklab.coords[0] > 0.6 ? '#0F172A' : '#FFFFFF';
 }
 </script>
 

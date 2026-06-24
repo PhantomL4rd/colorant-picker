@@ -12,15 +12,6 @@ export const RGB_MAX = 255;
 export const HUE_CIRCLE_MAX = 360;
 export const HUE_DIFFERENCE_MAX = 180;
 
-// ===== HSV範囲（パーセンテージ変換用） =====
-export const HSV_PERCENT_SCALE = 100;
-export const HUE_MIN = 0;
-export const HUE_MAX = 360;
-export const SATURATION_MIN = 0;
-export const SATURATION_MAX = 100;
-export const VALUE_MIN = 0;
-export const VALUE_MAX = 100;
-
 // ===== 色調和の角度定数（度） =====
 export const HARMONY_ANGLES = {
   /** トライアド配色: 色相環を3等分 */

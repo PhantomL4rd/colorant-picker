@@ -15,8 +15,8 @@
  */
 
 import { HUE_CIRCLE_MAX } from '$lib/constants/color';
-import type { DyeProps, Oklab, Oklch, Rgb } from '$lib/types';
-import { deltaEOklab, toOklab, toOklch, toRgb } from './colorConversion';
+import type { DyeProps, Oklch, Rgb } from '$lib/types';
+import { deltaEOklab, toOklab, toRgb } from './colorConversion';
 
 export type LadderAxis = 'lightness' | 'chroma' | 'hue';
 
@@ -51,7 +51,7 @@ export interface LadderEntry {
 }
 
 function nearestDyeByOklab(targetRgb: Rgb, pool: DyeProps[], used: Set<string>): DyeProps | null {
-  const targetOklab = toOklab(targetRgb) as Oklab;
+  const targetOklab = toOklab(targetRgb);
   let best: DyeProps | null = null;
   let bestDelta = Infinity;
   for (const dye of pool) {
@@ -73,23 +73,25 @@ function hueDistance(h1: number, h2: number): number {
 
 /** 軸ごとの「他軸方向の差が許容内か」判定 */
 function withinAxisTolerance(axis: LadderAxis, dyeOklch: Oklch, baseOklch: Oklch): boolean {
-  const baseH = baseOklch.h ?? 0;
-  const dyeH = dyeOklch.h ?? 0;
-  const baseIsGray = baseOklch.c <= GRAY_CHROMA_THRESHOLD;
+  const [baseL, baseC, baseHraw] = baseOklch.coords;
+  const [dyeL, dyeC, dyeHraw] = dyeOklch.coords;
+  const baseH = baseHraw ?? 0;
+  const dyeH = dyeHraw ?? 0;
+  const baseIsGray = baseC <= GRAY_CHROMA_THRESHOLD;
 
   if (axis === 'lightness') {
-    if (Math.abs(dyeOklch.c - baseOklch.c) > LIGHTNESS_AXIS_CHROMA_TOL) return false;
+    if (Math.abs(dyeC - baseC) > LIGHTNESS_AXIS_CHROMA_TOL) return false;
     if (baseIsGray) return true;
     return hueDistance(dyeH, baseH) <= LIGHTNESS_AXIS_HUE_TOL_DEG;
   }
   if (axis === 'chroma') {
-    if (Math.abs(dyeOklch.l - baseOklch.l) > CHROMA_AXIS_LIGHTNESS_TOL) return false;
+    if (Math.abs(dyeL - baseL) > CHROMA_AXIS_LIGHTNESS_TOL) return false;
     if (baseIsGray) return true;
     return hueDistance(dyeH, baseH) <= CHROMA_AXIS_HUE_TOL_DEG;
   }
   return (
-    Math.abs(dyeOklch.l - baseOklch.l) <= HUE_AXIS_LIGHTNESS_TOL &&
-    Math.abs(dyeOklch.c - baseOklch.c) <= HUE_AXIS_CHROMA_TOL
+    Math.abs(dyeL - baseL) <= HUE_AXIS_LIGHTNESS_TOL &&
+    Math.abs(dyeC - baseC) <= HUE_AXIS_CHROMA_TOL
   );
 }
 
@@ -114,14 +116,14 @@ export function generateLadder(
 ): LadderEntry[] {
   if (allDyes.length === 0) return [];
 
-  const baseOklch = toOklch(baseDye.rgb) as Oklch;
-  const baseH = baseOklch.h ?? 0;
+  const baseOklch = baseDye.oklch;
+  const [baseL, baseC, baseHraw] = baseOklch.coords;
+  const baseH = baseHraw ?? 0;
 
   // 他軸方向の差が許容内の染料だけを候補に絞る（ベース染料は必ず含める）
   const pool = allDyes.filter((dye) => {
     if (dye.id === baseDye.id) return true;
-    const dyeOklch = toOklch(dye.rgb) as Oklch;
-    return withinAxisTolerance(axis, dyeOklch, baseOklch);
+    return withinAxisTolerance(axis, dye.oklch, baseOklch);
   });
 
   const used = new Set<string>();
@@ -130,8 +132,8 @@ export function generateLadder(
   for (let i = 0; i < steps; i++) {
     const t = i / (steps - 1);
 
-    let targetL = baseOklch.l;
-    let targetC = baseOklch.c;
+    let targetL = baseL;
+    let targetC = baseC;
     let targetH = baseH;
 
     if (axis === 'lightness') {
@@ -144,24 +146,22 @@ export function generateLadder(
     }
 
     const targetOklch: Oklch = {
-      mode: 'oklch',
-      l: targetL,
-      c: targetC,
-      h: targetH,
+      space: 'oklch',
+      coords: [targetL, targetC, targetH],
     };
-    const targetRgb = toRgb(targetOklch) as Rgb;
+    const targetRgb = toRgb(targetOklch);
 
     const best = nearestDyeByOklab(targetRgb, pool, used);
     if (best) {
       // 採用された染料の実 OKLCH を計算してソートキーに使う
-      const dyeOklch = toOklch(best.rgb) as Oklch;
+      const [dyeL, dyeC, dyeHraw] = best.oklch.coords;
       let sortKey: number;
       if (axis === 'lightness') {
-        sortKey = dyeOklch.l;
+        sortKey = dyeL;
       } else if (axis === 'chroma') {
-        sortKey = dyeOklch.c;
+        sortKey = dyeC;
       } else {
-        sortKey = hueDistance(dyeOklch.h ?? 0, baseH);
+        sortKey = hueDistance(dyeHraw ?? 0, baseH);
       }
 
       entries.push({

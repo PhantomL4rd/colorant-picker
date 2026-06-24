@@ -28,7 +28,7 @@ function getDyeName(d: DyeProps): string {
 
 // OKLab明度に応じて読みやすいテキスト色を返す
 function textColor(d: DyeProps): string {
-  return d.oklab.l > 0.6 ? '#0F172A' : '#FFFFFF';
+  return d.oklab.coords[0] > 0.6 ? '#0F172A' : '#FFFFFF';
 }
 
 const labelColor = $derived(textColor(dye));

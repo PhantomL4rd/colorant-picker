@@ -39,7 +39,7 @@ function handleSuggestedDyeClick(dye: DyeProps): void {
 }
 
 function textColor(dye: DyeProps): string {
-  return dye.oklab.l > 0.6 ? '#000' : '#fff';
+  return dye.oklab.coords[0] > 0.6 ? '#000' : '#fff';
 }
 </script>
 

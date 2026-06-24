@@ -15,14 +15,15 @@ export function dyeToStorable(dye: DyeProps): StoredDye {
     return dye.toStorable();
   }
   // DyePropsの場合はrgbが0-1範囲なので0-255に変換が必要
+  const [r, g, b] = dye.rgb.coords;
   return {
     id: dye.id,
     name: dye.name,
     category: dye.category,
     rgb: {
-      r: Math.round(dye.rgb.r * 255),
-      g: Math.round(dye.rgb.g * 255),
-      b: Math.round(dye.rgb.b * 255),
+      r: Math.round(r * 255),
+      g: Math.round(g * 255),
+      b: Math.round(b * 255),
     },
     tags: dye.tags,
   };

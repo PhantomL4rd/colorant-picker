@@ -1,11 +1,12 @@
 /**
  * 色調和アルゴリズム
  *
- * culori型を直接使用。
+ * colorjs.io の {space, coords} 形式で色を扱う。
+ * helmlab は colorjs.io 公式リリース後に統合予定（現状は二刀流）。
  */
 
 import { Helmlab } from 'helmlab';
-import type { DyeCandidate, DyeProps, HarmonyPattern, Hsv, Oklab, Oklch, Rgb } from '$lib/types';
+import type { DyeCandidate, DyeProps, HarmonyPattern, Oklab, Oklch, Rgb } from '$lib/types';
 import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/color';
 import { deltaEOklab, rgbToHex, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
@@ -96,7 +97,7 @@ export function findNearestDyes(
       // すでに結果として選ばれている染料はスキップする
       if (usedDyeIds.has(dye.id)) continue;
 
-      const dyeHue = dye.hsv.h ?? 0;
+      const dyeHue = dye.oklch.coords[2] ?? 0;
       const hueDifference = Math.min(
         Math.abs(dyeHue - targetHue),
         HUE_CIRCLE_MAX - Math.abs(dyeHue - targetHue)
@@ -133,7 +134,7 @@ const HELM_FALLBACK_DELTA_THRESHOLD = 0.08;
  */
 export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): DyeCandidate[] {
   const perTarget = targets.map((target) => {
-    const targetOklab = toOklab(target) as Oklab;
+    const targetOklab = toOklab(target);
     const candidates: DyeCandidate[] = palette
       .map((dye) => ({ dye, delta: deltaEOklab(targetOklab, dye.oklab) }))
       .sort((a, b) => a.delta - b.delta);
@@ -177,11 +178,11 @@ export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): Dye
  */
 export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[]): DyeProps {
   // Oklab空間での中間点を計算
+  const [la, aa, ba] = dyeA.oklab.coords;
+  const [lb, ab, bb] = dyeB.oklab.coords;
   const midpointOklab: Oklab = {
-    mode: 'oklab',
-    l: (dyeA.oklab.l + dyeB.oklab.l) / 2,
-    a: (dyeA.oklab.a + dyeB.oklab.a) / 2,
-    b: (dyeA.oklab.b + dyeB.oklab.b) / 2,
+    space: 'oklab',
+    coords: [(la + lb) / 2, (aa + ab) / 2, (ba + bb) / 2],
   };
 
   let minDistance = Infinity;
@@ -220,19 +221,18 @@ const OKLCH_L_MAX = 0.99;
  * @param direction 'tint' で明色方向, 'shade' で暗色方向
  */
 function generateTintShadeTargets(primaryDye: DyeProps, direction: 'tint' | 'shade'): Rgb[] {
-  const baseOklch = toOklch(primaryDye.rgb) as Oklch;
+  const baseOklch = toOklch(primaryDye.rgb);
+  const [baseL, baseC, baseH] = baseOklch.coords;
   const sign = direction === 'tint' ? 1 : -1;
   const offsets = [TINT_SHADE_OFFSETS.NEAR, TINT_SHADE_OFFSETS.FAR];
 
   return offsets.map((offset) => {
-    const targetL = Math.max(OKLCH_L_MIN, Math.min(OKLCH_L_MAX, baseOklch.l + sign * offset));
+    const targetL = Math.max(OKLCH_L_MIN, Math.min(OKLCH_L_MAX, baseL + sign * offset));
     const targetOklch: Oklch = {
-      mode: 'oklch',
-      l: targetL,
-      c: baseOklch.c,
-      h: baseOklch.h ?? 0,
+      space: 'oklch',
+      coords: [targetL, baseC, baseH ?? 0],
     };
-    return toRgb(targetOklch) as Rgb;
+    return toRgb(targetOklch);
   });
 }
 
@@ -322,28 +322,32 @@ function computeSuggestedDyes(
     const availableDyes = allDyes.filter((dye) => dye.id !== primaryDye.id);
 
     // 1. Base色をOklchに変換
-    const baseOklch = toOklch(primaryDye.rgb) as Oklch;
+    const baseOklch = toOklch(primaryDye.rgb);
+    const [baseL, baseC, baseH] = baseOklch.coords;
 
     // 2. 補色の色相を計算（色相 + 180度）
-    const complementHue = ((baseOklch.h ?? 0) + COMPLEMENTARY) % HUE_CIRCLE_MAX;
+    const complementHue = ((baseH ?? 0) + COMPLEMENTARY) % HUE_CIRCLE_MAX;
 
     // 3. 明度を逆方向に調整
     // Base色が明るい（L > threshold）なら暗く、暗いなら明るく
     const adjustedL =
-      baseOklch.l > CLASH_CONFIG.LIGHTNESS_THRESHOLD
+      baseL > CLASH_CONFIG.LIGHTNESS_THRESHOLD
         ? CLASH_CONFIG.TARGET_LIGHTNESS_DARK
         : CLASH_CONFIG.TARGET_LIGHTNESS_LIGHT;
 
     // 4. 彩度を逆方向に調整
     // Base色の彩度が高い（C > threshold）なら低く、低いなら高く
     const adjustedC =
-      baseOklch.c > CLASH_CONFIG.CHROMA_THRESHOLD
+      baseC > CLASH_CONFIG.CHROMA_THRESHOLD
         ? CLASH_CONFIG.TARGET_CHROMA_LOW
         : CLASH_CONFIG.TARGET_CHROMA_HIGH;
 
     // 5. 調整されたOklchから3色目のターゲット色を作成
-    const thirdColorOklch: Oklch = { mode: 'oklch', l: adjustedL, c: adjustedC, h: complementHue };
-    const thirdColorTarget = toRgb(thirdColorOklch) as Rgb;
+    const thirdColorOklch: Oklch = {
+      space: 'oklch',
+      coords: [adjustedL, adjustedC, complementHue],
+    };
+    const thirdColorTarget = toRgb(thirdColorOklch);
 
     // 6. ターゲット色に最も近い染料を3色目として選択
     const thirdColorCandidate = findNearestDyesInOklab([thirdColorTarget], availableDyes)[0];
@@ -364,7 +368,9 @@ function computeSuggestedDyes(
 
   // その他のパターンは既存のロジックを使用
   let targetHues: [number, number];
-  const baseHue = primaryDye.hsv.h ?? 0;
+  const baseOklch = primaryDye.oklch;
+  const [primaryL, primaryC] = baseOklch.coords;
+  const baseHue = baseOklch.coords[2] ?? 0;
 
   switch (pattern) {
     case 'triadic':
@@ -386,11 +392,10 @@ function computeSuggestedDyes(
       targetHues = calculateTriadic(baseHue);
   }
 
-  // ターゲット色相を持つRGB色を生成
-  const primaryHsv = primaryDye.hsv;
+  // ターゲット色相を持つRGB色を生成（明度・彩度は primary と同じに保つ）
   const targets = targetHues.map((h) => {
-    const hsv: Hsv = { mode: 'hsv', h, s: primaryHsv.s ?? 0, v: primaryHsv.v ?? 0 };
-    return toRgb(hsv) as Rgb;
+    const target: Oklch = { space: 'oklch', coords: [primaryL, primaryC, h] };
+    return toRgb(target);
   });
 
   const nearestDyes = findNearestDyesInOklab(

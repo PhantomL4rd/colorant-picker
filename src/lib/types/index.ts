@@ -1,17 +1,32 @@
-// ===== culori型をre-export =====
-// 注: ファイル内で使用するためインポートが必要
-import type { Hsv, Oklab, Oklch, Rgb } from 'culori/fn';
-export type { Rgb, Hsv, Oklab, Oklch };
+// ===== colorjs.io 互換の色オブジェクト型 =====
+// colorjs.io の ColorObject 形式 ({ space: string, coords: [...] }) を採用。
+// 将来 colorjs.io が HelmLab を正式リリースしたら、helmlab パッケージは廃止して
+// colorjs.io 一本化する前提（このとき空間IDを 'helmlab-metric' 等へ差し替えるだけで済む）。
+export interface Rgb {
+  space: 'srgb';
+  coords: [number, number, number]; // r, g, b (0-1)
+  alpha?: number;
+}
+export interface Oklab {
+  space: 'oklab';
+  coords: [number, number, number]; // L, a, b
+  alpha?: number;
+}
+export interface Oklch {
+  space: 'oklch';
+  coords: [number, number, number | null]; // L, C, h (achromaticでnull)
+  alpha?: number;
+}
 
 // 染料のプロパティ形状（クラスDyeが実装するインターフェース）
 export interface DyeProps {
   id: string;
   name: string;
   category: DyeCategory;
-  rgb: Rgb; // culori Rgb (0-1範囲, mode: 'rgb')
-  hsv: Hsv; // culori Hsv (s,v: 0-1範囲, mode: 'hsv')
+  rgb: Rgb; // colorjs.io sRGB (0-1範囲)
   hex: string;
-  oklab: Oklab; // culori Oklab (mode: 'oklab')
+  oklab: Oklab; // colorjs.io Oklab (直交座標 - 中間色計算/deltaE 用)
+  oklch: Oklch; // colorjs.io Oklch (極座標 - 色相回転/明度・彩度操作 用)
   tags?: DyeTag[];
   source?: DyeSource;
   lodestone?: string;
@@ -96,9 +111,6 @@ export type HarmonyPattern =
 // フィルター設定
 export interface FilterOptions {
   categories: DyeCategory | null;
-  hueRange: [number, number];
-  saturationRange: [number, number];
-  valueRange: [number, number];
   excludeMetallic: boolean;
 }
 

@@ -1,85 +1,96 @@
 /**
  * 色変換ユーティリティ
  *
- * culori型を直接使用。0-255範囲との変換は保存・共有時のみ必要。
+ * colorjs.io の procedural API (colorjs.io/fn) を使用。
+ * 色は { space: string, coords: [...] } 形式の plain object で扱う。
  */
 
-import type { Oklab, Oklch, Rgb } from 'culori/fn';
 import {
-  converter,
-  differenceEuclidean,
-  formatHex,
-  modeHsv,
-  modeOklab,
-  modeOklch,
-  modeRgb,
+  ColorSpace,
+  OKLab as OKLabSpace,
+  OKLCH as OKLCHSpace,
+  sRGB,
+  deltaE,
   parse,
-  useMode,
-} from 'culori/fn';
-import type { RGBColor255 } from '$lib/types';
+  serialize,
+  to as convert,
+  toGamut,
+} from 'colorjs.io/fn';
+import type { Oklab, Oklch, Rgb, RGBColor255 } from '$lib/types';
 import { HUE_CIRCLE_MAX, HUE_DIFFERENCE_MAX, RGB_MAX } from '$lib/constants/color';
 
-// 使用する色空間を登録
-useMode(modeRgb);
-useMode(modeHsv);
-useMode(modeOklch);
-useMode(modeOklab);
+// 使用する色空間を登録（HSV は廃止、内部は Oklab/Oklch + sRGB のみ）
+ColorSpace.register(sRGB);
+ColorSpace.register(OKLabSpace);
+ColorSpace.register(OKLCHSpace);
 
-// コンバーター（キャッシュ）
-export const toRgb = converter('rgb');
-export const toHsv = converter('hsv');
-export const toOklch = converter('oklch');
-export const toOklab = converter('oklab');
+// ===== 空間変換コンバータ =====
 
-// culoriユーティリティの再エクスポート
-export { formatHex };
+export function toRgb(color: Rgb | Oklab | Oklch): Rgb {
+  return convert(color, 'srgb') as unknown as Rgb;
+}
+
+export function toOklch(color: Rgb | Oklab | Oklch): Oklch {
+  return convert(color, 'oklch') as unknown as Oklch;
+}
+
+export function toOklab(color: Rgb | Oklab | Oklch): Oklab {
+  return convert(color, 'oklab') as unknown as Oklab;
+}
 
 // ===== 0-255範囲との変換（保存・共有用） =====
 
-/** 0-255範囲からculori Rgbに変換 */
+/** 0-255範囲から colorjs.io Rgb に変換 */
 export function rgb255ToRgb(rgb255: RGBColor255): Rgb {
-  return { mode: 'rgb', r: rgb255.r / RGB_MAX, g: rgb255.g / RGB_MAX, b: rgb255.b / RGB_MAX };
+  return {
+    space: 'srgb',
+    coords: [rgb255.r / RGB_MAX, rgb255.g / RGB_MAX, rgb255.b / RGB_MAX],
+  };
 }
 
-/** culori Rgbから0-255範囲に変換 */
+/** colorjs.io Rgb から 0-255範囲に変換 */
 export function rgbToRgb255(rgb: Rgb): RGBColor255 {
+  const [r, g, b] = rgb.coords;
   return {
-    r: Math.round(Math.max(0, Math.min(1, rgb.r)) * RGB_MAX),
-    g: Math.round(Math.max(0, Math.min(1, rgb.g)) * RGB_MAX),
-    b: Math.round(Math.max(0, Math.min(1, rgb.b)) * RGB_MAX),
+    r: Math.round(Math.max(0, Math.min(1, r)) * RGB_MAX),
+    g: Math.round(Math.max(0, Math.min(1, g)) * RGB_MAX),
+    b: Math.round(Math.max(0, Math.min(1, b)) * RGB_MAX),
   };
 }
 
 // ===== HEX変換 =====
 
-/** culori Rgbからhex文字列 */
+/** colorjs.io Rgb から hex 文字列（"#RRGGBB"） */
 export function rgbToHex(rgb: Rgb): string {
-  return formatHex(rgb).toUpperCase();
+  return formatHex(rgb);
 }
 
-/** hex文字列からculori Rgb */
+/** hex 文字列から colorjs.io Rgb */
 export function hexToRgb(hex: string): Rgb {
   const parsed = parse(hex);
   if (!parsed) {
     throw new Error(`Invalid hex color: ${hex}`);
   }
-  return toRgb(parsed) as Rgb;
+  return convert(parsed, 'srgb') as unknown as Rgb;
+}
+
+/** colorjs.io オブジェクトを "#RRGGBB" 形式で出力（gamut clamp 込み・大文字） */
+export function formatHex(color: Rgb | Oklab | Oklch): string {
+  const rgb = convert(color, 'srgb') as unknown as Rgb;
+  const clamped = toGamut(rgb, { space: 'srgb' }) as unknown as Rgb;
+  return serialize(clamped, { format: 'hex' }).toUpperCase();
 }
 
 // ===== 色差計算 =====
 
-const deltaEOklchFn = differenceEuclidean('oklch');
-
-/** 2つのOklab色の色差を計算 */
+/** 2つの Oklab 色の色差を計算（deltaE Oklch ベース） */
 export function deltaEOklab(c1: Oklab, c2: Oklab): number {
-  const oklch1 = toOklch(c1) as Oklch;
-  const oklch2 = toOklch(c2) as Oklch;
-  return deltaEOklchFn(oklch1, oklch2);
+  return deltaE(c1, c2, 'OK');
 }
 
-/** 2つのOklch色の色差を計算 */
+/** 2つの Oklch 色の色差を計算 */
 export function deltaEOklch(c1: Oklch, c2: Oklch): number {
-  return deltaEOklchFn(c1, c2);
+  return deltaE(c1, c2, 'OK');
 }
 
 // ===== Hue関連ユーティリティ =====
@@ -99,14 +110,16 @@ export function hueDiff(h1: number, h2: number): number {
 
 // ===== sRGBクリップ処理 =====
 
-/** Oklab色をsRGB範囲にクリップ */
+/** Oklab 色を sRGB ガマット内にクリップ */
 export function clipOklabColor(oklab: Oklab): Oklab {
-  const rgb = toRgb(oklab) as Rgb;
+  const rgb = convert(oklab, 'srgb') as unknown as Rgb;
   const clipped: Rgb = {
-    mode: 'rgb',
-    r: Math.max(0, Math.min(1, rgb.r)),
-    g: Math.max(0, Math.min(1, rgb.g)),
-    b: Math.max(0, Math.min(1, rgb.b)),
+    space: 'srgb',
+    coords: [
+      Math.max(0, Math.min(1, rgb.coords[0])),
+      Math.max(0, Math.min(1, rgb.coords[1])),
+      Math.max(0, Math.min(1, rgb.coords[2])),
+    ],
   };
-  return toOklab(clipped) as Oklab;
+  return convert(clipped, 'oklab') as unknown as Oklab;
 }
