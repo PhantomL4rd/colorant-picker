@@ -18,9 +18,6 @@ export async function submitPalette(input: SubmitPaletteInput): Promise<void> {
   try {
     const clientId = getOrCreateClientId();
 
-    // HarmonyPatternをAPI用に変換（split-complementary → splitComplementary）
-    const patternForApi = input.pattern.replace(/-([a-z])/g, (_, c: string) => c.toUpperCase());
-
     const response = await fetch('/api/palettes', {
       method: 'POST',
       headers: {
@@ -29,7 +26,7 @@ export async function submitPalette(input: SubmitPaletteInput): Promise<void> {
       body: JSON.stringify({
         primaryDyeId: input.primaryDye.id,
         suggestedDyeIds: [input.suggestedDyes[0].id, input.suggestedDyes[1].id],
-        pattern: patternForApi,
+        pattern: input.pattern,
         clientId,
       }),
     });

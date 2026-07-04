@@ -10,6 +10,7 @@ interface SubmitPaletteRequest {
 // ===== 定数 =====
 const UUID_V4_REGEX = /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 const DYE_ID_REGEX = /^[a-z0-9_-]+$/;
+// src/lib/constants/patterns.ts の PATTERN_ORDER（HarmonyPattern 全9種）と同期を保つこと
 const VALID_PATTERNS = [
   'triadic',
   'split-complementary',
@@ -18,6 +19,8 @@ const VALID_PATTERNS = [
   'similar',
   'contrast',
   'clash',
+  'tint',
+  'shade',
 ] as const;
 
 /** 提案色の数 */

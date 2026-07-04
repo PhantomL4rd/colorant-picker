@@ -4,7 +4,7 @@
  */
 
 import { type Writable, writable } from 'svelte/store';
-import { loadFromStorage, saveToStorage } from './storageService';
+import { isQuotaExceededError, loadFromStorage, saveToStorage } from './storageService';
 import { generateId } from '../uuid';
 
 // ===== エラー定義 =====
@@ -160,7 +160,7 @@ export function createPersistentStore<
         throw StorageError.fromCode('SAVE_ERROR');
       }
     } catch (error) {
-      if (error instanceof DOMException && error.code === 22) {
+      if (isQuotaExceededError(error)) {
         throw StorageError.fromCode('QUOTA_EXCEEDED');
       }
       if (error instanceof StorageError) {

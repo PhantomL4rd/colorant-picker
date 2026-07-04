@@ -1,4 +1,6 @@
 <script lang="ts">
+import { t } from '$lib/translations';
+
 interface ColorInfo {
   hex: string;
   name: string;
@@ -17,7 +19,7 @@ const { colors, onSelect }: Props = $props();
   class="grid grid-cols-3 gap-2 w-full {onSelect ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
   onclick={onSelect}
   disabled={!onSelect}
-  aria-label="この組み合わせを選択"
+  aria-label={$t('common.aria.selectCombination')}
 >
   {#each colors as color}
     <div class="text-center">

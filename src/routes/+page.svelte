@@ -16,9 +16,9 @@ import {
   toggleExcludeMetallic,
 } from '$lib/stores/filter';
 import {
+  selectPatternAndPrimaryDye,
   selectPrimaryDye,
   selectionStore,
-  shufflePalette,
   updatePattern,
 } from '$lib/stores/selection';
 import { t } from '$lib/translations';
@@ -105,8 +105,8 @@ function handleClearAll(): void {
 function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]): void {
   const [primary] = randomDyes;
   const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
-  updatePattern(randomPattern);
-  selectPrimaryDye(primary);
+  // パターンと主色を1回の store 更新で確定し、undo に中間状態を残さない
+  selectPatternAndPrimaryDye(randomPattern, primary);
   scrollToPaletteHero();
 }
 

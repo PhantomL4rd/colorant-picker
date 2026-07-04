@@ -11,13 +11,12 @@ import {
   OKLCH as OKLCHSpace,
   sRGB,
   deltaE,
-  parse,
   serialize,
   to as convert,
   toGamut,
 } from 'colorjs.io/fn';
-import type { Oklab, Oklch, Rgb, RGBColor255 } from '$lib/types';
-import { HUE_CIRCLE_MAX, HUE_DIFFERENCE_MAX, RGB_MAX } from '$lib/constants/color';
+import type { Oklab, Oklch, Rgb } from '$lib/types';
+import { HUE_CIRCLE_MAX, HUE_DIFFERENCE_MAX } from '$lib/constants/color';
 
 // 使用する色空間を登録（HSV は廃止、内部は Oklab/Oklch + sRGB のみ）
 ColorSpace.register(sRGB);
@@ -38,40 +37,11 @@ export function toOklab(color: Rgb | Oklab | Oklch): Oklab {
   return convert(color, 'oklab') as unknown as Oklab;
 }
 
-// ===== 0-255範囲との変換（保存・共有用） =====
-
-/** 0-255範囲から colorjs.io Rgb に変換 */
-export function rgb255ToRgb(rgb255: RGBColor255): Rgb {
-  return {
-    space: 'srgb',
-    coords: [rgb255.r / RGB_MAX, rgb255.g / RGB_MAX, rgb255.b / RGB_MAX],
-  };
-}
-
-/** colorjs.io Rgb から 0-255範囲に変換 */
-export function rgbToRgb255(rgb: Rgb): RGBColor255 {
-  const [r, g, b] = rgb.coords;
-  return {
-    r: Math.round(Math.max(0, Math.min(1, r)) * RGB_MAX),
-    g: Math.round(Math.max(0, Math.min(1, g)) * RGB_MAX),
-    b: Math.round(Math.max(0, Math.min(1, b)) * RGB_MAX),
-  };
-}
-
 // ===== HEX変換 =====
 
 /** colorjs.io Rgb から hex 文字列（"#RRGGBB"） */
 export function rgbToHex(rgb: Rgb): string {
   return formatHex(rgb);
-}
-
-/** hex 文字列から colorjs.io Rgb */
-export function hexToRgb(hex: string): Rgb {
-  const parsed = parse(hex);
-  if (!parsed) {
-    throw new Error(`Invalid hex color: ${hex}`);
-  }
-  return convert(parsed, 'srgb') as unknown as Rgb;
 }
 
 /** colorjs.io オブジェクトを "#RRGGBB" 形式で出力（gamut clamp 込み・大文字） */
@@ -93,33 +63,19 @@ export function deltaEOklch(c1: Oklch, c2: Oklch): number {
   return deltaE(c1, c2, 'OK');
 }
 
-// ===== Hue関連ユーティリティ =====
+// ===== 無彩色（グレー）判定 =====
 
-/** 2つの色相の差（0-180） */
-export function hueDelta(h1: number, h2: number): number {
-  let d = Math.abs(h1 - h2);
-  if (d > HUE_DIFFERENCE_MAX) d = HUE_CIRCLE_MAX - d;
-  return d;
-}
+/**
+ * OKLCH クロマがこの値以下なら無彩色寄り（グレー）とみなし、色相判定を免除する閾値。
+ * 無彩色は colorjs.io が hue に null を返すため、色相距離をそのまま使うと 0°(赤) 扱いになる。
+ * ベース側・候補側の双方でこの単一ソースを参照して対称に扱う。
+ */
+export const GRAY_CHROMA_THRESHOLD = 0.02;
+
+// ===== Hue関連ユーティリティ =====
 
 /** 2つの色相の差（0-180） */
 export function hueDiff(h1: number, h2: number): number {
   const diff = Math.abs(h1 - h2) % HUE_CIRCLE_MAX;
   return diff > HUE_DIFFERENCE_MAX ? HUE_CIRCLE_MAX - diff : diff;
-}
-
-// ===== sRGBクリップ処理 =====
-
-/** Oklab 色を sRGB ガマット内にクリップ */
-export function clipOklabColor(oklab: Oklab): Oklab {
-  const rgb = convert(oklab, 'srgb') as unknown as Rgb;
-  const clipped: Rgb = {
-    space: 'srgb',
-    coords: [
-      Math.max(0, Math.min(1, rgb.coords[0])),
-      Math.max(0, Math.min(1, rgb.coords[1])),
-      Math.max(0, Math.min(1, rgb.coords[2])),
-    ],
-  };
-  return convert(clipped, 'oklab') as unknown as Oklab;
 }

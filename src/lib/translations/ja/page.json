@@ -115,9 +115,12 @@
       "button": "異説",
       "title": "{name}の異説"
     },
+    "three": {
+      "heading": "三色重"
+    },
     "credit": {
-      "reference": "参照元",
-      "source": "有職の「かさね色目」"
+      "reference": "底本",
+      "source": "長崎盛輝『王朝のかさね色辞典』紫紅社 ほか"
     }
   }
 }

@@ -75,21 +75,23 @@ export function updatePattern(pattern: HarmonyPattern): void {
   });
 }
 
-// 提案カララントを再生成
-export function regenerateSuggestions(): void {
+// 配色パターンと主色を1回の更新で同時に設定して提案を再生成する。
+// updatePattern → selectPrimaryDye と2回に分けると undo 履歴に
+// 中間状態が余分に記録されるため、ランダムピック等はこちらを使う。
+export function selectPatternAndPrimaryDye(pattern: HarmonyPattern, dye: DyeProps): void {
   selectionStore.update((state) => {
-    if (!state.primaryDye) return state;
-
     const allDyes = get(dyeStore);
     const excludeMetallic = get(filterStore).excludeMetallic;
     const newSeed = Date.now();
     const suggested =
       allDyes.length > 0
-        ? generateSuggestedDyes(state.primaryDye, state.pattern, allDyes, newSeed, excludeMetallic)
+        ? generateSuggestedDyes(dye, pattern, allDyes, newSeed, excludeMetallic)
         : null;
 
     return {
       ...state,
+      primaryDye: dye,
+      pattern,
       harmonySeed: newSeed,
       suggestedDyes: suggested,
     };

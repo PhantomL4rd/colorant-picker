@@ -63,7 +63,7 @@ function openModal() {
 
 function handleSave() {
   if (!currentSelection.primaryDye || !currentSelection.suggestedDyes) {
-    saveError = '組み合わせが選択されていません。';
+    saveError = $t('page.palette.noSelection');
     return;
   }
 

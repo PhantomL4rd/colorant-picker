@@ -21,16 +21,13 @@ type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
 let isLoading = $state(true);
 let error = $state<string | null>(null);
 let palettes = $state<ShowcasePalette[]>([]);
-let dyes = $state<DyeProps[]>([]);
 
 // ShareModal の状態管理
 let shareModalOpen = $state(false);
 let selectedPaletteForShare = $state<ShowcasePalette | null>(null);
 
-// 染料ストアを購読
-dyeStore.subscribe((value) => {
-  dyes = value;
-});
+// 染料ストアを自動購読（手動 subscribe のリークを避ける）
+const dyes = $derived($dyeStore);
 
 async function fetchShowcase(): Promise<void> {
   try {
@@ -49,7 +46,12 @@ async function fetchShowcase(): Promise<void> {
 
 onMount(async () => {
   try {
-    await loadDyes();
+    const dyesLoaded = await loadDyes();
+    if (!dyesLoaded) {
+      // 染料データが無いとカードを1枚も描画できないため、エラー表示に落とす
+      error = $t('common.state.error');
+      return;
+    }
     await fetchShowcase();
   } catch (err) {
     console.error('初期化エラー:', err);
@@ -62,6 +64,12 @@ onMount(async () => {
 async function handleRetry() {
   isLoading = true;
   error = null;
+  const dyesLoaded = await loadDyes();
+  if (!dyesLoaded) {
+    error = $t('common.state.error');
+    isLoading = false;
+    return;
+  }
   await fetchShowcase();
   isLoading = false;
 }

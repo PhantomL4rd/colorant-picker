@@ -16,7 +16,7 @@
 
 import { HUE_CIRCLE_MAX } from '$lib/constants/color';
 import type { DyeProps, Oklch, Rgb } from '$lib/types';
-import { deltaEOklab, toOklab, toRgb } from './colorConversion';
+import { GRAY_CHROMA_THRESHOLD, deltaEOklab, toOklab, toRgb } from './colorConversion';
 
 export type LadderAxis = 'lightness' | 'chroma' | 'hue';
 
@@ -37,9 +37,6 @@ const CHROMA_AXIS_LIGHTNESS_TOL = 0.12;
 const CHROMA_AXIS_HUE_TOL_DEG = 25;
 const HUE_AXIS_LIGHTNESS_TOL = 0.12;
 const HUE_AXIS_CHROMA_TOL = 0.08;
-
-// ベースの彩度がこれ以下なら無彩色寄りとみなし、色相方向の許容判定を省く
-const GRAY_CHROMA_THRESHOLD = 0.02;
 
 export interface LadderEntry {
   /** 並び順用のソートキー（軸ごとに意味が変わる、表示には使わない） */
@@ -77,16 +74,20 @@ function withinAxisTolerance(axis: LadderAxis, dyeOklch: Oklch, baseOklch: Oklch
   const [dyeL, dyeC, dyeHraw] = dyeOklch.coords;
   const baseH = baseHraw ?? 0;
   const dyeH = dyeHraw ?? 0;
+  // ベース・候補いずれかが無彩色なら色相距離は無意味（null→0°=赤 扱いになる）ため免除。
+  // ベース側の baseIsGray と対称に候補側も判定する。
   const baseIsGray = baseC <= GRAY_CHROMA_THRESHOLD;
+  const dyeIsGray = dyeC <= GRAY_CHROMA_THRESHOLD;
+  const hueExempt = baseIsGray || dyeIsGray;
 
   if (axis === 'lightness') {
     if (Math.abs(dyeC - baseC) > LIGHTNESS_AXIS_CHROMA_TOL) return false;
-    if (baseIsGray) return true;
+    if (hueExempt) return true;
     return hueDistance(dyeH, baseH) <= LIGHTNESS_AXIS_HUE_TOL_DEG;
   }
   if (axis === 'chroma') {
     if (Math.abs(dyeL - baseL) > CHROMA_AXIS_LIGHTNESS_TOL) return false;
-    if (baseIsGray) return true;
+    if (hueExempt) return true;
     return hueDistance(dyeH, baseH) <= CHROMA_AXIS_HUE_TOL_DEG;
   }
   return (
@@ -130,19 +131,23 @@ export function generateLadder(
   const entries: LadderEntry[] = [];
 
   for (let i = 0; i < steps; i++) {
-    const t = i / (steps - 1);
+    // steps===1 のとき i/(steps-1) は 0除算(NaN)になるため、単一段は起点(t=0)に固定する。
+    // 直線軸(L/C)は端点を含めたいので i/(steps-1)、hue は円環なので i/steps で 1周を均等分割する
+    // （i/(steps-1) だと i=0 と最終段がどちらも H=0 になり重複してしまう）。
+    const tLinear = steps > 1 ? i / (steps - 1) : 0;
+    const tHue = steps > 0 ? i / steps : 0;
 
     let targetL = baseL;
     let targetC = baseC;
     let targetH = baseH;
 
     if (axis === 'lightness') {
-      targetL = LIGHTNESS_MIN + t * (LIGHTNESS_MAX - LIGHTNESS_MIN);
+      targetL = LIGHTNESS_MIN + tLinear * (LIGHTNESS_MAX - LIGHTNESS_MIN);
     } else if (axis === 'chroma') {
-      targetC = CHROMA_MIN + t * (CHROMA_MAX - CHROMA_MIN);
+      targetC = CHROMA_MIN + tLinear * (CHROMA_MAX - CHROMA_MIN);
     } else {
-      // hue: 0..360 を等分（最終ステップが 360 になると先頭と重なるので等間隔のまま）
-      targetH = (t * HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX;
+      // hue: 0..360 を steps 等分（最終段が 360=先頭と重ならないよう i/steps を使う）
+      targetH = (tHue * HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX;
     }
 
     const targetOklch: Oklch = {

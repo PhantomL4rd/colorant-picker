@@ -70,55 +70,6 @@ export function calculateContrast(baseHue: number): [number, number] {
   return [(baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX, (baseHue + CONTRAST_OFFSET) % HUE_CIRCLE_MAX];
 }
 
-// クラッシュ - 補色±30°（挑戦的な配色）
-export function calculateClash(baseHue: number): [number, number] {
-  const complement = (baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX;
-  return [
-    (complement - SPLIT_COMPLEMENTARY_ADJUSTMENT + HUE_CIRCLE_MAX) % HUE_CIRCLE_MAX,
-    (complement + SPLIT_COMPLEMENTARY_ADJUSTMENT) % HUE_CIRCLE_MAX,
-  ];
-}
-
-// 最も近い色相の染料を見つける
-export function findNearestDyes(
-  targetHues: number[],
-  dyes: DyeProps[],
-  excludeDye?: DyeProps
-): DyeProps[] {
-  const availableDyes = dyes.filter((dye) => !excludeDye || dye.id !== excludeDye.id);
-  const result: DyeProps[] = [];
-  const usedDyeIds = new Set<string>();
-
-  for (const targetHue of targetHues) {
-    let closestDye: DyeProps | null = null;
-    let minDifference = Infinity;
-
-    for (const dye of availableDyes) {
-      // すでに結果として選ばれている染料はスキップする
-      if (usedDyeIds.has(dye.id)) continue;
-
-      const dyeHue = dye.oklch.coords[2] ?? 0;
-      const hueDifference = Math.min(
-        Math.abs(dyeHue - targetHue),
-        HUE_CIRCLE_MAX - Math.abs(dyeHue - targetHue)
-      );
-
-      if (hueDifference < minDifference) {
-        minDifference = hueDifference;
-        closestDye = dye;
-      }
-    }
-
-    if (closestDye) {
-      result.push(closestDye);
-      // 見つかった染料のIDを記録し、次の検索で重複しないようにする
-      usedDyeIds.add(closestDye.id);
-    }
-  }
-
-  return result;
-}
-
 // helmlab フォールバック: 主候補 (OKLab deltaE 最近傍) の delta がこの閾値を超えたら、
 // helmlab の知覚距離 (distanceFromLab) で全プールから最近傍を選び直す。
 // 旧 hue±45° / excess≤0.05 / chroma ガードは廃止し、helmlab に一任。
@@ -176,7 +127,11 @@ export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): Dye
  * dyeAとdyeBのOklab空間での中間点に最も近い染料を見つける
  * 2色の「橋渡し」となる色を選ぶ
  */
-export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[]): DyeProps {
+export function findBridgeDye(
+  dyeA: DyeProps,
+  dyeB: DyeProps,
+  palette: DyeProps[]
+): DyeProps | null {
   // Oklab空間での中間点を計算
   const [la, aa, ba] = dyeA.oklab.coords;
   const [lb, ab, bb] = dyeB.oklab.coords;
@@ -200,13 +155,54 @@ export function findBridgeDye(dyeA: DyeProps, dyeB: DyeProps, palette: DyeProps[
     }
   }
 
-  // 適切な染料が見つからない場合はランダムに選択
+  // 適切な染料が見つからない場合はランダムに選択。プールが空なら null を返し、
+  // 呼び出し側の縮退フォールバック（padToPair）に委ねる。
   if (!selectedDye) {
     const availableDyes = palette.filter((dye) => dye.id !== dyeA.id && dye.id !== dyeB.id);
+    if (availableDyes.length === 0) return null;
     selectedDye = availableDyes[Math.floor(Math.random() * availableDyes.length)];
   }
 
   return selectedDye;
+}
+
+/**
+ * 提案 dye が 2 色に満たない場合の縮退フォールバック。
+ *
+ * 方針: 「選出済み + 未使用染料で埋める → それでも足りなければ最後は primaryDye 自身で埋める」。
+ * これにより空プール・痩せたプールでも無限ループ・undefined・重複を避けつつ、
+ * `[DyeProps, DyeProps]` の戻り値契約（undefined を含まない）を必ず守る。
+ */
+function padToPair(
+  chosen: (DyeProps | undefined)[],
+  primaryDye: DyeProps,
+  allDyes: DyeProps[]
+): [DyeProps, DyeProps] {
+  const result: DyeProps[] = [];
+  const usedIds = new Set<string>();
+
+  for (const dye of chosen) {
+    if (result.length >= 2) break;
+    if (dye && !usedIds.has(dye.id)) {
+      result.push(dye);
+      usedIds.add(dye.id);
+    }
+  }
+
+  // 未使用染料（primary も除外）で埋める
+  for (const dye of allDyes) {
+    if (result.length >= 2) break;
+    if (dye.id === primaryDye.id || usedIds.has(dye.id)) continue;
+    result.push(dye);
+    usedIds.add(dye.id);
+  }
+
+  // それでも足りなければ primaryDye 自身で埋める（クラッシュ防止の最終手段）
+  while (result.length < 2) {
+    result.push(primaryDye);
+  }
+
+  return [result[0], result[1]];
 }
 
 // ティント/シェード用のOKLCH明度オフセット
@@ -293,9 +289,12 @@ function computeSuggestedDyes(
   allDyes: DyeProps[]
 ): [DyeProps, DyeProps] {
   if (pattern === 'monochromatic') {
-    return selectMonochromaticDyes(primaryDye, allDyes, { diversifyByLightness: true }).map(
-      (c) => c.dye
-    ) as [DyeProps, DyeProps];
+    const chosen = selectMonochromaticDyes(primaryDye, allDyes, {
+      diversifyByLightness: true,
+    }).map((c) => c.dye);
+    // selector は最大 numResults 件しか返さない（プールが痩せると 2 件未満になり得る）ため、
+    // 無検査キャストはやめて padToPair で必ず 2 色に揃える。
+    return padToPair(chosen, primaryDye, allDyes);
   }
 
   // ティント（淡色）/ シェード（暗色）: 主色の色相・彩度を保ち、明度を上下にずらした2色
@@ -306,15 +305,8 @@ function computeSuggestedDyes(
     const targets = generateTintShadeTargets(primaryDye, pattern);
     const nearestDyes = findNearestDyesInOklab(targets, availableDyes).map((c) => c.dye);
 
-    // 2色に満たない場合（候補不足など）はランダムで補完
-    while (nearestDyes.length < 2 && availableDyes.length > 0) {
-      const randomDye = availableDyes[Math.floor(Math.random() * availableDyes.length)];
-      if (!nearestDyes.some((d) => d.id === randomDye.id)) {
-        nearestDyes.push(randomDye);
-      }
-    }
-
-    return [nearestDyes[0], nearestDyes[1]] as [DyeProps, DyeProps];
+    // 2色に満たない場合（候補不足など）は padToPair で確実に補完（無限ループを避ける）
+    return padToPair(nearestDyes, primaryDye, allDyes);
   }
 
   // クラッシュパターンの場合は新しいロジックを使用
@@ -353,15 +345,19 @@ function computeSuggestedDyes(
     const thirdColorCandidate = findNearestDyesInOklab([thirdColorTarget], availableDyes)[0];
 
     if (!thirdColorCandidate) {
-      // フォールバック: 適切な染料が見つからない場合
-      const randomDyes = availableDyes.slice(0, 2);
-      return [randomDyes[0], randomDyes[1]] as [DyeProps, DyeProps];
+      // フォールバック: 適切な染料が見つからない場合（空プール含む）
+      return padToPair(availableDyes.slice(0, 2), primaryDye, allDyes);
     }
 
     const thirdColor = thirdColorCandidate.dye;
 
     // 7. 2色目（橋渡し）: Base色と3色目Xの中間色
     const bridgeColor = findBridgeDye(primaryDye, thirdColor, availableDyes);
+
+    // 橋渡し候補が見つからない（プールが痩せている）場合は縮退フォールバック
+    if (!bridgeColor) {
+      return padToPair([thirdColor], primaryDye, allDyes);
+    }
 
     return [bridgeColor, thirdColor];
   }
@@ -403,13 +399,6 @@ function computeSuggestedDyes(
     allDyes.filter((dye) => dye.id !== primaryDye.id)
   ).map((c) => c.dye);
 
-  // 2色に満たない場合はランダムで補完
-  while (nearestDyes.length < 2) {
-    const randomDye = allDyes[Math.floor(Math.random() * allDyes.length)];
-    if (!nearestDyes.includes(randomDye) && randomDye.id !== primaryDye.id) {
-      nearestDyes.push(randomDye);
-    }
-  }
-
-  return [nearestDyes[0], nearestDyes[1]];
+  // 2色に満たない場合は padToPair で確実に補完（有効候補が2未満でも無限ループしない）
+  return padToPair(nearestDyes, primaryDye, allDyes);
 }

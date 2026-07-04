@@ -8,6 +8,7 @@ import LZString from 'lz-string';
 import { Palette } from '$lib/models/Palette';
 import { emitRestorePalette } from '$lib/stores/paletteEvents';
 import type { DyeProps, Favorite, HarmonyPattern } from '$lib/types';
+import { PATTERN_ORDER } from '$lib/constants/patterns';
 import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
 import { ID_LIMITS, SHARE_LIMITS } from '$lib/constants/validation';
 
@@ -82,6 +83,13 @@ export function decodePaletteFromUrl(url: string): SharePaletteData | null {
       !isValidString(data.pt, ID_LIMITS.MAX_PATTERN_LENGTH)
     ) {
       console.warn('Invalid palette data structure or value');
+      return null;
+    }
+
+    // pt は長さだけでなく既知パターン（PATTERN_ORDER の単一ソース）に含まれるか検証する。
+    // 改ざん URL で不正なパターン名が selectionStore に流入するのを防ぐ。
+    if (!PATTERN_ORDER.includes(data.pt)) {
+      console.warn('Unknown pattern type in palette data:', data.pt);
       return null;
     }
 
@@ -169,16 +177,8 @@ export function restorePaletteFromUrl(dyes: DyeProps[]): boolean {
         return false;
       }
 
-      const patterns: HarmonyPattern[] = [
-        'triadic',
-        'split-complementary',
-        'analogous',
-        'monochromatic',
-        'similar',
-        'contrast',
-        'clash',
-      ];
-      const randomPattern = patterns[Math.floor(Math.random() * patterns.length)];
+      // パターン一覧は PATTERN_ORDER を単一ソースとして参照する（tint/shade 欠落等の不一致を防ぐ）
+      const randomPattern = PATTERN_ORDER[Math.floor(Math.random() * PATTERN_ORDER.length)];
       const suggested = generateSuggestedDyes(targetDye, randomPattern, dyes);
 
       emitRestorePalette({

@@ -135,7 +135,7 @@ onMount(async () => {
                 class="flex w-full items-center justify-between rounded-lg bg-muted px-4 py-3 hover:bg-muted/80 transition-colors cursor-pointer"
               >
                 <h2 class="font-bold text-lg">
-                  三色重
+                  {$t('page.kasane.three.heading')}
                   <span class="text-sm font-normal text-muted-foreground ml-2">({kasaneThree.length})</span>
                 </h2>
                 <ChevronDown class="size-4 transition-transform duration-200 {isThreeExpanded ? 'rotate-180' : ''}" />
@@ -152,7 +152,7 @@ onMount(async () => {
         </Collapsible.Root>
       {/if}
       <p class="mt-8 text-center text-[10px] text-muted-foreground/60">
-        底本: 長崎盛輝『王朝のかさね色辞典』紫紅社 ほか
+        {$t('page.kasane.credit.reference')}: {$t('page.kasane.credit.source')}
       </p>
     </div>
   {/if}

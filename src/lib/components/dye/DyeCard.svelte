@@ -1,4 +1,5 @@
 <script lang="ts">
+import { onDestroy } from 'svelte';
 import type { DyeProps } from '$lib/types';
 import { t } from '$lib/translations';
 import * as Card from '$lib/components/ui/card';
@@ -15,15 +16,23 @@ const { dye, isSelected = false, onSelect, animationDelay = 0 }: Props = $props(
 const displayName = $derived($t(`dye.names.${dye.id}`) || dye.name);
 
 let isClicking = $state(false);
+// 連打時に前回のリセットタイマーが残らないよう保持する
+let clickTimer: ReturnType<typeof setTimeout> | null = null;
 
 function handleClick() {
   isClicking = true;
   onSelect(dye);
   // バウンスアニメーション終了後にリセット
-  setTimeout(() => {
+  if (clickTimer !== null) clearTimeout(clickTimer);
+  clickTimer = setTimeout(() => {
     isClicking = false;
+    clickTimer = null;
   }, 300);
 }
+
+onDestroy(() => {
+  if (clickTimer !== null) clearTimeout(clickTimer);
+});
 </script>
 
 <Card.Root

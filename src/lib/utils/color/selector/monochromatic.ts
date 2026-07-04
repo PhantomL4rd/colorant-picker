@@ -6,7 +6,7 @@
 
 import type { DyeProps, Oklch } from '$lib/types';
 import { EPSILON, MONOCHROMATIC_CONFIG } from '$lib/constants/color';
-import { hueDiff, toOklch } from '../colorConversion';
+import { GRAY_CHROMA_THRESHOLD, hueDiff } from '../colorConversion';
 
 type Candidate = {
   dye: DyeProps;
@@ -50,6 +50,7 @@ export function selectMonochromaticDyes(
 
   const base = baseDye.oklch;
   const [baseL, baseC, baseH] = base.coords;
+  const baseIsGray = baseC <= GRAY_CHROMA_THRESHOLD;
 
   // 1) 基準色との色相・彩度・明度の差を重み付けしてスコアリング
   const scored: Candidate[] = palette
@@ -57,7 +58,10 @@ export function selectMonochromaticDyes(
     .map((dye) => {
       const c = dye.oklch;
       const [cL, cC, cH] = c.coords;
-      const dh = hueDiff(baseH ?? 0, cH ?? 0);
+      // ベース・候補いずれかが無彩色なら色相距離は無意味（null→0°=赤 扱い）なので免除し、
+      // ベース側の baseIsGray と対称に扱う。
+      const candIsGray = cC <= GRAY_CHROMA_THRESHOLD;
+      const dh = baseIsGray || candIsGray ? 0 : hueDiff(baseH ?? 0, cH ?? 0);
       const dC = Math.abs(cC - baseC);
       const dL = Math.abs(cL - baseL);
 
@@ -72,12 +76,15 @@ export function selectMonochromaticDyes(
   // 2) 色相をフィルタして同系色に絞る（厳しめにしたいときは 30° 程度）
   const filtered = scored.filter((c) => c.dh <= hueWindowDeg);
 
-  // Fallback 処理: 足りない時は「最も近い色相」から追加
+  // Fallback 処理: 足りない時は「最も近い色相」から追加。
+  // filtered に採用済みの候補を母集合から除外し、同一染料の重複 push を防ぐ。
   if (filtered.length < numResults) {
     const needed = numResults - filtered.length;
-    const fallback = [...scored]
+    const filteredIds = new Set(filtered.map((c) => c.dye.id));
+    const fallback = scored
+      .filter((c) => !filteredIds.has(c.dye.id))
       .sort((a, b) => a.dh - b.dh)
-      .slice(0, Math.min(needed, scored.length));
+      .slice(0, needed);
     filtered.push(...fallback);
   }
 
@@ -90,30 +97,50 @@ export function selectMonochromaticDyes(
     const sorted = filtered.sort((a, b) => a.score - b.score);
 
     // 候補色をその L の値域でクラスタ分割し、各クラスタから均等に選定する
-    const bins: Candidate[][] = Array.from(
-      { length: MONOCHROMATIC_CONFIG.LIGHTNESS_BINS },
-      () => []
-    );
+    const BINS = MONOCHROMATIC_CONFIG.LIGHTNESS_BINS;
+    const bins: Candidate[][] = Array.from({ length: BINS }, () => []);
     const Ls = sorted.map((x) => x.oklch.coords[0]);
     Ls.push(baseL); // 基準色の L も考慮する
     const Lmin = Math.min(...Ls);
     const Lmax = Math.max(...Ls);
-    const step = (Lmax - Lmin) / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS || 1;
+    const step = (Lmax - Lmin) / BINS || 1;
 
+    // L=Lmax のとき floor((L-Lmin)/step)=BINS で範囲外になるため必ずクランプする
+    const binOf = (L: number): number =>
+      Math.min(BINS - 1, Math.max(0, Math.floor((L - Lmin) / step)));
+
+    const capacity = Math.ceil(numResults / BINS);
+    // 容量超過で bins に入れなかった候補（スコア順）を控えとして保持する
+    const overflow: Candidate[] = [];
     for (const c of sorted) {
-      const bin = Math.min(
-        MONOCHROMATIC_CONFIG.LIGHTNESS_BINS - 1,
-        Math.floor((c.oklch.coords[0] - Lmin) / step)
-      );
-      if (bins[bin].length < Math.ceil(numResults / MONOCHROMATIC_CONFIG.LIGHTNESS_BINS))
-        bins[bin].push(c);
+      const bin = binOf(c.oklch.coords[0]);
+      if (bins[bin].length < capacity) bins[bin].push(c);
+      else overflow.push(c);
     }
 
-    // 基準色の属するクラスタを除外（numResults >= 3 の場合は要調整）
-    const banned = Math.floor((baseL - Lmin) / step);
-    const selectedBins = bins.filter((_, i) => i !== banned);
+    // 基準色の属するクラスタを除外（banned もクランプして範囲外参照を防ぐ）
+    const banned = binOf(baseL);
+    const selected: Candidate[] = [];
+    const bannedItems: Candidate[] = []; // 除外クラスタの候補（不足時の最終補完用）
+    bins.forEach((binItems, i) => {
+      if (i === banned) bannedItems.push(...binItems);
+      else selected.push(...binItems);
+    });
 
-    picked = ([] as Candidate[]).concat(...selectedBins).slice(0, numResults);
+    picked = selected.slice(0, numResults);
+
+    // 不足時は捨てた候補（容量超過分 → 除外クラスタ分の順）でスコア順に補完し、
+    // 必ず要求件数（利用可能なら numResults）を返す
+    if (picked.length < numResults) {
+      const pickedIds = new Set(picked.map((c) => c.dye.id));
+      const refill = [...overflow, ...bannedItems]
+        .filter((c) => !pickedIds.has(c.dye.id))
+        .sort((a, b) => a.score - b.score);
+      for (const c of refill) {
+        if (picked.length >= numResults) break;
+        picked.push(c);
+      }
+    }
   }
 
   // 4) 最終的にスコア→色相差→彩度差で安定ソート

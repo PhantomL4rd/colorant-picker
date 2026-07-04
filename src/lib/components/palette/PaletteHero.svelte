@@ -1,6 +1,6 @@
 <script lang="ts">
 import { Ban, ChevronDown, Redo2, Shuffle, Sparkles, Undo2 } from '@lucide/svelte';
-import { PATTERN_LABELS, PATTERN_OPTIONS } from '$lib/constants/patterns';
+import { PATTERN_ORDER } from '$lib/constants/patterns';
 import { Palette } from '$lib/models/Palette';
 import { redo, undo, undoState } from '$lib/stores/paletteUndo';
 import {
@@ -78,7 +78,15 @@ $effect(() => {
     // Space → シャッフル
     if (e.code !== 'Space' && e.key !== ' ') return;
     if (inEditable) return;
-    if (target instanceof HTMLElement && target.closest('[role="dialog"]')) return;
+    // モーダル/ドロップダウン/リストボックスなど、Space が本来の操作を持つ
+    // オーバーレイUI内では乗っ取らない（bits-ui の DropdownMenu は role="menu"）
+    if (
+      target instanceof HTMLElement &&
+      target.closest(
+        '[role="dialog"], [role="menu"], [role="menuitem"], [role="listbox"], [role="option"]'
+      )
+    )
+      return;
     e.preventDefault();
     e.stopPropagation();
     if (document.activeElement instanceof HTMLElement && document.activeElement !== document.body) {
@@ -118,20 +126,20 @@ function handlePatternSelect(pattern: HarmonyPattern): void {
           <span class="text-xs text-muted-foreground hidden sm:inline"
             >{$t('page.palette.action.pattern')}:</span
           >
-          <span>{PATTERN_LABELS[selection.pattern]}</span>
+          <span>{$t(`pattern.${selection.pattern}.name`)}</span>
           <ChevronDown class="size-4 opacity-60" />
         </Button>
       {/snippet}
     </DropdownMenu.Trigger>
     <DropdownMenu.Content class="w-64">
-      {#each PATTERN_OPTIONS as opt (opt.value)}
+      {#each PATTERN_ORDER as value (value)}
         <DropdownMenu.Item
-          class={selection.pattern === opt.value ? 'bg-accent' : ''}
-          onSelect={() => handlePatternSelect(opt.value)}
+          class={selection.pattern === value ? 'bg-accent' : ''}
+          onSelect={() => handlePatternSelect(value)}
         >
           <div class="flex flex-col w-full">
-            <span class="font-medium">{opt.label}</span>
-            <span class="text-xs text-muted-foreground">{opt.description}</span>
+            <span class="font-medium">{$t(`pattern.${value}.name`)}</span>
+            <span class="text-xs text-muted-foreground">{$t(`pattern.${value}.description`)}</span>
           </div>
         </DropdownMenu.Item>
       {/each}

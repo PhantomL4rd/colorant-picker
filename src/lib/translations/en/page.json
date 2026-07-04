@@ -115,9 +115,12 @@
       "button": "Variants",
       "title": "Variants of {name}"
     },
+    "three": {
+      "heading": "Three-color Kasane"
+    },
     "credit": {
-      "reference": "Reference",
-      "source": "Yūsoku Kasane-irome"
+      "reference": "Source text",
+      "source": "Nagasaki Moriteru, \"Ōchō no Kasane-iro Jiten\" (Shikōsha), et al."
     }
   }
 }

@@ -1,5 +1,6 @@
 <script lang="ts">
 import { Calendar, Heart, Loader2, Trash2, X } from '@lucide/svelte';
+import { onDestroy } from 'svelte';
 import { FEEDBACK_DURATION } from '$lib/constants/timing';
 import { t } from '$lib/translations';
 import type { Favorite, HarmonyPattern } from '$lib/types';
@@ -49,6 +50,8 @@ const {
 // お気に入り追加の状態
 let isAddingToFavorites = $state(false);
 let showFeedback = $state(false);
+// 連打時に前回のフィードバック解除タイマーが残らないよう保持する
+let feedbackTimer: ReturnType<typeof setTimeout> | null = null;
 
 // 削除確認状態
 let isDeleting = $state(false);
@@ -87,8 +90,10 @@ async function handleFavorite() {
     // ハートバースト + フィードバック表示
     heartBurst?.trigger();
     showFeedback = true;
-    setTimeout(() => {
+    if (feedbackTimer !== null) clearTimeout(feedbackTimer);
+    feedbackTimer = setTimeout(() => {
       showFeedback = false;
+      feedbackTimer = null;
     }, FEEDBACK_DURATION.BUTTON);
   } catch (err) {
     error = err instanceof Error ? err.message : $t('common.action.likeError');
@@ -116,6 +121,10 @@ function handleDelete() {
 function cancelDelete() {
   isDeleting = false;
 }
+
+onDestroy(() => {
+  if (feedbackTimer !== null) clearTimeout(feedbackTimer);
+});
 </script>
 
 <Card.Root class="transition-shadow hover:shadow-lg">

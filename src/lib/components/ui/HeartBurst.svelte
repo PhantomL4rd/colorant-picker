@@ -5,11 +5,14 @@ export type HeartBurstApi = {
 </script>
 
 <script lang="ts">
+import { onDestroy } from 'svelte';
 import { HEART_BURST } from '$lib/constants/timing';
 
 type BurstHeart = { id: number; x: number; y: number };
 let burstHearts = $state<BurstHeart[]>([]);
 let burstId = 0;
+// 連打時に前回のクリアタイマーが後発のハートを消さないよう、タイマーを保持して都度クリアする
+let burstTimer: ReturnType<typeof setTimeout> | null = null;
 
 export function trigger() {
   const count = HEART_BURST.MIN_COUNT + Math.floor(Math.random() * HEART_BURST.RANDOM_RANGE);
@@ -25,10 +28,16 @@ export function trigger() {
 
   burstHearts = newHearts;
 
-  setTimeout(() => {
+  if (burstTimer !== null) clearTimeout(burstTimer);
+  burstTimer = setTimeout(() => {
     burstHearts = [];
+    burstTimer = null;
   }, HEART_BURST.DURATION);
 }
+
+onDestroy(() => {
+  if (burstTimer !== null) clearTimeout(burstTimer);
+});
 </script>
 
 {#each burstHearts as heart (heart.id)}
