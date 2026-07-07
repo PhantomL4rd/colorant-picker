@@ -53,13 +53,27 @@ export function formatHex(color: Rgb | Oklab | Oklch): string {
 
 // ===== 色差計算 =====
 
-/** 2つの Oklab 色の色差を計算（deltaE Oklch ベース） */
-export function deltaEOklab(c1: Oklab, c2: Oklab): number {
-  return deltaE(c1, c2, 'OK');
+/**
+ * CIEDE2000 色差。colorjs.io が内部で CIELAB に変換して ΔE00 を返す。
+ *
+ * 用途: 提案 dye の選定・軸ラダー最近傍など、**知覚的な「どちらが近いか」を問う** 場面。
+ * OKLab Euclidean は生成向け空間で測定精度が悪い（COMBVD STRESS 47 vs CIEDE2000 29）ので
+ * 「最近傍探索」にはこちらを使う。参考: color-space-routing SKILL。
+ *
+ * Sanity anchor: deltaE2000(#ff0000, #00ff00) ≈ 86.6
+ */
+export function deltaE2000(c1: Rgb | Oklab | Oklch, c2: Rgb | Oklab | Oklch): number {
+  return deltaE(c1, c2, '2000');
 }
 
-/** 2つの Oklch 色の色差を計算 */
-export function deltaEOklch(c1: Oklch, c2: Oklch): number {
+/**
+ * OKLab Euclidean 色差。colorjs.io の 'OK' メトリック。
+ *
+ * 用途: **比率計算 (`Palette.ratio`) 専用**。SUPPRESSION_FACTOR がこのスケール (0〜0.5 程度) に
+ * 合わせてチューニング済みなので、指標を差し替えると % 表示が壊れる。
+ * 「どちらが近いか」を問う場面では deltaE2000 を使うこと。
+ */
+export function deltaEOklab(c1: Oklab, c2: Oklab): number {
   return deltaE(c1, c2, 'OK');
 }
 

@@ -8,7 +8,7 @@
 import { Helmlab } from 'helmlab';
 import type { DyeCandidate, DyeProps, HarmonyPattern, Oklab, Oklch, Rgb } from '$lib/types';
 import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/color';
-import { deltaEOklab, rgbToHex, toOklab, toOklch, toRgb } from './colorConversion';
+import { deltaE2000, rgbToHex, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
 const helmlab = new Helmlab();
@@ -70,24 +70,26 @@ export function calculateContrast(baseHue: number): [number, number] {
   return [(baseHue + COMPLEMENTARY) % HUE_CIRCLE_MAX, (baseHue + CONTRAST_OFFSET) % HUE_CIRCLE_MAX];
 }
 
-// helmlab フォールバック: 主候補 (OKLab deltaE 最近傍) の delta がこの閾値を超えたら、
+// helmlab フォールバック: 主候補 (CIEDE2000 最近傍) の ΔE00 がこの閾値を超えたら、
 // helmlab の知覚距離 (distanceFromLab) で全プールから最近傍を選び直す。
+// helmlab は「他の色空間で思ったとおりにならない時の最終手段」の位置付け。
+// 常時発火しないよう、CIEDE2000 で「明らかに違う色」相当の 8 に設定
+// （JND ≈ 2.3、5 は「よく見れば差が分かる」、10+ は「別系統」の目安）。
 // 旧 hue±45° / excess≤0.05 / chroma ガードは廃止し、helmlab に一任。
-// kasane の sync-traditional-color-dyes.mjs と同じ思想・同じ閾値。
-const HELM_FALLBACK_DELTA_THRESHOLD = 0.08;
+const HELM_FALLBACK_DELTA_THRESHOLD = 8;
 
 /**
- * Find the nearest dyes for each targets in a palette based on color difference in Oklab space.
+ * Find the nearest dyes for each targets in a palette based on CIEDE2000.
  *
- * - primary: 全プールから OKLab deltaE 最近傍を選ぶ
- * - helmlab フォールバック: 主候補 deltaE が閾値超なら helmlab 知覚距離で再探索
+ * - primary: 全プールから CIEDE2000 最近傍を選ぶ
+ * - helmlab フォールバック: 主候補 ΔE00 が閾値超なら helmlab 知覚距離で再探索
  *   「Rose Pink contrast で Cream Yellow が選ばれる」のような色相意図破綻を防ぐ
  */
 export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): DyeCandidate[] {
   const perTarget = targets.map((target) => {
     const targetOklab = toOklab(target);
     const candidates: DyeCandidate[] = palette
-      .map((dye) => ({ dye, delta: deltaEOklab(targetOklab, dye.oklab) }))
+      .map((dye) => ({ dye, delta: deltaE2000(targetOklab, dye.oklab) }))
       .sort((a, b) => a.delta - b.delta);
     return { target, targetOklab, candidates };
   });
@@ -112,7 +114,7 @@ export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): Dye
         }
       }
       if (bestDye && bestDye.id !== primary.dye.id) {
-        chosen = { dye: bestDye, delta: deltaEOklab(targetOklab, bestDye.oklab) };
+        chosen = { dye: bestDye, delta: deltaE2000(targetOklab, bestDye.oklab) };
       }
     }
 
@@ -147,7 +149,7 @@ export function findBridgeDye(
     // dyeAまたはdyeBと同じ場合はスキップ
     if (dye.id === dyeA.id || dye.id === dyeB.id) continue;
 
-    const distance = deltaEOklab(dye.oklab, midpointOklab);
+    const distance = deltaE2000(dye.oklab, midpointOklab);
 
     if (distance < minDistance) {
       minDistance = distance;

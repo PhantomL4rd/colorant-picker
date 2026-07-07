@@ -4,8 +4,8 @@
  * Paletteクラスから使用される基本的なユーティリティ。
  */
 
-import type { Oklch, Rgb } from '$lib/types';
-import { deltaEOklch, toOklch } from './colorConversion';
+import type { Oklab, Rgb } from '$lib/types';
+import { deltaEOklab, toOklab } from './colorConversion';
 
 // ===== 定数 =====
 
@@ -16,15 +16,21 @@ export const BASE_WEIGHTS = {
   accent: 0.071, // アクセント (5/70)
 } as const;
 
-export const SUPPRESSION_FACTOR = 2.5; // 非線形補正の係数k
+// 非線形補正の係数 k。deltaE の値域 (OKLab Euclidean 0〜0.5 程度) に合わせて調整済み。
+// deltaE の指標を差し替える場合は必ずこの係数も再チューニングすること
+// （さもないと exp(-k * ΔE) の値が飽和して sub/accent の比率が 0 に潰れる）。
+export const SUPPRESSION_FACTOR = 2.5;
 
 // ===== 色差計算 =====
 
 /**
- * 2色間のOKLCH色差（deltaE）を計算
+ * 2色間の OKLab Euclidean 色差を計算（比率計算専用）。
+ *
+ * 「近さ」を問う用途では deltaE2000 の方が精度は良いが、SUPPRESSION_FACTOR がこのスケールに
+ * 合わせてチューニング済みなので、比率計算 (`Palette.ratio`) はこの指標を維持する。
  */
 export function calculateDeltaE(main: Rgb, other: Rgb): number {
-  const mainOklch = toOklch(main) as Oklch;
-  const otherOklch = toOklch(other) as Oklch;
-  return deltaEOklch(mainOklch, otherOklch);
+  const mainOklab = toOklab(main) as Oklab;
+  const otherOklab = toOklab(other) as Oklab;
+  return deltaEOklab(mainOklab, otherOklab);
 }

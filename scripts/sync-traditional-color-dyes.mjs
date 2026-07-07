@@ -3,16 +3,17 @@
  *
  * ## 概要
  * static/data/traditional-colors.json の各伝統色について、
- * dyes.json から最も色差（OKLab deltaE）の小さいカララントを探し、
+ * dyes.json から最も色差（CIEDE2000）の小さいカララントを探し、
  * dyeId フィールドを更新する。
  *
+ * アプリ runtime の findNearestDyesInOklab と同じ CIEDE2000 メトリックを使用。
  * 新しいカララントが追加されたときは、dyes.json を更新してこのスクリプトを
  * 走らせれば、伝統色→dyeのマッピングが自動で洗い替えられる。
  * kasane.json は traditional-colors.json 経由で参照しているため、
  * このスクリプトだけ走らせれば全かさね色目の表示も自動更新される。
  *
  * ## helmlab フォールバック（実験中）
- * 第一候補（最小 OKLab deltaE）の色差が --delta-threshold を超えた場合、
+ * 第一候補（最小 CIEDE2000 ΔE00）の色差が --delta-threshold を超えた場合、
  * helmlab の知覚距離（distanceFromLab）で全候補から最近傍を選び直す。
  * 色相±許容範囲・chroma ガード・excess 上限などの手作りガードは廃止し、
  * helmlab の知覚距離だけに任せる。プールフィルタは「EXCLUDED_TAGS の除外」のみ。
@@ -33,19 +34,24 @@
  * node scripts/sync-traditional-color-dyes.mjs --dry-run
  *   - 書き換えずに差分のみ表示
  *
- * node scripts/sync-traditional-color-dyes.mjs --delta-threshold=0.06
- *   - helmlab フォールバック発動の OKLab deltaE 閾値を調整
+ * node scripts/sync-traditional-color-dyes.mjs --delta-threshold=10
+ *   - helmlab フォールバック発動の CIEDE2000 ΔE00 閾値を調整（既定 8）
  */
 
 import fs from 'node:fs';
-import { parse } from 'culori';
-import { differenceEuclidean } from 'culori/fn';
+import { ColorSpace, Lab, OKLab, sRGB, deltaE as colorjsDeltaE, parse } from 'colorjs.io/fn';
 import { Helmlab } from 'helmlab';
+
+ColorSpace.register(sRGB);
+ColorSpace.register(OKLab);
+ColorSpace.register(Lab);
 
 const TRADITIONAL_COLORS_PATH = './static/data/traditional-colors.json';
 const DYES_PATH = './static/data/dyes.json';
 const EXCLUDED_TAGS = ['metallic', 'vivid'];
-const DEFAULT_DELTA_THRESHOLD = 0.08;
+// CIEDE2000 で「明らかに違う色」相当。JND ≈ 2.3、5 は「よく見れば差が分かる」、10+ は「別系統」。
+// runtime の HELM_FALLBACK_DELTA_THRESHOLD と揃える。
+const DEFAULT_DELTA_THRESHOLD = 8;
 
 function parseNumberArg(name, fallback) {
   const prefix = `--${name}=`;
@@ -59,7 +65,7 @@ function parseNumberArg(name, fallback) {
 const dryRun = process.argv.includes('--dry-run');
 const deltaThreshold = parseNumberArg('delta-threshold', DEFAULT_DELTA_THRESHOLD);
 
-const deltaE = differenceEuclidean('oklab');
+const deltaE = (a, b) => colorjsDeltaE(a, b, '2000');
 const helmlab = new Helmlab();
 
 const dyes = JSON.parse(fs.readFileSync(DYES_PATH, 'utf-8')).dyes;
@@ -73,17 +79,17 @@ function rgbToHex(rgb) {
 const candidateDyes = dyes
   .filter((d) => !d.tags || !d.tags.some((tag) => EXCLUDED_TAGS.includes(tag)))
   .map((d) => {
-    const oklab = parse(`rgb(${d.rgb.r}, ${d.rgb.g}, ${d.rgb.b})`);
+    const color = parse(rgbToHex(d.rgb));
     const helm = helmlab.fromHex(rgbToHex(d.rgb));
-    return { dye: d, oklab, helm };
+    return { dye: d, color, helm };
   });
 const dyeById = new Map(dyes.map((d) => [d.id, d]));
 
-function findClosestByDeltaE(targetOklab) {
+function findClosestByDeltaE(target) {
   let minDelta = Infinity;
   let closest = null;
   for (const c of candidateDyes) {
-    const delta = deltaE(targetOklab, c.oklab);
+    const delta = deltaE(target, c.color);
     if (delta < minDelta) {
       minDelta = delta;
       closest = c;
@@ -92,7 +98,7 @@ function findClosestByDeltaE(targetOklab) {
   return { dye: closest.dye, delta: minDelta };
 }
 
-function findClosestByHelmlab(targetHelm, targetOklab) {
+function findClosestByHelmlab(targetHelm, target) {
   let minDist = Infinity;
   let closest = null;
   for (const c of candidateDyes) {
@@ -102,7 +108,7 @@ function findClosestByHelmlab(targetHelm, targetOklab) {
       closest = c;
     }
   }
-  return { dye: closest.dye, dist: minDist, delta: deltaE(targetOklab, closest.oklab) };
+  return { dye: closest.dye, dist: minDist, delta: deltaE(target, closest.color) };
 }
 
 function resolveDye(hex) {
@@ -155,7 +161,7 @@ for (const color of traditionalData.colors) {
       oldDyeName: oldDye?.name ?? '(unknown)',
       newDyeId: result.dye.id,
       newDyeName: result.dye.name,
-      delta: result.delta.toFixed(4),
+      delta: result.delta.toFixed(2),
       fallback: result.fallback,
     });
     color.dyeId = result.dye.id;
@@ -171,16 +177,18 @@ for (const c of changes) {
   const mark = c.fallback ? ' [helmlab フォールバック]' : '';
   console.log(`■ ${c.id} (${c.hex})${mark}`);
   console.log(
-    `  ${c.oldDyeId} (${c.oldDyeName}) → ${c.newDyeId} (${c.newDyeName})  deltaE=${c.delta}`,
+    `  ${c.oldDyeId} (${c.oldDyeName}) → ${c.newDyeId} (${c.newDyeName})  ΔE00=${c.delta}`,
   );
 }
 if (fallbackLogs.length > 0) {
   console.log('\n--- helmlab フォールバック詳細 ---');
   for (const f of fallbackLogs) {
     console.log(`■ ${f.id} (${f.hex})`);
-    console.log(`  第一候補(OKLab): ${f.primaryDyeName} (deltaE=${f.primaryDelta.toFixed(4)})`);
     console.log(
-      `  採用(helmlab)  : ${f.newDyeName} (dist=${f.newDist.toFixed(4)}, oklab deltaE=${f.newDelta.toFixed(4)})`,
+      `  第一候補(CIEDE2000): ${f.primaryDyeName} (ΔE00=${f.primaryDelta.toFixed(2)})`,
+    );
+    console.log(
+      `  採用(helmlab)      : ${f.newDyeName} (dist=${f.newDist.toFixed(4)}, ΔE00=${f.newDelta.toFixed(2)})`,
     );
   }
 }

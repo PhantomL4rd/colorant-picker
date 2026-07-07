@@ -16,7 +16,7 @@
 
 import { HUE_CIRCLE_MAX } from '$lib/constants/color';
 import type { DyeProps, Oklch, Rgb } from '$lib/types';
-import { GRAY_CHROMA_THRESHOLD, deltaEOklab, toOklab, toRgb } from './colorConversion';
+import { GRAY_CHROMA_THRESHOLD, deltaE2000, toOklab, toRgb } from './colorConversion';
 
 export type LadderAxis = 'lightness' | 'chroma' | 'hue';
 
@@ -53,7 +53,7 @@ function nearestDyeByOklab(targetRgb: Rgb, pool: DyeProps[], used: Set<string>):
   let bestDelta = Infinity;
   for (const dye of pool) {
     if (used.has(dye.id)) continue;
-    const delta = deltaEOklab(targetOklab, dye.oklab);
+    const delta = deltaE2000(targetOklab, dye.oklab);
     if (delta < bestDelta) {
       bestDelta = delta;
       best = dye;
