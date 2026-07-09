@@ -5,19 +5,19 @@
  * helmlab は colorjs.io 公式リリース後に統合予定（現状は二刀流）。
  */
 
-import { Helmlab } from 'helmlab';
+import { Helmlab, type MetricLab } from 'helmlab';
 import type { DyeCandidate, DyeProps, HarmonyPattern, Oklab, Oklch, Rgb } from '$lib/types';
 import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/color';
 import { deltaE2000, rgbToHex, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
 const helmlab = new Helmlab();
-const helmLabByDyeId = new Map<string, [number, number, number]>();
+const helmLabByDyeId = new Map<string, MetricLab>();
 
-function helmLabOf(dye: DyeProps): [number, number, number] {
+function helmLabOf(dye: DyeProps): MetricLab {
   const cached = helmLabByDyeId.get(dye.id);
   if (cached) return cached;
-  const lab = helmlab.fromHex(dye.hex);
+  const lab = helmlab.metric.fromHex(dye.hex);
   helmLabByDyeId.set(dye.id, lab);
   return lab;
 }
@@ -71,7 +71,7 @@ export function calculateContrast(baseHue: number): [number, number] {
 }
 
 // helmlab フォールバック: 主候補 (CIEDE2000 最近傍) の ΔE00 がこの閾値を超えたら、
-// helmlab の知覚距離 (distanceFromLab) で全プールから最近傍を選び直す。
+// helmlab の知覚距離 (metric.distance) で全プールから最近傍を選び直す。
 // helmlab は「他の色空間で思ったとおりにならない時の最終手段」の位置付け。
 // 常時発火しないよう、CIEDE2000 で「明らかに違う色」相当の 8 に設定
 // （JND ≈ 2.3、5 は「よく見れば差が分かる」、10+ は「別系統」の目安）。
@@ -102,12 +102,12 @@ export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): Dye
 
     let chosen = primary;
     if (primary.delta > HELM_FALLBACK_DELTA_THRESHOLD) {
-      const targetHelm = helmlab.fromHex(rgbToHex(target));
+      const targetHelm = helmlab.metric.fromHex(rgbToHex(target));
       let bestDist = Number.POSITIVE_INFINITY;
       let bestDye: DyeProps | null = null;
       for (const dye of palette) {
         if (used.has(dye.id)) continue;
-        const dist = helmlab.distanceFromLab(targetHelm, helmLabOf(dye));
+        const dist = helmlab.metric.distance(targetHelm, helmLabOf(dye));
         if (dist < bestDist) {
           bestDist = dist;
           bestDye = dye;

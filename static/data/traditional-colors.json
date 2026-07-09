@@ -67,7 +67,7 @@
       "id": "縹",
       "reading": "はなだ",
       "hex": "#148cb8",
-      "dyeId": "dye_067",
+      "dyeId": "dye_074",
       "note": "出所: irocore/colordic 平均"
     },
     {
@@ -265,7 +265,7 @@
       "id": "薄色",
       "reading": "うすいろ",
       "hex": "#a869be",
-      "dyeId": "dye_090",
+      "dyeId": "dye_087",
       "note": "出所: 重ねの色目辞典 (薄紫系)"
     },
     {
@@ -321,7 +321,7 @@
       "id": "薄蘇芳",
       "reading": "うすすおう",
       "hex": "#a25768",
-      "dyeId": "dye_091",
+      "dyeId": "dye_009",
       "note": "出所: colordic 浅蘇芳と同義"
     },
     {

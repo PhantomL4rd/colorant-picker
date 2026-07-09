@@ -14,7 +14,7 @@
  *
  * ## helmlab フォールバック（実験中）
  * 第一候補（最小 CIEDE2000 ΔE00）の色差が --delta-threshold を超えた場合、
- * helmlab の知覚距離（distanceFromLab）で全候補から最近傍を選び直す。
+ * helmlab の知覚距離（metric.distance）で全候補から最近傍を選び直す。
  * 色相±許容範囲・chroma ガード・excess 上限などの手作りガードは廃止し、
  * helmlab の知覚距離だけに任せる。プールフィルタは「EXCLUDED_TAGS の除外」のみ。
  *
@@ -80,7 +80,7 @@ const candidateDyes = dyes
   .filter((d) => !d.tags || !d.tags.some((tag) => EXCLUDED_TAGS.includes(tag)))
   .map((d) => {
     const color = parse(rgbToHex(d.rgb));
-    const helm = helmlab.fromHex(rgbToHex(d.rgb));
+    const helm = helmlab.metric.fromHex(rgbToHex(d.rgb));
     return { dye: d, color, helm };
   });
 const dyeById = new Map(dyes.map((d) => [d.id, d]));
@@ -102,7 +102,7 @@ function findClosestByHelmlab(targetHelm, target) {
   let minDist = Infinity;
   let closest = null;
   for (const c of candidateDyes) {
-    const dist = helmlab.distanceFromLab(targetHelm, c.helm);
+    const dist = helmlab.metric.distance(targetHelm, c.helm);
     if (dist < minDist) {
       minDist = dist;
       closest = c;
@@ -119,7 +119,7 @@ function resolveDye(hex) {
   if (primary.delta <= deltaThreshold) {
     return { ...primary, fallback: false };
   }
-  const targetHelm = helmlab.fromHex(hex);
+  const targetHelm = helmlab.metric.fromHex(hex);
   const constrained = findClosestByHelmlab(targetHelm, target);
   if (constrained.dye.id === primary.dye.id) {
     return { ...primary, fallback: false, noHelmDiff: true };
