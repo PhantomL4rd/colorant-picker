@@ -14,7 +14,7 @@
  *
  * ## helmlab フォールバック（実験中）
  * 第一候補（最小 CIEDE2000 ΔE00）の色差が --delta-threshold を超えた場合、
- * helmlab の知覚距離（metric.distance）で全候補から最近傍を選び直す。
+ * helmlab の知覚距離（deltaEHelmlab）で全候補から最近傍を選び直す。
  * 色相±許容範囲・chroma ガード・excess 上限などの手作りガードは廃止し、
  * helmlab の知覚距離だけに任せる。プールフィルタは「EXCLUDED_TAGS の除外」のみ。
  *
@@ -39,12 +39,22 @@
  */
 
 import fs from 'node:fs';
-import { ColorSpace, Lab, OKLab, sRGB, deltaE as colorjsDeltaE, parse } from 'colorjs.io/fn';
-import { Helmlab } from 'helmlab';
+import {
+  ColorSpace,
+  Helmlab,
+  Lab,
+  OKLab,
+  sRGB,
+  deltaE as colorjsDeltaE,
+  deltaEHelmlab,
+  parse,
+  to as convert,
+} from 'colorjs.io/fn';
 
 ColorSpace.register(sRGB);
 ColorSpace.register(OKLab);
 ColorSpace.register(Lab);
+ColorSpace.register(Helmlab);
 
 const TRADITIONAL_COLORS_PATH = './static/data/traditional-colors.json';
 const DYES_PATH = './static/data/dyes.json';
@@ -66,7 +76,7 @@ const dryRun = process.argv.includes('--dry-run');
 const deltaThreshold = parseNumberArg('delta-threshold', DEFAULT_DELTA_THRESHOLD);
 
 const deltaE = (a, b) => colorjsDeltaE(a, b, '2000');
-const helmlab = new Helmlab();
+const toHelmlab = (color) => convert(color, 'helmlab-metric');
 
 const dyes = JSON.parse(fs.readFileSync(DYES_PATH, 'utf-8')).dyes;
 const traditionalData = JSON.parse(fs.readFileSync(TRADITIONAL_COLORS_PATH, 'utf-8'));
@@ -80,7 +90,7 @@ const candidateDyes = dyes
   .filter((d) => !d.tags || !d.tags.some((tag) => EXCLUDED_TAGS.includes(tag)))
   .map((d) => {
     const color = parse(rgbToHex(d.rgb));
-    const helm = helmlab.metric.fromHex(rgbToHex(d.rgb));
+    const helm = toHelmlab(color);
     return { dye: d, color, helm };
   });
 const dyeById = new Map(dyes.map((d) => [d.id, d]));
@@ -102,7 +112,7 @@ function findClosestByHelmlab(targetHelm, target) {
   let minDist = Infinity;
   let closest = null;
   for (const c of candidateDyes) {
-    const dist = helmlab.metric.distance(targetHelm, c.helm);
+    const dist = deltaEHelmlab(targetHelm, c.helm);
     if (dist < minDist) {
       minDist = dist;
       closest = c;
@@ -119,7 +129,7 @@ function resolveDye(hex) {
   if (primary.delta <= deltaThreshold) {
     return { ...primary, fallback: false };
   }
-  const targetHelm = helmlab.metric.fromHex(hex);
+  const targetHelm = toHelmlab(target);
   const constrained = findClosestByHelmlab(targetHelm, target);
   if (constrained.dye.id === primary.dye.id) {
     return { ...primary, fallback: false, noHelmDiff: true };

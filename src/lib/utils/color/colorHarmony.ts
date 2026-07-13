@@ -2,24 +2,26 @@
  * 色調和アルゴリズム
  *
  * colorjs.io の {space, coords} 形式で色を扱う。
- * helmlab は colorjs.io 公式リリース後に統合予定（現状は二刀流）。
+ * Helmlab は colorjs.io 0.7.0 で正式に空間 + ΔE として同梱されたため一本化。
  */
 
-import { Helmlab, type MetricLab } from 'helmlab';
+import type { PlainColorObject } from 'colorjs.io/fn';
+import { ColorSpace, Helmlab, deltaEHelmlab, to as convert } from 'colorjs.io/fn';
 import type { DyeCandidate, DyeProps, HarmonyPattern, Oklab, Oklch, Rgb } from '$lib/types';
 import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/color';
-import { deltaE2000, rgbToHex, toOklab, toOklch, toRgb } from './colorConversion';
+import { deltaE2000, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 
-const helmlab = new Helmlab();
-const helmLabByDyeId = new Map<string, MetricLab>();
+ColorSpace.register(Helmlab);
 
-function helmLabOf(dye: DyeProps): MetricLab {
+const helmLabByDyeId = new Map<string, PlainColorObject>();
+
+function helmLabOf(dye: DyeProps): PlainColorObject {
   const cached = helmLabByDyeId.get(dye.id);
   if (cached) return cached;
-  const lab = helmlab.metric.fromHex(dye.hex);
-  helmLabByDyeId.set(dye.id, lab);
-  return lab;
+  const color = convert(dye.rgb, 'helmlab-metric');
+  helmLabByDyeId.set(dye.id, color);
+  return color;
 }
 
 const {
@@ -71,7 +73,7 @@ export function calculateContrast(baseHue: number): [number, number] {
 }
 
 // helmlab フォールバック: 主候補 (CIEDE2000 最近傍) の ΔE00 がこの閾値を超えたら、
-// helmlab の知覚距離 (metric.distance) で全プールから最近傍を選び直す。
+// helmlab の知覚距離 (deltaEHelmlab) で全プールから最近傍を選び直す。
 // helmlab は「他の色空間で思ったとおりにならない時の最終手段」の位置付け。
 // 常時発火しないよう、CIEDE2000 で「明らかに違う色」相当の 8 に設定
 // （JND ≈ 2.3、5 は「よく見れば差が分かる」、10+ は「別系統」の目安）。
@@ -102,12 +104,12 @@ export function findNearestDyesInOklab(targets: Rgb[], palette: DyeProps[]): Dye
 
     let chosen = primary;
     if (primary.delta > HELM_FALLBACK_DELTA_THRESHOLD) {
-      const targetHelm = helmlab.metric.fromHex(rgbToHex(target));
+      const targetHelm = convert(target, 'helmlab-metric');
       let bestDist = Number.POSITIVE_INFINITY;
       let bestDye: DyeProps | null = null;
       for (const dye of palette) {
         if (used.has(dye.id)) continue;
-        const dist = helmlab.metric.distance(targetHelm, helmLabOf(dye));
+        const dist = deltaEHelmlab(targetHelm, helmLabOf(dye));
         if (dist < bestDist) {
           bestDist = dist;
           bestDye = dye;

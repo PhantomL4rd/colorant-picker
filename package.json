@@ -41,8 +41,7 @@
   "dependencies": {
     "bits-ui": "^2.15.4",
     "clsx": "^2.1.1",
-    "colorjs.io": "^0.6.1",
-    "helmlab": "^1.0.0",
+    "colorjs.io": "^0.7.0",
     "lucide-svelte": "^0.562.0",
     "lz-string": "^1.5.0",
     "mode-watcher": "^1.1.0",

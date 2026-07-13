@@ -1,7 +1,6 @@
 // ===== colorjs.io 互換の色オブジェクト型 =====
 // colorjs.io の ColorObject 形式 ({ space: string, coords: [...] }) を採用。
-// 将来 colorjs.io が HelmLab を正式リリースしたら、helmlab パッケージは廃止して
-// colorjs.io 一本化する前提（このとき空間IDを 'helmlab-metric' 等へ差し替えるだけで済む）。
+// Helmlab は colorjs.io 0.7.0 で 'helmlab-metric' として同梱済み。
 export interface Rgb {
   space: 'srgb';
   coords: [number, number, number]; // r, g, b (0-1)
