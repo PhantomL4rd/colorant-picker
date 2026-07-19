@@ -1,119 +1,126 @@
 <script lang="ts">
-import { Ban, ChevronDown, Redo2, Shuffle, Sparkles, Undo2 } from '@lucide/svelte';
-import { PATTERN_ORDER } from '$lib/constants/patterns';
-import { Palette } from '$lib/models/Palette';
-import { redo, undo, undoState } from '$lib/stores/paletteUndo';
-import {
-  selectPrimaryDye,
-  selectionStore,
-  shufflePalette,
-  updatePattern,
-} from '$lib/stores/selection';
-import { t } from '$lib/translations';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { Button } from '$lib/components/ui/button';
-import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
-import ShareButton from '$lib/components/share/ShareButton.svelte';
-import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
-import AxisExplorer from './AxisExplorer.svelte';
-import ColorSlot from './ColorSlot.svelte';
+  import { Ban, ChevronDown, Redo2, Shuffle, Sparkles, Undo2 } from '@lucide/svelte';
+  import { PATTERN_ORDER } from '$lib/constants/patterns';
+  import { Palette } from '$lib/models/Palette';
+  import { redo, undo, undoState } from '$lib/stores/paletteUndo';
+  import {
+    selectPrimaryDye,
+    selectionStore,
+    shufflePalette,
+    updatePattern,
+  } from '$lib/stores/selection';
+  import { t } from '$lib/translations';
+  import type { DyeProps, HarmonyPattern } from '$lib/types';
+  import { Button } from '$lib/components/ui/button';
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+  import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
+  import ShareButton from '$lib/components/share/ShareButton.svelte';
+  import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
+  import AxisExplorer from './AxisExplorer.svelte';
+  import ColorSlot from './ColorSlot.svelte';
 
-interface Props {
-  exploreDyes: DyeProps[]; // 軸探索で使う染料プール（メタリック除外を反映済み）
-  excludeMetallic: boolean; // メタリック除外の現在値
-  onToggleExcludeMetallic: () => void; // メタリック除外トグル
-}
-
-const { exploreDyes, excludeMetallic, onToggleExcludeMetallic }: Props = $props();
-
-// 表示幅の重み（数値ラベルは Palette.ratio の percent をそのまま使うが、
-// 帯の見た目は 50:30:20 で固定して全色が視認できるようにする）
-const DISPLAY_WEIGHTS: Record<'main' | 'sub' | 'accent', number> = {
-  main: 50,
-  sub: 30,
-  accent: 20,
-};
-
-const selection = $derived($selectionStore);
-
-// Palette 計算（黄金比配分はこちらに集約）
-const palette = $derived.by(() => {
-  if (!selection.primaryDye || !selection.suggestedDyes) return null;
-  return new Palette(selection.primaryDye as DyeProps, selection.suggestedDyes, selection.pattern);
-});
-
-// メインスロットで開いている軸ラダー（null = 閉じている）
-let expandedAxis = $state<LadderAxis | null>(null);
-
-// キーボードショートカット（capture phase で先取り）
-// - Space: シャッフル（Generate）
-// - Cmd/Ctrl+Z: 元に戻す / Cmd/Ctrl+Shift+Z・Cmd/Ctrl+Y: やり直す
-// 入力フォーカス時は通常入力を妨げない
-$effect(() => {
-  function handleKeydown(e: KeyboardEvent) {
-    const target = e.target;
-    const inEditable =
-      target instanceof HTMLElement &&
-      target.matches('input, textarea, select, [contenteditable="true"]');
-
-    // undo / redo
-    if ((e.metaKey || e.ctrlKey) && !e.altKey) {
-      const key = e.key.toLowerCase();
-      if (key === 'z') {
-        if (inEditable) return;
-        e.preventDefault();
-        if (e.shiftKey) redo();
-        else undo();
-        return;
-      }
-      if (key === 'y') {
-        if (inEditable) return;
-        e.preventDefault();
-        redo();
-        return;
-      }
-    }
-
-    // Space → シャッフル
-    if (e.code !== 'Space' && e.key !== ' ') return;
-    if (inEditable) return;
-    // モーダル/ドロップダウン/リストボックスなど、Space が本来の操作を持つ
-    // オーバーレイUI内では乗っ取らない（bits-ui の DropdownMenu は role="menu"）
-    if (
-      target instanceof HTMLElement &&
-      target.closest(
-        '[role="dialog"], [role="menu"], [role="menuitem"], [role="listbox"], [role="option"]'
-      )
-    )
-      return;
-    e.preventDefault();
-    e.stopPropagation();
-    if (document.activeElement instanceof HTMLElement && document.activeElement !== document.body) {
-      document.activeElement.blur();
-    }
-    shufflePalette();
+  interface Props {
+    exploreDyes: DyeProps[]; // 軸探索で使う染料プール（メタリック除外を反映済み）
+    excludeMetallic: boolean; // メタリック除外の現在値
+    onToggleExcludeMetallic: () => void; // メタリック除外トグル
   }
-  window.addEventListener('keydown', handleKeydown, true);
-  return () => window.removeEventListener('keydown', handleKeydown, true);
-});
 
-function handleAxisToggle(axis: LadderAxis): void {
-  expandedAxis = expandedAxis === axis ? null : axis;
-}
+  const { exploreDyes, excludeMetallic, onToggleExcludeMetallic }: Props = $props();
 
-function handleAxisClose(): void {
-  expandedAxis = null;
-}
+  // 表示幅の重み（数値ラベルは Palette.ratio の percent をそのまま使うが、
+  // 帯の見た目は 50:30:20 で固定して全色が視認できるようにする）
+  const DISPLAY_WEIGHTS: Record<'main' | 'sub' | 'accent', number> = {
+    main: 50,
+    sub: 30,
+    accent: 20,
+  };
 
-function handleAxisPick(dye: DyeProps): void {
-  selectPrimaryDye(dye);
-  expandedAxis = null;
-}
+  const selection = $derived($selectionStore);
 
-function handlePatternSelect(pattern: HarmonyPattern): void {
-  updatePattern(pattern);
-}
+  // Palette 計算（黄金比配分はこちらに集約）
+  const palette = $derived.by(() => {
+    if (!selection.primaryDye || !selection.suggestedDyes) return null;
+    return new Palette(
+      selection.primaryDye as DyeProps,
+      selection.suggestedDyes,
+      selection.pattern
+    );
+  });
+
+  // メインスロットで開いている軸ラダー（null = 閉じている）
+  let expandedAxis = $state<LadderAxis | null>(null);
+
+  // キーボードショートカット（capture phase で先取り）
+  // - Space: シャッフル（Generate）
+  // - Cmd/Ctrl+Z: 元に戻す / Cmd/Ctrl+Shift+Z・Cmd/Ctrl+Y: やり直す
+  // 入力フォーカス時は通常入力を妨げない
+  $effect(() => {
+    function handleKeydown(e: KeyboardEvent) {
+      const target = e.target;
+      const inEditable =
+        target instanceof HTMLElement &&
+        target.matches('input, textarea, select, [contenteditable="true"]');
+
+      // undo / redo
+      if ((e.metaKey || e.ctrlKey) && !e.altKey) {
+        const key = e.key.toLowerCase();
+        if (key === 'z') {
+          if (inEditable) return;
+          e.preventDefault();
+          if (e.shiftKey) redo();
+          else undo();
+          return;
+        }
+        if (key === 'y') {
+          if (inEditable) return;
+          e.preventDefault();
+          redo();
+          return;
+        }
+      }
+
+      // Space → シャッフル
+      if (e.code !== 'Space' && e.key !== ' ') return;
+      if (inEditable) return;
+      // モーダル/ドロップダウン/リストボックスなど、Space が本来の操作を持つ
+      // オーバーレイUI内では乗っ取らない（bits-ui の DropdownMenu は role="menu"）
+      if (
+        target instanceof HTMLElement &&
+        target.closest(
+          '[role="dialog"], [role="menu"], [role="menuitem"], [role="listbox"], [role="option"]'
+        )
+      )
+        return;
+      e.preventDefault();
+      e.stopPropagation();
+      if (
+        document.activeElement instanceof HTMLElement &&
+        document.activeElement !== document.body
+      ) {
+        document.activeElement.blur();
+      }
+      shufflePalette();
+    }
+    window.addEventListener('keydown', handleKeydown, true);
+    return () => window.removeEventListener('keydown', handleKeydown, true);
+  });
+
+  function handleAxisToggle(axis: LadderAxis): void {
+    expandedAxis = expandedAxis === axis ? null : axis;
+  }
+
+  function handleAxisClose(): void {
+    expandedAxis = null;
+  }
+
+  function handleAxisPick(dye: DyeProps): void {
+    selectPrimaryDye(dye);
+    expandedAxis = null;
+  }
+
+  function handlePatternSelect(pattern: HarmonyPattern): void {
+    updatePattern(pattern);
+  }
 </script>
 
 <!-- 配色パターン選択ドロップダウン（PC/SP で共用） -->
@@ -121,7 +128,11 @@ function handlePatternSelect(pattern: HarmonyPattern): void {
   <DropdownMenu.Root>
     <DropdownMenu.Trigger>
       {#snippet child({ props })}
-        <Button {...props} variant="outline" class={`gap-2 ${fullWidth ? 'w-full justify-start' : ''}`}>
+        <Button
+          {...props}
+          variant="outline"
+          class={`gap-2 ${fullWidth ? 'w-full justify-start' : ''}`}
+        >
           <Sparkles class="size-4" />
           <span class="text-xs text-muted-foreground hidden sm:inline"
             >{$t('page.palette.action.pattern')}:</span
@@ -207,7 +218,9 @@ function handlePatternSelect(pattern: HarmonyPattern): void {
     </div>
 
     <!-- ===== PC アクションバー: シャッフル(主役) ＋ パターン ＋ undo/redo ＋ スキ/シェア ===== -->
-    <div class="hidden md:flex flex-wrap items-center gap-3 p-3 rounded-2xl border border-border bg-card">
+    <div
+      class="hidden md:flex flex-wrap items-center gap-3 p-3 rounded-2xl border border-border bg-card"
+    >
       <!-- シャッフル（最も目立つ主要CTA） -->
       <Button onclick={shufflePalette} size="lg" class="gap-2 font-semibold">
         <Shuffle class="size-4" />

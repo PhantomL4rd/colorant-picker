@@ -1,74 +1,74 @@
 <script lang="ts">
-import { Heart, Shuffle } from '@lucide/svelte';
-import { Palette } from '$lib/models/Palette';
-import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
-import { t } from '$lib/translations';
-import type { Favorite } from '$lib/types';
-import * as Card from '$lib/components/ui/card';
-import { Button } from '$lib/components/ui/button';
-import PaletteCard from '../palette/PaletteCard.svelte';
-import ShareModal from '../share/ShareModal.svelte';
+  import { Heart, Shuffle } from '@lucide/svelte';
+  import { Palette } from '$lib/models/Palette';
+  import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
+  import { t } from '$lib/translations';
+  import type { Favorite } from '$lib/types';
+  import * as Card from '$lib/components/ui/card';
+  import { Button } from '$lib/components/ui/button';
+  import PaletteCard from '../palette/PaletteCard.svelte';
+  import ShareModal from '../share/ShareModal.svelte';
 
-type PreviewColor = { hex: string; name: string };
-type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
+  type PreviewColor = { hex: string; name: string };
+  type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
 
-interface Props {
-  onSelectFavorite?: (favorite: Favorite) => void;
-}
-
-const { onSelectFavorite }: Props = $props();
-
-// ShareModal の状態管理
-let shareModalOpen = $state(false);
-let selectedFavoriteForShare = $state<Favorite | null>(null);
-
-// お気に入り一覧（作成日時順、新しい順）
-const favorites = $derived($favoritesStore);
-const sortedFavorites = $derived(
-  favorites.slice().sort((a, b) => {
-    return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-  })
-);
-
-// 件数
-const favoriteCount = $derived(favorites.length);
-
-// お気に入りが選択された時の処理
-function handleSelectFavorite(favorite: Favorite) {
-  try {
-    // お気に入りを復元（ピッカーに適用）
-    restoreFavorite(favorite);
-
-    // 親コンポーネントにも通知（タブ切り替えなど）
-    onSelectFavorite?.(favorite);
-  } catch (error) {
-    console.error('お気に入りの復元に失敗しました:', error);
+  interface Props {
+    onSelectFavorite?: (favorite: Favorite) => void;
   }
-}
 
-// シェア機能
-function handleShare(favorite: Favorite) {
-  selectedFavoriteForShare = favorite;
-  shareModalOpen = true;
-}
+  const { onSelectFavorite }: Props = $props();
 
-function closeShareModal() {
-  shareModalOpen = false;
-  selectedFavoriteForShare = null;
-}
+  // ShareModal の状態管理
+  let shareModalOpen = $state(false);
+  let selectedFavoriteForShare = $state<Favorite | null>(null);
 
-// プレビュー用のカラー情報を生成（翻訳適用）
-function getPreviewColors(favorite: Favorite): PreviewColors {
-  const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
-  const primary = favorite.primaryDye;
-  const sub = palette.sub.dye;
-  const accent = palette.accent.dye;
-  return [
-    { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
-    { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
-    { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
-  ];
-}
+  // お気に入り一覧（作成日時順、新しい順）
+  const favorites = $derived($favoritesStore);
+  const sortedFavorites = $derived(
+    favorites.slice().sort((a, b) => {
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    })
+  );
+
+  // 件数
+  const favoriteCount = $derived(favorites.length);
+
+  // お気に入りが選択された時の処理
+  function handleSelectFavorite(favorite: Favorite) {
+    try {
+      // お気に入りを復元（ピッカーに適用）
+      restoreFavorite(favorite);
+
+      // 親コンポーネントにも通知（タブ切り替えなど）
+      onSelectFavorite?.(favorite);
+    } catch (error) {
+      console.error('お気に入りの復元に失敗しました:', error);
+    }
+  }
+
+  // シェア機能
+  function handleShare(favorite: Favorite) {
+    selectedFavoriteForShare = favorite;
+    shareModalOpen = true;
+  }
+
+  function closeShareModal() {
+    shareModalOpen = false;
+    selectedFavoriteForShare = null;
+  }
+
+  // プレビュー用のカラー情報を生成（翻訳適用）
+  function getPreviewColors(favorite: Favorite): PreviewColors {
+    const palette = new Palette(favorite.primaryDye, favorite.suggestedDyes, favorite.pattern);
+    const primary = favorite.primaryDye;
+    const sub = palette.sub.dye;
+    const accent = palette.accent.dye;
+    return [
+      { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
+      { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
+      { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
+    ];
+  }
 </script>
 
 <div class="container mx-auto px-4 pb-20 pt-4">
@@ -81,7 +81,8 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
 
     {#if favoriteCount > 0}
       <p class="text-muted-foreground text-sm">
-        {favoriteCount} {$t('common.nav.favorites')}
+        {favoriteCount}
+        {$t('common.nav.favorites')}
       </p>
     {/if}
   </div>
@@ -93,7 +94,9 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
       <Card.Content class="text-center py-12">
         <!-- ハートアイコン（アニメーション付き） -->
         <div class="mb-6">
-          <div class="inline-flex items-center justify-center size-24 rounded-full bg-primary/10 animate-pulse-slow">
+          <div
+            class="inline-flex items-center justify-center size-24 rounded-full bg-primary/10 animate-pulse-slow"
+          >
             <Heart class="size-12 text-primary/60" />
           </div>
         </div>
@@ -130,11 +133,7 @@ function getPreviewColors(favorite: Favorite): PreviewColors {
 </div>
 
 <!-- ShareModal -->
-<ShareModal
-  isOpen={shareModalOpen}
-  favorite={selectedFavoriteForShare}
-  onClose={closeShareModal}
-/>
+<ShareModal isOpen={shareModalOpen} favorite={selectedFavoriteForShare} onClose={closeShareModal} />
 
 <style>
   /* スムーズなスクロール */

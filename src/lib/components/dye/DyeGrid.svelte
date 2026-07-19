@@ -1,42 +1,42 @@
 <script lang="ts">
-import { ChevronDown } from '@lucide/svelte';
-import { t } from '$lib/translations';
-import type { DyeProps } from '$lib/types';
-import { Button } from '$lib/components/ui/button';
-import DyeCard from './DyeCard.svelte';
+  import { ChevronDown } from '@lucide/svelte';
+  import { t } from '$lib/translations';
+  import type { DyeProps } from '$lib/types';
+  import { Button } from '$lib/components/ui/button';
+  import DyeCard from './DyeCard.svelte';
 
-interface Props {
-  dyes: DyeProps[];
-  selectedDye?: DyeProps | null;
-  onDyeSelect: (dye: DyeProps) => void;
-}
-
-const { dyes, selectedDye = null, onDyeSelect }: Props = $props();
-
-// 段階的読み込み設定
-const INITIAL_COUNT = 24;
-const LOAD_MORE_COUNT = 24;
-
-let visibleCount = $state(INITIAL_COUNT);
-
-// フィルター変更時（dyes配列が変わった時）にリセット
-const dyesLength = $derived(dyes.length);
-let prevDyesLength = $state(0);
-$effect(() => {
-  if (dyesLength !== prevDyesLength) {
-    visibleCount = INITIAL_COUNT;
-    prevDyesLength = dyesLength;
+  interface Props {
+    dyes: DyeProps[];
+    selectedDye?: DyeProps | null;
+    onDyeSelect: (dye: DyeProps) => void;
   }
-});
 
-// 表示する染料
-const visibleDyes = $derived(dyes.slice(0, visibleCount));
-const hasMore = $derived(visibleCount < dyes.length);
-const remainingCount = $derived(Math.min(LOAD_MORE_COUNT, dyes.length - visibleCount));
+  const { dyes, selectedDye = null, onDyeSelect }: Props = $props();
 
-function loadMore() {
-  visibleCount = Math.min(visibleCount + LOAD_MORE_COUNT, dyes.length);
-}
+  // 段階的読み込み設定
+  const INITIAL_COUNT = 24;
+  const LOAD_MORE_COUNT = 24;
+
+  let visibleCount = $state(INITIAL_COUNT);
+
+  // フィルター変更時（dyes配列が変わった時）にリセット
+  const dyesLength = $derived(dyes.length);
+  let prevDyesLength = $state(0);
+  $effect(() => {
+    if (dyesLength !== prevDyesLength) {
+      visibleCount = INITIAL_COUNT;
+      prevDyesLength = dyesLength;
+    }
+  });
+
+  // 表示する染料
+  const visibleDyes = $derived(dyes.slice(0, visibleCount));
+  const hasMore = $derived(visibleCount < dyes.length);
+  const remainingCount = $derived(Math.min(LOAD_MORE_COUNT, dyes.length - visibleCount));
+
+  function loadMore() {
+    visibleCount = Math.min(visibleCount + LOAD_MORE_COUNT, dyes.length);
+  }
 </script>
 
 <div class="w-full">
@@ -62,12 +62,7 @@ function loadMore() {
 
     {#if hasMore}
       <div class="flex justify-center mt-6">
-        <Button
-          variant="outline"
-          size="sm"
-          class="gap-2"
-          onclick={loadMore}
-        >
+        <Button variant="outline" size="sm" class="gap-2" onclick={loadMore}>
           <ChevronDown class="size-4" />
           {$t('page.home.dyeGrid.showMore').replace('{count}', String(remainingCount))}
         </Button>

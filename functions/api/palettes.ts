@@ -56,7 +56,10 @@ function validateRequest(body: unknown): SubmitPaletteRequest | null {
   }
 
   // pattern validation
-  if (typeof req.pattern !== 'string' || !VALID_PATTERNS.includes(req.pattern as typeof VALID_PATTERNS[number])) {
+  if (
+    typeof req.pattern !== 'string' ||
+    !VALID_PATTERNS.includes(req.pattern as (typeof VALID_PATTERNS)[number])
+  ) {
     return null;
   }
 

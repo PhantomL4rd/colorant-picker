@@ -1,121 +1,121 @@
 <script lang="ts">
-import { ChevronDown, Loader2, PaintBucket } from '@lucide/svelte';
-import { onMount } from 'svelte';
-import { get } from 'svelte/store';
-import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
-import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
-import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
-import RandomPickButton from '$lib/components/RandomPickButton.svelte';
-import * as Collapsible from '$lib/components/ui/collapsible';
-import { dyeStore, loadDyes } from '$lib/stores/dyes';
-import {
-  filteredDyes,
-  filterStore,
-  resetFilters,
-  toggleCategory,
-  toggleExcludeMetallic,
-} from '$lib/stores/filter';
-import {
-  selectPatternAndPrimaryDye,
-  selectPrimaryDye,
-  selectionStore,
-  updatePattern,
-} from '$lib/stores/selection';
-import { t } from '$lib/translations';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
+  import { ChevronDown, Loader2, PaintBucket } from '@lucide/svelte';
+  import { onMount } from 'svelte';
+  import { get } from 'svelte/store';
+  import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
+  import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
+  import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
+  import RandomPickButton from '$lib/components/RandomPickButton.svelte';
+  import * as Collapsible from '$lib/components/ui/collapsible';
+  import { dyeStore, loadDyes } from '$lib/stores/dyes';
+  import {
+    filteredDyes,
+    filterStore,
+    resetFilters,
+    toggleCategory,
+    toggleExcludeMetallic,
+  } from '$lib/stores/filter';
+  import {
+    selectPatternAndPrimaryDye,
+    selectPrimaryDye,
+    selectionStore,
+    updatePattern,
+  } from '$lib/stores/selection';
+  import { t } from '$lib/translations';
+  import type { DyeProps, HarmonyPattern } from '$lib/types';
+  import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
 
-let isLoading = $state(true);
-let dyesPanelOpen = $state(false);
+  let isLoading = $state(true);
+  let dyesPanelOpen = $state(false);
 
-// PaletteHero に戻すスクロール先
-let paletteHeroElement: HTMLElement | undefined = $state();
+  // PaletteHero に戻すスクロール先
+  let paletteHeroElement: HTMLElement | undefined = $state();
 
-// 染料選択後にプレビュー（PaletteHero）まで戻るスクロール
-function scrollToPaletteHero(): void {
-  paletteHeroElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
+  // 染料選択後にプレビュー（PaletteHero）まで戻るスクロール
+  function scrollToPaletteHero(): void {
+    paletteHeroElement?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
 
-const filteredDyesList = $derived($filteredDyes);
-const selectedCategory = $derived($filterStore.categories);
-const excludeMetallic = $derived($filterStore.excludeMetallic);
-const selectedDye = $derived($selectionStore.primaryDye);
+  const filteredDyesList = $derived($filteredDyes);
+  const selectedCategory = $derived($filterStore.categories);
+  const excludeMetallic = $derived($filterStore.excludeMetallic);
+  const selectedDye = $derived($selectionStore.primaryDye);
 
-// 軸探索・置換ピッカー用の染料プール（カテゴリは無視、メタリック除外のみ反映）
-const exploreDyes = $derived(
-  excludeMetallic ? $dyeStore.filter((d) => !d.tags?.includes('metallic')) : $dyeStore
-);
+  // 軸探索・置換ピッカー用の染料プール（カテゴリは無視、メタリック除外のみ反映）
+  const exploreDyes = $derived(
+    excludeMetallic ? $dyeStore.filter((d) => !d.tags?.includes('metallic')) : $dyeStore
+  );
 
-const HARMONY_PATTERNS: HarmonyPattern[] = [
-  'triadic',
-  'split-complementary',
-  'analogous',
-  'monochromatic',
-  'tint',
-  'shade',
-  'similar',
-  'contrast',
-  'clash',
-];
+  const HARMONY_PATTERNS: HarmonyPattern[] = [
+    'triadic',
+    'split-complementary',
+    'analogous',
+    'monochromatic',
+    'tint',
+    'shade',
+    'similar',
+    'contrast',
+    'clash',
+  ];
 
-function pickInitialPalette(): void {
-  const dyes = $dyeStore;
-  if (dyes.length === 0) return;
-
-  const randomDye = dyes[Math.floor(Math.random() * dyes.length)];
-  const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
-
-  updatePattern(randomPattern);
-  selectPrimaryDye(randomDye);
-}
-
-onMount(async () => {
-  try {
-    await loadDyes();
-
+  function pickInitialPalette(): void {
     const dyes = $dyeStore;
-    if (dyes.length > 0) {
-      const restored = restorePaletteFromUrl(dyes);
-      // スキ！/履歴からの復元は paletteEventBus 経由で遷移前に selectionStore へ
-      // 反映済みのため、既に選択があるときはランダムピックで上書きしない
-      if (!restored && !get(selectionStore).primaryDye) {
-        pickInitialPalette();
+    if (dyes.length === 0) return;
+
+    const randomDye = dyes[Math.floor(Math.random() * dyes.length)];
+    const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
+
+    updatePattern(randomPattern);
+    selectPrimaryDye(randomDye);
+  }
+
+  onMount(async () => {
+    try {
+      await loadDyes();
+
+      const dyes = $dyeStore;
+      if (dyes.length > 0) {
+        const restored = restorePaletteFromUrl(dyes);
+        // スキ！/履歴からの復元は paletteEventBus 経由で遷移前に selectionStore へ
+        // 反映済みのため、既に選択があるときはランダムピックで上書きしない
+        if (!restored && !get(selectionStore).primaryDye) {
+          pickInitialPalette();
+        }
       }
+    } catch (error) {
+      console.error('カララントデータの読み込みに失敗しました:', error);
+    } finally {
+      isLoading = false;
     }
-  } catch (error) {
-    console.error('カララントデータの読み込みに失敗しました:', error);
-  } finally {
-    isLoading = false;
+  });
+
+  function handleDyeSelect(dye: DyeProps): void {
+    selectPrimaryDye(dye);
+    scrollToPaletteHero();
   }
-});
 
-function handleDyeSelect(dye: DyeProps): void {
-  selectPrimaryDye(dye);
-  scrollToPaletteHero();
-}
-
-function handleToggleCategory(category: string): void {
-  toggleCategory(category as Parameters<typeof toggleCategory>[0]);
-}
-
-function handleClearAll(): void {
-  resetFilters();
-}
-
-function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]): void {
-  const [primary] = randomDyes;
-  const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
-  // パターンと主色を1回の store 更新で確定し、undo に中間状態を残さない
-  selectPatternAndPrimaryDye(randomPattern, primary);
-  scrollToPaletteHero();
-}
-
-function handleExcludeMetallicChange(): void {
-  toggleExcludeMetallic();
-  if (selectedDye) {
-    selectPrimaryDye(selectedDye);
+  function handleToggleCategory(category: string): void {
+    toggleCategory(category as Parameters<typeof toggleCategory>[0]);
   }
-}
+
+  function handleClearAll(): void {
+    resetFilters();
+  }
+
+  function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]): void {
+    const [primary] = randomDyes;
+    const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
+    // パターンと主色を1回の store 更新で確定し、undo に中間状態を残さない
+    selectPatternAndPrimaryDye(randomPattern, primary);
+    scrollToPaletteHero();
+  }
+
+  function handleExcludeMetallicChange(): void {
+    toggleExcludeMetallic();
+    if (selectedDye) {
+      selectPrimaryDye(selectedDye);
+    }
+  }
 </script>
 
 <svelte:head>
@@ -169,7 +169,7 @@ function handleExcludeMetallicChange(): void {
       <Collapsible.Content class="pt-3 space-y-4">
         <div class="p-4 rounded-2xl border border-border bg-card">
           <CategoryFilter
-            selectedCategory={selectedCategory}
+            {selectedCategory}
             onToggleCategory={handleToggleCategory}
             onClearCategories={handleClearAll}
           />
@@ -185,11 +185,7 @@ function handleExcludeMetallicChange(): void {
             {$t('page.home.dyeList')}
           </h2>
           <div class="max-h-[600px] overflow-y-auto">
-            <DyeGrid
-              dyes={filteredDyesList}
-              {selectedDye}
-              onDyeSelect={handleDyeSelect}
-            />
+            <DyeGrid dyes={filteredDyesList} {selectedDye} onDyeSelect={handleDyeSelect} />
           </div>
         </div>
       </Collapsible.Content>

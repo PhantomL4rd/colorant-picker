@@ -1,174 +1,180 @@
 <script lang="ts">
-import { Loader2, RefreshCw, Sparkles } from '@lucide/svelte';
-import { onMount } from 'svelte';
-import { goto } from '$app/navigation';
-import { resolve } from '$app/paths';
-import PaletteCard from '$lib/components/palette/PaletteCard.svelte';
-import ShareModal from '$lib/components/share/ShareModal.svelte';
-import { Palette } from '$lib/models/Palette';
-import { dyeStore, loadDyes } from '$lib/stores/dyes';
-import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
-import { emitRestorePalette } from '$lib/stores/paletteEvents';
-import { t } from '$lib/translations';
-import type { DyeProps, Favorite, HarmonyPattern, ShowcaseData, ShowcasePalette } from '$lib/types';
-import * as Card from '$lib/components/ui/card';
-import * as Alert from '$lib/components/ui/alert';
-import { Button } from '$lib/components/ui/button';
+  import { Loader2, RefreshCw, Sparkles } from '@lucide/svelte';
+  import { onMount } from 'svelte';
+  import { goto } from '$app/navigation';
+  import { resolve } from '$app/paths';
+  import PaletteCard from '$lib/components/palette/PaletteCard.svelte';
+  import ShareModal from '$lib/components/share/ShareModal.svelte';
+  import { Palette } from '$lib/models/Palette';
+  import { dyeStore, loadDyes } from '$lib/stores/dyes';
+  import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
+  import { emitRestorePalette } from '$lib/stores/paletteEvents';
+  import { t } from '$lib/translations';
+  import type {
+    DyeProps,
+    Favorite,
+    HarmonyPattern,
+    ShowcaseData,
+    ShowcasePalette,
+  } from '$lib/types';
+  import * as Card from '$lib/components/ui/card';
+  import * as Alert from '$lib/components/ui/alert';
+  import { Button } from '$lib/components/ui/button';
 
-type PreviewColor = { hex: string; name: string };
-type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
+  type PreviewColor = { hex: string; name: string };
+  type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];
 
-let isLoading = $state(true);
-let error = $state<string | null>(null);
-let palettes = $state<ShowcasePalette[]>([]);
+  let isLoading = $state(true);
+  let error = $state<string | null>(null);
+  let palettes = $state<ShowcasePalette[]>([]);
 
-// ShareModal の状態管理
-let shareModalOpen = $state(false);
-let selectedPaletteForShare = $state<ShowcasePalette | null>(null);
+  // ShareModal の状態管理
+  let shareModalOpen = $state(false);
+  let selectedPaletteForShare = $state<ShowcasePalette | null>(null);
 
-// 染料ストアを自動購読（手動 subscribe のリークを避ける）
-const dyes = $derived($dyeStore);
+  // 染料ストアを自動購読（手動 subscribe のリークを避ける）
+  const dyes = $derived($dyeStore);
 
-async function fetchShowcase(): Promise<void> {
-  try {
-    const response = await fetch('/api/palettes/showcase');
-    if (!response.ok) {
-      throw new Error(`Failed to fetch showcase: ${response.status}`);
+  async function fetchShowcase(): Promise<void> {
+    try {
+      const response = await fetch('/api/palettes/showcase');
+      if (!response.ok) {
+        throw new Error(`Failed to fetch showcase: ${response.status}`);
+      }
+      const data: ShowcaseData = await response.json();
+      palettes = data.palettes;
+      error = null;
+    } catch (err) {
+      console.error('Error fetching showcase:', err);
+      error = $t('page.showcase.error');
     }
-    const data: ShowcaseData = await response.json();
-    palettes = data.palettes;
-    error = null;
-  } catch (err) {
-    console.error('Error fetching showcase:', err);
-    error = $t('page.showcase.error');
   }
-}
 
-onMount(async () => {
-  try {
+  onMount(async () => {
+    try {
+      const dyesLoaded = await loadDyes();
+      if (!dyesLoaded) {
+        // 染料データが無いとカードを1枚も描画できないため、エラー表示に落とす
+        error = $t('common.state.error');
+        return;
+      }
+      await fetchShowcase();
+    } catch (err) {
+      console.error('初期化エラー:', err);
+      error = $t('common.state.error');
+    } finally {
+      isLoading = false;
+    }
+  });
+
+  async function handleRetry() {
+    isLoading = true;
+    error = null;
     const dyesLoaded = await loadDyes();
     if (!dyesLoaded) {
-      // 染料データが無いとカードを1枚も描画できないため、エラー表示に落とす
       error = $t('common.state.error');
+      isLoading = false;
       return;
     }
     await fetchShowcase();
-  } catch (err) {
-    console.error('初期化エラー:', err);
-    error = $t('common.state.error');
-  } finally {
     isLoading = false;
   }
-});
 
-async function handleRetry() {
-  isLoading = true;
-  error = null;
-  const dyesLoaded = await loadDyes();
-  if (!dyesLoaded) {
-    error = $t('common.state.error');
-    isLoading = false;
-    return;
-  }
-  await fetchShowcase();
-  isLoading = false;
-}
+  function handleSelectPalette(showcasePalette: ShowcasePalette) {
+    const palette = Palette.fromShowcase(showcasePalette, dyes);
 
-function handleSelectPalette(showcasePalette: ShowcasePalette) {
-  const palette = Palette.fromShowcase(showcasePalette, dyes);
+    if (!palette) {
+      console.error('Dye not found for palette:', showcasePalette);
+      return;
+    }
 
-  if (!palette) {
-    console.error('Dye not found for palette:', showcasePalette);
-    return;
+    // パレット復元イベントを発火
+    emitRestorePalette({
+      primaryDye: palette.primary,
+      suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+      pattern: palette.pattern,
+    });
+
+    // ピッカーページへ遷移
+    goto(resolve('/'));
   }
 
-  // パレット復元イベントを発火
-  emitRestorePalette({
-    primaryDye: palette.primary,
-    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
-    pattern: palette.pattern,
-  });
+  // シェア機能
+  function handleShare(palette: ShowcasePalette) {
+    selectedPaletteForShare = palette;
+    shareModalOpen = true;
+  }
 
-  // ピッカーページへ遷移
-  goto(resolve('/'));
-}
+  function closeShareModal() {
+    shareModalOpen = false;
+    selectedPaletteForShare = null;
+  }
 
-// シェア機能
-function handleShare(palette: ShowcasePalette) {
-  selectedPaletteForShare = palette;
-  shareModalOpen = true;
-}
+  // ShareModal用にFavorite形式に変換
+  function getFavoriteForShare(): Favorite | null {
+    if (!selectedPaletteForShare) return null;
 
-function closeShareModal() {
-  shareModalOpen = false;
-  selectedPaletteForShare = null;
-}
+    const palette = Palette.fromShowcase(selectedPaletteForShare, dyes);
+    if (!palette) return null;
 
-// ShareModal用にFavorite形式に変換
-function getFavoriteForShare(): Favorite | null {
-  if (!selectedPaletteForShare) return null;
+    return {
+      id: `showcase-${selectedPaletteForShare.id}`,
+      primaryDye: palette.primary,
+      suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+      pattern: palette.pattern,
+      createdAt: selectedPaletteForShare.createdAt,
+    };
+  }
 
-  const palette = Palette.fromShowcase(selectedPaletteForShare, dyes);
-  if (!palette) return null;
+  const favoriteForShare = $derived(getFavoriteForShare());
 
-  return {
-    id: `showcase-${selectedPaletteForShare.id}`,
-    primaryDye: palette.primary,
-    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
-    pattern: palette.pattern,
-    createdAt: selectedPaletteForShare.createdAt,
-  };
-}
+  // お気に入り一覧
+  const favorites = $derived($favoritesStore);
 
-const favoriteForShare = $derived(getFavoriteForShare());
+  // プレビュー用のカラー情報を生成（翻訳適用）
+  function getPreviewColors(showcasePalette: ShowcasePalette): PreviewColors | null {
+    const palette = Palette.fromShowcase(showcasePalette, dyes);
+    if (!palette) return null;
+    const primary = palette.primary;
+    const sub = palette.sub.dye;
+    const accent = palette.accent.dye;
+    return [
+      { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
+      { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
+      { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
+    ];
+  }
 
-// お気に入り一覧
-const favorites = $derived($favoritesStore);
+  // お気に入り済みかチェック
+  function isFavorited(showcasePalette: ShowcasePalette): boolean {
+    const palette = Palette.fromShowcase(showcasePalette, dyes);
+    if (!palette) return false;
+    return palette.isIn(favorites);
+  }
 
-// プレビュー用のカラー情報を生成（翻訳適用）
-function getPreviewColors(showcasePalette: ShowcasePalette): PreviewColors | null {
-  const palette = Palette.fromShowcase(showcasePalette, dyes);
-  if (!palette) return null;
-  const primary = palette.primary;
-  const sub = palette.sub.dye;
-  const accent = palette.accent.dye;
-  return [
-    { hex: primary.hex, name: $t(`dye.names.${primary.id}`) || primary.name },
-    { hex: sub.hex, name: $t(`dye.names.${sub.id}`) || sub.name },
-    { hex: accent.hex, name: $t(`dye.names.${accent.id}`) || accent.name },
-  ];
-}
+  // お気に入りに追加
+  function handleAddToFavorites(showcasePalette: ShowcasePalette) {
+    const palette = Palette.fromShowcase(showcasePalette, dyes);
+    if (!palette) return;
+    saveFavorite({
+      primaryDye: palette.primary,
+      suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+      pattern: palette.pattern,
+    });
+  }
 
-// お気に入り済みかチェック
-function isFavorited(showcasePalette: ShowcasePalette): boolean {
-  const palette = Palette.fromShowcase(showcasePalette, dyes);
-  if (!palette) return false;
-  return palette.isIn(favorites);
-}
-
-// お気に入りに追加
-function handleAddToFavorites(showcasePalette: ShowcasePalette) {
-  const palette = Palette.fromShowcase(showcasePalette, dyes);
-  if (!palette) return;
-  saveFavorite({
-    primaryDye: palette.primary,
-    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
-    pattern: palette.pattern,
-  });
-}
-
-// Favorite形式に変換
-function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | null {
-  const palette = Palette.fromShowcase(showcasePalette, dyes);
-  if (!palette) return null;
-  return {
-    id: `showcase-${showcasePalette.id}`,
-    primaryDye: palette.primary,
-    suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
-    pattern: palette.pattern,
-    createdAt: showcasePalette.createdAt,
-  };
-}
+  // Favorite形式に変換
+  function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | null {
+    const palette = Palette.fromShowcase(showcasePalette, dyes);
+    if (!palette) return null;
+    return {
+      id: `showcase-${showcasePalette.id}`,
+      primaryDye: palette.primary,
+      suggestedDyes: [...palette.suggested] as [DyeProps, DyeProps],
+      pattern: palette.pattern,
+      createdAt: showcasePalette.createdAt,
+    };
+  }
 </script>
 
 <svelte:head>
@@ -239,11 +245,7 @@ function getFavoriteForPalette(showcasePalette: ShowcasePalette): Favorite | nul
 </div>
 
 <!-- ShareModal -->
-<ShareModal
-  isOpen={shareModalOpen}
-  favorite={favoriteForShare}
-  onClose={closeShareModal}
-/>
+<ShareModal isOpen={shareModalOpen} favorite={favoriteForShare} onClose={closeShareModal} />
 
 <style>
   /* スムーズなスクロール */

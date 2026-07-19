@@ -1,14 +1,14 @@
 <script lang="ts">
-import type { DyeSource } from '$lib/types';
-import { t } from '$lib/translations';
+  import type { DyeSource } from '$lib/types';
+  import { t } from '$lib/translations';
 
-interface Props {
-  source: DyeSource | undefined;
-}
+  interface Props {
+    source: DyeSource | undefined;
+  }
 
-const { source }: Props = $props();
+  const { source }: Props = $props();
 
-const isVisible = $derived(source !== undefined && source !== 'normal');
+  const isVisible = $derived(source !== undefined && source !== 'normal');
 </script>
 
 {#if isVisible && source}

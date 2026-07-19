@@ -1,22 +1,24 @@
 <script lang="ts">
-import { t } from '$lib/translations';
+  import { t } from '$lib/translations';
 
-interface ColorInfo {
-  hex: string;
-  name: string;
-}
+  interface ColorInfo {
+    hex: string;
+    name: string;
+  }
 
-interface Props {
-  colors: [ColorInfo, ColorInfo, ColorInfo];
-  onSelect?: () => void;
-}
+  interface Props {
+    colors: [ColorInfo, ColorInfo, ColorInfo];
+    onSelect?: () => void;
+  }
 
-const { colors, onSelect }: Props = $props();
+  const { colors, onSelect }: Props = $props();
 </script>
 
 <button
   type="button"
-  class="grid grid-cols-3 gap-2 w-full {onSelect ? 'cursor-pointer hover:opacity-80 transition-opacity' : ''}"
+  class="grid grid-cols-3 gap-2 w-full {onSelect
+    ? 'cursor-pointer hover:opacity-80 transition-opacity'
+    : ''}"
   onclick={onSelect}
   disabled={!onSelect}
   aria-label={$t('common.aria.selectCombination')}

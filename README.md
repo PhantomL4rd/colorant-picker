@@ -22,19 +22,19 @@ A web app for exploring dye color combinations in Final Fantasy XIV.
 
 ```bash
 # Install dependencies
-npm install
+bun install
 
 # Start dev server
-npm run dev
+bun run dev
 
 # Start with Pages Functions (D1/KV)
-npm run build && npm run dev:pages
+bun run build && bun run dev:pages
 
 # Type check
-npm run check
+bun run check
 
 # Format
-npm run format:fix
+bun run format:fix
 ```
 
 ## Contributing
@@ -46,6 +46,7 @@ If you'd like to see this app in your language, please submit a translation JSON
 ### Other Contributions
 
 Feel free to open an issue for:
+
 - Bug reports
 - Feature requests
 - Any suggestions or feedback

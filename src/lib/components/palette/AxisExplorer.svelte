@@ -1,64 +1,64 @@
 <script lang="ts">
-import { Check, X } from '@lucide/svelte';
-import { Dialog as DialogPrimitive } from 'bits-ui';
-import { t } from '$lib/translations';
-import type { DyeProps } from '$lib/types';
-import { generateLadder, type LadderAxis } from '$lib/utils/color/axisNeighbors';
+  import { Check, X } from '@lucide/svelte';
+  import { Dialog as DialogPrimitive } from 'bits-ui';
+  import { t } from '$lib/translations';
+  import type { DyeProps } from '$lib/types';
+  import { generateLadder, type LadderAxis } from '$lib/utils/color/axisNeighbors';
 
-interface Props {
-  baseDye: DyeProps;
-  allDyes: DyeProps[];
-  axis: LadderAxis;
-  onPick: (dye: DyeProps) => void;
-  onClose: () => void;
-}
+  interface Props {
+    baseDye: DyeProps;
+    allDyes: DyeProps[];
+    axis: LadderAxis;
+    onPick: (dye: DyeProps) => void;
+    onClose: () => void;
+  }
 
-const { baseDye, allDyes, axis, onPick, onClose }: Props = $props();
+  const { baseDye, allDyes, axis, onPick, onClose }: Props = $props();
 
-const ladder = $derived(generateLadder(baseDye, allDyes, axis));
-const title = $derived($t(`page.palette.axisExplorer.title.${axis}`));
+  const ladder = $derived(generateLadder(baseDye, allDyes, axis));
+  const title = $derived($t(`page.palette.axisExplorer.title.${axis}`));
 
-// 表示形態を幅で切り替える。
-// - SP(<md): ビューポート固定のボトムシート。通常フローに依存しないので高さ計算が不要になり、
-//   差し込み位置のせいで段が fold 下／固定バーの裏に隠れる問題も、内部スクロールが効かない問題も
-//   構造的に消える（Portal で body 直下に出すため祖先の overflow にも縛られない）。
-// - md+(PC): 従来どおり色面の下にインラインで差し込む。
-// SSR 無効(CSR)前提なので初期値も window から取得してフラッシュを避ける。
-let isWide = $state(
-  typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches
-);
-$effect(() => {
-  const mq = window.matchMedia('(min-width: 768px)');
-  const sync = () => {
-    isWide = mq.matches;
-  };
-  sync();
-  mq.addEventListener('change', sync);
-  return () => mq.removeEventListener('change', sync);
-});
-
-// PC インライン: 65vh の色面に押し下げられて画面外なら穏当に可視域へ寄せる
-// （'nearest' なので既に見えていれば動かさない）。
-let rootEl = $state<HTMLDivElement>();
-$effect(() => {
-  if (!isWide || !rootEl) return;
-  const el = rootEl;
-  const raf = requestAnimationFrame(() => {
-    el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+  // 表示形態を幅で切り替える。
+  // - SP(<md): ビューポート固定のボトムシート。通常フローに依存しないので高さ計算が不要になり、
+  //   差し込み位置のせいで段が fold 下／固定バーの裏に隠れる問題も、内部スクロールが効かない問題も
+  //   構造的に消える（Portal で body 直下に出すため祖先の overflow にも縛られない）。
+  // - md+(PC): 従来どおり色面の下にインラインで差し込む。
+  // SSR 無効(CSR)前提なので初期値も window から取得してフラッシュを避ける。
+  let isWide = $state(
+    typeof window !== 'undefined' && window.matchMedia('(min-width: 768px)').matches
+  );
+  $effect(() => {
+    const mq = window.matchMedia('(min-width: 768px)');
+    const sync = () => {
+      isWide = mq.matches;
+    };
+    sync();
+    mq.addEventListener('change', sync);
+    return () => mq.removeEventListener('change', sync);
   });
-  return () => cancelAnimationFrame(raf);
-});
 
-// シートは「マウント＝開いた状態」。閉操作(Escape/背景/×/色選択)は onClose で親に閉じてもらう。
-let open = $state(true);
+  // PC インライン: 65vh の色面に押し下げられて画面外なら穏当に可視域へ寄せる
+  // （'nearest' なので既に見えていれば動かさない）。
+  let rootEl = $state<HTMLDivElement>();
+  $effect(() => {
+    if (!isWide || !rootEl) return;
+    const el = rootEl;
+    const raf = requestAnimationFrame(() => {
+      el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+    return () => cancelAnimationFrame(raf);
+  });
 
-function getDyeName(d: DyeProps): string {
-  return $t(`dye.names.${d.id}`) || d.name;
-}
+  // シートは「マウント＝開いた状態」。閉操作(Escape/背景/×/色選択)は onClose で親に閉じてもらう。
+  let open = $state(true);
 
-function textColor(d: DyeProps): string {
-  return d.oklab.coords[0] > 0.6 ? '#0F172A' : '#FFFFFF';
-}
+  function getDyeName(d: DyeProps): string {
+    return $t(`dye.names.${d.id}`) || d.name;
+  }
+
+  function textColor(d: DyeProps): string {
+    return d.oklab.coords[0] > 0.6 ? '#0F172A' : '#FFFFFF';
+  }
 </script>
 
 <!-- 軸ラダー本体（SP シート / PC インラインで共用）。scrollCls で高さ制約だけ差し替える。 -->

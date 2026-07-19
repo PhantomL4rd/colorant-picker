@@ -1,38 +1,38 @@
 <script lang="ts">
-import { CircleHelp, Droplet, Sun, SwatchBook } from '@lucide/svelte';
-import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
-import * as Popover from '$lib/components/ui/popover';
-import { t } from '$lib/translations';
-import type { ColorRole, DyeProps } from '$lib/types';
-import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
+  import { CircleHelp, Droplet, Sun, SwatchBook } from '@lucide/svelte';
+  import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
+  import * as Popover from '$lib/components/ui/popover';
+  import { t } from '$lib/translations';
+  import type { ColorRole, DyeProps } from '$lib/types';
+  import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
 
-interface Props {
-  dye: DyeProps;
-  role: ColorRole;
-  percent: number;
-  /** メイン色（軸ラダーボタン表示・クリック不可） */
-  isMain: boolean;
-  /** 現在の軸ラダーの種別（メインのみ意味を持つ） */
-  expandedAxis: LadderAxis | null;
-  /** メイン用: 軸ラダーボタンのトグル */
-  onAxisToggle?: (axis: LadderAxis) => void;
-  /** サブ/アクセント用: クリックでこの色をメインに昇格 */
-  onPromote?: () => void;
-}
+  interface Props {
+    dye: DyeProps;
+    role: ColorRole;
+    percent: number;
+    /** メイン色（軸ラダーボタン表示・クリック不可） */
+    isMain: boolean;
+    /** 現在の軸ラダーの種別（メインのみ意味を持つ） */
+    expandedAxis: LadderAxis | null;
+    /** メイン用: 軸ラダーボタンのトグル */
+    onAxisToggle?: (axis: LadderAxis) => void;
+    /** サブ/アクセント用: クリックでこの色をメインに昇格 */
+    onPromote?: () => void;
+  }
 
-const { dye, role, percent, isMain, expandedAxis, onAxisToggle, onPromote }: Props = $props();
+  const { dye, role, percent, isMain, expandedAxis, onAxisToggle, onPromote }: Props = $props();
 
-function getDyeName(d: DyeProps): string {
-  return $t(`dye.names.${d.id}`) || d.name;
-}
+  function getDyeName(d: DyeProps): string {
+    return $t(`dye.names.${d.id}`) || d.name;
+  }
 
-// OKLab明度に応じて読みやすいテキスト色を返す
-function textColor(d: DyeProps): string {
-  return d.oklab.coords[0] > 0.6 ? '#0F172A' : '#FFFFFF';
-}
+  // OKLab明度に応じて読みやすいテキスト色を返す
+  function textColor(d: DyeProps): string {
+    return d.oklab.coords[0] > 0.6 ? '#0F172A' : '#FFFFFF';
+  }
 
-const labelColor = $derived(textColor(dye));
-const dyeName = $derived(getDyeName(dye));
+  const labelColor = $derived(textColor(dye));
+  const dyeName = $derived(getDyeName(dye));
 </script>
 
 {#snippet body()}
@@ -59,17 +59,17 @@ const dyeName = $derived(getDyeName(dye));
             <p class="font-semibold mb-2">{$t('page.home.ratioTip.heading')}</p>
             <p class="mb-1">
               <span class="font-medium">{$t('common.role.main')}</span>: {$t(
-                'page.home.ratioTip.main',
+                'page.home.ratioTip.main'
               )}
             </p>
             <p class="mb-1">
               <span class="font-medium">{$t('common.role.sub')}</span>: {$t(
-                'page.home.ratioTip.sub',
+                'page.home.ratioTip.sub'
               )}
             </p>
             <p>
               <span class="font-medium">{$t('common.role.accent')}</span>: {$t(
-                'page.home.ratioTip.accent',
+                'page.home.ratioTip.accent'
               )}
             </p>
           </Popover.Content>

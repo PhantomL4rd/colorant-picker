@@ -29,14 +29,14 @@ const LODESTONE_DOMAINS = {
 
 // カテゴリマッピング（日本語 → 英語キー）
 const CATEGORY_MAP = {
-  '白系': 'white',
-  '赤系': 'red',
-  '茶系': 'brown',
-  '黄系': 'yellow',
-  '緑系': 'green',
-  '青系': 'blue',
-  '紫系': 'purple',
-  'レア系': 'rare',
+  白系: 'white',
+  赤系: 'red',
+  茶系: 'brown',
+  黄系: 'yellow',
+  緑系: 'green',
+  青系: 'blue',
+  紫系: 'purple',
+  レア系: 'rare',
 };
 
 // カテゴリ翻訳（各言語用）
@@ -125,9 +125,15 @@ async function fetchDyeName(lodestonePath, locale) {
   try {
     const response = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': locale === 'ko' ? 'ko-KR,ko;q=0.9' : locale === 'ja' ? 'ja-JP,ja;q=0.9' : 'en-US,en;q=0.9',
+        'User-Agent':
+          'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language':
+          locale === 'ko'
+            ? 'ko-KR,ko;q=0.9'
+            : locale === 'ja'
+              ? 'ja-JP,ja;q=0.9'
+              : 'en-US,en;q=0.9',
       },
     });
 
@@ -152,7 +158,9 @@ async function fetchDyeName(lodestonePath, locale) {
 
     // 英語: "Eorzea Database: NAME Dye" 形式（タイトルから抽出）
     if (!dyeName) {
-      const enTitleMatch = html.match(/<title>(?:Eorzea Database:\s*)?([^|<]+(?:Dye|Colorant))[^<]*<\/title>/i);
+      const enTitleMatch = html.match(
+        /<title>(?:Eorzea Database:\s*)?([^|<]+(?:Dye|Colorant))[^<]*<\/title>/i
+      );
       if (enTitleMatch) {
         // "Eorzea Database: " プレフィックスと " Dye" サフィックスを削除
         dyeName = enTitleMatch[1]
@@ -172,7 +180,9 @@ async function fetchDyeName(lodestonePath, locale) {
 
     // フォールバック: h2タグなどから抽出
     if (!dyeName) {
-      const h2Match = html.match(/<h2[^>]*class="[^"]*db-view__item__text__name[^"]*"[^>]*>([^<]+)<\/h2>/);
+      const h2Match = html.match(
+        /<h2[^>]*class="[^"]*db-view__item__text__name[^"]*"[^>]*>([^<]+)<\/h2>/
+      );
       if (h2Match) {
         dyeName = h2Match[1].trim();
       }
@@ -187,7 +197,7 @@ async function fetchDyeName(lodestonePath, locale) {
 
 // 待機関数
 function sleep(ms) {
-  return new Promise(resolve => setTimeout(resolve, ms));
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // メイン処理

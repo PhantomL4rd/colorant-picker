@@ -1,42 +1,44 @@
 <script lang="ts">
-import { Layers } from '@lucide/svelte';
-import * as Card from '$lib/components/ui/card';
-import * as Popover from '$lib/components/ui/popover';
-import { t } from '$lib/translations';
-import type { DyeProps, KasaneVariant, TraditionalColor } from '$lib/types';
+  import { Layers } from '@lucide/svelte';
+  import * as Card from '$lib/components/ui/card';
+  import * as Popover from '$lib/components/ui/popover';
+  import { t } from '$lib/translations';
+  import type { DyeProps, KasaneVariant, TraditionalColor } from '$lib/types';
 
-interface Props {
-  name: string;
-  reading: string;
-  omoteDye: DyeProps | null;
-  uraDye: DyeProps | null;
-  variants: KasaneVariant[];
-  colorById: Map<string, TraditionalColor>;
-  dyes: DyeProps[];
-}
+  interface Props {
+    name: string;
+    reading: string;
+    omoteDye: DyeProps | null;
+    uraDye: DyeProps | null;
+    variants: KasaneVariant[];
+    colorById: Map<string, TraditionalColor>;
+    dyes: DyeProps[];
+  }
 
-const { name, reading, omoteDye, uraDye, variants, colorById, dyes }: Props = $props();
+  const { name, reading, omoteDye, uraDye, variants, colorById, dyes }: Props = $props();
 
-const omoteHex = $derived(omoteDye?.hex ?? '#808080');
-const uraHex = $derived(uraDye?.hex ?? '#808080');
-const omoteName = $derived(omoteDye ? $t(`dye.names.${omoteDye.id}`) || omoteDye.name : 'Unknown');
-const uraName = $derived(uraDye ? $t(`dye.names.${uraDye.id}`) || uraDye.name : 'Unknown');
+  const omoteHex = $derived(omoteDye?.hex ?? '#808080');
+  const uraHex = $derived(uraDye?.hex ?? '#808080');
+  const omoteName = $derived(
+    omoteDye ? $t(`dye.names.${omoteDye.id}`) || omoteDye.name : 'Unknown'
+  );
+  const uraName = $derived(uraDye ? $t(`dye.names.${uraDye.id}`) || uraDye.name : 'Unknown');
 
-const hasMultipleVariants = $derived(variants.length > 1);
-const variantCount = $derived(variants.length);
+  const hasMultipleVariants = $derived(variants.length > 1);
+  const variantCount = $derived(variants.length);
 
-const dyeById = $derived(new Map(dyes.map((d) => [d.id, d])));
+  const dyeById = $derived(new Map(dyes.map((d) => [d.id, d])));
 
-function dyeForColor(colorId: string): DyeProps | null {
-  const color = colorById.get(colorId);
-  if (!color) return null;
-  return dyeById.get(color.dyeId) ?? null;
-}
+  function dyeForColor(colorId: string): DyeProps | null {
+    const color = colorById.get(colorId);
+    if (!color) return null;
+    return dyeById.get(color.dyeId) ?? null;
+  }
 
-function dyeDisplayName(dye: DyeProps | null): string {
-  if (!dye) return 'Unknown';
-  return $t(`dye.names.${dye.id}`) || dye.name;
-}
+  function dyeDisplayName(dye: DyeProps | null): string {
+    if (!dye) return 'Unknown';
+    return $t(`dye.names.${dye.id}`) || dye.name;
+  }
 </script>
 
 <Card.Root
@@ -64,7 +66,8 @@ function dyeDisplayName(dye: DyeProps | null): string {
             {#each variants as variant, i (i)}
               {@const vOmoteDye = dyeForColor(variant.omoteColor)}
               {@const vUraDye = dyeForColor(variant.uraColor)}
-              {@const vOmoteHex = vOmoteDye?.hex ?? colorById.get(variant.omoteColor)?.hex ?? '#808080'}
+              {@const vOmoteHex =
+                vOmoteDye?.hex ?? colorById.get(variant.omoteColor)?.hex ?? '#808080'}
               {@const vUraHex = vUraDye?.hex ?? colorById.get(variant.uraColor)?.hex ?? '#808080'}
               <div class="grid grid-cols-2 gap-2 rounded-md p-1.5 bg-muted/40">
                 <div class="text-center min-w-0">
@@ -73,7 +76,10 @@ function dyeDisplayName(dye: DyeProps | null): string {
                     style="background-color: {vOmoteHex};"
                     title={dyeDisplayName(vOmoteDye)}
                   ></div>
-                  <p class="text-xs text-muted-foreground truncate mt-1" title={dyeDisplayName(vOmoteDye)}>
+                  <p
+                    class="text-xs text-muted-foreground truncate mt-1"
+                    title={dyeDisplayName(vOmoteDye)}
+                  >
                     {dyeDisplayName(vOmoteDye)}
                   </p>
                 </div>
@@ -83,7 +89,10 @@ function dyeDisplayName(dye: DyeProps | null): string {
                     style="background-color: {vUraHex};"
                     title={dyeDisplayName(vUraDye)}
                   ></div>
-                  <p class="text-xs text-muted-foreground truncate mt-1" title={dyeDisplayName(vUraDye)}>
+                  <p
+                    class="text-xs text-muted-foreground truncate mt-1"
+                    title={dyeDisplayName(vUraDye)}
+                  >
                     {dyeDisplayName(vUraDye)}
                   </p>
                 </div>

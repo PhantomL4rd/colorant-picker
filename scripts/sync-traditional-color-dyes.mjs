@@ -82,7 +82,10 @@ const dyes = JSON.parse(fs.readFileSync(DYES_PATH, 'utf-8')).dyes;
 const traditionalData = JSON.parse(fs.readFileSync(TRADITIONAL_COLORS_PATH, 'utf-8'));
 
 function rgbToHex(rgb) {
-  const h = (n) => Math.max(0, Math.min(255, Math.round(n))).toString(16).padStart(2, '0');
+  const h = (n) =>
+    Math.max(0, Math.min(255, Math.round(n)))
+      .toString(16)
+      .padStart(2, '0');
   return `#${h(rgb.r)}${h(rgb.g)}${h(rgb.b)}`;
 }
 
@@ -187,18 +190,16 @@ for (const c of changes) {
   const mark = c.fallback ? ' [helmlab フォールバック]' : '';
   console.log(`■ ${c.id} (${c.hex})${mark}`);
   console.log(
-    `  ${c.oldDyeId} (${c.oldDyeName}) → ${c.newDyeId} (${c.newDyeName})  ΔE00=${c.delta}`,
+    `  ${c.oldDyeId} (${c.oldDyeName}) → ${c.newDyeId} (${c.newDyeName})  ΔE00=${c.delta}`
   );
 }
 if (fallbackLogs.length > 0) {
   console.log('\n--- helmlab フォールバック詳細 ---');
   for (const f of fallbackLogs) {
     console.log(`■ ${f.id} (${f.hex})`);
+    console.log(`  第一候補(CIEDE2000): ${f.primaryDyeName} (ΔE00=${f.primaryDelta.toFixed(2)})`);
     console.log(
-      `  第一候補(CIEDE2000): ${f.primaryDyeName} (ΔE00=${f.primaryDelta.toFixed(2)})`,
-    );
-    console.log(
-      `  採用(helmlab)      : ${f.newDyeName} (dist=${f.newDist.toFixed(4)}, ΔE00=${f.newDelta.toFixed(2)})`,
+      `  採用(helmlab)      : ${f.newDyeName} (dist=${f.newDist.toFixed(4)}, ΔE00=${f.newDelta.toFixed(2)})`
     );
   }
 }

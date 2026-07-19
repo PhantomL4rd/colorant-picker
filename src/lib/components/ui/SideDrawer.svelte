@@ -1,51 +1,51 @@
 <script lang="ts">
-import {
-  Heart,
-  Info,
-  Layers,
-  LayoutGrid,
-  Menu,
-  MessageCircle,
-  Sparkles,
-  TrendingUp,
-  X,
-} from '@lucide/svelte';
-import { resolve } from '$app/paths';
-import { page } from '$app/state';
-import { t } from '$lib/translations';
+  import {
+    Heart,
+    Info,
+    Layers,
+    LayoutGrid,
+    Menu,
+    MessageCircle,
+    Sparkles,
+    TrendingUp,
+    X,
+  } from '@lucide/svelte';
+  import { resolve } from '$app/paths';
+  import { page } from '$app/state';
+  import { t } from '$lib/translations';
 
-let isOpen = $state(false);
+  let isOpen = $state(false);
 
-const currentPath = $derived(page.url.pathname);
-const showcasePath = resolve('/showcase');
-const favoritesPath = resolve('/favorites');
-const kasanePath = resolve('/kasane');
-const aboutPath = resolve('/about');
+  const currentPath = $derived(page.url.pathname);
+  const showcasePath = resolve('/showcase');
+  const favoritesPath = resolve('/favorites');
+  const kasanePath = resolve('/kasane');
+  const aboutPath = resolve('/about');
 
-const isShowcase = $derived(currentPath === showcasePath);
-const isFavorites = $derived(
-  currentPath === favoritesPath || currentPath.startsWith(`${favoritesPath}/`)
-);
-const isKasane = $derived(currentPath === kasanePath);
-const isAbout = $derived(currentPath === aboutPath);
+  const isShowcase = $derived(currentPath === showcasePath);
+  const isFavorites = $derived(
+    currentPath === favoritesPath || currentPath.startsWith(`${favoritesPath}/`)
+  );
+  const isKasane = $derived(currentPath === kasanePath);
+  const isAbout = $derived(currentPath === aboutPath);
 
-function open() {
-  isOpen = true;
-}
+  function open() {
+    isOpen = true;
+  }
 
-function close() {
-  isOpen = false;
-}
+  function close() {
+    isOpen = false;
+  }
 
-function handleKeydown(event: KeyboardEvent) {
-  if (event.key === 'Escape') {
+  function handleKeydown(event: KeyboardEvent) {
+    if (event.key === 'Escape') {
+      close();
+    }
+  }
+
+  function handleBackdropClick() {
     close();
   }
-}
-
-function handleBackdropClick() {
-  close();
-}
 </script>
 
 <svelte:window onkeydown={handleKeydown} />
@@ -100,7 +100,9 @@ function handleBackdropClick() {
     <a
       href={showcasePath}
       onclick={close}
-      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isShowcase ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}"
+      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isShowcase
+        ? 'bg-primary text-primary-foreground'
+        : 'hover:bg-accent'}"
     >
       <Sparkles class="size-5" />
       {$t('common.nav.showcase')}
@@ -110,7 +112,9 @@ function handleBackdropClick() {
     <a
       href={favoritesPath}
       onclick={close}
-      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isFavorites ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}"
+      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isFavorites
+        ? 'bg-primary text-primary-foreground'
+        : 'hover:bg-accent'}"
     >
       <Heart class="size-5" />
       {$t('common.nav.favorites')}
@@ -120,7 +124,9 @@ function handleBackdropClick() {
     <a
       href={kasanePath}
       onclick={close}
-      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isKasane ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}"
+      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isKasane
+        ? 'bg-primary text-primary-foreground'
+        : 'hover:bg-accent'}"
     >
       <Layers class="size-5" />
       {$t('common.nav.kasane')}
@@ -130,13 +136,17 @@ function handleBackdropClick() {
     <a
       href={aboutPath}
       onclick={close}
-      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isAbout ? 'bg-primary text-primary-foreground' : 'hover:bg-accent'}"
+      class="flex items-center gap-3 rounded-md px-3 py-3 text-sm transition-colors {isAbout
+        ? 'bg-primary text-primary-foreground'
+        : 'hover:bg-accent'}"
     >
       <Info class="size-5" />
       {$t('common.nav.about')}
     </a>
 
-    <p class="px-3 py-2 text-xs text-muted-foreground mt-2 border-t border-border pt-2">{$t('common.nav.links')}</p>
+    <p class="px-3 py-2 text-xs text-muted-foreground mt-2 border-t border-border pt-2">
+      {$t('common.nav.links')}
+    </p>
 
     <!-- ミラプリインサイト -->
     <a

@@ -1,21 +1,21 @@
 <script lang="ts">
-import { Globe } from '@lucide/svelte';
-import {
-  locale,
-  setLocale,
-  SUPPORTED_LOCALES,
-  LOCALE_NAMES,
-  t,
-  type Locale,
-} from '$lib/translations';
-import { Button } from '$lib/components/ui/button';
-import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+  import { Globe } from '@lucide/svelte';
+  import {
+    locale,
+    setLocale,
+    SUPPORTED_LOCALES,
+    LOCALE_NAMES,
+    t,
+    type Locale,
+  } from '$lib/translations';
+  import { Button } from '$lib/components/ui/button';
+  import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
 
-const currentLocale = $derived($locale as Locale);
+  const currentLocale = $derived($locale as Locale);
 
-async function handleLocaleChange(newLocale: Locale) {
-  await setLocale(newLocale);
-}
+  async function handleLocaleChange(newLocale: Locale) {
+    await setLocale(newLocale);
+  }
 </script>
 
 <DropdownMenu.Root>
