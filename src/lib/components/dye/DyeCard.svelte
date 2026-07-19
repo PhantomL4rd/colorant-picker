@@ -1,38 +1,38 @@
 <script lang="ts">
-  import { onDestroy } from 'svelte';
-  import type { DyeProps } from '$lib/types';
-  import { t } from '$lib/translations';
-  import * as Card from '$lib/components/ui/card';
+import { onDestroy } from 'svelte';
+import type { DyeProps } from '$lib/types';
+import { t } from '$lib/translations';
+import * as Card from '$lib/components/ui/card';
 
-  interface Props {
-    dye: DyeProps;
-    isSelected?: boolean;
-    onSelect: (dye: DyeProps) => void;
-    animationDelay?: number;
-  }
+interface Props {
+  dye: DyeProps;
+  isSelected?: boolean;
+  onSelect: (dye: DyeProps) => void;
+  animationDelay?: number;
+}
 
-  const { dye, isSelected = false, onSelect, animationDelay = 0 }: Props = $props();
+const { dye, isSelected = false, onSelect, animationDelay = 0 }: Props = $props();
 
-  const displayName = $derived($t(`dye.names.${dye.id}`) || dye.name);
+const displayName = $derived($t(`dye.names.${dye.id}`) || dye.name);
 
-  let isClicking = $state(false);
-  // 連打時に前回のリセットタイマーが残らないよう保持する
-  let clickTimer: ReturnType<typeof setTimeout> | null = null;
+let isClicking = $state(false);
+// 連打時に前回のリセットタイマーが残らないよう保持する
+let clickTimer: ReturnType<typeof setTimeout> | null = null;
 
-  function handleClick() {
-    isClicking = true;
-    onSelect(dye);
-    // バウンスアニメーション終了後にリセット
-    if (clickTimer !== null) clearTimeout(clickTimer);
-    clickTimer = setTimeout(() => {
-      isClicking = false;
-      clickTimer = null;
-    }, 300);
-  }
+function handleClick() {
+  isClicking = true;
+  onSelect(dye);
+  // バウンスアニメーション終了後にリセット
+  if (clickTimer !== null) clearTimeout(clickTimer);
+  clickTimer = setTimeout(() => {
+    isClicking = false;
+    clickTimer = null;
+  }, 300);
+}
 
-  onDestroy(() => {
-    if (clickTimer !== null) clearTimeout(clickTimer);
-  });
+onDestroy(() => {
+  if (clickTimer !== null) clearTimeout(clickTimer);
+});
 </script>
 
 <Card.Root

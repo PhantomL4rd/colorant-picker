@@ -1,63 +1,63 @@
 <script lang="ts">
-  import { Share } from '@lucide/svelte';
-  import { selectionStore } from '$lib/stores/selection';
-  import type { Favorite } from '$lib/types';
-  import { Button } from '$lib/components/ui/button';
-  import ShareModal from './ShareModal.svelte';
+import { Share } from '@lucide/svelte';
+import { selectionStore } from '$lib/stores/selection';
+import type { Favorite } from '$lib/types';
+import { Button } from '$lib/components/ui/button';
+import ShareModal from './ShareModal.svelte';
 
-  interface Props {
-    disabled?: boolean;
-    favorite?: Favorite;
-    onShare?: (favorite: Favorite) => void;
+interface Props {
+  disabled?: boolean;
+  favorite?: Favorite;
+  onShare?: (favorite: Favorite) => void;
+}
+
+const { disabled = false, favorite, onShare }: Props = $props();
+
+// モーダルの状態
+let shareModalOpen = $state(false);
+let tempFavorite = $state<Favorite | null>(null);
+
+// 現在の選択状態
+const currentSelection = $derived($selectionStore);
+
+// プライマリ染料が選択されていない場合は無効（favoriteがない場合）
+const isDisabled = $derived(
+  disabled || (!favorite && (!currentSelection.primaryDye || !currentSelection.suggestedDyes))
+);
+
+function handleShare() {
+  if (favorite && onShare) {
+    // Favoriteが渡されている場合（FavoriteItemから使用）
+    onShare(favorite);
+  } else {
+    // 現在の選択から一時的なFavoriteを作成（プレビューから使用）
+    openShareModal();
+  }
+}
+
+function openShareModal() {
+  if (isDisabled) return;
+
+  if (!currentSelection.primaryDye || !currentSelection.suggestedDyes) {
+    return;
   }
 
-  const { disabled = false, favorite, onShare }: Props = $props();
+  // 一時的なFavoriteオブジェクトを作成（保存はしない）
+  tempFavorite = {
+    id: `temp-${Date.now()}`,
+    primaryDye: currentSelection.primaryDye,
+    suggestedDyes: currentSelection.suggestedDyes,
+    pattern: currentSelection.pattern,
+    createdAt: new Date().toISOString(),
+  };
 
-  // モーダルの状態
-  let shareModalOpen = $state(false);
-  let tempFavorite = $state<Favorite | null>(null);
+  shareModalOpen = true;
+}
 
-  // 現在の選択状態
-  const currentSelection = $derived($selectionStore);
-
-  // プライマリ染料が選択されていない場合は無効（favoriteがない場合）
-  const isDisabled = $derived(
-    disabled || (!favorite && (!currentSelection.primaryDye || !currentSelection.suggestedDyes))
-  );
-
-  function handleShare() {
-    if (favorite && onShare) {
-      // Favoriteが渡されている場合（FavoriteItemから使用）
-      onShare(favorite);
-    } else {
-      // 現在の選択から一時的なFavoriteを作成（プレビューから使用）
-      openShareModal();
-    }
-  }
-
-  function openShareModal() {
-    if (isDisabled) return;
-
-    if (!currentSelection.primaryDye || !currentSelection.suggestedDyes) {
-      return;
-    }
-
-    // 一時的なFavoriteオブジェクトを作成（保存はしない）
-    tempFavorite = {
-      id: `temp-${Date.now()}`,
-      primaryDye: currentSelection.primaryDye,
-      suggestedDyes: currentSelection.suggestedDyes,
-      pattern: currentSelection.pattern,
-      createdAt: new Date().toISOString(),
-    };
-
-    shareModalOpen = true;
-  }
-
-  function closeShareModal() {
-    shareModalOpen = false;
-    tempFavorite = null;
-  }
+function closeShareModal() {
+  shareModalOpen = false;
+  tempFavorite = null;
+}
 </script>
 
 {#if favorite}

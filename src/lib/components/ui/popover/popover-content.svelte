@@ -1,22 +1,22 @@
 <script lang="ts">
-  import { Popover as PopoverPrimitive } from 'bits-ui';
-  import { cn } from '$lib/utils.js';
-  import PopoverPortal from './popover-portal.svelte';
-  import type { ComponentProps } from 'svelte';
-  import type { WithoutChildrenOrChild } from '$lib/utils.js';
+import { Popover as PopoverPrimitive } from 'bits-ui';
+import { cn } from '$lib/utils.js';
+import PopoverPortal from './popover-portal.svelte';
+import type { ComponentProps } from 'svelte';
+import type { WithoutChildrenOrChild } from '$lib/utils.js';
 
-  let {
-    ref = $bindable(null),
-    class: className,
-    sideOffset = 4,
-    side = 'top',
-    align = 'center',
-    children,
-    portalProps,
-    ...restProps
-  }: PopoverPrimitive.ContentProps & {
-    portalProps?: WithoutChildrenOrChild<ComponentProps<typeof PopoverPortal>>;
-  } = $props();
+let {
+  ref = $bindable(null),
+  class: className,
+  sideOffset = 4,
+  side = 'top',
+  align = 'center',
+  children,
+  portalProps,
+  ...restProps
+}: PopoverPrimitive.ContentProps & {
+  portalProps?: WithoutChildrenOrChild<ComponentProps<typeof PopoverPortal>>;
+} = $props();
 </script>
 
 <PopoverPortal {...portalProps}>

@@ -1,46 +1,46 @@
 <script lang="ts">
-  import { Info } from '@lucide/svelte';
-  import { Palette } from '$lib/models/Palette';
-  import { selectPrimaryDye } from '$lib/stores/selection';
-  import { t } from '$lib/translations';
-  import type { DyeProps, HarmonyPattern, ColorRole } from '$lib/types';
-  import * as Card from '$lib/components/ui/card';
-  import { Button } from '$lib/components/ui/button';
-  import * as Tooltip from '$lib/components/ui/tooltip';
-  import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
+import { Info } from '@lucide/svelte';
+import { Palette } from '$lib/models/Palette';
+import { selectPrimaryDye } from '$lib/stores/selection';
+import { t } from '$lib/translations';
+import type { DyeProps, HarmonyPattern, ColorRole } from '$lib/types';
+import * as Card from '$lib/components/ui/card';
+import { Button } from '$lib/components/ui/button';
+import * as Tooltip from '$lib/components/ui/tooltip';
+import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
 
-  interface Props {
-    selectedDye: DyeProps | null;
-    suggestedDyes: [DyeProps, DyeProps] | null;
-    pattern: HarmonyPattern;
-    showRatio?: boolean; // メインピッカー画面でのみtrue
-  }
+interface Props {
+  selectedDye: DyeProps | null;
+  suggestedDyes: [DyeProps, DyeProps] | null;
+  pattern: HarmonyPattern;
+  showRatio?: boolean; // メインピッカー画面でのみtrue
+}
 
-  const { selectedDye, suggestedDyes, pattern, showRatio = true }: Props = $props();
+const { selectedDye, suggestedDyes, pattern, showRatio = true }: Props = $props();
 
-  // 染料名を翻訳
-  function getDyeName(dye: DyeProps): string {
-    return $t(`dye.names.${dye.id}`) || dye.name;
-  }
+// 染料名を翻訳
+function getDyeName(dye: DyeProps): string {
+  return $t(`dye.names.${dye.id}`) || dye.name;
+}
 
-  // 役割名を翻訳
-  function getRoleName(role: ColorRole): string {
-    return $t(`common.role.${role}`);
-  }
+// 役割名を翻訳
+function getRoleName(role: ColorRole): string {
+  return $t(`common.role.${role}`);
+}
 
-  // 3色が揃っている場合のみパレットを生成
-  const palette = $derived.by(() => {
-    if (!selectedDye || !suggestedDyes) return null;
-    return new Palette(selectedDye, suggestedDyes, pattern);
-  });
+// 3色が揃っている場合のみパレットを生成
+const palette = $derived.by(() => {
+  if (!selectedDye || !suggestedDyes) return null;
+  return new Palette(selectedDye, suggestedDyes, pattern);
+});
 
-  function handleSuggestedDyeClick(dye: DyeProps): void {
-    selectPrimaryDye(dye);
-  }
+function handleSuggestedDyeClick(dye: DyeProps): void {
+  selectPrimaryDye(dye);
+}
 
-  function textColor(dye: DyeProps): string {
-    return dye.oklab.coords[0] > 0.6 ? '#000' : '#fff';
-  }
+function textColor(dye: DyeProps): string {
+  return dye.oklab.coords[0] > 0.6 ? '#000' : '#fff';
+}
 </script>
 
 <Card.Root class="shadow-lg">

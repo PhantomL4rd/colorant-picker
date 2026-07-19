@@ -1,51 +1,51 @@
 <script lang="ts">
-  import {
-    Heart,
-    Info,
-    Layers,
-    LayoutGrid,
-    Menu,
-    MessageCircle,
-    Sparkles,
-    TrendingUp,
-    X,
-  } from '@lucide/svelte';
-  import { resolve } from '$app/paths';
-  import { page } from '$app/state';
-  import { t } from '$lib/translations';
+import {
+  Heart,
+  Info,
+  Layers,
+  LayoutGrid,
+  Menu,
+  MessageCircle,
+  Sparkles,
+  TrendingUp,
+  X,
+} from '@lucide/svelte';
+import { resolve } from '$app/paths';
+import { page } from '$app/state';
+import { t } from '$lib/translations';
 
-  let isOpen = $state(false);
+let isOpen = $state(false);
 
-  const currentPath = $derived(page.url.pathname);
-  const showcasePath = resolve('/showcase');
-  const favoritesPath = resolve('/favorites');
-  const kasanePath = resolve('/kasane');
-  const aboutPath = resolve('/about');
+const currentPath = $derived(page.url.pathname);
+const showcasePath = resolve('/showcase');
+const favoritesPath = resolve('/favorites');
+const kasanePath = resolve('/kasane');
+const aboutPath = resolve('/about');
 
-  const isShowcase = $derived(currentPath === showcasePath);
-  const isFavorites = $derived(
-    currentPath === favoritesPath || currentPath.startsWith(`${favoritesPath}/`)
-  );
-  const isKasane = $derived(currentPath === kasanePath);
-  const isAbout = $derived(currentPath === aboutPath);
+const isShowcase = $derived(currentPath === showcasePath);
+const isFavorites = $derived(
+  currentPath === favoritesPath || currentPath.startsWith(`${favoritesPath}/`)
+);
+const isKasane = $derived(currentPath === kasanePath);
+const isAbout = $derived(currentPath === aboutPath);
 
-  function open() {
-    isOpen = true;
-  }
+function open() {
+  isOpen = true;
+}
 
-  function close() {
-    isOpen = false;
-  }
+function close() {
+  isOpen = false;
+}
 
-  function handleKeydown(event: KeyboardEvent) {
-    if (event.key === 'Escape') {
-      close();
-    }
-  }
-
-  function handleBackdropClick() {
+function handleKeydown(event: KeyboardEvent) {
+  if (event.key === 'Escape') {
     close();
   }
+}
+
+function handleBackdropClick() {
+  close();
+}
 </script>
 
 <svelte:window onkeydown={handleKeydown} />

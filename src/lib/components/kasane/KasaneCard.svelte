@@ -1,44 +1,42 @@
 <script lang="ts">
-  import { Layers } from '@lucide/svelte';
-  import * as Card from '$lib/components/ui/card';
-  import * as Popover from '$lib/components/ui/popover';
-  import { t } from '$lib/translations';
-  import type { DyeProps, KasaneVariant, TraditionalColor } from '$lib/types';
+import { Layers } from '@lucide/svelte';
+import * as Card from '$lib/components/ui/card';
+import * as Popover from '$lib/components/ui/popover';
+import { t } from '$lib/translations';
+import type { DyeProps, KasaneVariant, TraditionalColor } from '$lib/types';
 
-  interface Props {
-    name: string;
-    reading: string;
-    omoteDye: DyeProps | null;
-    uraDye: DyeProps | null;
-    variants: KasaneVariant[];
-    colorById: Map<string, TraditionalColor>;
-    dyes: DyeProps[];
-  }
+interface Props {
+  name: string;
+  reading: string;
+  omoteDye: DyeProps | null;
+  uraDye: DyeProps | null;
+  variants: KasaneVariant[];
+  colorById: Map<string, TraditionalColor>;
+  dyes: DyeProps[];
+}
 
-  const { name, reading, omoteDye, uraDye, variants, colorById, dyes }: Props = $props();
+const { name, reading, omoteDye, uraDye, variants, colorById, dyes }: Props = $props();
 
-  const omoteHex = $derived(omoteDye?.hex ?? '#808080');
-  const uraHex = $derived(uraDye?.hex ?? '#808080');
-  const omoteName = $derived(
-    omoteDye ? $t(`dye.names.${omoteDye.id}`) || omoteDye.name : 'Unknown'
-  );
-  const uraName = $derived(uraDye ? $t(`dye.names.${uraDye.id}`) || uraDye.name : 'Unknown');
+const omoteHex = $derived(omoteDye?.hex ?? '#808080');
+const uraHex = $derived(uraDye?.hex ?? '#808080');
+const omoteName = $derived(omoteDye ? $t(`dye.names.${omoteDye.id}`) || omoteDye.name : 'Unknown');
+const uraName = $derived(uraDye ? $t(`dye.names.${uraDye.id}`) || uraDye.name : 'Unknown');
 
-  const hasMultipleVariants = $derived(variants.length > 1);
-  const variantCount = $derived(variants.length);
+const hasMultipleVariants = $derived(variants.length > 1);
+const variantCount = $derived(variants.length);
 
-  const dyeById = $derived(new Map(dyes.map((d) => [d.id, d])));
+const dyeById = $derived(new Map(dyes.map((d) => [d.id, d])));
 
-  function dyeForColor(colorId: string): DyeProps | null {
-    const color = colorById.get(colorId);
-    if (!color) return null;
-    return dyeById.get(color.dyeId) ?? null;
-  }
+function dyeForColor(colorId: string): DyeProps | null {
+  const color = colorById.get(colorId);
+  if (!color) return null;
+  return dyeById.get(color.dyeId) ?? null;
+}
 
-  function dyeDisplayName(dye: DyeProps | null): string {
-    if (!dye) return 'Unknown';
-    return $t(`dye.names.${dye.id}`) || dye.name;
-  }
+function dyeDisplayName(dye: DyeProps | null): string {
+  if (!dye) return 'Unknown';
+  return $t(`dye.names.${dye.id}`) || dye.name;
+}
 </script>
 
 <Card.Root

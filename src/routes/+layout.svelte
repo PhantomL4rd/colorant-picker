@@ -1,16 +1,16 @@
 <script lang="ts">
-  import '../app.css';
-  import { Sparkles, SwatchBook } from '@lucide/svelte';
-  import { resolve } from '$app/paths';
-  import { ModeWatcher } from 'mode-watcher';
-  import * as Tooltip from '$lib/components/ui/tooltip';
-  import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
-  import SideDrawer from '$lib/components/ui/SideDrawer.svelte';
-  // undo/redo（selectionStore 監視）を全ページで起動するための副作用 import
-  import '$lib/stores/paletteUndo';
-  import { t } from '$lib/translations';
+import '../app.css';
+import { Sparkles, SwatchBook } from '@lucide/svelte';
+import { resolve } from '$app/paths';
+import { ModeWatcher } from 'mode-watcher';
+import * as Tooltip from '$lib/components/ui/tooltip';
+import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
+import SideDrawer from '$lib/components/ui/SideDrawer.svelte';
+// undo/redo（selectionStore 監視）を全ページで起動するための副作用 import
+import '$lib/stores/paletteUndo';
+import { t } from '$lib/translations';
 
-  const { children } = $props();
+const { children } = $props();
 </script>
 
 <svelte:head>

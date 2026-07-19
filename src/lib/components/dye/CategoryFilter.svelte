@@ -1,35 +1,35 @@
 <script lang="ts">
-  import type { DyeCategory } from '$lib/types';
-  import { t } from '$lib/translations';
-  import { Button } from '$lib/components/ui/button';
+import type { DyeCategory } from '$lib/types';
+import { t } from '$lib/translations';
+import { Button } from '$lib/components/ui/button';
 
-  interface Props {
-    selectedCategory: DyeCategory | null;
-    onToggleCategory: (category: DyeCategory) => void;
-    onClearCategories: () => void;
-  }
+interface Props {
+  selectedCategory: DyeCategory | null;
+  onToggleCategory: (category: DyeCategory) => void;
+  onClearCategories: () => void;
+}
 
-  const { selectedCategory, onToggleCategory, onClearCategories }: Props = $props();
+const { selectedCategory, onToggleCategory, onClearCategories }: Props = $props();
 
-  const categories: DyeCategory[] = [
-    'white',
-    'red',
-    'brown',
-    'yellow',
-    'green',
-    'blue',
-    'purple',
-    'rare',
-  ];
+const categories: DyeCategory[] = [
+  'white',
+  'red',
+  'brown',
+  'yellow',
+  'green',
+  'blue',
+  'purple',
+  'rare',
+];
 
-  // カテゴリ名を翻訳
-  function getCategoryName(category: DyeCategory): string {
-    return $t(`dye.categories.${category}`);
-  }
+// カテゴリ名を翻訳
+function getCategoryName(category: DyeCategory): string {
+  return $t(`dye.categories.${category}`);
+}
 
-  function isSelected(category: DyeCategory): boolean {
-    return selectedCategory === category;
-  }
+function isSelected(category: DyeCategory): boolean {
+  return selectedCategory === category;
+}
 </script>
 
 <div class="w-full">

@@ -1,42 +1,42 @@
 <script lang="ts">
-  import { Layers } from '@lucide/svelte';
-  import * as Card from '$lib/components/ui/card';
-  import * as Popover from '$lib/components/ui/popover';
-  import { t } from '$lib/translations';
-  import type { DyeProps, KasaneIrome, TraditionalColor } from '$lib/types';
+import { Layers } from '@lucide/svelte';
+import * as Card from '$lib/components/ui/card';
+import * as Popover from '$lib/components/ui/popover';
+import { t } from '$lib/translations';
+import type { DyeProps, KasaneIrome, TraditionalColor } from '$lib/types';
 
-  interface Props {
-    item: KasaneIrome;
-    colorById: Map<string, TraditionalColor>;
-    dyes: DyeProps[];
-  }
+interface Props {
+  item: KasaneIrome;
+  colorById: Map<string, TraditionalColor>;
+  dyes: DyeProps[];
+}
 
-  const { item, colorById, dyes }: Props = $props();
+const { item, colorById, dyes }: Props = $props();
 
-  const dyeById = $derived(new Map(dyes.map((d) => [d.id, d])));
-  const main = $derived(item.variants[0]);
-  const variantCount = $derived(item.variants.length);
-  const hasMultipleVariants = $derived(variantCount > 1);
+const dyeById = $derived(new Map(dyes.map((d) => [d.id, d])));
+const main = $derived(item.variants[0]);
+const variantCount = $derived(item.variants.length);
+const hasMultipleVariants = $derived(variantCount > 1);
 
-  function dyeForColor(colorId: string | undefined): DyeProps | null {
-    if (!colorId) return null;
-    const c = colorById.get(colorId);
-    if (!c) return null;
-    return dyeById.get(c.dyeId) ?? null;
-  }
+function dyeForColor(colorId: string | undefined): DyeProps | null {
+  if (!colorId) return null;
+  const c = colorById.get(colorId);
+  if (!c) return null;
+  return dyeById.get(c.dyeId) ?? null;
+}
 
-  function hexFor(colorId: string | undefined): string {
-    const dye = dyeForColor(colorId);
-    if (dye) return dye.hex;
-    if (!colorId) return '#808080';
-    return colorById.get(colorId)?.hex ?? '#808080';
-  }
+function hexFor(colorId: string | undefined): string {
+  const dye = dyeForColor(colorId);
+  if (dye) return dye.hex;
+  if (!colorId) return '#808080';
+  return colorById.get(colorId)?.hex ?? '#808080';
+}
 
-  function nameFor(colorId: string | undefined): string {
-    const dye = dyeForColor(colorId);
-    if (!dye) return 'Unknown';
-    return $t(`dye.names.${dye.id}`) || dye.name;
-  }
+function nameFor(colorId: string | undefined): string {
+  const dye = dyeForColor(colorId);
+  if (!dye) return 'Unknown';
+  return $t(`dye.names.${dye.id}`) || dye.name;
+}
 </script>
 
 <Card.Root class="shadow-sm relative">

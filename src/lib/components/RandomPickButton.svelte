@@ -1,26 +1,26 @@
 <script lang="ts">
-  import { Shuffle } from '@lucide/svelte';
-  import { t } from '$lib/translations';
-  import type { DyeProps } from '$lib/types';
-  import { Button } from '$lib/components/ui/button';
+import { Shuffle } from '@lucide/svelte';
+import { t } from '$lib/translations';
+import type { DyeProps } from '$lib/types';
+import { Button } from '$lib/components/ui/button';
 
-  interface Props {
-    dyes: DyeProps[];
-    onRandomPick: (dyes: [DyeProps, DyeProps, DyeProps]) => void;
-    disabled?: boolean;
-  }
+interface Props {
+  dyes: DyeProps[];
+  onRandomPick: (dyes: [DyeProps, DyeProps, DyeProps]) => void;
+  disabled?: boolean;
+}
 
-  const { dyes, onRandomPick, disabled = false }: Props = $props();
+const { dyes, onRandomPick, disabled = false }: Props = $props();
 
-  function handleRandomPick() {
-    if (dyes.length < 3) return;
+function handleRandomPick() {
+  if (dyes.length < 3) return;
 
-    // ランダムに3色選択
-    const shuffled = [...dyes].sort(() => Math.random() - 0.5);
-    const randomDyes: [DyeProps, DyeProps, DyeProps] = [shuffled[0], shuffled[1], shuffled[2]];
+  // ランダムに3色選択
+  const shuffled = [...dyes].sort(() => Math.random() - 0.5);
+  const randomDyes: [DyeProps, DyeProps, DyeProps] = [shuffled[0], shuffled[1], shuffled[2]];
 
-    onRandomPick(randomDyes);
-  }
+  onRandomPick(randomDyes);
+}
 </script>
 
 <Button

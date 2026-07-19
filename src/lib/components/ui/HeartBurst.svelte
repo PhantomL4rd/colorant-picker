@@ -1,7 +1,7 @@
 <script lang="ts" module>
-  export type HeartBurstApi = {
-    trigger: () => void;
-  };
+export type HeartBurstApi = {
+  trigger: () => void;
+};
 </script>
 
 <script lang="ts">

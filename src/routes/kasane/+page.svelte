@@ -1,96 +1,96 @@
 <script lang="ts">
-  import { ChevronDown, ExternalLink, Layers, Loader2 } from '@lucide/svelte';
-  import { onMount } from 'svelte';
-  import KasaneCard3 from '$lib/components/kasane/KasaneCard3.svelte';
-  import SeasonSection from '$lib/components/kasane/SeasonSection.svelte';
-  import * as Alert from '$lib/components/ui/alert';
-  import * as Collapsible from '$lib/components/ui/collapsible';
-  import { dyeStore, loadDyes } from '$lib/stores/dyes';
-  import { t } from '$lib/translations';
-  import type {
-    KasaneData,
-    KasaneIrome,
-    KasaneSeason,
-    TraditionalColor,
-    TraditionalColorData,
-  } from '$lib/types';
+import { ChevronDown, ExternalLink, Layers, Loader2 } from '@lucide/svelte';
+import { onMount } from 'svelte';
+import KasaneCard3 from '$lib/components/kasane/KasaneCard3.svelte';
+import SeasonSection from '$lib/components/kasane/SeasonSection.svelte';
+import * as Alert from '$lib/components/ui/alert';
+import * as Collapsible from '$lib/components/ui/collapsible';
+import { dyeStore, loadDyes } from '$lib/stores/dyes';
+import { t } from '$lib/translations';
+import type {
+  KasaneData,
+  KasaneIrome,
+  KasaneSeason,
+  TraditionalColor,
+  TraditionalColorData,
+} from '$lib/types';
 
-  const SEASONS: KasaneSeason[] = ['spring', 'summer', 'autumn', 'winter', 'misc'];
+const SEASONS: KasaneSeason[] = ['spring', 'summer', 'autumn', 'winter', 'misc'];
 
-  function currentSeason(): KasaneSeason {
-    const m = new Date().getMonth() + 1;
-    if (m >= 2 && m <= 4) return 'spring';
-    if (m >= 5 && m <= 8) return 'summer';
-    if (m >= 9 && m <= 11) return 'autumn';
-    return 'winter';
+function currentSeason(): KasaneSeason {
+  const m = new Date().getMonth() + 1;
+  if (m >= 2 && m <= 4) return 'spring';
+  if (m >= 5 && m <= 8) return 'summer';
+  if (m >= 9 && m <= 11) return 'autumn';
+  return 'winter';
+}
+
+let kasaneData: KasaneIrome[] = $state([]);
+let kasaneThree: KasaneIrome[] = $state([]);
+let traditionalColors: TraditionalColor[] = $state([]);
+let isLoading = $state(true);
+let error: string | null = $state(null);
+let expandedSeasons = $state<Set<KasaneSeason>>(new Set([currentSeason()]));
+let isThreeExpanded = $state(false);
+
+const colorById = $derived(new Map(traditionalColors.map((c) => [c.id, c])));
+
+const groupedBySeasons = $derived(
+  SEASONS.map((season) => ({
+    season,
+    items: kasaneData.filter((k) => k.season === season),
+  }))
+);
+
+function toggleSeason(season: KasaneSeason) {
+  const newSet = new Set(expandedSeasons);
+  if (newSet.has(season)) {
+    newSet.delete(season);
+  } else {
+    newSet.add(season);
   }
+  expandedSeasons = newSet;
+}
 
-  let kasaneData: KasaneIrome[] = $state([]);
-  let kasaneThree: KasaneIrome[] = $state([]);
-  let traditionalColors: TraditionalColor[] = $state([]);
-  let isLoading = $state(true);
-  let error: string | null = $state(null);
-  let expandedSeasons = $state<Set<KasaneSeason>>(new Set([currentSeason()]));
-  let isThreeExpanded = $state(false);
+onMount(async () => {
+  try {
+    await loadDyes();
 
-  const colorById = $derived(new Map(traditionalColors.map((c) => [c.id, c])));
-
-  const groupedBySeasons = $derived(
-    SEASONS.map((season) => ({
-      season,
-      items: kasaneData.filter((k) => k.season === season),
-    }))
-  );
-
-  function toggleSeason(season: KasaneSeason) {
-    const newSet = new Set(expandedSeasons);
-    if (newSet.has(season)) {
-      newSet.delete(season);
-    } else {
-      newSet.add(season);
+    const basePath = import.meta.env.BASE_URL || '';
+    const [kasaneRes, threeRes, colorsRes] = await Promise.all([
+      fetch(`${basePath}data/kasane.json`),
+      fetch(`${basePath}data/kasane-three.json`),
+      fetch(`${basePath}data/traditional-colors.json`),
+    ]);
+    if (!kasaneRes.ok) throw new Error('Failed to load kasane data');
+    if (!colorsRes.ok) throw new Error('Failed to load traditional colors data');
+    const data: KasaneData = await kasaneRes.json();
+    const colorsData: TraditionalColorData = await colorsRes.json();
+    traditionalColors = colorsData.colors;
+    // 異説が同一カララントに帰着する場合は先頭以外を畳む（dyeId 同値で dedup）
+    const dyeOf = new Map(colorsData.colors.map((c) => [c.id, c.dyeId]));
+    const dedupByDye = (k: KasaneIrome): KasaneIrome => {
+      const seen = new Set<string>();
+      const variants = k.variants.filter((v) => {
+        const key = `${dyeOf.get(v.omoteColor)}|${dyeOf.get(v.nakaColor ?? '')}|${dyeOf.get(v.uraColor)}`;
+        if (seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      });
+      return { ...k, variants };
+    };
+    kasaneData = data.kasane.filter((k) => !k.hidden).map(dedupByDye);
+    // 3色重ねは別ファイル。読み込み失敗は致命ではないので無視
+    if (threeRes.ok) {
+      const threeData: KasaneData = await threeRes.json();
+      kasaneThree = threeData.kasane.filter((k) => !k.hidden).map(dedupByDye);
     }
-    expandedSeasons = newSet;
+  } catch (e) {
+    error = e instanceof Error ? e.message : 'Unknown error';
+  } finally {
+    isLoading = false;
   }
-
-  onMount(async () => {
-    try {
-      await loadDyes();
-
-      const basePath = import.meta.env.BASE_URL || '';
-      const [kasaneRes, threeRes, colorsRes] = await Promise.all([
-        fetch(`${basePath}data/kasane.json`),
-        fetch(`${basePath}data/kasane-three.json`),
-        fetch(`${basePath}data/traditional-colors.json`),
-      ]);
-      if (!kasaneRes.ok) throw new Error('Failed to load kasane data');
-      if (!colorsRes.ok) throw new Error('Failed to load traditional colors data');
-      const data: KasaneData = await kasaneRes.json();
-      const colorsData: TraditionalColorData = await colorsRes.json();
-      traditionalColors = colorsData.colors;
-      // 異説が同一カララントに帰着する場合は先頭以外を畳む（dyeId 同値で dedup）
-      const dyeOf = new Map(colorsData.colors.map((c) => [c.id, c.dyeId]));
-      const dedupByDye = (k: KasaneIrome): KasaneIrome => {
-        const seen = new Set<string>();
-        const variants = k.variants.filter((v) => {
-          const key = `${dyeOf.get(v.omoteColor)}|${dyeOf.get(v.nakaColor ?? '')}|${dyeOf.get(v.uraColor)}`;
-          if (seen.has(key)) return false;
-          seen.add(key);
-          return true;
-        });
-        return { ...k, variants };
-      };
-      kasaneData = data.kasane.filter((k) => !k.hidden).map(dedupByDye);
-      // 3色重ねは別ファイル。読み込み失敗は致命ではないので無視
-      if (threeRes.ok) {
-        const threeData: KasaneData = await threeRes.json();
-        kasaneThree = threeData.kasane.filter((k) => !k.hidden).map(dedupByDye);
-      }
-    } catch (e) {
-      error = e instanceof Error ? e.message : 'Unknown error';
-    } finally {
-      isLoading = false;
-    }
-  });
+});
 </script>
 
 <svelte:head>

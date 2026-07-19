@@ -1,30 +1,30 @@
 <script lang="ts">
-  import { ChevronDown } from '@lucide/svelte';
-  import * as Collapsible from '$lib/components/ui/collapsible';
-  import { t } from '$lib/translations';
-  import type { DyeProps, KasaneIrome, KasaneSeason, TraditionalColor } from '$lib/types';
-  import KasaneCard from './KasaneCard.svelte';
+import { ChevronDown } from '@lucide/svelte';
+import * as Collapsible from '$lib/components/ui/collapsible';
+import { t } from '$lib/translations';
+import type { DyeProps, KasaneIrome, KasaneSeason, TraditionalColor } from '$lib/types';
+import KasaneCard from './KasaneCard.svelte';
 
-  interface Props {
-    season: KasaneSeason;
-    items: KasaneIrome[];
-    dyes: DyeProps[];
-    colorById: Map<string, TraditionalColor>;
-    isExpanded: boolean;
-    onToggle: () => void;
-  }
+interface Props {
+  season: KasaneSeason;
+  items: KasaneIrome[];
+  dyes: DyeProps[];
+  colorById: Map<string, TraditionalColor>;
+  isExpanded: boolean;
+  onToggle: () => void;
+}
 
-  const { season, items, dyes, colorById, isExpanded, onToggle }: Props = $props();
+const { season, items, dyes, colorById, isExpanded, onToggle }: Props = $props();
 
-  function findDyeById(id: string): DyeProps | null {
-    return dyes.find((d) => d.id === id) ?? null;
-  }
+function findDyeById(id: string): DyeProps | null {
+  return dyes.find((d) => d.id === id) ?? null;
+}
 
-  function dyeForColor(colorId: string): DyeProps | null {
-    const color = colorById.get(colorId);
-    if (!color) return null;
-    return findDyeById(color.dyeId);
-  }
+function dyeForColor(colorId: string): DyeProps | null {
+  const color = colorById.get(colorId);
+  if (!color) return null;
+  return findDyeById(color.dyeId);
+}
 </script>
 
 <Collapsible.Root open={isExpanded} onOpenChange={onToggle} class="mb-2">
