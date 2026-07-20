@@ -22,7 +22,7 @@ const { children } = $props();
   <div class="min-h-dvh bg-background">
     <!-- かさね色目アップデート告知バナー -->
     <div class="bg-notice border-b border-notice">
-      <div class="mx-auto max-w-4xl px-4 py-2">
+      <div class="mx-auto max-w-4xl px-4 py-1">
         <a
           href={resolve('/kasane')}
           class="flex items-center justify-center gap-2 text-sm text-notice-foreground hover:underline"
@@ -34,15 +34,15 @@ const { children } = $props();
     </div>
 
     <!-- ヘッダー -->
-    <header class="bg-primary text-primary-foreground mb-8">
-      <div class="container mx-auto flex items-center h-14 px-4">
+    <header class="bg-background border-b border-border">
+      <div class="container mx-auto flex items-center h-12 px-4">
         <div class="flex-1">
-          <h1 class="text-xl font-bold">
+          <h1 class="text-base font-semibold">
             <a
               href={resolve('/')}
               class="flex items-center gap-2 hover:opacity-80 transition-opacity"
             >
-              <SwatchBook class="size-6" />
+              <SwatchBook class="size-5" />
               {$t('common.app.name')}
             </a>
           </h1>
@@ -57,7 +57,7 @@ const { children } = $props();
       </div>
     </header>
 
-    <div class="container mx-auto px-4 pb-8">
+    <div class="container mx-auto px-4 pt-6 pb-8">
       <main>
         {@render children?.()}
       </main>

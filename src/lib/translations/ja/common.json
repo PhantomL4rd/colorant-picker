@@ -9,7 +9,6 @@
     "accent": "アクセント"
   },
   "action": {
-    "random": "ランダム",
     "share": "シェア",
     "restore": "復元",
     "addToFavorites": "お気に入りに追加",
@@ -29,8 +28,7 @@
   "state": {
     "loading": "カララントデータを読み込み中...",
     "empty": "データがありません",
-    "error": "エラーが発生しました",
-    "needMoreColors": "3色以上のカララントが必要です"
+    "error": "エラーが発生しました"
   },
   "filter": {
     "excludeMetallic": "メタリック系を除外"

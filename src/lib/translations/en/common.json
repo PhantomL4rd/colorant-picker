@@ -9,7 +9,6 @@
     "accent": "Accent"
   },
   "action": {
-    "random": "Random",
     "share": "Share",
     "restore": "Restore",
     "addToFavorites": "Add to Favorites",
@@ -29,8 +28,7 @@
   "state": {
     "loading": "Loading dye data...",
     "empty": "No data available",
-    "error": "An error occurred",
-    "needMoreColors": "Need at least 3 dyes"
+    "error": "An error occurred"
   },
   "filter": {
     "excludeMetallic": "Exclude metallic"

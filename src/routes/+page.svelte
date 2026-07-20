@@ -5,7 +5,6 @@ import { get } from 'svelte/store';
 import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
 import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
 import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
-import RandomPickButton from '$lib/components/RandomPickButton.svelte';
 import * as Collapsible from '$lib/components/ui/collapsible';
 import { dyeStore, loadDyes } from '$lib/stores/dyes';
 import {
@@ -15,12 +14,7 @@ import {
   toggleCategory,
   toggleExcludeMetallic,
 } from '$lib/stores/filter';
-import {
-  selectPatternAndPrimaryDye,
-  selectPrimaryDye,
-  selectionStore,
-  updatePattern,
-} from '$lib/stores/selection';
+import { selectPrimaryDye, selectionStore, updatePattern } from '$lib/stores/selection';
 import { t } from '$lib/translations';
 import type { DyeProps, HarmonyPattern } from '$lib/types';
 import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
@@ -102,14 +96,6 @@ function handleClearAll(): void {
   resetFilters();
 }
 
-function handleRandomPick(randomDyes: [DyeProps, DyeProps, DyeProps]): void {
-  const [primary] = randomDyes;
-  const randomPattern = HARMONY_PATTERNS[Math.floor(Math.random() * HARMONY_PATTERNS.length)];
-  // パターンと主色を1回の store 更新で確定し、undo に中間状態を残さない
-  selectPatternAndPrimaryDye(randomPattern, primary);
-  scrollToPaletteHero();
-}
-
 function handleExcludeMetallicChange(): void {
   toggleExcludeMetallic();
   if (selectedDye) {
@@ -173,10 +159,6 @@ function handleExcludeMetallicChange(): void {
             onToggleCategory={handleToggleCategory}
             onClearCategories={handleClearAll}
           />
-        </div>
-
-        <div class="p-4 rounded-2xl border border-border bg-card">
-          <RandomPickButton dyes={filteredDyesList} onRandomPick={handleRandomPick} />
         </div>
 
         <div class="p-4 rounded-2xl border border-border bg-card">

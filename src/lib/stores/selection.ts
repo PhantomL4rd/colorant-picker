@@ -75,29 +75,6 @@ export function updatePattern(pattern: HarmonyPattern): void {
   });
 }
 
-// 配色パターンと主色を1回の更新で同時に設定して提案を再生成する。
-// updatePattern → selectPrimaryDye と2回に分けると undo 履歴に
-// 中間状態が余分に記録されるため、ランダムピック等はこちらを使う。
-export function selectPatternAndPrimaryDye(pattern: HarmonyPattern, dye: DyeProps): void {
-  selectionStore.update((state) => {
-    const allDyes = get(dyeStore);
-    const excludeMetallic = get(filterStore).excludeMetallic;
-    const newSeed = Date.now();
-    const suggested =
-      allDyes.length > 0
-        ? generateSuggestedDyes(dye, pattern, allDyes, newSeed, excludeMetallic)
-        : null;
-
-    return {
-      ...state,
-      primaryDye: dye,
-      pattern,
-      harmonySeed: newSeed,
-      suggestedDyes: suggested,
-    };
-  });
-}
-
 // 選択をクリア
 export function clearSelection(): void {
   selectionStore.set({
