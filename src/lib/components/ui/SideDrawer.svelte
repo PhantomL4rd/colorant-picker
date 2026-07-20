@@ -1,13 +1,13 @@
 <script lang="ts">
 import {
   Heart,
+  Home,
   Info,
   Layers,
-  LayoutGrid,
   Menu,
   MessageCircle,
   Sparkles,
-  TrendingUp,
+  VenetianMask,
   X,
 } from '@lucide/svelte';
 import { resolve } from '$app/paths';
@@ -148,28 +148,28 @@ function handleBackdropClick() {
       {$t('common.nav.links')}
     </p>
 
-    <!-- ミラプリインサイト -->
+    <!-- ホーム -->
     <a
-      href="https://mirapri-insight.pl4rd.com/"
+      href="https://pl4rd.com/"
       target="_blank"
       rel="noopener noreferrer"
       onclick={close}
       class="flex items-center gap-3 rounded-md px-3 py-3 text-sm hover:bg-accent transition-colors"
     >
-      <TrendingUp class="size-5" />
-      {$t('common.externalLinks.mirapriInsight')}
+      <Home class="size-5" />
+      {$t('common.externalLinks.home')}
     </a>
 
-    <!-- 4seasons -->
+    <!-- プライバシーポリシー -->
     <a
-      href="https://4seasons.pl4rd.com/"
+      href="https://pl4rd.com/privacy"
       target="_blank"
       rel="noopener noreferrer"
       onclick={close}
       class="flex items-center gap-3 rounded-md px-3 py-3 text-sm hover:bg-accent transition-colors"
     >
-      <LayoutGrid class="size-5" />
-      {$t('common.externalLinks.fourSeasons')}
+      <VenetianMask class="size-5" />
+      {$t('common.externalLinks.privacy')}
     </a>
 
     <!-- 要望・感想 -->

@@ -54,6 +54,8 @@
     "placeholder": "Your feedback or feature request"
   },
   "externalLinks": {
+    "home": "Home",
+    "privacy": "Privacy Policy",
     "mirapriInsight": "Mirapri Insight",
     "fourSeasons": "4seasons"
   },
