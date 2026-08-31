@@ -1,16 +1,9 @@
 import { APP_BASE_URL } from '../../cloudflare/og/utils';
 import { generateShareHtml } from '../../cloudflare/og/views';
 
-const CRAWLER_PATTERNS =
-  /Twitterbot|facebookexternalhit|Discordbot|Slackbot|LinkedInBot|LINE|Iframely/i;
-
 export const onRequestGet: PagesFunction<Env> = ({ params, request }) => {
   const data = typeof params.data === 'string' ? params.data : '';
   const targetUrl = `${APP_BASE_URL}/?palette=${data}`;
-
-  if (!CRAWLER_PATTERNS.test(request.headers.get('user-agent') ?? '')) {
-    return Response.redirect(targetUrl, 302);
-  }
 
   const requestUrl = new URL(request.url);
   const ogImageUrl = `${requestUrl.origin}/og/${data}`;

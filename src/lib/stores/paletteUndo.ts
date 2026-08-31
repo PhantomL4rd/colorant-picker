@@ -16,7 +16,7 @@ type Snapshot = {
   pattern: HarmonyPattern;
 };
 
-let past: Snapshot[] = [];
+const past: Snapshot[] = [];
 let future: Snapshot[] = [];
 let current: Snapshot | null = null;
 // undo/redo による適用中は selectionStore の変化を新規記録しないためのフラグ
