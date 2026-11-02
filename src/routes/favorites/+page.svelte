@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Loader2 } from '@lucide/svelte';
 import { onMount } from 'svelte';
+import FavoritesList from '#lib/components/favorites/FavoritesList.svelte';
+import { loadDyes } from '#lib/stores/dyes.js';
+import { t } from '#lib/translations/index.js';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
-import FavoritesList from '$lib/components/favorites/FavoritesList.svelte';
-import { loadDyes } from '$lib/stores/dyes';
-import { t } from '$lib/translations';
 
 let isLoading = $state(true);
 

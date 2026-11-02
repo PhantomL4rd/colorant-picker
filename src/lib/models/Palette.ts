@@ -4,8 +4,8 @@ import type {
   HarmonyPattern,
   PaletteEntry,
   ShowcasePalette,
-} from '$lib/types';
-import { BASE_WEIGHTS, calculateDeltaE, SUPPRESSION_FACTOR } from '$lib/utils/color/colorRatio';
+} from '#lib/types/index.js';
+import { BASE_WEIGHTS, calculateDeltaE, SUPPRESSION_FACTOR } from '#lib/utils/color/colorRatio.js';
 
 /**
  * パレットクラス

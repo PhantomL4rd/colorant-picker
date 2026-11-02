@@ -3,11 +3,11 @@
  * パレットのお気に入り機能を提供（LocalStorage永続化）
  */
 
-import { Dye } from '$lib/models/Dye';
-import type { DyeProps, Favorite, HarmonyPattern, StoredFavorite } from '$lib/types';
-import { dyeToStorable } from '$lib/utils/storage/dyeSerializer';
-import { submitPalette } from '$lib/utils/api/paletteSubmit';
-import { createPersistentStore } from '$lib/utils/storage/persistentStore';
+import { Dye } from '#lib/models/Dye.js';
+import type { DyeProps, Favorite, HarmonyPattern, StoredFavorite } from '#lib/types/index.js';
+import { submitPalette } from '#lib/utils/api/paletteSubmit.js';
+import { dyeToStorable } from '#lib/utils/storage/dyeSerializer.js';
+import { createPersistentStore } from '#lib/utils/storage/persistentStore.js';
 import { emitRestorePalette } from './paletteEvents';
 
 // ===== 定数 =====

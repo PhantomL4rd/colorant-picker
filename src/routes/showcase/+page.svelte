@@ -1,19 +1,25 @@
 <script lang="ts">
 import { Loader2, RefreshCw, Sparkles } from '@lucide/svelte';
 import { onMount } from 'svelte';
+import PaletteCard from '#lib/components/palette/PaletteCard.svelte';
+import ShareModal from '#lib/components/share/ShareModal.svelte';
+import * as Alert from '#lib/components/ui/alert/index.js';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as Card from '#lib/components/ui/card/index.js';
+import { Palette } from '#lib/models/Palette.js';
+import { dyeStore, loadDyes } from '#lib/stores/dyes.js';
+import { favoritesStore, saveFavorite } from '#lib/stores/favorites.js';
+import { emitRestorePalette } from '#lib/stores/paletteEvents.js';
+import { t } from '#lib/translations/index.js';
+import type {
+  DyeProps,
+  Favorite,
+  HarmonyPattern,
+  ShowcaseData,
+  ShowcasePalette,
+} from '#lib/types/index.js';
 import { goto } from '$app/navigation';
 import { resolve } from '$app/paths';
-import PaletteCard from '$lib/components/palette/PaletteCard.svelte';
-import ShareModal from '$lib/components/share/ShareModal.svelte';
-import { Palette } from '$lib/models/Palette';
-import { dyeStore, loadDyes } from '$lib/stores/dyes';
-import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
-import { emitRestorePalette } from '$lib/stores/paletteEvents';
-import { t } from '$lib/translations';
-import type { DyeProps, Favorite, HarmonyPattern, ShowcaseData, ShowcasePalette } from '$lib/types';
-import * as Card from '$lib/components/ui/card';
-import * as Alert from '$lib/components/ui/alert';
-import { Button } from '$lib/components/ui/button';
 
 type PreviewColor = { hex: string; name: string };
 type PreviewColors = [PreviewColor, PreviewColor, PreviewColor];

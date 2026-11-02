@@ -3,8 +3,8 @@
  * DyePropsをStoredDye形式に変換する共通ロジック
  */
 
-import { Dye } from '$lib/models/Dye';
-import type { DyeProps, StoredDye } from '$lib/types';
+import { Dye } from '#lib/models/Dye.js';
+import type { DyeProps, StoredDye } from '#lib/types/index.js';
 
 /**
  * DyePropsをStoredDye形式に変換

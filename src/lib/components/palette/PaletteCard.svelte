@@ -1,16 +1,16 @@
 <script lang="ts">
 import { Calendar, Heart, Loader2, Trash2, X } from '@lucide/svelte';
 import { onDestroy } from 'svelte';
-import { FEEDBACK_DURATION } from '$lib/constants/timing';
-import { t } from '$lib/translations';
-import type { Favorite, HarmonyPattern } from '$lib/types';
-import * as Card from '$lib/components/ui/card';
-import * as Alert from '$lib/components/ui/alert';
-import { Button } from '$lib/components/ui/button';
-import { Badge } from '$lib/components/ui/badge';
+import * as Alert from '#lib/components/ui/alert/index.js';
+import { Badge } from '#lib/components/ui/badge/index.js';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as Card from '#lib/components/ui/card/index.js';
+import { FEEDBACK_DURATION } from '#lib/constants/timing.js';
+import { t } from '#lib/translations/index.js';
+import type { Favorite, HarmonyPattern } from '#lib/types/index.js';
+import ShareButton from '../share/ShareButton.svelte';
 import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 import PaletteColorPreview from './PaletteColorPreview.svelte';
-import ShareButton from '../share/ShareButton.svelte';
 
 type PreviewColor = { hex: string; name: string };
 

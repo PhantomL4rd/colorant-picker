@@ -1,6 +1,6 @@
 <script lang="ts">
-import type { DyeSource } from '$lib/types';
-import { t } from '$lib/translations';
+import { t } from '#lib/translations/index.js';
+import type { DyeSource } from '#lib/types/index.js';
 
 interface Props {
   source: DyeSource | undefined;

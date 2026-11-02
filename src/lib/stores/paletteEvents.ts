@@ -3,7 +3,7 @@
  * ストア間の疎結合を実現するためのイベントシステム
  */
 
-import type { DyeProps, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '#lib/types/index.js';
 
 export type PaletteEventType = 'restore-palette';
 

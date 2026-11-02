@@ -1,8 +1,8 @@
 <script lang="ts">
 import { onDestroy } from 'svelte';
-import type { DyeProps } from '$lib/types';
-import { t } from '$lib/translations';
-import * as Card from '$lib/components/ui/card';
+import * as Card from '#lib/components/ui/card/index.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps } from '#lib/types/index.js';
 
 interface Props {
   dye: DyeProps;

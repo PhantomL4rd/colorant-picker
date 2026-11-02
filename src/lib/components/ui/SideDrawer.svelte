@@ -10,17 +10,17 @@ import {
   VenetianMask,
   X,
 } from '@lucide/svelte';
+import { t } from '#lib/translations/index.js';
 import { resolve } from '$app/paths';
 import { page } from '$app/state';
-import { t } from '$lib/translations';
 
 let isOpen = $state(false);
 
 const currentPath = $derived(page.url.pathname);
-const showcasePath = resolve('/showcase');
-const favoritesPath = resolve('/favorites');
-const kasanePath = resolve('/kasane');
-const aboutPath = resolve('/about');
+const showcasePath = resolve('showcase');
+const favoritesPath = resolve('favorites');
+const kasanePath = resolve('kasane');
+const aboutPath = resolve('about');
 
 const isShowcase = $derived(currentPath === showcasePath);
 const isFavorites = $derived(
@@ -48,7 +48,7 @@ function handleBackdropClick() {
 }
 </script>
 
-<svelte:window onkeydown={handleKeydown} />
+<svelte:window onkeydown={handleKeydown}></svelte:window>
 
 <!-- Trigger Button -->
 <button

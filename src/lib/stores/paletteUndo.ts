@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '#lib/types/index.js';
 import { selectionStore } from './selection';
 
 // セッション中のみ保持する undo/redo（リロードでリセット）。

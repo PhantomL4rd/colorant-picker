@@ -1,21 +1,21 @@
 <script lang="ts">
 import { Ban, ChevronDown, Redo2, Shuffle, Sparkles, Undo2 } from '@lucide/svelte';
-import { PATTERN_ORDER } from '$lib/constants/patterns';
-import { Palette } from '$lib/models/Palette';
-import { redo, undo, undoState } from '$lib/stores/paletteUndo';
+import AddToFavoritesButton from '#lib/components/favorites/AddToFavoritesButton.svelte';
+import ShareButton from '#lib/components/share/ShareButton.svelte';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
+import { PATTERN_ORDER } from '#lib/constants/patterns.js';
+import { Palette } from '#lib/models/Palette.js';
+import { redo, undo, undoState } from '#lib/stores/paletteUndo.js';
 import {
-  selectPrimaryDye,
   selectionStore,
+  selectPrimaryDye,
   shufflePalette,
   updatePattern,
-} from '$lib/stores/selection';
-import { t } from '$lib/translations';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { Button } from '$lib/components/ui/button';
-import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
-import AddToFavoritesButton from '$lib/components/favorites/AddToFavoritesButton.svelte';
-import ShareButton from '$lib/components/share/ShareButton.svelte';
-import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
+} from '#lib/stores/selection.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps, HarmonyPattern } from '#lib/types/index.js';
+import type { LadderAxis } from '#lib/utils/color/axisNeighbors.js';
 import AxisExplorer from './AxisExplorer.svelte';
 import ColorSlot from './ColorSlot.svelte';
 

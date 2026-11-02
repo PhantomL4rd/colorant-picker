@@ -1,7 +1,7 @@
 <script lang="ts">
-import type { DyeCategory } from '$lib/types';
-import { t } from '$lib/translations';
-import { Button } from '$lib/components/ui/button';
+import { Button } from '#lib/components/ui/button/index.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeCategory } from '#lib/types/index.js';
 
 interface Props {
   selectedCategory: DyeCategory | null;

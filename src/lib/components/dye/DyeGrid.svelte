@@ -1,8 +1,8 @@
 <script lang="ts">
 import { ChevronDown } from '@lucide/svelte';
-import { t } from '$lib/translations';
-import type { DyeProps } from '$lib/types';
-import { Button } from '$lib/components/ui/button';
+import { Button } from '#lib/components/ui/button/index.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps } from '#lib/types/index.js';
 import DyeCard from './DyeCard.svelte';
 
 interface Props {

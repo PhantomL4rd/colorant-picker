@@ -1,13 +1,13 @@
 <script lang="ts">
 import { Info } from '@lucide/svelte';
-import { Palette } from '$lib/models/Palette';
-import { selectPrimaryDye } from '$lib/stores/selection';
-import { t } from '$lib/translations';
-import type { DyeProps, HarmonyPattern, ColorRole } from '$lib/types';
-import * as Card from '$lib/components/ui/card';
-import { Button } from '$lib/components/ui/button';
-import * as Tooltip from '$lib/components/ui/tooltip';
-import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
+import DyeSourceBadge from '#lib/components/dye/DyeSourceBadge.svelte';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as Card from '#lib/components/ui/card/index.js';
+import * as Tooltip from '#lib/components/ui/tooltip/index.js';
+import { Palette } from '#lib/models/Palette.js';
+import { selectPrimaryDye } from '#lib/stores/selection.js';
+import { t } from '#lib/translations/index.js';
+import type { ColorRole, DyeProps, HarmonyPattern } from '#lib/types/index.js';
 
 interface Props {
   selectedDye: DyeProps | null;

@@ -1,14 +1,14 @@
 <script lang="ts">
 import { Check, Copy, Loader2 } from '@lucide/svelte';
-import { Palette } from '$lib/models/Palette';
-import { FEEDBACK_DURATION } from '$lib/constants/timing';
-import { t } from '$lib/translations';
-import type { Favorite } from '$lib/types';
-import { copyToClipboard, generateShareUrl } from '$lib/utils/shareUtils';
-import * as Dialog from '$lib/components/ui/dialog';
-import { Button } from '$lib/components/ui/button';
-import { Label } from '$lib/components/ui/label';
-import { Textarea } from '$lib/components/ui/textarea';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as Dialog from '#lib/components/ui/dialog/index.js';
+import { Label } from '#lib/components/ui/label/index.js';
+import { Textarea } from '#lib/components/ui/textarea/index.js';
+import { FEEDBACK_DURATION } from '#lib/constants/timing.js';
+import { Palette } from '#lib/models/Palette.js';
+import { t } from '#lib/translations/index.js';
+import type { Favorite } from '#lib/types/index.js';
+import { copyToClipboard, generateShareUrl } from '#lib/utils/shareUtils.js';
 
 interface Props {
   isOpen: boolean;

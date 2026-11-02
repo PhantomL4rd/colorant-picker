@@ -1,11 +1,11 @@
 <script lang="ts">
 import { Heart, Shuffle } from '@lucide/svelte';
-import { Palette } from '$lib/models/Palette';
-import { deleteFavorite, favoritesStore, restoreFavorite } from '$lib/stores/favorites';
-import { t } from '$lib/translations';
-import type { Favorite } from '$lib/types';
-import * as Card from '$lib/components/ui/card';
-import { Button } from '$lib/components/ui/button';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as Card from '#lib/components/ui/card/index.js';
+import { Palette } from '#lib/models/Palette.js';
+import { deleteFavorite, favoritesStore, restoreFavorite } from '#lib/stores/favorites.js';
+import { t } from '#lib/translations/index.js';
+import type { Favorite } from '#lib/types/index.js';
 import PaletteCard from '../palette/PaletteCard.svelte';
 import ShareModal from '../share/ShareModal.svelte';
 

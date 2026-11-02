@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Layers } from '@lucide/svelte';
-import * as Card from '$lib/components/ui/card';
-import * as Popover from '$lib/components/ui/popover';
-import { t } from '$lib/translations';
-import type { DyeProps, KasaneVariant, TraditionalColor } from '$lib/types';
+import * as Card from '#lib/components/ui/card/index.js';
+import * as Popover from '#lib/components/ui/popover/index.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps, KasaneVariant, TraditionalColor } from '#lib/types/index.js';
 
 interface Props {
   name: string;

@@ -1,15 +1,15 @@
 <script lang="ts">
 import { Globe } from '@lucide/svelte';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as DropdownMenu from '#lib/components/ui/dropdown-menu/index.js';
 import {
-  locale,
-  setLocale,
-  SUPPORTED_LOCALES,
   LOCALE_NAMES,
-  t,
   type Locale,
-} from '$lib/translations';
-import { Button } from '$lib/components/ui/button';
-import * as DropdownMenu from '$lib/components/ui/dropdown-menu';
+  locale,
+  SUPPORTED_LOCALES,
+  setLocale,
+  t,
+} from '#lib/translations/index.js';
 
 const currentLocale = $derived($locale as Locale);
 

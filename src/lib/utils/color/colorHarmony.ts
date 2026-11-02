@@ -6,9 +6,16 @@
  */
 
 import type { PlainColorObject } from 'colorjs.io/fn';
-import { ColorSpace, Helmlab, deltaEHelmlab, to as convert } from 'colorjs.io/fn';
-import type { DyeCandidate, DyeProps, HarmonyPattern, Oklab, Oklch, Rgb } from '$lib/types';
-import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '$lib/constants/color';
+import { ColorSpace, to as convert, deltaEHelmlab, Helmlab } from 'colorjs.io/fn';
+import { CLASH_CONFIG, HARMONY_ANGLES, HUE_CIRCLE_MAX } from '#lib/constants/color.js';
+import type {
+  DyeCandidate,
+  DyeProps,
+  HarmonyPattern,
+  Oklab,
+  Oklch,
+  Rgb,
+} from '#lib/types/index.js';
 import { deltaE2000, toOklab, toOklch, toRgb } from './colorConversion';
 import { selectMonochromaticDyes } from './selector/monochromatic';
 

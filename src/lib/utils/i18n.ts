@@ -3,8 +3,8 @@
  * Lodestone URL生成
  */
 
-import type { Locale } from '$lib/types';
-import { LODESTONE_DOMAINS } from '$lib/types';
+import type { Locale } from '#lib/types/index.js';
+import { LODESTONE_DOMAINS } from '#lib/types/index.js';
 
 /**
  * Lodestone URLを生成

@@ -1,14 +1,14 @@
 <script lang="ts">
 import '../app.css';
 import { Sparkles, SwatchBook } from '@lucide/svelte';
-import { resolve } from '$app/paths';
 import { ModeWatcher } from 'mode-watcher';
-import * as Tooltip from '$lib/components/ui/tooltip';
-import LanguageSwitcher from '$lib/components/ui/LanguageSwitcher.svelte';
-import SideDrawer from '$lib/components/ui/SideDrawer.svelte';
+import LanguageSwitcher from '#lib/components/ui/LanguageSwitcher.svelte';
+import SideDrawer from '#lib/components/ui/SideDrawer.svelte';
+import * as Tooltip from '#lib/components/ui/tooltip/index.js';
+import { resolve } from '$app/paths';
 // undo/redo（selectionStore 監視）を全ページで起動するための副作用 import
-import '$lib/stores/paletteUndo';
-import { t } from '$lib/translations';
+import '#lib/stores/paletteUndo.js';
+import { t } from '#lib/translations/index.js';
 
 const { children } = $props();
 </script>
@@ -24,7 +24,7 @@ const { children } = $props();
     <div class="bg-notice border-b border-notice">
       <div class="mx-auto max-w-4xl px-4 py-1">
         <a
-          href={resolve('/kasane')}
+          href={resolve('kasane')}
           class="flex items-center justify-center gap-2 text-sm text-notice-foreground hover:underline"
         >
           <Sparkles class="size-4 shrink-0" />

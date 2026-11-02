@@ -1,9 +1,9 @@
 <script lang="ts">
 import { Check, X } from '@lucide/svelte';
 import { Dialog as DialogPrimitive } from 'bits-ui';
-import { t } from '$lib/translations';
-import type { DyeProps } from '$lib/types';
-import { generateLadder, type LadderAxis } from '$lib/utils/color/axisNeighbors';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps } from '#lib/types/index.js';
+import { generateLadder, type LadderAxis } from '#lib/utils/color/axisNeighbors.js';
 
 interface Props {
   baseDye: DyeProps;

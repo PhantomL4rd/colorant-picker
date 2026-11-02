@@ -7,16 +7,16 @@
 
 import {
   ColorSpace,
+  to as convert,
+  deltaE,
   OKLab as OKLabSpace,
   OKLCH as OKLCHSpace,
-  sRGB,
-  deltaE,
   serialize,
-  to as convert,
+  sRGB,
   toGamut,
 } from 'colorjs.io/fn';
-import type { Oklab, Oklch, Rgb } from '$lib/types';
-import { HUE_CIRCLE_MAX, HUE_DIFFERENCE_MAX } from '$lib/constants/color';
+import { HUE_CIRCLE_MAX, HUE_DIFFERENCE_MAX } from '#lib/constants/color.js';
+import type { Oklab, Oklch, Rgb } from '#lib/types/index.js';
 
 // 使用する色空間を登録（HSV は廃止、内部は Oklab/Oklch + sRGB のみ）
 ColorSpace.register(sRGB);

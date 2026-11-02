@@ -1,7 +1,7 @@
 // パレット投稿サービス
 // お気に入り追加時にサーバーへ投稿
 
-import type { DyeProps, HarmonyPattern } from '$lib/types';
+import type { DyeProps, HarmonyPattern } from '#lib/types/index.js';
 import { getOrCreateClientId } from './clientId';
 
 interface SubmitPaletteInput {

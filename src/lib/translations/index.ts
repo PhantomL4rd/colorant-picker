@@ -5,7 +5,7 @@
 
 import type { Config } from 'sveltekit-i18n';
 import i18n from 'sveltekit-i18n';
-import { browser } from '$app/environment';
+import { browser } from '$app/env';
 
 // サポート言語
 export const SUPPORTED_LOCALES = ['en', 'ja'] as const;
@@ -31,6 +31,7 @@ export function detectBrowserLocale(): Locale {
   if (typeof navigator === 'undefined') return DEFAULT_LOCALE;
 
   const browserLang = navigator.language.split('-')[0];
+
   return SUPPORTED_LOCALES.includes(browserLang as Locale)
     ? (browserLang as Locale)
     : DEFAULT_LOCALE;
@@ -140,7 +141,7 @@ const config: Config = {
 const { t, locale, locales, loading, loadTranslations: i18nLoadTranslations } = new i18n(config);
 
 // ストアとユーティリティをエクスポート
-export { t, locale, locales, loading };
+export { loading, locale, locales, t };
 
 /**
  * 翻訳をロード

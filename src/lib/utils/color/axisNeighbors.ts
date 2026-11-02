@@ -14,9 +14,9 @@
  * - hue      : ベース色相からの最小角度差の昇順（近い色味 → 遠い色味）
  */
 
-import { HUE_CIRCLE_MAX } from '$lib/constants/color';
-import type { DyeProps, Oklch, Rgb } from '$lib/types';
-import { GRAY_CHROMA_THRESHOLD, deltaE2000, toOklab, toRgb } from './colorConversion';
+import { HUE_CIRCLE_MAX } from '#lib/constants/color.js';
+import type { DyeProps, Oklch, Rgb } from '#lib/types/index.js';
+import { deltaE2000, GRAY_CHROMA_THRESHOLD, toOklab, toRgb } from './colorConversion';
 
 export type LadderAxis = 'lightness' | 'chroma' | 'hue';
 

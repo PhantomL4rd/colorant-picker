@@ -1,8 +1,8 @@
 <script lang="ts">
 import { Share } from '@lucide/svelte';
-import { selectionStore } from '$lib/stores/selection';
-import type { Favorite } from '$lib/types';
-import { Button } from '$lib/components/ui/button';
+import { Button } from '#lib/components/ui/button/index.js';
+import { selectionStore } from '#lib/stores/selection.js';
+import type { Favorite } from '#lib/types/index.js';
 import ShareModal from './ShareModal.svelte';
 
 interface Props {

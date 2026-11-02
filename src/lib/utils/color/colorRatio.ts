@@ -4,7 +4,7 @@
  * Paletteクラスから使用される基本的なユーティリティ。
  */
 
-import type { Oklab, Rgb } from '$lib/types';
+import type { Oklab, Rgb } from '#lib/types/index.js';
 import { deltaEOklab, toOklab } from './colorConversion';
 
 // ===== 定数 =====

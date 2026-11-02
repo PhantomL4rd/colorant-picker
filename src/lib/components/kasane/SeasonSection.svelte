@@ -1,8 +1,8 @@
 <script lang="ts">
 import { ChevronDown } from '@lucide/svelte';
-import * as Collapsible from '$lib/components/ui/collapsible';
-import { t } from '$lib/translations';
-import type { DyeProps, KasaneIrome, KasaneSeason, TraditionalColor } from '$lib/types';
+import * as Collapsible from '#lib/components/ui/collapsible/index.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps, KasaneIrome, KasaneSeason, TraditionalColor } from '#lib/types/index.js';
 import KasaneCard from './KasaneCard.svelte';
 
 interface Props {

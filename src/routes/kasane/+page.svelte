@@ -1,19 +1,19 @@
 <script lang="ts">
 import { ChevronDown, ExternalLink, Layers, Loader2 } from '@lucide/svelte';
 import { onMount } from 'svelte';
-import KasaneCard3 from '$lib/components/kasane/KasaneCard3.svelte';
-import SeasonSection from '$lib/components/kasane/SeasonSection.svelte';
-import * as Alert from '$lib/components/ui/alert';
-import * as Collapsible from '$lib/components/ui/collapsible';
-import { dyeStore, loadDyes } from '$lib/stores/dyes';
-import { t } from '$lib/translations';
+import KasaneCard3 from '#lib/components/kasane/KasaneCard3.svelte';
+import SeasonSection from '#lib/components/kasane/SeasonSection.svelte';
+import * as Alert from '#lib/components/ui/alert/index.js';
+import * as Collapsible from '#lib/components/ui/collapsible/index.js';
+import { dyeStore, loadDyes } from '#lib/stores/dyes.js';
+import { t } from '#lib/translations/index.js';
 import type {
   KasaneData,
   KasaneIrome,
   KasaneSeason,
   TraditionalColor,
   TraditionalColorData,
-} from '$lib/types';
+} from '#lib/types/index.js';
 
 const SEASONS: KasaneSeason[] = ['spring', 'summer', 'autumn', 'winter', 'misc'];
 

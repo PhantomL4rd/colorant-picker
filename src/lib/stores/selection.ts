@@ -1,8 +1,8 @@
 import { get, writable } from 'svelte/store';
-import type { Dye } from '$lib/models/Dye';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { PATTERN_ORDER } from '$lib/constants/patterns';
-import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
+import { PATTERN_ORDER } from '#lib/constants/patterns.js';
+import type { Dye } from '#lib/models/Dye.js';
+import type { DyeProps, HarmonyPattern } from '#lib/types/index.js';
+import { generateSuggestedDyes } from '#lib/utils/color/colorHarmony.js';
 import { dyeStore } from './dyes';
 import { filterStore } from './filter';
 import { paletteEventBus } from './paletteEvents';

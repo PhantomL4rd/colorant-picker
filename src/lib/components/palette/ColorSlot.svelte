@@ -1,10 +1,10 @@
 <script lang="ts">
 import { CircleHelp, Droplet, Sun, SwatchBook } from '@lucide/svelte';
-import DyeSourceBadge from '$lib/components/dye/DyeSourceBadge.svelte';
-import * as Popover from '$lib/components/ui/popover';
-import { t } from '$lib/translations';
-import type { ColorRole, DyeProps } from '$lib/types';
-import type { LadderAxis } from '$lib/utils/color/axisNeighbors';
+import DyeSourceBadge from '#lib/components/dye/DyeSourceBadge.svelte';
+import * as Popover from '#lib/components/ui/popover/index.js';
+import { t } from '#lib/translations/index.js';
+import type { ColorRole, DyeProps } from '#lib/types/index.js';
+import type { LadderAxis } from '#lib/utils/color/axisNeighbors.js';
 
 interface Props {
   dye: DyeProps;

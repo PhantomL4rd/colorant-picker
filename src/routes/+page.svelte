@@ -2,22 +2,22 @@
 import { ChevronDown, Loader2, PaintBucket } from '@lucide/svelte';
 import { onMount } from 'svelte';
 import { get } from 'svelte/store';
-import CategoryFilter from '$lib/components/dye/CategoryFilter.svelte';
-import DyeGrid from '$lib/components/dye/DyeGrid.svelte';
-import PaletteHero from '$lib/components/palette/PaletteHero.svelte';
-import * as Collapsible from '$lib/components/ui/collapsible';
-import { dyeStore, loadDyes } from '$lib/stores/dyes';
+import CategoryFilter from '#lib/components/dye/CategoryFilter.svelte';
+import DyeGrid from '#lib/components/dye/DyeGrid.svelte';
+import PaletteHero from '#lib/components/palette/PaletteHero.svelte';
+import * as Collapsible from '#lib/components/ui/collapsible/index.js';
+import { dyeStore, loadDyes } from '#lib/stores/dyes.js';
 import {
   filteredDyes,
   filterStore,
   resetFilters,
   toggleCategory,
   toggleExcludeMetallic,
-} from '$lib/stores/filter';
-import { selectPrimaryDye, selectionStore, updatePattern } from '$lib/stores/selection';
-import { t } from '$lib/translations';
-import type { DyeProps, HarmonyPattern } from '$lib/types';
-import { restorePaletteFromUrl } from '$lib/utils/shareUtils';
+} from '#lib/stores/filter.js';
+import { selectionStore, selectPrimaryDye, updatePattern } from '#lib/stores/selection.js';
+import { t } from '#lib/translations/index.js';
+import type { DyeProps, HarmonyPattern } from '#lib/types/index.js';
+import { restorePaletteFromUrl } from '#lib/utils/shareUtils.js';
 
 let isLoading = $state(true);
 let dyesPanelOpen = $state(false);

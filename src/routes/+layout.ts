@@ -1,5 +1,5 @@
-import { browser } from '$app/environment';
-import { loadTranslations, getInitialLocale } from '$lib/translations';
+import { getInitialLocale, loadTranslations } from '#lib/translations/index.js';
+import { browser } from '$app/env';
 
 export const prerender = true;
 

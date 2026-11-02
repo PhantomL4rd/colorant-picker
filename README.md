@@ -56,3 +56,11 @@ Or reach me on [X](https://x.com/pl4rd) or [Lodestone](https://jp.finalfantasyxi
 ## License
 
 MIT
+
+## Dependency security
+
+SvelteKit 3 requires Node.js 22.17+, TypeScript 6, Vite 8 and adapter-static 4. Keep the static SPA fallback when updating the build configuration. Verify dependency updates with `bun run check`, `bun run check:cloudflare` and `bun run build`.
+
+Dependency audits also cover transitive packages. Apply available compatible security patches; record unpatched packages and changes requiring a separate major migration rather than hiding audit results.
+
+The audit still reports deepmerge, for which no fixed release is published. The SvelteKit alerts are addressed by the version update.

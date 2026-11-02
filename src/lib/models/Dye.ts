@@ -9,8 +9,8 @@ import type {
   RGBColor255,
   Rgb,
   StoredDye,
-} from '$lib/types';
-import { formatHex, toOklab, toOklch } from '$lib/utils/color/colorConversion';
+} from '#lib/types/index.js';
+import { formatHex, toOklab, toOklch } from '#lib/utils/color/colorConversion.js';
 
 /**
  * 染料クラス

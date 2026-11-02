@@ -4,8 +4,8 @@
  * colorjs.io の {space, coords} 形式の色オブジェクトを直接使用。
  */
 
-import type { DyeProps, Oklch } from '$lib/types';
-import { EPSILON, MONOCHROMATIC_CONFIG } from '$lib/constants/color';
+import { EPSILON, MONOCHROMATIC_CONFIG } from '#lib/constants/color.js';
+import type { DyeProps, Oklch } from '#lib/types/index.js';
 import { GRAY_CHROMA_THRESHOLD, hueDiff } from '../colorConversion';
 
 type Candidate = {

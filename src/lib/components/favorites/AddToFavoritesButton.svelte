@@ -1,12 +1,12 @@
 <script lang="ts">
 import { Heart, Loader2 } from '@lucide/svelte';
-import { Palette } from '$lib/models/Palette';
-import { FEEDBACK_DURATION, TOAST_TIMING } from '$lib/constants/timing';
-import { favoritesStore, saveFavorite } from '$lib/stores/favorites';
-import { selectionStore } from '$lib/stores/selection';
-import { t } from '$lib/translations';
-import { Button } from '$lib/components/ui/button';
-import * as Tooltip from '$lib/components/ui/tooltip';
+import { Button } from '#lib/components/ui/button/index.js';
+import * as Tooltip from '#lib/components/ui/tooltip/index.js';
+import { FEEDBACK_DURATION, TOAST_TIMING } from '#lib/constants/timing.js';
+import { Palette } from '#lib/models/Palette.js';
+import { favoritesStore, saveFavorite } from '#lib/stores/favorites.js';
+import { selectionStore } from '#lib/stores/selection.js';
+import { t } from '#lib/translations/index.js';
 import HeartBurst, { type HeartBurstApi } from '../ui/HeartBurst.svelte';
 
 interface Props {

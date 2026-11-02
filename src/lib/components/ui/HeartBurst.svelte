@@ -6,7 +6,7 @@ export type HeartBurstApi = {
 
 <script lang="ts">
   import { onDestroy } from 'svelte';
-  import { HEART_BURST } from '$lib/constants/timing';
+  import { HEART_BURST } from '#lib/constants/timing.js';
 
   type BurstHeart = { id: number; x: number; y: number };
   let burstHearts = $state<BurstHeart[]>([]);

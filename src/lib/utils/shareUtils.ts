@@ -5,12 +5,12 @@
  */
 
 import LZString from 'lz-string';
-import { Palette } from '$lib/models/Palette';
-import { emitRestorePalette } from '$lib/stores/paletteEvents';
-import type { DyeProps, Favorite, HarmonyPattern } from '$lib/types';
-import { PATTERN_ORDER } from '$lib/constants/patterns';
-import { generateSuggestedDyes } from '$lib/utils/color/colorHarmony';
-import { ID_LIMITS, SHARE_LIMITS } from '$lib/constants/validation';
+import { PATTERN_ORDER } from '#lib/constants/patterns.js';
+import { ID_LIMITS, SHARE_LIMITS } from '#lib/constants/validation.js';
+import { Palette } from '#lib/models/Palette.js';
+import { emitRestorePalette } from '#lib/stores/paletteEvents.js';
+import type { DyeProps, Favorite, HarmonyPattern } from '#lib/types/index.js';
+import { generateSuggestedDyes } from '#lib/utils/color/colorHarmony.js';
 
 const BASE_URL_FOR_SHARE = 'https://colorant-picker.pl4rd.com/share';
 
