@@ -25,23 +25,11 @@ kasane.json                  # かさね色目（梅・桜など）の表/裏の
 
 ## 手順
 
-### 1. dyes.json に新しいカララントを追加
+### 1. XIVAPIから染色マスターを更新
 
-`static/data/dyes.json` に新しいカララントのデータを追加します。
-
-```json
-{
-  "id": "dye_XXX",
-  "name": "新しいカララント名",
-  "category": "red",
-  "rgb": { "r": 255, "g": 128, "b": 64 },
-  "tags": [],
-  "lodestone": "/lodestone/...",
-  "source": "normal"
-}
-```
-
-※ メタリック染料の場合は `"tags": ["metallic"]` を追加してください（伝統色マッチング対象から除外されます）。
+`bun run sync:dyes` で `static/data/dyes.json` と日英の染料名を更新します。
+既存IDは維持され、新規染料にはStain行IDに基づくIDが付与されます。
+独自メタデータの調整は `scripts/dye-metadata.json` で行います。
 
 ### 2. 洗い替えスクリプトを実行
 

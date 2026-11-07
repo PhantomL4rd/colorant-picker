@@ -4,6 +4,8 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "sync:dyes": "node scripts/sync-dyes.mjs",
+    "test:dyes": "node --test scripts/sync-dyes.test.mjs",
     "dev": "vite dev",
     "dev:pages": "wrangler pages dev build --d1=DB --kv=KV --persist-to .wrangler/state",
     "build": "bun install --frozen-lockfile && vite build",
