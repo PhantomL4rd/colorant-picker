@@ -174,7 +174,7 @@ function handleBackdropClick() {
 
     <!-- 要望・感想 -->
     <a
-      href="https://jp.finalfantasyxiv.com/lodestone/character/27344914/blog/5639802/"
+      href="https://contact.pl4rd.com/?service=colorant-picker"
       target="_blank"
       rel="noopener noreferrer"
       onclick={close}
